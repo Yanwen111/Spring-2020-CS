@@ -5,7 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/yanwen/CML_CS/cml/week1/glad.c" "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/week1.dir/glad.c.o"
+  "/home/yanwen/CML_CS/Spring-2020-CS/glad.c" "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles/week1.dir/glad.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -13,10 +13,10 @@ set(CMAKE_C_COMPILER_ID "GNU")
 set(CMAKE_C_TARGET_INCLUDE_PATH
   )
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/yanwen/CML_CS/cml/week1/camera.cpp" "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/week1.dir/camera.cpp.o"
-  "/home/yanwen/CML_CS/cml/week1/densityMap.cpp" "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/week1.dir/densityMap.cpp.o"
-  "/home/yanwen/CML_CS/cml/week1/main.cpp" "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/week1.dir/main.cpp.o"
-  "/home/yanwen/CML_CS/cml/week1/shader.cpp" "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/week1.dir/shader.cpp.o"
+  "/home/yanwen/CML_CS/Spring-2020-CS/camera.cpp" "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles/week1.dir/camera.cpp.o"
+  "/home/yanwen/CML_CS/Spring-2020-CS/densityMap.cpp" "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles/week1.dir/densityMap.cpp.o"
+  "/home/yanwen/CML_CS/Spring-2020-CS/main.cpp" "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles/week1.dir/main.cpp.o"
+  "/home/yanwen/CML_CS/Spring-2020-CS/shader.cpp" "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles/week1.dir/shader.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

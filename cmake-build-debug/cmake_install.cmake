@@ -1,4 +1,4 @@
-# Install script for directory: /home/yanwen/CML_CS/cml/week1
+# Install script for directory: /home/yanwen/CML_CS/Spring-2020-CS
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/yanwen/CML_CS/cml/week1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

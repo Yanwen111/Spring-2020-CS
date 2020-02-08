@@ -44,10 +44,10 @@ RM = /snap/clion/100/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yanwen/CML_CS/cml/week1
+CMAKE_SOURCE_DIR = /home/yanwen/CML_CS/Spring-2020-CS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yanwen/CML_CS/cml/week1/cmake-build-debug
+CMAKE_BINARY_DIR = /home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -74,14 +74,14 @@ preinstall:
 CMakeFiles/week1.dir/all:
 	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/depend
 	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target week1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target week1"
 .PHONY : CMakeFiles/week1.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/week1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/week1.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/Spring-2020-CS/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/week1.dir/rule
 
 # Convenience name for target.

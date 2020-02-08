@@ -30,6 +30,7 @@ using namespace std::chrono;
 #define SCR_HEIGHT 600
 #endif
 
+
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
 void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos);
@@ -46,6 +47,8 @@ void updateVertexBuffer(unsigned int& VBO, DensityMap& grid);
 void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
 void realDemo(DensityMap& grid);
+
+void gainControl(DensityMap& grid, double Gain);
 
 // Used in the mouse movement callback
 double lastMouseX;
@@ -65,6 +68,7 @@ int main() {
 
     // (Optional) Adds a fan-shaped arrangement of cells to the volume map
     realDemo(grid);
+    gainControl(grid, 5.0);
 
 	// Initializing the OpenGL context
 	glfwInit();
@@ -422,6 +426,21 @@ void realDemo(DensityMap& grid){
         if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
             continue;
         grid.cells[tx][ty][tz] = (s.I + 0.5);
+    }
+}
+
+void gainControl(DensityMap& grid, double Gain)
+{
+    int deep = grid.getDim();
+    for (auto cx: grid.cells)
+    {
+        for (int y = 0; y < deep; ++y)
+        {
+            for (int z = 0; z < deep; ++z) {
+                if (z == 0) std::cout << cx[y][z] << std::endl;
+                cx[y][z] *= (deep - y + 1) * Gain / deep;
+            }
+        }
     }
 }
 

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/yanwen/CML_CS/cml/week1/camera.h
+/home/yanwen/CML_CS/Spring-2020-CS/camera.h
 glm/glm.hpp
 -
 glm/gtc/matrix_transform.hpp
@@ -14,7 +14,7 @@ glm/gtc/matrix_transform.hpp
 iostream
 -
 
-/home/yanwen/CML_CS/cml/week1/data.h
+/home/yanwen/CML_CS/Spring-2020-CS/data.h
 iostream
 -
 cstdio
@@ -32,7 +32,7 @@ cstdarg
 fstream
 -
 omp.h
-/home/yanwen/CML_CS/cml/week1/omp.h
+/home/yanwen/CML_CS/Spring-2020-CS/omp.h
 algorithm
 -
 cmath
@@ -56,13 +56,13 @@ cinttypes
 cstdint
 -
 
-/home/yanwen/CML_CS/cml/week1/densityMap.h
+/home/yanwen/CML_CS/Spring-2020-CS/densityMap.h
 vector
 -
 glm/glm.hpp
 -
 
-/home/yanwen/CML_CS/cml/week1/main.cpp
+/home/yanwen/CML_CS/Spring-2020-CS/main.cpp
 glad/glad.h
 -
 GLFW/glfw3.h
@@ -78,17 +78,17 @@ vector
 chrono
 -
 shader.h
-/home/yanwen/CML_CS/cml/week1/shader.h
+/home/yanwen/CML_CS/Spring-2020-CS/shader.h
 camera.h
-/home/yanwen/CML_CS/cml/week1/camera.h
+/home/yanwen/CML_CS/Spring-2020-CS/camera.h
 densityMap.h
-/home/yanwen/CML_CS/cml/week1/densityMap.h
+/home/yanwen/CML_CS/Spring-2020-CS/densityMap.h
 data.h
-/home/yanwen/CML_CS/cml/week1/data.h
+/home/yanwen/CML_CS/Spring-2020-CS/data.h
 time.h
-/home/yanwen/CML_CS/cml/week1/time.h
+/home/yanwen/CML_CS/Spring-2020-CS/time.h
 
-/home/yanwen/CML_CS/cml/week1/shader.h
+/home/yanwen/CML_CS/Spring-2020-CS/shader.h
 glad/glad.h
 -
 glm/glm.hpp
