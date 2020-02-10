@@ -48,7 +48,8 @@ void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
 void realDemo(DensityMap& grid);
 
-void gainControl(DensityMap& grid, double Gain);
+void gainControl(DensityMap& grid, float Gain);
+
 
 // Used in the mouse movement callback
 double lastMouseX;
@@ -68,7 +69,7 @@ int main() {
 
     // (Optional) Adds a fan-shaped arrangement of cells to the volume map
     realDemo(grid);
-    //gainControl(grid, 5.0);
+    gainControl(grid, 2.0);
 
 	// Initializing the OpenGL context
 	glfwInit();
@@ -204,13 +205,14 @@ int main() {
 
 	// Main event loop
 	auto t1 = high_resolution_clock::now(); //for calculating FPS
-	int count = 0;
+	int count = 0, cntfps = 100;
 	while (!glfwWindowShouldClose(window)) {
 	    ++count;
-        if (count == 100){
+        if (count == cntfps){
             auto t2 = high_resolution_clock::now();
             auto duration = duration_cast<microseconds>(t2 - t1);
-            std::cout << "time of 100 loops in ms is " << duration.count() << std::endl;
+            float fps = cntfps / (duration.count()/1000000.0);
+            std::cout << "The current Frame Per Second is " << fps << std::endl;
         } //calculation of FPS ends
 
 		double currentFrame = glfwGetTime();
@@ -409,13 +411,14 @@ void realDemo(DensityMap& grid){
     }
     printf("find the maxes and mins\n");
     //printf("maxI is %f, min I is %f\n", maxi, mini);
-    std::vector<std::vector<std::vector<float>>> cnts = grid.cells;
+    std::vector<std::vector<std::vector<float>>> cnts = grid.cells; //101x101x101
+    //printf("the cnts size is x: %d, y: %d, z:%d\n", cnts.size(), cnts[0].size(), cnts[0][0].size());
     int ddim = grid.getDim();
     for (auto s: screen_data)
     {
         int tx = (int) ((s.X-minx) / (maxx-minx) * ddim);
         int ty = (int) ( (s.Y - miny) / (maxx-minx) * ddim);
-        //int tz = (int) ((s.Z - minz) / (maxx-minx) * ddim);
+        //int tz = (int) ((s.Z - minz) / (maxx-minx) * ddim); //we don't have 3D data yet
         int tz = ddim/2;
         if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
             continue;
@@ -425,17 +428,29 @@ void realDemo(DensityMap& grid){
     }
 }
 
-void gainControl(DensityMap& grid, double Gain)
+void gainControl(DensityMap& grid, float Gain)
 {
     int deep = grid.getDim();
-    for (auto cx: grid.cells)
+
+    //std::vector<std::vector<std::vector<float> > > gMtx(deep, std::vector<std::vector<float> >(deep, std::vector<float>(deep, 0.0)));
+    std::vector<std::vector<std::vector<float>>> gMtx = grid.cells;
+
+    for (int x = 0; x < deep; ++x)
+    {
+        for (int y = 0; y < deep; ++y) //y is 0 at bottom and deep at top
+        {
+            //for (int z = 0; z < deep; ++z)
+            float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y))) / deep; //the distance between the point and piezo origin
+            gMtx[x][y][deep/2] = Gain / (1 + exp(10 *r)) + 1;
+            //if(x == deep/2) printf("the gain is %f\n", gMtx[x][y][deep/2]);
+        }
+    }
+    for (int x = 0; x < deep; ++x)
     {
         for (int y = 0; y < deep; ++y)
         {
-            for (int z = 0; z < deep; ++z) {
-                if (z == 0) std::cout << cx[y][z] << std::endl;
-                cx[y][z] *= (deep - y + 1) * Gain / deep;
-            }
+            //grid.cells[x][y][0] = grid.cells[x][y][deep/2]; //uncomment this for compare
+            grid.cells[x][y][deep/2] *= gMtx[x][y][deep/2];
         }
     }
 }
