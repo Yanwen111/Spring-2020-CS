@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 #include <iostream>
 #include <string>
@@ -56,8 +56,8 @@ bool firstMouse;
 Camera cam;
 
 int main() {
-	// Window title
-	std::string windowTitle = "Density Map";
+    // Window title
+    std::string windowTitle = "Density Map";
 
     // Creating the density map
     int dim = 101;
@@ -66,298 +66,301 @@ int main() {
     // (Optional) Adds a fan-shaped arrangement of cells to the volume map
     realDemo(grid);
 
-	// Initializing the OpenGL context
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Creating the window object
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowTitle.c_str(), FULLSCREEN ? glfwGetPrimaryMonitor() : NULL, NULL);
-	
-	// If the window is not created (for any reason)
-	if (window == NULL) {
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
 
-	// Setting callbacks
-	glfwMakeContextCurrent(window);
-	glfwSetCursorPosCallback(window, cursorPosMovementCallback);
+    // Creating the window object
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowTitle.c_str(), NULL, NULL);
 
-	// Lock the cursor to the center of the window
-	// and make it invisible
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	
-	// Load the OpenGL functions from the graphics card
-	if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+    // If the window is not created (for any reason)
+    if (window == NULL) {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
-	// Creating the shaders for the cells in the cube
-	// and for the lines of the border of the cube
-    Shader cellShader("/home/yanwen/CML_CS/cml/week1/cells.vs", "/home/yanwen/CML_CS/cml/week1/cells.fs");
-    Shader lineShader("/home/yanwen/CML_CS/cml/week1/lines.vs", "/home/yanwen/CML_CS/cml/week1/lines.fs");
+    // Setting callbacks
+    glfwMakeContextCurrent(window);
+    glfwSetCursorPosCallback(window, cursorPosMovementCallback);
 
-	// Allows blending (translucent drawing)
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // Lock the cursor to the center of the window
+    // and make it invisible
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	// Initializing mouse info
-	lastMouseX = SCR_WIDTH / 2.0;
-	lastMouseY = SCR_HEIGHT / 2.0;
-	firstMouse = true;
+    // Load the OpenGL functions from the graphics card
+    if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-	// Get the vertices from the volume map
-	// in a form useful to OpenGL
-	std::vector<float> cellPositions = grid.getVertices();
-	std::vector<float> cellDensities = grid.getDensities();
-	
-	// Initializing the buffers storing the vertices
-	// of the volume map on the graphics card
-	unsigned int cellVAO, cellPositionVBO, cellDensityVBO;
-	glGenBuffers(1, &cellPositionVBO);
-	glGenBuffers(1, &cellDensityVBO);
-	glGenVertexArrays(1, &cellVAO);
+    // Creating the shaders for the cells in the cube
+    // and for the lines of the border of the cube
+    Shader cellShader("cells.vs", "cells.fs");
+    Shader lineShader("lines.vs", "lines.fs");
 
-	glBindVertexArray(cellVAO);
+    // Allows blending (translucent drawing)
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Cell positions
+    // Initializing mouse info
+    lastMouseX = SCR_WIDTH / 2.0;
+    lastMouseY = SCR_HEIGHT / 2.0;
+    firstMouse = true;
 
-	glBindBuffer(GL_ARRAY_BUFFER, cellPositionVBO);
-	glBufferData(GL_ARRAY_BUFFER, cellPositions.size() * sizeof(float), cellPositions.data(), GL_STATIC_DRAW);
+    // Get the vertices from the volume map
+    // in a form useful to OpenGL
+    std::vector<float> cellPositions = grid.getVertices();
+    std::vector<float> cellDensities = grid.getDensities();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(0);
+    // Initializing the buffers storing the vertices
+    // of the volume map on the graphics card
+    unsigned int cellVAO, cellPositionVBO, cellDensityVBO;
+    glGenBuffers(1, &cellPositionVBO);
+    glGenBuffers(1, &cellDensityVBO);
+    glGenVertexArrays(1, &cellVAO);
 
-	// Data in each cell
+    glBindVertexArray(cellVAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, cellDensityVBO);
-	glBufferData(GL_ARRAY_BUFFER, cellDensities.size() * sizeof(float), cellDensities.data(), GL_STATIC_DRAW);
-	
-	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), 0);
-	glEnableVertexAttribArray(1);
+    // Cell positions
 
-	// Array containing the coordinates of the vertices
-	// of the white lines
-	float lines[72] = {
-		-5, -5, -5,
-		 5, -5, -5,
+    glBindBuffer(GL_ARRAY_BUFFER, cellPositionVBO);
+    glBufferData(GL_ARRAY_BUFFER, cellPositions.size() * sizeof(float), cellPositions.data(), GL_STATIC_DRAW);
 
-		-5,  5, -5,
-		 5,  5, -5,
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glEnableVertexAttribArray(0);
 
-		-5, -5,  5,
-		 5, -5,  5,
+    // Data in each cell
 
-		-5,  5,  5,
-		 5,  5,  5,
+    glBindBuffer(GL_ARRAY_BUFFER, cellDensityVBO);
+    glBufferData(GL_ARRAY_BUFFER, cellDensities.size() * sizeof(float), cellDensities.data(), GL_STATIC_DRAW);
 
-		 // -----
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), 0);
+    glEnableVertexAttribArray(1);
 
-		-5, -5, -5,
-		-5,  5, -5,
+    // Array containing the coordinates of the vertices
+    // of the white lines
+    float lines[72] = {
+            -5, -5, -5,
+            5, -5, -5,
 
-		 5, -5, -5,
-		 5,  5, -5,
+            -5,  5, -5,
+            5,  5, -5,
 
-		-5, -5,  5,
-		-5,  5,  5,
+            -5, -5,  5,
+            5, -5,  5,
 
-		 5, -5,  5,
-		 5,  5,  5,
+            -5,  5,  5,
+            5,  5,  5,
 
-		 // -----
+            // -----
 
-		-5, -5, -5,
-		-5, -5,  5,
+            -5, -5, -5,
+            -5,  5, -5,
 
-		 5, -5, -5,
-		 5, -5,  5,
+            5, -5, -5,
+            5,  5, -5,
 
-		-5,  5, -5,
-		-5,  5,  5,
-		
-		 5,  5, -5,
-		 5,  5,  5,
-	};
+            -5, -5,  5,
+            -5,  5,  5,
 
-	// Initializing the buffer storing the vertices
-	// of the white lines on the graphics card
-	unsigned int lineVAO, lineVBO;
-	glGenBuffers(1, &lineVBO);
-	glGenVertexArrays(1, &lineVAO);
+            5, -5,  5,
+            5,  5,  5,
 
-	glBindVertexArray(lineVAO);
+            // -----
 
-	glBindBuffer(GL_ARRAY_BUFFER, lineVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(lines), lines, GL_STATIC_DRAW);
+            -5, -5, -5,
+            -5, -5,  5,
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glEnableVertexAttribArray(0);
+            5, -5, -5,
+            5, -5,  5,
 
-	// Main event loop
-	auto t1 = high_resolution_clock::now();
-	int count = 0;
-	while (!glfwWindowShouldClose(window)) {
-	    ++count;
+            -5,  5, -5,
+            -5,  5,  5,
+
+            5,  5, -5,
+            5,  5,  5,
+    };
+
+    // Initializing the buffer storing the vertices
+    // of the white lines on the graphics card
+    unsigned int lineVAO, lineVBO;
+    glGenBuffers(1, &lineVBO);
+    glGenVertexArrays(1, &lineVAO);
+
+    glBindVertexArray(lineVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, lineVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(lines), lines, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glEnableVertexAttribArray(0);
+
+    // Main event loop
+    auto t1 = high_resolution_clock::now();
+    int count = 0;
+    while (!glfwWindowShouldClose(window)) {
+        ++count;
         if (count == 100){
             auto t2 = high_resolution_clock::now();
             auto duration = duration_cast<microseconds>(t2 - t1);
             std::cout << "time of 100 loops in ms is " << duration.count() << std::endl;
         }
-		double currentFrame = glfwGetTime();
-		cam.deltaTime = currentFrame - cam.lastFrame;
-		cam.lastFrame = currentFrame;
+        double currentFrame = glfwGetTime();
+        cam.deltaTime = currentFrame - cam.lastFrame;
+        cam.lastFrame = currentFrame;
 
-		// Self-explanatory
-		processKeyboardInput(window);
+        // Self-explanatory
+        processKeyboardInput(window);
 
-		// Clears the screen and fills it a dark grey color
-		glClearColor(0.1, 0.1, 0.1, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+        // Clears the screen and fills it a dark grey color
+        glClearColor(0.1, 0.1, 0.1, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		// Creating matrices to transform the vertices into NDC (screen) coordinates
-		// between -1 and 1 that OpenGL can use
-		glm::dmat4 projection = glm::perspective(glm::radians(cam.fov), double(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
-		glm::dmat4 camView = cam.getViewMatrix();
+        // Creating matrices to transform the vertices into NDC (screen) coordinates
+        // between -1 and 1 that OpenGL can use
+        glm::dmat4 projection = glm::perspective(glm::radians(cam.fov), float(SCR_WIDTH) / float(SCR_HEIGHT), 0.01f, 500.0f);
+        glm::dmat4 camView = cam.getViewMatrix();
 
-		int dim = grid.getDim();
-		glm::dmat4 model = glm::scale(glm::dmat4{}, glm::dvec3(10.0 / (dim - 1), 10.0 / (dim - 1), 10.0 / (dim - 1)));
-		model = glm::translate(model, glm::dvec3(-(dim - 1) / 2.0, -(dim - 1) / 2.0, -(dim - 1) / 2.0));
+        int dim = grid.getDim();
+        glm::dmat4 model = glm::scale(glm::dmat4{1.0f}, glm::dvec3(10.0 / (dim - 1), 10.0 / (dim - 1), 10.0 / (dim - 1)));
+        model = glm::translate(model, glm::dvec3(-(dim - 1) / 2.0, -(dim - 1) / 2.0, -(dim - 1) / 2.0));
 
-		// Drawing the volume map
-		cellShader.use();
-		cellShader.setMat4("projection", projection);
-		cellShader.setMat4("view", camView);
-		cellShader.setMat4("model", model);
+        // Drawing the volume map
+        cellShader.use();
+        cellShader.setMat4("projection", projection);
+        cellShader.setMat4("view", camView);
+        cellShader.setMat4("model", model);
 
-		glBindVertexArray(cellVAO);
-		glDrawArrays(GL_TRIANGLES, 0, cellDensities.size());
+        glBindVertexArray(cellVAO);
+        glDrawArrays(GL_TRIANGLES, 0, cellDensities.size());
 
-		// Drawing the white lines
-		lineShader.use();
-		lineShader.setMat4("projection", projection);
-		lineShader.setMat4("view", camView);
-		lineShader.setMat4("model", glm::dmat4{});
+        // Drawing the white lines
+        lineShader.use();
+        lineShader.setMat4("projection", projection);
+        lineShader.setMat4("view", camView);
+        lineShader.setMat4("model", glm::dmat4{1.0f});
 
-		glBindVertexArray(lineVAO);
-		glDrawArrays(GL_LINES, 0, 24);
+        glBindVertexArray(lineVAO);
+        glDrawArrays(GL_LINES, 0, 24);
 
-		cam.prevPos = cam.position;
+        cam.prevPos = cam.position;
 
-		// Update the screen
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
+        // Update the screen
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
-	// GLFW cleanup
-	glfwTerminate();
+    // GLFW cleanup
+    glfwTerminate();
 
-	// Stops the window from closing immediately
-	system("pause");
+    // Stops the window from closing immediately
+    system("pause");
 }
 
 void processKeyboardInput(GLFWwindow *window) {
-	// If shift is held down, then the camera moves faster
-	bool sprinting = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT);
+    // If shift is held down, then the camera moves faster
+    bool sprinting = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT);
 
-	// WASD + Q and E movement
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_W))
-		cam.processKeyboard(FORWARD, sprinting);
-	if (glfwGetKey(window, GLFW_KEY_S))
-		cam.processKeyboard(BACKWARD, sprinting);
-	if (glfwGetKey(window, GLFW_KEY_A))
-		cam.processKeyboard(LEFT, sprinting);
-	if (glfwGetKey(window, GLFW_KEY_D))
-		cam.processKeyboard(RIGHT, sprinting);
-	if (glfwGetKey(window, GLFW_KEY_Q))
-		cam.processKeyboard(DOWN, sprinting);
-	if (glfwGetKey(window, GLFW_KEY_E))
-		cam.processKeyboard(UP, sprinting);
+    // WASD + Q and E movement
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_W))
+        cam.processKeyboard(FORWARD, sprinting);
+    if (glfwGetKey(window, GLFW_KEY_S))
+        cam.processKeyboard(BACKWARD, sprinting);
+    if (glfwGetKey(window, GLFW_KEY_A))
+        cam.processKeyboard(LEFT, sprinting);
+    if (glfwGetKey(window, GLFW_KEY_D))
+        cam.processKeyboard(RIGHT, sprinting);
+    if (glfwGetKey(window, GLFW_KEY_Q))
+        cam.processKeyboard(DOWN, sprinting);
+    if (glfwGetKey(window, GLFW_KEY_E))
+        cam.processKeyboard(UP, sprinting);
 
-	// Hold C to zoom in
-	if (glfwGetKey(window, GLFW_KEY_C)) {
-		cam.fov = 30;
-	}
-	else {
-		cam.fov = 70;
-	}
+    // Hold C to zoom in
+    if (glfwGetKey(window, GLFW_KEY_C)) {
+        cam.fov = 30;
+    }
+    else {
+        cam.fov = 70;
+    }
 }
 
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos) {
-	// Ensures that the viewer faces forward on startup
-	if (firstMouse) {
-		lastMouseX = xpos;
-		lastMouseY = ypos;
-		firstMouse = false;
-	}
+    // Ensures that the viewer faces forward on startup
+    if (firstMouse) {
+        lastMouseX = xpos;
+        lastMouseY = ypos;
+        firstMouse = false;
+    }
 
-	// Updating the camera angle
-	double xoffset = xpos - lastMouseX;
-	double yoffset = lastMouseY - ypos;
-	lastMouseX = xpos;
-	lastMouseY = ypos;
+    // Updating the camera angle
+    double xoffset = xpos - lastMouseX;
+    double yoffset = lastMouseY - ypos;
+    lastMouseX = xpos;
+    lastMouseY = ypos;
 
-	cam.processMouseMovement(xoffset, yoffset);
+    cam.processMouseMovement(xoffset, yoffset);
 }
 
 void sphereDemo(DensityMap& grid) {
-	// Adds a sphere to the center of the volume map
+    // Adds a sphere to the center of the volume map
 
-	int dim = grid.getDim();
+    int dim = grid.getDim();
 
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
-			for (int k = 0; k < dim; k++) {
-				float xd = i - ((dim - 1) / 2.0);
-				float yd = j - ((dim - 1) / 2.0);
-				float zd = k - ((dim - 1) / 2.0);
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
+            for (int k = 0; k < dim; k++) {
+                float xd = i - ((dim - 1) / 2.0);
+                float yd = j - ((dim - 1) / 2.0);
+                float zd = k - ((dim - 1) / 2.0);
 
-				float mxd = (dim - 1) / 2.0;
-				float myd = (dim - 1) / 2.0;
-				float mzd = (dim - 1) / 2.0;
+                float mxd = (dim - 1) / 2.0;
+                float myd = (dim - 1) / 2.0;
+                float mzd = (dim - 1) / 2.0;
 
-				float distance = sqrt(xd * xd + yd * yd + zd * zd);
-				float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
-				float shade = (maxDistance - distance) / maxDistance;
-				shade = shade * shade;
+                float distance = sqrt(xd * xd + yd * yd + zd * zd);
+                float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
+                float shade = (maxDistance - distance) / maxDistance;
+                shade = shade * shade;
 
-				grid.cells[i][j][k] = shade;
-			}
-		}
-	}
+                grid.cells[i][j][k] = shade;
+            }
+        }
+    }
 }
 
 void fanDemo(DensityMap& grid) {
-	// Adds a fan shape to the volume map
-	// using the DensityMap::addLine() function
+    // Adds a fan shape to the volume map
+    // using the DensityMap::addLine() function
 
-	glm::vec3 vertex = { 0.5, 0.5, 0.5 };
+    glm::vec3 vertex = { 0.5, 0.5, 0.5 };
 
-	float a1 = 1;
-	float a2 = 1;
+    float a1 = 1;
+    float a2 = 1;
 
-	float r = 0.3;
+    float r = 0.3;
 
-	for (; a2 <= 3; a2 += 0.01) {
-		float x = r * sin(a1) * cos(a2);
-		float y = r * sin(a1) * sin(a2);
-		float z = r * cos(a1);
+    for (; a2 <= 3; a2 += 0.01) {
+        float x = r * sin(a1) * cos(a2);
+        float y = r * sin(a1) * sin(a2);
+        float z = r * cos(a1);
 
-		std::vector<float> vals;
+        std::vector<float> vals;
 
-		for (int i = 0; i < 1000; i++) {
-			vals.push_back(1);
-		}
+        for (int i = 0; i < 1000; i++) {
+            vals.push_back(1);
+        }
 
-		//grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
-		grid.addLineSmoothed(vertex, vertex + glm::vec3(x, y, z), vals, 3);
-	}
+        //grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
+        grid.addLineSmoothed(vertex, vertex + glm::vec3(x, y, z), vals, 3);
+    }
 }
 
 void realDemo(DensityMap& grid){
@@ -366,7 +369,7 @@ void realDemo(DensityMap& grid){
     std::vector<scan_data_struct> scan_data;
     std::vector<screen_data_struct> screen_data;
 
-    std::ifstream inFile("/home/yanwen/Downloads/clear_1.txt", std::ios::in | std::ios::binary);
+    std::ifstream inFile("/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/data/clear_1.txt", std::ios::in | std::ios::binary);
     if (!inFile){
         printf("Failed to open file.\n");
         //return -1;
@@ -426,12 +429,12 @@ void realDemo(DensityMap& grid){
 }
 
 void updateVertexBuffer(unsigned int& VBO, DensityMap& grid) {
-	// Gets the vertices from the density map
-	std::vector<float> densities = grid.getDensities();
+    // Gets the vertices from the density map
+    std::vector<float> densities = grid.getDensities();
 
-	// Writes the vertices to the vertex buffer on the graphics card
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, densities.size() * sizeof(float), densities.data());
+    // Writes the vertices to the vertex buffer on the graphics card
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, densities.size() * sizeof(float), densities.data());
 }
 
 double map_range_to_range(double input_start, double input_end, double output_start, double output_end, double input){

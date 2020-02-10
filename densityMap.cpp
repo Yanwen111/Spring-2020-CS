@@ -1,5 +1,4 @@
 #include "densityMap.h"
-#include <iostream>
 
 DensityMap::DensityMap(int dim) {
 	this->dim = dim;
@@ -132,13 +131,13 @@ void DensityMap::addLine(glm::vec3 p1, glm::vec3 p2, std::vector<float> vals) {
 std::vector<float> DensityMap::getVertices() {
 	std::vector<float> vertices;
 
-	for (float i = 0; i < dim - 1; i++) {
-		for (float j = 0; j < dim - 1; j++) {
-			for (float k = 0; k < dim; k++) {
-				float v1[3] = { i, j, k };
-				float v2[3] = { i + 1, j, k };
-				float v3[3] = { i, j + 1, k };
-				float v4[3] = { i + 1, j + 1, k };
+	for (int i = 0; i < dim - 1; i++) {
+		for (int j = 0; j < dim - 1; j++) {
+			for (int k = 0; k < dim; k++) {
+				float v1[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) };
+				float v2[3] = { static_cast<float>(i) + 1, static_cast<float>(j), static_cast<float>(k) };
+				float v3[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) };
+				float v4[3] = { static_cast<float>(i) + 1, static_cast<float>(j) + 1, static_cast<float>(k) };
 
 				vertices.insert(vertices.end(), v1, v1 + 3);
 				vertices.insert(vertices.end(), v2, v2 + 3);
@@ -151,13 +150,17 @@ std::vector<float> DensityMap::getVertices() {
 		}
 	}
 
-	for (float i = 0; i < dim - 1; i++) {
-		for (float j = 0; j < dim; j++) {
-			for (float k = 0; k < dim - 1; k++) {
-				float v1[3] = { i,j, k };
-				float v2[3] = { i + 1, j, k };
-				float v3[3] = { i, j, k + 1 };
-				float v4[3] = { i + 1, j, k + 1 };
+	for (int i = 0; i < dim - 1; i++) {
+		for (int j = 0; j < dim; j++) {
+			for (int k = 0; k < dim - 1; k++) {
+//                float v1[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) };
+//                float v2[3] = { static_cast<float>(i) + 1, static_cast<float>(j), static_cast<float>(k) };
+//                float v3[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) };
+//                float v4[3] = { static_cast<float>(i) + 1, static_cast<float>(j) + 1, static_cast<float>(k) };
+                float v1[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) };
+                float v2[3] = { static_cast<float>(i) + 1, static_cast<float>(j), static_cast<float>(k) };
+                float v3[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) +1};
+                float v4[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) +1};
 
 				vertices.insert(vertices.end(), v1, v1 + 3);
 				vertices.insert(vertices.end(), v2, v2 + 3);
@@ -170,13 +173,17 @@ std::vector<float> DensityMap::getVertices() {
 		}
 	}
 
-	for (float i = 0; i < dim; i++) {
-		for (float j = 0; j < dim - 1; j++) {
-			for (float k = 0; k < dim - 1; k++) {
-				float v1[3] = { i, j, k };
-				float v2[3] = { i, j + 1, k };
-				float v3[3] = { i, j, k + 1 };
-				float v4[3] = { i, j + 1, k + 1 };
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim - 1; j++) {
+			for (int k = 0; k < dim - 1; k++) {
+                float v1[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) };
+                float v2[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) };
+                float v3[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) + 1};
+                float v4[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) + 1};
+//                float v1[3] = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(k) };
+//                float v2[3] = { static_cast<float>(i) + 1, static_cast<float>(j), static_cast<float>(k) };
+//                float v3[3] = { static_cast<float>(i), static_cast<float>(j) + 1, static_cast<float>(k) };
+//                float v4[3] = { static_cast<float>(i) + 1, static_cast<float>(j) + 1, static_cast<float>(k) };
 
 				vertices.insert(vertices.end(), v1, v1 + 3);
 				vertices.insert(vertices.end(), v2, v2 + 3);
