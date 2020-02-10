@@ -68,7 +68,7 @@ int main() {
 
     // (Optional) Adds a fan-shaped arrangement of cells to the volume map
     realDemo(grid);
-    gainControl(grid, 5.0);
+    //gainControl(grid, 5.0);
 
 	// Initializing the OpenGL context
 	glfwInit();
@@ -102,8 +102,8 @@ int main() {
 
 	// Creating the shaders for the cells in the cube
 	// and for the lines of the border of the cube
-    Shader cellShader("/home/yanwen/CML_CS/cml/week1/cells.vs", "/home/yanwen/CML_CS/cml/week1/cells.fs");
-    Shader lineShader("/home/yanwen/CML_CS/cml/week1/lines.vs", "/home/yanwen/CML_CS/cml/week1/lines.fs");
+    Shader cellShader("/home/yanwen/CML_CS/Spring-2020-CS/cells.vs", "/home/yanwen/CML_CS/Spring-2020-CS/cells.fs");
+    Shader lineShader("/home/yanwen/CML_CS/Spring-2020-CS/lines.vs", "/home/yanwen/CML_CS/Spring-2020-CS/lines.fs");
 
 	// Allows blending (translucent drawing)
 	glEnable(GL_BLEND);
@@ -203,7 +203,7 @@ int main() {
 	glEnableVertexAttribArray(0);
 
 	// Main event loop
-	auto t1 = high_resolution_clock::now();
+	auto t1 = high_resolution_clock::now(); //for calculating FPS
 	int count = 0;
 	while (!glfwWindowShouldClose(window)) {
 	    ++count;
@@ -211,7 +211,8 @@ int main() {
             auto t2 = high_resolution_clock::now();
             auto duration = duration_cast<microseconds>(t2 - t1);
             std::cout << "time of 100 loops in ms is " << duration.count() << std::endl;
-        }
+        } //calculation of FPS ends
+
 		double currentFrame = glfwGetTime();
 		cam.deltaTime = currentFrame - cam.lastFrame;
 		cam.lastFrame = currentFrame;
@@ -402,20 +403,13 @@ void realDemo(DensityMap& grid){
         minx = std::min(s.X, minx);
         miny = std::min(s.Y, miny);
         minz = std::min(s.Z, minz);
-    }
 
-    /*
-    for (i = 0; i < screen_data.size(); ++i)
-    {
-        maxx = screen_data.at(i).X > maxx? screen_data.at(i).X : maxx;
-        maxy = screen_data.at(i).Y > maxy? screen_data.at(i).Y : maxy;
-        maxz = screen_data.at(i).Z > maxz? screen_data.at(i).Z : maxz;
-        minx = screen_data.at(i).X < minx? screen_data.at(i).X : minx;
-        miny = screen_data.at(i).Y < miny? screen_data.at(i).Y : miny;
-        minz = screen_data.at(i).Z < minz? screen_data.at(i).Z : minz;
+        //maxi = std::max(s.I, maxi);
+        //mini = std::min(s.I, mini);
     }
-    */
     printf("find the maxes and mins\n");
+    //printf("maxI is %f, min I is %f\n", maxi, mini);
+    std::vector<std::vector<std::vector<float>>> cnts = grid.cells;
     int ddim = grid.getDim();
     for (auto s: screen_data)
     {
@@ -425,7 +419,9 @@ void realDemo(DensityMap& grid){
         int tz = ddim/2;
         if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
             continue;
-        grid.cells[tx][ty][tz] = (s.I + 0.5);
+        grid.cells[tx][ty][tz] = cnts[tx][ty][tz] == 0? s.I : (cnts[tx][ty][tz]*grid.cells[tx][ty][tz] + s.I) / (cnts[tx][ty][tz] + 1);
+        cnts[tx][ty][tz]++;
+        //printf("the I at X: %d, Y:%d,  Z:%d   is: %f\n", tx, ty, tz, s.I);
     }
 }
 
