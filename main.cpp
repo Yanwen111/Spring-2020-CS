@@ -35,6 +35,9 @@ void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
 void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos);
 void processKeyboardInput(GLFWwindow* window);
 
+// Inputs STL files for rendering of probe
+int read_stl(std::string fname, GLfloat * &vertices, GLfloat * &colors);
+
 // Updates the vertices on the graphics card
 // -----
 // This function is pretty slow right now (a few hundred milliseconds)
@@ -103,6 +106,7 @@ int main() {
     // and for the lines of the border of the cube
     Shader cellShader("cells.vs", "cells.fs");
     Shader lineShader("lines.vs", "lines.fs");
+    Shader probeShader("probe.vs", "probe.fs");
 
     // Allows blending (translucent drawing)
     glEnable(GL_BLEND);
@@ -201,6 +205,36 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
+    // Add the 3D probe
+    GLfloat *probevertices = NULL;
+    GLfloat *probeNormals = NULL;
+    int probeindex = read_stl("data/SUBMARINE_2020_ASSEMBLY.stl", probevertices, probeNormals);
+
+    unsigned int probeVAO, probeVBO, probeNormalsVBO;
+    glGenBuffers(1, &probeVBO);
+    glGenBuffers(1, &probeNormalsVBO);
+    glGenVertexArrays(1, &probeVAO);
+
+    glBindVertexArray(probeVAO);
+
+    //position attribute
+    glBindBuffer(GL_ARRAY_BUFFER, probeVBO);
+    glBufferData(GL_ARRAY_BUFFER, probeindex * sizeof(GLfloat), probevertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //normals attribute
+    glBindBuffer(GL_ARRAY_BUFFER, probeNormalsVBO);
+    glBufferData(GL_ARRAY_BUFFER, probeindex/3 * sizeof(GLfloat), probeNormals, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(1);
+
+    // Clear unused memory
+    delete [] probevertices;
+    delete [] probeNormals;
+
     // Main event loop
     auto t1 = high_resolution_clock::now();
     int count = 0;
@@ -248,6 +282,37 @@ int main() {
 
         glBindVertexArray(lineVAO);
         glDrawArrays(GL_LINES, 0, 24);
+
+        glm::mat4 model_probe      = glm::mat4(1.0f);
+        glm::vec3 probeScale(0.05f, 0.05f, 0.05f);
+        model_probe      = glm::scale(glm::mat4(1.0f), probeScale) * model_probe;
+        model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 0, 1));
+        model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(1, 0, 0));
+//
+//        //adding rotation: x is up, z is right, y is out of screen
+////        model_probe = glm::rotate(model_probe, glm::radians(30.0f), glm::vec3(0, 0, 1));
+//
+//        //Work on getting accurate measurements for probe to determine center location
+        model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(-1, 5 + 2, 0)) * model_probe;
+//
+//        lineShader.use();
+//        lineShader.setMat4("projection", projection);
+//        lineShader.setMat4("view", camView);
+//        lineShader.setMat4("model", model_probe);
+
+        // Drawing the probe
+        probeShader.use();
+        probeShader.setMat4("projection", projection);
+        probeShader.setMat4("view", camView);
+        probeShader.setMat4("model", model_probe);
+
+        // Set lights
+        probeShader.setVec3("objectColor", glm::vec3(0.8f, 0.8f, 0.8f));
+        probeShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        probeShader.setVec3("lightPos", glm::vec3(4.0f, 10.0f, -10.0f));
+
+        glBindVertexArray(probeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, probeindex/3);
 
         cam.prevPos = cam.position;
 
@@ -596,4 +661,64 @@ uint32_t crc32c(uint32_t crc, const unsigned char *buf, size_t len)
             crc = crc & 1 ? (crc >> 1) ^ 0xedb88320 : crc >> 1;
     }
     return ~crc;
+}
+
+int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals)
+{
+
+    std::ifstream myfile (file_name.c_str(), std::ios::in | std::ios::binary);
+
+    char header_info[80] = "";
+    char bin_n_triangles[4];
+    unsigned int num_traingles;
+
+    if (myfile)
+    {
+        myfile.read (header_info, 80);
+        std::cout <<"Header : " << header_info << std::endl;
+    }
+
+    if (myfile)
+    {
+        myfile.read (bin_n_triangles, 4);
+        num_traingles = *((unsigned int*)bin_n_triangles) ;
+        std::cout <<"Number of triangles : " << num_traingles << std::endl;
+    }
+
+    vertices = new GLfloat[num_traingles * 9];
+    normals = new GLfloat[num_traingles * 3];
+
+    int index = 0;
+    int indexN = 0;
+    for(int i = 0; i < num_traingles; i++)
+    {
+        char facet[50];
+        if (myfile)
+        {
+            myfile.read (facet, 50);
+
+
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
+
+            vertices[index++] = *( (float*) ( ( (char*)facet)+12));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+16));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+20));
+
+            vertices[index++] = *( (float*) ( ( (char*)facet)+24));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+28));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+32));
+
+            vertices[index++] = *( (float*) ( ( (char*)facet)+36));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+40));
+            vertices[index++] = *( (float*) ( ( (char*)facet)+44));
+
+//            for(int x = index-9; x < index; ++x)
+//                colors[x] = 0.8f;
+        }
+    }
+
+    return index;
+
 }

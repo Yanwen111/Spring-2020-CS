@@ -26,4 +26,3 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/glfw)
 
 target_link_libraries(ethan_opengl PRIVATE glfw)
-
