@@ -19,7 +19,7 @@ using namespace std::chrono;
 
 // If this is false, then the application will run in windowed mode
 // If this is true, then the application will run in fullscren mode
-#define FULLSCREEN 0
+#define FULLSCREEN 1
 
 // Adjust these numbers depending on your monitor resolution
 #if FULLSCREEN
@@ -441,14 +441,16 @@ void gainControl(DensityMap& grid, float Gain)
         {
             //for (int z = 0; z < deep; ++z)
             float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y))) / deep; //the distance between the point and piezo origin
-            gMtx[x][y][deep/2] = Gain / (1 + exp(10 *r)) + 1;
+            gMtx[x][y][deep/2] = Gain / (1 + exp(10 *r)) + 3.6;
             //if(x == deep/2) printf("the gain is %f\n", gMtx[x][y][deep/2]);
+    /*
         }
     }
     for (int x = 0; x < deep; ++x)
     {
         for (int y = 0; y < deep; ++y)
         {
+    */
             //grid.cells[x][y][0] = grid.cells[x][y][deep/2]; //uncomment this for compare
             grid.cells[x][y][deep/2] *= gMtx[x][y][deep/2];
         }
@@ -490,7 +492,10 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_
     //printf("%d\n", (int)_scan_data.size());
     for (i = 0; i < (int)_scan_data.size(); i++){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
-        angle = convert_angle_2d_probe(angle);
+        //angle = convert_angle_2d_probe(angle);
+        double ax = 9*Cos(angle - 85 );
+        double ay = 9*Sin(angle - 85 );
+        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
         /* find min and max */
         for (j = 0; j < buffer_length; j++){
             adc_max = std::max(adc_max, _scan_data.at(i).buffer[j]);
@@ -499,7 +504,7 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_
         /* normalize on the go */
         for (j = 0; j < buffer_length; j++){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
-            screen_data_struct temp_data = {(j+1) * Cos(angle), (j+1) * Sin(angle), 0, intensity};
+            screen_data_struct temp_data = {(j+1) * Cos(piezo), (j+1) * Sin(piezo), 0, intensity};
             _screen_data.push_back(temp_data);
         }
         adc_max = 0; adc_min = 0;
