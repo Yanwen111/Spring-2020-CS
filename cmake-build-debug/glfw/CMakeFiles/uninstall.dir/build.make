@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -E remove -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hanwen/Documents/Spring-2020-CS
+CMAKE_SOURCE_DIR = /Users/hanwen/Documents/GitHub/Spring-2020-CS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug
 
 # Utility rule file for uninstall.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug
 include glfw/CMakeFiles/uninstall.dir/progress.make
 
 glfw/CMakeFiles/uninstall:
-	cd /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw && /home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -P /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/cmake_uninstall.cmake
+	cd /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/cmake_uninstall.cmake
 
 uninstall: glfw/CMakeFiles/uninstall
 uninstall: glfw/CMakeFiles/uninstall.dir/build.make
@@ -67,10 +67,10 @@ glfw/CMakeFiles/uninstall.dir/build: uninstall
 .PHONY : glfw/CMakeFiles/uninstall.dir/build
 
 glfw/CMakeFiles/uninstall.dir/clean:
-	cd /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw && $(CMAKE_COMMAND) -P CMakeFiles/uninstall.dir/cmake_clean.cmake
+	cd /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw && $(CMAKE_COMMAND) -P CMakeFiles/uninstall.dir/cmake_clean.cmake
 .PHONY : glfw/CMakeFiles/uninstall.dir/clean
 
 glfw/CMakeFiles/uninstall.dir/depend:
-	cd /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hanwen/Documents/Spring-2020-CS /home/hanwen/Documents/Spring-2020-CS/glfw /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/hanwen/Documents/GitHub/Spring-2020-CS /Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw /Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : glfw/CMakeFiles/uninstall.dir/depend
 

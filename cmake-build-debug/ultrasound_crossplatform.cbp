@@ -8,338 +8,321 @@
 		<Option virtualFolders="CMake Files\;CMake Files\glfw\;CMake Files\glfw\src\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="install/strip">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ultrasound_crossplatform">
-				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/ultrasound_crossplatform" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/data"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glm"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/include"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 ultrasound_crossplatform"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ultrasound_crossplatform/fast">
-				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/ultrasound_crossplatform" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/data"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glm"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/include"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 ultrasound_crossplatform/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="rebuild_cache">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="list_install_components">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/local">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ultrasound_crossplatform">
+				<Option output="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/ultrasound_crossplatform" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/data"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glm"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 ultrasound_crossplatform"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ultrasound_crossplatform/fast">
+				<Option output="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/ultrasound_crossplatform" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/data"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glm"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 ultrasound_crossplatform/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="uninstall">
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="glfw">
-				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src"/>
+				<Option output="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/data"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glm"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/src"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/data"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glm"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="glfw/fast">
-				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src"/>
+				<Option output="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/data"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glad/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glm"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/include"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/glfw/src"/>
-					<Add directory="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src"/>
-					<Add directory="/usr/include/c++/7"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
-					<Add directory="/usr/include/c++/7/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/data"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glm"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src"/>
+					<Add directory="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/camera.cpp">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/camera.cpp">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/camera.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/camera.h">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/glfw_config.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/glfw_config.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/densityMap.cpp">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/densityMap.cpp">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/densityMap.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/densityMap.h">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glad/src/glad.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/src/glad.c">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/include/GLFW/glfw3.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include/GLFW/glfw3.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/include/GLFW/glfw3native.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/include/GLFW/glfw3native.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/context.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_init.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/egl_context.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_joystick.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/egl_context.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_joystick.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/glx_context.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_monitor.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/glx_context.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_platform.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/init.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_time.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/input.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/cocoa_window.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/internal.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/linux_joystick.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/egl_context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/linux_joystick.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/egl_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/mappings.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/init.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/monitor.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/input.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/osmesa_context.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/internal.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/osmesa_context.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/mappings.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/posix_thread.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/monitor.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/posix_thread.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/nsgl_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/posix_time.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/nsgl_context.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/posix_time.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/osmesa_context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/vulkan.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/osmesa_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/window.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/posix_thread.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/x11_init.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/posix_thread.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/x11_monitor.c">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/vulkan.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/x11_platform.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/window.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/x11_window.c">
-			<Option target="glfw"/>
-		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/xkb_unicode.c">
-			<Option target="glfw"/>
-		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/xkb_unicode.h">
-			<Option target="glfw"/>
-		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/main.cpp">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/main.cpp">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/shader.cpp">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/shader.cpp">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/shader.h">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/shader.h">
 			<Option target="ultrasound_crossplatform"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/CMakeLists.txt">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/CMakeLists.txt">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\glfw\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/cmake_uninstall.cmake.in">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/cmake_uninstall.cmake.in">
 			<Option virtualFolder="CMake Files\glfw\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/CMakeLists.txt">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\glfw\src\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/glfw3.pc.in">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/glfw3.pc.in">
 			<Option virtualFolder="CMake Files\glfw\src\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/glfw3Config.cmake.in">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/glfw3Config.cmake.in">
 			<Option virtualFolder="CMake Files\glfw\src\"/>
 		</Unit>
-		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glfw/src/glfw_config.h.in">
+		<Unit filename="/Users/hanwen/Documents/GitHub/Spring-2020-CS/glfw/src/glfw_config.h.in">
 			<Option virtualFolder="CMake Files\glfw\src\"/>
 		</Unit>
 	</Project>

@@ -1,22 +1,22 @@
 
-if (NOT EXISTS "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt\"")
+if (NOT EXISTS "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt\"")
 endif()
 
-file(READ "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt" files)
+file(READ "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})
   message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
   if (EXISTS "$ENV{DESTDIR}${file}")
-    exec_program("/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    exec_program("/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)
       MESSAGE(FATAL_ERROR "Problem when removing \"$ENV{DESTDIR}${file}\"")
     endif()
   elseif (IS_SYMLINK "$ENV{DESTDIR}${file}")
-    EXEC_PROGRAM("/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    EXEC_PROGRAM("/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)

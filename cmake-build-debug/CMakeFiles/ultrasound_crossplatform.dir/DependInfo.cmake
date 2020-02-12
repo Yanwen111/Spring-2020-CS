@@ -5,9 +5,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/hanwen/Documents/Spring-2020-CS/glad/src/glad.c" "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/glad/src/glad.c.o"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/glad/src/glad.c" "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/glad/src/glad.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
@@ -19,12 +19,12 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../glfw/include"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/hanwen/Documents/Spring-2020-CS/camera.cpp" "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/camera.cpp.o"
-  "/home/hanwen/Documents/Spring-2020-CS/densityMap.cpp" "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/densityMap.cpp.o"
-  "/home/hanwen/Documents/Spring-2020-CS/main.cpp" "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/main.cpp.o"
-  "/home/hanwen/Documents/Spring-2020-CS/shader.cpp" "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/shader.cpp.o"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/camera.cpp" "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/camera.cpp.o"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/densityMap.cpp" "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/densityMap.cpp.o"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/main.cpp" "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/main.cpp.o"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/shader.cpp" "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/CMakeFiles/ultrasound_crossplatform.dir/shader.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
@@ -38,7 +38,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/Users/hanwen/Documents/GitHub/Spring-2020-CS/cmake-build-debug/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
