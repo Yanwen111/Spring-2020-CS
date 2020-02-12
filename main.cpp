@@ -19,7 +19,7 @@ using namespace std::chrono;
 
 // If this is false, then the application will run in windowed mode
 // If this is true, then the application will run in fullscren mode
-#define FULLSCREEN 1
+#define FULLSCREEN 0
 
 // Adjust these numbers depending on your monitor resolution
 #if FULLSCREEN
@@ -373,7 +373,7 @@ void realDemo(DensityMap& grid){
     std::vector<scan_data_struct> scan_data;
     std::vector<screen_data_struct> screen_data;
 
-    std::ifstream inFile("/home/yanwen/Downloads/clear_1.txt", std::ios::in | std::ios::binary);
+    std::ifstream inFile("/home/yanwen/Downloads/clear_3.txt", std::ios::in | std::ios::binary);
     if (!inFile){
         printf("Failed to open file.\n");
         //return -1;
@@ -396,15 +396,15 @@ void realDemo(DensityMap& grid){
     printf("find the screen_data\n");
 
     //fill the cell
-    double maxx = 0, maxy = 0, maxz = 0, minx = 0, miny = 0, minz = 0;
+    double maxx = -999, maxy = -999, maxz = -999, minx = 999, miny = 999, minz = 999;
 
     for (auto s: screen_data) {
         maxx = std::max(s.X, maxx);
         maxy = std::max(s.Y, maxy);
-        maxz = std::max(s.Z, maxz);
+        //maxz = std::max(s.Z, maxz);
         minx = std::min(s.X, minx);
         miny = std::min(s.Y, miny);
-        minz = std::min(s.Z, minz);
+        //minz = std::min(s.Z, minz);
 
         //maxi = std::max(s.I, maxi);
         //mini = std::min(s.I, mini);
@@ -417,8 +417,8 @@ void realDemo(DensityMap& grid){
     for (auto s: screen_data)
     {
         int tx = (int) ((s.X-minx) / (maxx-minx) * ddim);
-        int ty = (int) ( (s.Y - miny) / (maxx-minx) * ddim);
-        //int tz = (int) ((s.Z - minz) / (maxx-minx) * ddim); //we don't have 3D data yet
+        int ty = (int) ( (s.Y - miny) / (maxy-miny) * ddim);
+        //int tz = (int) ((s.Z - minz) / (maxz-minz) * ddim); //we don't have 3D data yet
         int tz = ddim/2;
         if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
             continue;
@@ -490,19 +490,19 @@ double convert_angle_2d_probe(double angle){
 
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_data_struct> & _screen_data){
     //printf("%d\n", (int)_scan_data.size());
-    for (i = 0; i < (int)_scan_data.size(); i++){
+    for (i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
         double ax = 9*Cos(angle - 85 );
         double ay = 9*Sin(angle - 85 );
         double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
         /* find min and max */
-        for (j = 0; j < buffer_length; j++){
+        for (j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, _scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
         /* normalize on the go */
-        for (j = 0; j < buffer_length; j++){
+        for (j = 0; j < buffer_length; ++j){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
             screen_data_struct temp_data = {(j+1) * Cos(piezo), (j+1) * Sin(piezo), 0, intensity};
             _screen_data.push_back(temp_data);
@@ -512,11 +512,11 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_
 }
 
 void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations, std::vector<scan_data_struct> & _scan_data){
-    for (i = 0; i < (int)_marker_locations.size()-1; i++){
+    for (i = 0; i < (int)_marker_locations.size()-1; ++i){
         marker_index = _marker_locations.at(i);
         marker_index_next = _marker_locations.at(i+1);
         /* time stamp */
-        for (j = 0; j < (int)sizeof(time_stamp_char); j++){
+        for (j = 0; j < (int)sizeof(time_stamp_char); ++j){
             time_stamp_char[j] = _file_bytes.at(marker_index + sizeof(marker) + j);
         }
         std::memcpy(&time_stamp, time_stamp_char, sizeof(time_stamp));
@@ -524,7 +524,7 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         /* probe type char */
         probe_type_char = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char));
         /* encoder */
-        for (j = 0; j < (int) sizeof(encoder_char); j++){
+        for (j = 0; j < (int) sizeof(encoder_char); ++j){
             encoder_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + j);
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
@@ -533,8 +533,8 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
                               sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(crc_char))/2;
-        for (j = 0; j < buffer_length; j++){
-            for (k = 0; k < (int)sizeof(adc_temp); k++){
+        for (j = 0; j < buffer_length; ++j){
+            for (k = 0; k < (int)sizeof(adc_temp); ++k){
                 adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
@@ -543,7 +543,7 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
             buffer[j] = adc;
         }
         /* checksum */
-        for (j = 0; j < (int)sizeof(crc_char); j++){
+        for (j = 0; j < (int)sizeof(crc_char); ++j){
             crc_char[j] = _file_bytes.at(marker_index_next-(int)sizeof(crc_char)+j);
         }
         /* calculate crc locally */
@@ -560,7 +560,7 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
             temp_struct.time_stamp = time_stamp;
             temp_struct.encoder = encoder;
             /* normalize on the go */
-            for (j = 0; j < buffer_length; j++) {
+            for (j = 0; j < buffer_length; ++j) {
                 temp_struct.buffer[j] = buffer[j];
                 //printf("Intensity:%f\n", temp_struct.buffer[j]);
             }
