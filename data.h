@@ -73,4 +73,6 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_data_struct> & _screen_data);
 uint32_t crc32c(uint32_t crc, const unsigned char *buf, size_t len);
 
+int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals);
+
 #endif //ULTRASOUND_OPENGL_MAIN_H

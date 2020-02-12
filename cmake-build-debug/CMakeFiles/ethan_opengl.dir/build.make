@@ -96,9 +96,22 @@ CMakeFiles/ethan_opengl.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/main.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp -o CMakeFiles/ethan_opengl.dir/main.cpp.s
 
+CMakeFiles/ethan_opengl.dir/rotations.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/rotations.cpp.o: ../rotations.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ethan_opengl.dir/rotations.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/rotations.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp
+
+CMakeFiles/ethan_opengl.dir/rotations.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/rotations.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp > CMakeFiles/ethan_opengl.dir/rotations.cpp.i
+
+CMakeFiles/ethan_opengl.dir/rotations.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/rotations.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp -o CMakeFiles/ethan_opengl.dir/rotations.cpp.s
+
 CMakeFiles/ethan_opengl.dir/shader.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
 CMakeFiles/ethan_opengl.dir/shader.cpp.o: ../shader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ethan_opengl.dir/shader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ethan_opengl.dir/shader.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/shader.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp
 
 CMakeFiles/ethan_opengl.dir/shader.cpp.i: cmake_force
@@ -111,7 +124,7 @@ CMakeFiles/ethan_opengl.dir/shader.cpp.s: cmake_force
 
 CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o: CMakeFiles/ethan_opengl.dir/flags.make
 CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o: ../glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o   -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/glad/src/glad.c
 
 CMakeFiles/ethan_opengl.dir/glad/src/glad.c.i: cmake_force
@@ -127,6 +140,7 @@ ethan_opengl_OBJECTS = \
 "CMakeFiles/ethan_opengl.dir/camera.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/densityMap.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/main.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/rotations.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/shader.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o"
 
@@ -136,12 +150,13 @@ ethan_opengl_EXTERNAL_OBJECTS =
 ethan_opengl: CMakeFiles/ethan_opengl.dir/camera.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/densityMap.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/main.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/rotations.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/shader.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/build.make
 ethan_opengl: glfw/src/libglfw3.a
 ethan_opengl: CMakeFiles/ethan_opengl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable ethan_opengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ethan_opengl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ethan_opengl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

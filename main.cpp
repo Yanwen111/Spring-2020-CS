@@ -14,6 +14,7 @@ using namespace std::chrono;
 #include "densityMap.h"
 #include "data.h"
 #include "time.h"
+#include "rotations.h"
 
 #define PI 3.141592653589
 
@@ -36,7 +37,7 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos);
 void processKeyboardInput(GLFWwindow* window);
 
 // Inputs STL files for rendering of probe
-int read_stl(std::string fname, GLfloat * &vertices, GLfloat * &colors);
+//int read_stl(std::string fname, GLfloat * &vertices, GLfloat * &colors);
 
 // Updates the vertices on the graphics card
 // -----
@@ -208,7 +209,7 @@ int main() {
     // Add the 3D probe
     GLfloat *probevertices = NULL;
     GLfloat *probeNormals = NULL;
-    int probeindex = read_stl("data/SUBMARINE_2020_ASSEMBLY.stl", probevertices, probeNormals);
+    int probeindex = read_stl("data/PROBE_CENTERED.stl", probevertices, probeNormals);
 
     unsigned int probeVAO, probeVBO, probeNormalsVBO;
     glGenBuffers(1, &probeVBO);
@@ -226,7 +227,7 @@ int main() {
 
     //normals attribute
     glBindBuffer(GL_ARRAY_BUFFER, probeNormalsVBO);
-    glBufferData(GL_ARRAY_BUFFER, probeindex/3 * sizeof(GLfloat), probeNormals, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, probeindex * sizeof(GLfloat), probeNormals, GL_STATIC_DRAW);
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(1);
@@ -283,22 +284,21 @@ int main() {
         glBindVertexArray(lineVAO);
         glDrawArrays(GL_LINES, 0, 24);
 
+        //Orient and scale the probe to the center
         glm::mat4 model_probe      = glm::mat4(1.0f);
         glm::vec3 probeScale(0.05f, 0.05f, 0.05f);
+        model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -13.52)) * model_probe;
         model_probe      = glm::scale(glm::mat4(1.0f), probeScale) * model_probe;
         model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 0, 1));
         model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(1, 0, 0));
-//
-//        //adding rotation: x is up, z is right, y is out of screen
-////        model_probe = glm::rotate(model_probe, glm::radians(30.0f), glm::vec3(0, 0, 1));
-//
-//        //Work on getting accurate measurements for probe to determine center location
-        model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(-1, 5 + 2, 0)) * model_probe;
-//
-//        lineShader.use();
-//        lineShader.setMat4("projection", projection);
-//        lineShader.setMat4("view", camView);
-//        lineShader.setMat4("model", model_probe);
+
+
+        //add in orientation of probe
+//        Rotation rot = Rotation(glm::vec4(-0.43914795f, -0.11865234f, -0.05950928f,-0.8885498f));
+//        model_probe = rot.getRotationMatrix() * model_probe;
+
+        //Work on getting accurate measurements for probe to determine center location
+        model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(0, 5, 0)) * model_probe;
 
         // Drawing the probe
         probeShader.use();
@@ -309,7 +309,7 @@ int main() {
         // Set lights
         probeShader.setVec3("objectColor", glm::vec3(0.8f, 0.8f, 0.8f));
         probeShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        probeShader.setVec3("lightPos", glm::vec3(4.0f, 10.0f, -10.0f));
+        probeShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 15.0f));
 
         glBindVertexArray(probeVAO);
         glDrawArrays(GL_TRIANGLES, 0, probeindex/3);
@@ -502,6 +502,7 @@ void updateVertexBuffer(unsigned int& VBO, DensityMap& grid) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, densities.size() * sizeof(float), densities.data());
 }
 
+
 double map_range_to_range(double input_start, double input_end, double output_start, double output_end, double input){
     return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start);
 }
@@ -686,7 +687,7 @@ int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals)
     }
 
     vertices = new GLfloat[num_traingles * 9];
-    normals = new GLfloat[num_traingles * 3];
+    normals = new GLfloat[num_traingles * 9];
 
     int index = 0;
     int indexN = 0;
@@ -697,6 +698,13 @@ int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals)
         {
             myfile.read (facet, 50);
 
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
+
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
 
             normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
             normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
@@ -713,12 +721,7 @@ int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals)
             vertices[index++] = *( (float*) ( ( (char*)facet)+36));
             vertices[index++] = *( (float*) ( ( (char*)facet)+40));
             vertices[index++] = *( (float*) ( ( (char*)facet)+44));
-
-//            for(int x = index-9; x < index; ++x)
-//                colors[x] = 0.8f;
         }
     }
-
     return index;
-
 }

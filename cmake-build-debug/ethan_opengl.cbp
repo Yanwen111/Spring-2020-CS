@@ -290,6 +290,12 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp">
 			<Option target="ethan_opengl"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.h">
+			<Option target="ethan_opengl"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp">
 			<Option target="ethan_opengl"/>
 		</Unit>

@@ -303,6 +303,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+rotations.o: rotations.cpp.o
+
+.PHONY : rotations.o
+
+# target to build an object file
+rotations.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.o
+.PHONY : rotations.cpp.o
+
+rotations.i: rotations.cpp.i
+
+.PHONY : rotations.i
+
+# target to preprocess a source file
+rotations.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.i
+.PHONY : rotations.cpp.i
+
+rotations.s: rotations.cpp.s
+
+.PHONY : rotations.s
+
+# target to generate assembly for a file
+rotations.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.s
+.PHONY : rotations.cpp.s
+
 shader.o: shader.cpp.o
 
 .PHONY : shader.o
@@ -357,6 +384,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... rotations.o"
+	@echo "... rotations.i"
+	@echo "... rotations.s"
 	@echo "... shader.o"
 	@echo "... shader.i"
 	@echo "... shader.s"

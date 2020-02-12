@@ -20,6 +20,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/camera.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/ethan_opengl.dir/camera.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/densityMap.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/ethan_opengl.dir/densityMap.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/ethan_opengl.dir/main.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/ethan_opengl.dir/rotations.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/ethan_opengl.dir/shader.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

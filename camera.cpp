@@ -10,7 +10,7 @@ Camera::Camera() {
 	sensitivity = 0.1;
 	speed = 2.5;
 
-	position = { 0.0,  0.0,  15.0 };
+	position = { 0.0,  0.0,  17.0 };
 	front    = { 0.0,  0.0,  0.0 };
 	up       = { 0.0,  1.0,  0.0 };
 	worldUp  = { 0.0,  1.0,  0.0 };
