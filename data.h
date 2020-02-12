@@ -4,12 +4,9 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include <GL/freeglut.h>
-#include <GL/glut.h>
 #include <vector>
 #include <cstdarg>
 #include <fstream>
-#include "omp.h"
 #include <algorithm>
 #include <cmath>
 #include <cmath>

@@ -1,9 +1,32 @@
 cmake_minimum_required(VERSION 3.15)
-project(week1)
+project(ultrasound_crossplatform)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES glad.c main.cpp camera.h densityMap.h shader.h shader.cpp densityMap.cpp camera.cpp data.h)
-add_compile_options(-O3)
-add_executable(week1 ${SOURCE_FILES})
-target_link_libraries(week1 GL GLU glfw3 X11 Xxf86vm Xrandr pthread Xi dl Xinerama Xcursor assimp)
+find_package(OpenGL REQUIRED)
+
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/data)
+
+###################### GLAD ######################
+include_directories(${PROJECT_SOURCE_DIR}/glad)
+include_directories(${PROJECT_SOURCE_DIR}/glad/include)
+
+###################### OTHER ######################
+file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+
+add_executable(ultrasound_crossplatform ${SOURCE_FILES} ${HEADER_FILES} glad/src/glad.c)
+
+###################### GLM ######################
+include_directories(${PROJECT_SOURCE_DIR}/glm)
+
+###################### GLFW ######################
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/glfw)
+
+target_link_libraries(ultrasound_crossplatform PRIVATE glfw)
+

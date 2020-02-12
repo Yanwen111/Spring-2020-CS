@@ -1,19 +1,17 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <chrono>
-using namespace std::chrono;
 
 #include "shader.h"
 #include "camera.h"
 
 #include "densityMap.h"
 #include "data.h"
-#include "time.h"
 
 #define PI 3.141592653589
 
@@ -98,8 +96,8 @@ int main() {
 
 	// Creating the shaders for the cells in the cube
 	// and for the lines of the border of the cube
-    Shader cellShader("/home/yanwen/CML_CS/cml/week1/cells.vs", "/home/yanwen/CML_CS/cml/week1/cells.fs");
-    Shader lineShader("/home/yanwen/CML_CS/cml/week1/lines.vs", "/home/yanwen/CML_CS/cml/week1/lines.fs");
+    Shader cellShader("cells.vs", "cells.fs");
+    Shader lineShader("lines.vs", "lines.fs");
 
 	// Allows blending (translucent drawing)
 	glEnable(GL_BLEND);
@@ -199,13 +197,13 @@ int main() {
 	glEnableVertexAttribArray(0);
 
 	// Main event loop
-	auto t1 = high_resolution_clock::now();
+	auto t1 = std::chrono::high_resolution_clock::now();
 	int count = 0;
 	while (!glfwWindowShouldClose(window)) {
 	    ++count;
         if (count == 100){
-            auto t2 = high_resolution_clock::now();
-            auto duration = duration_cast<microseconds>(t2 - t1);
+            auto t2 = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
             std::cout << "time of 100 loops in ms is " << duration.count() << std::endl;
         }
 		double currentFrame = glfwGetTime();
@@ -366,7 +364,7 @@ void realDemo(DensityMap& grid){
     std::vector<scan_data_struct> scan_data;
     std::vector<screen_data_struct> screen_data;
 
-    std::ifstream inFile("/home/yanwen/Downloads/clear_1.txt", std::ios::in | std::ios::binary);
+    std::ifstream inFile("data/clear_1.txt", std::ios::in | std::ios::binary);
     if (!inFile){
         printf("Failed to open file.\n");
         //return -1;

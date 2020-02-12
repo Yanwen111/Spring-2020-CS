@@ -8,28 +8,28 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/yanwen/CML_CS/cml/week1/cmake-build-debug"/>
+				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/yanwen/CML_CS/cml/week1/cmake-build-debug"/>
+				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="week1">
-				<Option output="/home/yanwen/CML_CS/cml/week1/cmake-build-debug/week1" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/yanwen/CML_CS/cml/week1/cmake-build-debug"/>
+				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/week1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -44,15 +44,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 week1"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 week1"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="week1/fast">
-				<Option output="/home/yanwen/CML_CS/cml/week1/cmake-build-debug/week1" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/yanwen/CML_CS/cml/week1/cmake-build-debug"/>
+				<Option output="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/week1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -67,51 +67,51 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 week1/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 week1/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/yanwen/CML_CS/cml/week1/cmake-build-debug"/>
+				<Option working_dir="/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/cml/week1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/camera.cpp">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/camera.cpp">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/camera.h">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/camera.h">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/data.h">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/data.h">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/densityMap.cpp">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/densityMap.cpp">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/densityMap.h">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/densityMap.h">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/glad.c">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/glad.c">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/main.cpp">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/main.cpp">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/shader.cpp">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/shader.cpp">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/shader.h">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/shader.h">
 			<Option target="week1"/>
 		</Unit>
-		<Unit filename="/home/yanwen/CML_CS/cml/week1/CMakeLists.txt">
+		<Unit filename="/home/hanwen/Documents/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

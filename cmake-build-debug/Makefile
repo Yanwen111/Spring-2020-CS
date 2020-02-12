@@ -39,38 +39,39 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/100/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/100/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yanwen/CML_CS/cml/week1
+CMAKE_SOURCE_DIR = /home/hanwen/Documents/Spring-2020-CS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yanwen/CML_CS/cml/week1/cmake-build-debug
+CMAKE_BINARY_DIR = /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/100/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
 
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/100/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,11 +79,56 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/home/hanwen/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/bin/cmake/linux/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles /home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yanwen/CML_CS/cml/week1/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hanwen/Documents/Spring-2020-CS/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +157,43 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named week1
+# Target rules for targets named ultrasound_crossplatform
 
 # Build rule for target.
-week1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 week1
-.PHONY : week1
+ultrasound_crossplatform: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ultrasound_crossplatform
+.PHONY : ultrasound_crossplatform
 
 # fast build rule for target.
-week1/fast:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/build
-.PHONY : week1/fast
+ultrasound_crossplatform/fast:
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/build
+.PHONY : ultrasound_crossplatform/fast
+
+#=============================================================================
+# Target rules for targets named uninstall
+
+# Build rule for target.
+uninstall: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 uninstall
+.PHONY : uninstall
+
+# fast build rule for target.
+uninstall/fast:
+	$(MAKE) -f glfw/CMakeFiles/uninstall.dir/build.make glfw/CMakeFiles/uninstall.dir/build
+.PHONY : uninstall/fast
+
+#=============================================================================
+# Target rules for targets named glfw
+
+# Build rule for target.
+glfw: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 glfw
+.PHONY : glfw
+
+# fast build rule for target.
+glfw/fast:
+	$(MAKE) -f glfw/src/CMakeFiles/glfw.dir/build.make glfw/src/CMakeFiles/glfw.dir/build
+.PHONY : glfw/fast
 
 camera.o: camera.cpp.o
 
@@ -129,7 +201,7 @@ camera.o: camera.cpp.o
 
 # target to build an object file
 camera.cpp.o:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/camera.cpp.o
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/camera.cpp.o
 .PHONY : camera.cpp.o
 
 camera.i: camera.cpp.i
@@ -138,7 +210,7 @@ camera.i: camera.cpp.i
 
 # target to preprocess a source file
 camera.cpp.i:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/camera.cpp.i
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/camera.cpp.i
 .PHONY : camera.cpp.i
 
 camera.s: camera.cpp.s
@@ -147,7 +219,7 @@ camera.s: camera.cpp.s
 
 # target to generate assembly for a file
 camera.cpp.s:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/camera.cpp.s
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/camera.cpp.s
 .PHONY : camera.cpp.s
 
 densityMap.o: densityMap.cpp.o
@@ -156,7 +228,7 @@ densityMap.o: densityMap.cpp.o
 
 # target to build an object file
 densityMap.cpp.o:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/densityMap.cpp.o
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/densityMap.cpp.o
 .PHONY : densityMap.cpp.o
 
 densityMap.i: densityMap.cpp.i
@@ -165,7 +237,7 @@ densityMap.i: densityMap.cpp.i
 
 # target to preprocess a source file
 densityMap.cpp.i:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/densityMap.cpp.i
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/densityMap.cpp.i
 .PHONY : densityMap.cpp.i
 
 densityMap.s: densityMap.cpp.s
@@ -174,35 +246,35 @@ densityMap.s: densityMap.cpp.s
 
 # target to generate assembly for a file
 densityMap.cpp.s:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/densityMap.cpp.s
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/densityMap.cpp.s
 .PHONY : densityMap.cpp.s
 
-glad.o: glad.c.o
+glad/src/glad.o: glad/src/glad.c.o
 
-.PHONY : glad.o
+.PHONY : glad/src/glad.o
 
 # target to build an object file
-glad.c.o:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/glad.c.o
-.PHONY : glad.c.o
+glad/src/glad.c.o:
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/glad/src/glad.c.o
+.PHONY : glad/src/glad.c.o
 
-glad.i: glad.c.i
+glad/src/glad.i: glad/src/glad.c.i
 
-.PHONY : glad.i
+.PHONY : glad/src/glad.i
 
 # target to preprocess a source file
-glad.c.i:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/glad.c.i
-.PHONY : glad.c.i
+glad/src/glad.c.i:
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/glad/src/glad.c.i
+.PHONY : glad/src/glad.c.i
 
-glad.s: glad.c.s
+glad/src/glad.s: glad/src/glad.c.s
 
-.PHONY : glad.s
+.PHONY : glad/src/glad.s
 
 # target to generate assembly for a file
-glad.c.s:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/glad.c.s
-.PHONY : glad.c.s
+glad/src/glad.c.s:
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/glad/src/glad.c.s
+.PHONY : glad/src/glad.c.s
 
 main.o: main.cpp.o
 
@@ -210,7 +282,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -219,7 +291,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -228,7 +300,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 shader.o: shader.cpp.o
@@ -237,7 +309,7 @@ shader.o: shader.cpp.o
 
 # target to build an object file
 shader.cpp.o:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/shader.cpp.o
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/shader.cpp.o
 .PHONY : shader.cpp.o
 
 shader.i: shader.cpp.i
@@ -246,7 +318,7 @@ shader.i: shader.cpp.i
 
 # target to preprocess a source file
 shader.cpp.i:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/shader.cpp.i
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/shader.cpp.i
 .PHONY : shader.cpp.i
 
 shader.s: shader.cpp.s
@@ -255,7 +327,7 @@ shader.s: shader.cpp.s
 
 # target to generate assembly for a file
 shader.cpp.s:
-	$(MAKE) -f CMakeFiles/week1.dir/build.make CMakeFiles/week1.dir/shader.cpp.s
+	$(MAKE) -f CMakeFiles/ultrasound_crossplatform.dir/build.make CMakeFiles/ultrasound_crossplatform.dir/shader.cpp.s
 .PHONY : shader.cpp.s
 
 # Help Target
@@ -264,18 +336,24 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
-	@echo "... week1"
+	@echo "... install/strip"
 	@echo "... edit_cache"
+	@echo "... ultrasound_crossplatform"
+	@echo "... rebuild_cache"
+	@echo "... list_install_components"
+	@echo "... install/local"
+	@echo "... install"
+	@echo "... uninstall"
+	@echo "... glfw"
 	@echo "... camera.o"
 	@echo "... camera.i"
 	@echo "... camera.s"
 	@echo "... densityMap.o"
 	@echo "... densityMap.i"
 	@echo "... densityMap.s"
-	@echo "... glad.o"
-	@echo "... glad.i"
-	@echo "... glad.s"
+	@echo "... glad/src/glad.o"
+	@echo "... glad/src/glad.i"
+	@echo "... glad/src/glad.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
