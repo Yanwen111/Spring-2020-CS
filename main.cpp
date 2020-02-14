@@ -236,6 +236,8 @@ int main() {
     delete [] probevertices;
     delete [] probeNormals;
 
+    Rotation probe = Rotation("data/fake_imu.txt");
+
     // Main event loop
     auto t1 = high_resolution_clock::now();
     int count = 0;
@@ -286,18 +288,18 @@ int main() {
 
         //Orient and scale the probe to the center
         glm::mat4 model_probe      = glm::mat4(1.0f);
+
+        //Scale probe
         glm::vec3 probeScale(0.05f, 0.05f, 0.05f);
-        model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -13.52)) * model_probe;
         model_probe      = glm::scale(glm::mat4(1.0f), probeScale) * model_probe;
+
+        //add in orientation of probe
+        model_probe = probe.getOrientation() * model_probe;
+
         model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 0, 1));
         model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(1, 0, 0));
 
-
-        //add in orientation of probe
-//        Rotation rot = Rotation(glm::vec4(-0.43914795f, -0.11865234f, -0.05950928f,-0.8885498f));
-//        model_probe = rot.getRotationMatrix() * model_probe;
-
-        //Work on getting accurate measurements for probe to determine center location
+        //Translate probe to top of cube
         model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(0, 5, 0)) * model_probe;
 
         // Drawing the probe

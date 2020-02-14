@@ -75,4 +75,6 @@ uint32_t crc32c(uint32_t crc, const unsigned char *buf, size_t len);
 
 int read_stl(std::string file_name, GLfloat * &vertices, GLfloat * &normals);
 
+glm::vec4 getProbeOrientation();
+
 #endif //ULTRASOUND_OPENGL_MAIN_H
