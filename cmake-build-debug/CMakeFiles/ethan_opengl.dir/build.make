@@ -57,106 +57,121 @@ include CMakeFiles/ethan_opengl.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/ethan_opengl.dir/flags.make
 
-CMakeFiles/ethan_opengl.dir/camera.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/camera.cpp.o: ../camera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ethan_opengl.dir/camera.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/camera.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/camera.cpp
+CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o: ../DensityMap/camera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp
 
-CMakeFiles/ethan_opengl.dir/camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/camera.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/camera.cpp > CMakeFiles/ethan_opengl.dir/camera.cpp.i
+CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.i
 
-CMakeFiles/ethan_opengl.dir/camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/camera.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/camera.cpp -o CMakeFiles/ethan_opengl.dir/camera.cpp.s
+CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.s
 
-CMakeFiles/ethan_opengl.dir/densityMap.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/densityMap.cpp.o: ../densityMap.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ethan_opengl.dir/densityMap.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/densityMap.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/densityMap.cpp
+CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o: ../DensityMap/densityMap.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.cpp
 
-CMakeFiles/ethan_opengl.dir/densityMap.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/densityMap.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/densityMap.cpp > CMakeFiles/ethan_opengl.dir/densityMap.cpp.i
+CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.i
 
-CMakeFiles/ethan_opengl.dir/densityMap.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/densityMap.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/densityMap.cpp -o CMakeFiles/ethan_opengl.dir/densityMap.cpp.s
+CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.s
 
-CMakeFiles/ethan_opengl.dir/main.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ethan_opengl.dir/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/main.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../DensityMap/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/main.cpp
 
-CMakeFiles/ethan_opengl.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp > CMakeFiles/ethan_opengl.dir/main.cpp.i
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/main.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.i
 
-CMakeFiles/ethan_opengl.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp -o CMakeFiles/ethan_opengl.dir/main.cpp.s
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/main.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.s
 
-CMakeFiles/ethan_opengl.dir/rotations.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/rotations.cpp.o: ../rotations.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ethan_opengl.dir/rotations.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/rotations.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp
+CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o: ../DensityMap/probe.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/probe.cpp
 
-CMakeFiles/ethan_opengl.dir/rotations.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/rotations.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp > CMakeFiles/ethan_opengl.dir/rotations.cpp.i
+CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/probe.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.i
 
-CMakeFiles/ethan_opengl.dir/rotations.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/rotations.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/rotations.cpp -o CMakeFiles/ethan_opengl.dir/rotations.cpp.s
+CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/probe.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.s
 
-CMakeFiles/ethan_opengl.dir/shader.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/shader.cpp.o: ../shader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ethan_opengl.dir/shader.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/shader.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp
+CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o: ../DensityMap/rotation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/rotation.cpp
 
-CMakeFiles/ethan_opengl.dir/shader.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/shader.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp > CMakeFiles/ethan_opengl.dir/shader.cpp.i
+CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/rotation.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.i
 
-CMakeFiles/ethan_opengl.dir/shader.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/shader.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/shader.cpp -o CMakeFiles/ethan_opengl.dir/shader.cpp.s
+CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/rotation.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.s
 
-CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o: CMakeFiles/ethan_opengl.dir/flags.make
-CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o: ../glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o   -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/glad/src/glad.c
+CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: ../DensityMap/shader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp
 
-CMakeFiles/ethan_opengl.dir/glad/src/glad.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ethan_opengl.dir/glad/src/glad.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/glad/src/glad.c > CMakeFiles/ethan_opengl.dir/glad/src/glad.c.i
+CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp > CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.i
 
-CMakeFiles/ethan_opengl.dir/glad/src/glad.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ethan_opengl.dir/glad/src/glad.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/glad/src/glad.c -o CMakeFiles/ethan_opengl.dir/glad/src/glad.c.s
+CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s
+
+CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o: ../Dependencies/glad/src/glad.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o   -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c
+
+CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c > CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.i
+
+CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c -o CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.s
 
 # Object files for target ethan_opengl
 ethan_opengl_OBJECTS = \
-"CMakeFiles/ethan_opengl.dir/camera.cpp.o" \
-"CMakeFiles/ethan_opengl.dir/densityMap.cpp.o" \
-"CMakeFiles/ethan_opengl.dir/main.cpp.o" \
-"CMakeFiles/ethan_opengl.dir/rotations.cpp.o" \
-"CMakeFiles/ethan_opengl.dir/shader.cpp.o" \
-"CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o"
+"CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o"
 
 # External object files for target ethan_opengl
 ethan_opengl_EXTERNAL_OBJECTS =
 
-ethan_opengl: CMakeFiles/ethan_opengl.dir/camera.cpp.o
-ethan_opengl: CMakeFiles/ethan_opengl.dir/densityMap.cpp.o
-ethan_opengl: CMakeFiles/ethan_opengl.dir/main.cpp.o
-ethan_opengl: CMakeFiles/ethan_opengl.dir/rotations.cpp.o
-ethan_opengl: CMakeFiles/ethan_opengl.dir/shader.cpp.o
-ethan_opengl: CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/build.make
-ethan_opengl: glfw/src/libglfw3.a
+ethan_opengl: Dependencies/glfw/src/libglfw3.a
 ethan_opengl: CMakeFiles/ethan_opengl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ethan_opengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable ethan_opengl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ethan_opengl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
