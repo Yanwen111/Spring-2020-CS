@@ -179,7 +179,7 @@ uninstall: cmake_check_build_system
 
 # fast build rule for target.
 uninstall/fast:
-	$(MAKE) -f glfw/CMakeFiles/uninstall.dir/build.make glfw/CMakeFiles/uninstall.dir/build
+	$(MAKE) -f Dependencies/glfw/CMakeFiles/uninstall.dir/build.make Dependencies/glfw/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
 
 #=============================================================================
@@ -192,170 +192,197 @@ glfw: cmake_check_build_system
 
 # fast build rule for target.
 glfw/fast:
-	$(MAKE) -f glfw/src/CMakeFiles/glfw.dir/build.make glfw/src/CMakeFiles/glfw.dir/build
+	$(MAKE) -f Dependencies/glfw/src/CMakeFiles/glfw.dir/build.make Dependencies/glfw/src/CMakeFiles/glfw.dir/build
 .PHONY : glfw/fast
 
-camera.o: camera.cpp.o
+DensityMap/camera.o: DensityMap/camera.cpp.o
 
-.PHONY : camera.o
-
-# target to build an object file
-camera.cpp.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/camera.cpp.o
-.PHONY : camera.cpp.o
-
-camera.i: camera.cpp.i
-
-.PHONY : camera.i
-
-# target to preprocess a source file
-camera.cpp.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/camera.cpp.i
-.PHONY : camera.cpp.i
-
-camera.s: camera.cpp.s
-
-.PHONY : camera.s
-
-# target to generate assembly for a file
-camera.cpp.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/camera.cpp.s
-.PHONY : camera.cpp.s
-
-densityMap.o: densityMap.cpp.o
-
-.PHONY : densityMap.o
+.PHONY : DensityMap/camera.o
 
 # target to build an object file
-densityMap.cpp.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/densityMap.cpp.o
-.PHONY : densityMap.cpp.o
+DensityMap/camera.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.o
+.PHONY : DensityMap/camera.cpp.o
 
-densityMap.i: densityMap.cpp.i
+DensityMap/camera.i: DensityMap/camera.cpp.i
 
-.PHONY : densityMap.i
+.PHONY : DensityMap/camera.i
 
 # target to preprocess a source file
-densityMap.cpp.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/densityMap.cpp.i
-.PHONY : densityMap.cpp.i
+DensityMap/camera.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.i
+.PHONY : DensityMap/camera.cpp.i
 
-densityMap.s: densityMap.cpp.s
+DensityMap/camera.s: DensityMap/camera.cpp.s
 
-.PHONY : densityMap.s
+.PHONY : DensityMap/camera.s
 
 # target to generate assembly for a file
-densityMap.cpp.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/densityMap.cpp.s
-.PHONY : densityMap.cpp.s
+DensityMap/camera.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/camera.cpp.s
+.PHONY : DensityMap/camera.cpp.s
 
-glad/src/glad.o: glad/src/glad.c.o
+DensityMap/densityMap.o: DensityMap/densityMap.cpp.o
 
-.PHONY : glad/src/glad.o
+.PHONY : DensityMap/densityMap.o
 
 # target to build an object file
-glad/src/glad.c.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/glad/src/glad.c.o
-.PHONY : glad/src/glad.c.o
+DensityMap/densityMap.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.o
+.PHONY : DensityMap/densityMap.cpp.o
 
-glad/src/glad.i: glad/src/glad.c.i
+DensityMap/densityMap.i: DensityMap/densityMap.cpp.i
 
-.PHONY : glad/src/glad.i
+.PHONY : DensityMap/densityMap.i
 
 # target to preprocess a source file
-glad/src/glad.c.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/glad/src/glad.c.i
-.PHONY : glad/src/glad.c.i
+DensityMap/densityMap.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.i
+.PHONY : DensityMap/densityMap.cpp.i
 
-glad/src/glad.s: glad/src/glad.c.s
+DensityMap/densityMap.s: DensityMap/densityMap.cpp.s
 
-.PHONY : glad/src/glad.s
+.PHONY : DensityMap/densityMap.s
 
 # target to generate assembly for a file
-glad/src/glad.c.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/glad/src/glad.c.s
-.PHONY : glad/src/glad.c.s
+DensityMap/densityMap.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/densityMap.cpp.s
+.PHONY : DensityMap/densityMap.cpp.s
 
-main.o: main.cpp.o
+DensityMap/main.o: DensityMap/main.cpp.o
 
-.PHONY : main.o
+.PHONY : DensityMap/main.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/main.cpp.o
-.PHONY : main.cpp.o
+DensityMap/main.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o
+.PHONY : DensityMap/main.cpp.o
 
-main.i: main.cpp.i
+DensityMap/main.i: DensityMap/main.cpp.i
 
-.PHONY : main.i
+.PHONY : DensityMap/main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/main.cpp.i
-.PHONY : main.cpp.i
+DensityMap/main.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.i
+.PHONY : DensityMap/main.cpp.i
 
-main.s: main.cpp.s
+DensityMap/main.s: DensityMap/main.cpp.s
 
-.PHONY : main.s
+.PHONY : DensityMap/main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/main.cpp.s
-.PHONY : main.cpp.s
+DensityMap/main.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.s
+.PHONY : DensityMap/main.cpp.s
 
-rotations.o: rotations.cpp.o
+DensityMap/probe.o: DensityMap/probe.cpp.o
 
-.PHONY : rotations.o
+.PHONY : DensityMap/probe.o
 
 # target to build an object file
-rotations.cpp.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.o
-.PHONY : rotations.cpp.o
+DensityMap/probe.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o
+.PHONY : DensityMap/probe.cpp.o
 
-rotations.i: rotations.cpp.i
+DensityMap/probe.i: DensityMap/probe.cpp.i
 
-.PHONY : rotations.i
+.PHONY : DensityMap/probe.i
 
 # target to preprocess a source file
-rotations.cpp.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.i
-.PHONY : rotations.cpp.i
+DensityMap/probe.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.i
+.PHONY : DensityMap/probe.cpp.i
 
-rotations.s: rotations.cpp.s
+DensityMap/probe.s: DensityMap/probe.cpp.s
 
-.PHONY : rotations.s
+.PHONY : DensityMap/probe.s
 
 # target to generate assembly for a file
-rotations.cpp.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/rotations.cpp.s
-.PHONY : rotations.cpp.s
+DensityMap/probe.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.s
+.PHONY : DensityMap/probe.cpp.s
 
-shader.o: shader.cpp.o
+DensityMap/rotation.o: DensityMap/rotation.cpp.o
 
-.PHONY : shader.o
+.PHONY : DensityMap/rotation.o
 
 # target to build an object file
-shader.cpp.o:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/shader.cpp.o
-.PHONY : shader.cpp.o
+DensityMap/rotation.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o
+.PHONY : DensityMap/rotation.cpp.o
 
-shader.i: shader.cpp.i
+DensityMap/rotation.i: DensityMap/rotation.cpp.i
 
-.PHONY : shader.i
+.PHONY : DensityMap/rotation.i
 
 # target to preprocess a source file
-shader.cpp.i:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/shader.cpp.i
-.PHONY : shader.cpp.i
+DensityMap/rotation.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.i
+.PHONY : DensityMap/rotation.cpp.i
 
-shader.s: shader.cpp.s
+DensityMap/rotation.s: DensityMap/rotation.cpp.s
 
-.PHONY : shader.s
+.PHONY : DensityMap/rotation.s
 
 # target to generate assembly for a file
-shader.cpp.s:
-	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/shader.cpp.s
-.PHONY : shader.cpp.s
+DensityMap/rotation.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.s
+.PHONY : DensityMap/rotation.cpp.s
+
+DensityMap/shader.o: DensityMap/shader.cpp.o
+
+.PHONY : DensityMap/shader.o
+
+# target to build an object file
+DensityMap/shader.cpp.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o
+.PHONY : DensityMap/shader.cpp.o
+
+DensityMap/shader.i: DensityMap/shader.cpp.i
+
+.PHONY : DensityMap/shader.i
+
+# target to preprocess a source file
+DensityMap/shader.cpp.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.i
+.PHONY : DensityMap/shader.cpp.i
+
+DensityMap/shader.s: DensityMap/shader.cpp.s
+
+.PHONY : DensityMap/shader.s
+
+# target to generate assembly for a file
+DensityMap/shader.cpp.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s
+.PHONY : DensityMap/shader.cpp.s
+
+Dependencies/glad/src/glad.o: Dependencies/glad/src/glad.c.o
+
+.PHONY : Dependencies/glad/src/glad.o
+
+# target to build an object file
+Dependencies/glad/src/glad.c.o:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o
+.PHONY : Dependencies/glad/src/glad.c.o
+
+Dependencies/glad/src/glad.i: Dependencies/glad/src/glad.c.i
+
+.PHONY : Dependencies/glad/src/glad.i
+
+# target to preprocess a source file
+Dependencies/glad/src/glad.c.i:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.i
+.PHONY : Dependencies/glad/src/glad.c.i
+
+Dependencies/glad/src/glad.s: Dependencies/glad/src/glad.c.s
+
+.PHONY : Dependencies/glad/src/glad.s
+
+# target to generate assembly for a file
+Dependencies/glad/src/glad.c.s:
+	$(MAKE) -f CMakeFiles/ethan_opengl.dir/build.make CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.s
+.PHONY : Dependencies/glad/src/glad.c.s
 
 # Help Target
 help:
@@ -372,24 +399,27 @@ help:
 	@echo "... ethan_opengl"
 	@echo "... uninstall"
 	@echo "... glfw"
-	@echo "... camera.o"
-	@echo "... camera.i"
-	@echo "... camera.s"
-	@echo "... densityMap.o"
-	@echo "... densityMap.i"
-	@echo "... densityMap.s"
-	@echo "... glad/src/glad.o"
-	@echo "... glad/src/glad.i"
-	@echo "... glad/src/glad.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
-	@echo "... rotations.o"
-	@echo "... rotations.i"
-	@echo "... rotations.s"
-	@echo "... shader.o"
-	@echo "... shader.i"
-	@echo "... shader.s"
+	@echo "... DensityMap/camera.o"
+	@echo "... DensityMap/camera.i"
+	@echo "... DensityMap/camera.s"
+	@echo "... DensityMap/densityMap.o"
+	@echo "... DensityMap/densityMap.i"
+	@echo "... DensityMap/densityMap.s"
+	@echo "... DensityMap/main.o"
+	@echo "... DensityMap/main.i"
+	@echo "... DensityMap/main.s"
+	@echo "... DensityMap/probe.o"
+	@echo "... DensityMap/probe.i"
+	@echo "... DensityMap/probe.s"
+	@echo "... DensityMap/rotation.o"
+	@echo "... DensityMap/rotation.i"
+	@echo "... DensityMap/rotation.s"
+	@echo "... DensityMap/shader.o"
+	@echo "... DensityMap/shader.i"
+	@echo "... DensityMap/shader.s"
+	@echo "... Dependencies/glad/src/glad.o"
+	@echo "... Dependencies/glad/src/glad.i"
+	@echo "... Dependencies/glad/src/glad.s"
 .PHONY : help
 
 
