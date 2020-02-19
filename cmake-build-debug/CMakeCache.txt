@@ -315,12 +315,6 @@ OPENGL_glu_LIBRARY:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/sbin/sysctl
 
 //Value Computed by CMake
-Spring-2020-CS_BINARY_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug
-
-//Value Computed by CMake
-Spring-2020-CS_SOURCE_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS
-
-//Value Computed by CMake
 ethan_opengl_BINARY_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug
 
 //Value Computed by CMake

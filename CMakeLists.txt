@@ -9,11 +9,16 @@ find_package(OpenGL REQUIRED)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad/include)
 
-###################### OTHER ######################
-file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp)
-file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h)
+####################### IMGUI ######################
+include_directories(${PROJECT_SOURCE_DIR}/imgui)
+#file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp)
+#file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
 
-add_executable(ethan_opengl ${SOURCE_FILES} ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c DensityMap/Probe.h DensityMap/rotation.h DensityMap/rotation.cpp)
+###################### OTHER ######################
+file(GLOB SOURCE_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp)
+file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
+
+add_executable(ethan_opengl ${SOURCE_FILES} ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
 
 ###################### GLM ######################
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glm)

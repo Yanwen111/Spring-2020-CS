@@ -86,6 +86,7 @@
 				<Compiler>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
@@ -111,6 +112,7 @@
 				<Compiler>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
@@ -147,6 +149,7 @@
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>
@@ -175,6 +178,7 @@
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>
@@ -194,9 +198,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/Probe.h">
-			<Option target="ethan_opengl"/>
-		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp">
 			<Option target="ethan_opengl"/>
 		</Unit>
@@ -310,6 +311,33 @@
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/glfw_config.h">
 			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.h">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.h">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.h">
+			<Option target="ethan_opengl"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp">
+			<Option target="ethan_opengl"/>
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

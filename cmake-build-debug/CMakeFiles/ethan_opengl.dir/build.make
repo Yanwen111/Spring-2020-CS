@@ -135,9 +135,87 @@ CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp -o CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.s
 
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.s
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o: ../imgui/imgui_demo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.s
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imgui_draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.s
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imgui_impl_glfw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.s
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imgui_impl_opengl3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.s
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: CMakeFiles/ethan_opengl.dir/flags.make
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imgui_widgets.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp > CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.i
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp -o CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.s
+
 CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o: CMakeFiles/ethan_opengl.dir/flags.make
 CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o: ../Dependencies/glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o   -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c
 
 CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.i: cmake_force
@@ -156,6 +234,12 @@ ethan_opengl_OBJECTS = \
 "CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o" \
+"CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o" \
 "CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o"
 
 # External object files for target ethan_opengl
@@ -167,11 +251,17 @@ ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/probe.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/rotation.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o
+ethan_opengl: CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/Dependencies/glad/src/glad.c.o
 ethan_opengl: CMakeFiles/ethan_opengl.dir/build.make
 ethan_opengl: Dependencies/glfw/src/libglfw3.a
 ethan_opengl: CMakeFiles/ethan_opengl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable ethan_opengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable ethan_opengl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ethan_opengl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

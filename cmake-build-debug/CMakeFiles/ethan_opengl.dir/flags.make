@@ -7,11 +7,11 @@ C_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacO
 
 C_DEFINES = 
 
-C_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include 
+C_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include 
 
 CXX_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include 
+CXX_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include 
 

@@ -430,6 +430,10 @@ CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../Dependencies/glm/glm/vec2.
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../Dependencies/glm/glm/vec3.hpp
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../Dependencies/glm/glm/vec4.hpp
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../Dependencies/glm/glm/vector_relational.hpp
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../imgui/imgui_impl_glfw.h
+CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../imgui/imgui_impl_opengl3.h
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../DensityMap/camera.h
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../DensityMap/densitymap.h
 CMakeFiles/ethan_opengl.dir/DensityMap/main.cpp.o: ../DensityMap/main.cpp
@@ -861,4 +865,42 @@ CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: ../Dependencies/glm/glm/vec
 CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: ../Dependencies/glm/glm/vector_relational.hpp
 CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: ../DensityMap/shader.cpp
 CMakeFiles/ethan_opengl.dir/DensityMap/shader.cpp.o: ../DensityMap/shader.h
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imgui.cpp
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imgui_internal.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui.cpp.o: ../imgui/imstb_textedit.h
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_demo.cpp.o: ../imgui/imgui_demo.cpp
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imgui_draw.cpp
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imgui_internal.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imstb_rectpack.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imstb_textedit.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_draw.cpp.o: ../imgui/imstb_truetype.h
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../Dependencies/glfw/include/GLFW/glfw3.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../Dependencies/glfw/include/GLFW/glfw3native.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imgui_impl_glfw.cpp
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imgui_impl_glfw.h
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../Dependencies/glad/include/KHR/khrplatform.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../Dependencies/glad/include/glad/glad.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imgui_impl_opengl3.cpp
+CMakeFiles/ethan_opengl.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imgui_impl_opengl3.h
+
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imconfig.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imgui.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imgui_internal.h
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imgui_widgets.cpp
+CMakeFiles/ethan_opengl.dir/imgui/imgui_widgets.cpp.o: ../imgui/imstb_textedit.h
 

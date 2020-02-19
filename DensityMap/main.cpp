@@ -1,3 +1,7 @@
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -53,13 +57,31 @@ int main() {
 
 	// Initializing the OpenGL context
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+//	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//
+//#ifdef __APPLE__
+//	// Needed to fix compilation on macOS
+//    const char* glsl_version = "#version 150";
+//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//#endif
 
-#ifdef __APPLE__
-	// Needed to fix compilation on macOS
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // Decide GL+GLSL versions
+#if __APPLE__
+    // GL 3.2 + GLSL 150
+    const char* glsl_version = "#version 150";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+#else
+    // GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 130";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
 	// Creating the window object
@@ -94,6 +116,16 @@ int main() {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
+
+//     Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+//     Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+//     Setup Dear ImGui style
+    ImGui::StyleColorsDark();
 
 	// Initializing mouse info
 	lastMouseX = SCR_WIDTH / 2.0;
@@ -131,6 +163,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
+        //IMGUI setup
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
 		// Creating matrices to transform the vertices into NDC (screen) coordinates
 		// between -1 and 1 that OpenGL can use
 		glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
@@ -147,6 +184,23 @@ int main() {
 
 		// Draw the density map and the surrounding cube
 		grid.draw(projection, view, model);
+
+		float gain;
+        float cutoff;
+        float brightness;
+        // render your IMGUI
+        ImGui::Begin("GUI");
+//        ImGui::Text("Brightness");
+        ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
+//        ImGui::Text("Gain");
+        ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
+//        ImGui::Text("Cutoff Value");
+        ImGui::SliderFloat("Cutoff", &cutoff, 0.0f, 1.0f);
+        ImGui::End();
+
+        // Render dear imgui into screen
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// Used to make camera move speed consistent
 		cam.prevPos = cam.position;
@@ -167,6 +221,11 @@ int main() {
 		// Increment the number of frames in the past second
 		numFrames++;
 	}
+
+	// IMGUI Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
 	// GLFW cleanup
 	glfwTerminate();
@@ -257,11 +316,11 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+	if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		mousePressed = true;
 	}
 
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+	if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
 		mousePressed = false;
 	}
 }

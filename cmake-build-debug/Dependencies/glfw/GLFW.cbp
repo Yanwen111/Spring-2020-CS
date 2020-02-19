@@ -37,6 +37,7 @@
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>
@@ -65,6 +66,7 @@
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>

@@ -6,7 +6,7 @@ C_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacO
 
 C_DEFINES = -D_GLFW_USE_CONFIG_H
 
-C_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src 
+C_INCLUDES = -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src -I/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src 
 
 # Custom flags: Dependencies/glfw/src/CMakeFiles/glfw.dir/context.c.o_FLAGS = -Wdeclaration-after-statement
 
