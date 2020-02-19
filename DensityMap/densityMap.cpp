@@ -192,6 +192,9 @@ void DensityMap::addLine(glm::vec3 p1, glm::vec3 p2, std::vector<unsigned char> 
 		int iy = y * (dim-1);
 		int iz = z * (dim-1);
 
+		if (ix < 0 || ix >=dim || iy<0 || iy>=dim || iz<0 || iz>=dim)
+		    break;
+
 
 		// Get the next value from the vals array
 		newValue += vals[i];

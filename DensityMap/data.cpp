@@ -10,6 +10,8 @@ int16_t adc_min = 0;
 bool marker_flag;
 unsigned char time_stamp_char[4];
 unsigned long time_stamp;
+unsigned char quaternion_char[16];
+float quaternion[4];
 unsigned char probe_type_char;
 unsigned char encoder_char[2];
 unsigned short encoder;
@@ -71,7 +73,7 @@ std::vector<unsigned char> readFile(const char* directory)
     return file_bytes;
 }
 
-void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_data_struct> & _screen_data, std::vector<line_data_struct>& _line_data){
+void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data){
     //printf("%d\n", (int)_scan_data.size());
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
@@ -90,10 +92,11 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_
         for (int j = 0; j < buffer_length; ++j){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
             dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
-            screen_data_struct temp_data = {(j+1) * Cos(piezo), (j+1) * Sin(piezo), 0, intensity};
-            _screen_data.push_back(temp_data);
         }
         dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
+        glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
+        dataline.p1 = rot * glm::vec4(dataline.p1,1);
+        dataline.p2 = rot * glm::vec4(dataline.p2,1);
         _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -130,13 +133,24 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
         encoder = changed_endian_2Bytes(encoder);
+        /* IMU */
+        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+                                                        sizeof(encoder_char) + j);
+        }
+        for (int j = 0; j < 16; j += 4)
+        {
+            unsigned char temp1[4];
+            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+            quaternion[j/4] = *(float*)temp1;
+        }
         /* adc */
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
-                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(crc_char))/2;
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
         for (int j = 0; j < buffer_length; ++j){
             for (int k = 0; k < (int)sizeof(adc_temp); ++k){
-                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j * 2 + k);
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(quaternion_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
             std::memcpy(&adc, adc_temp, sizeof(adc));
@@ -151,14 +165,18 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
         memcpy(crc_input+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
         memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), adc_char, sizeof(adc_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), quaternion_char, sizeof(quaternion_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
         crc_result = crc32c(0, crc_input, sizeof(crc_input));
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
+
         /* if two crc matches */
-        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+        //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+        if (1){
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
+            for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
             temp_struct.encoder = encoder;
             /* normalize on the go */
             for (int j = 0; j < buffer_length; ++j) {

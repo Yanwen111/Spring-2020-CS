@@ -333,16 +333,16 @@ void realDemo(DensityMap& grid)
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;
     std::vector<scan_data_struct> scan_data;
-    std::vector<screen_data_struct> screen_data;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("DensityMap/clear_1.txt");
+    file_bytes = readFile("data/clear_1.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
     file_to_data(file_bytes, marker_locations, scan_data);
+    printf("the size of scan_data is %d\n", scan_data.size());
     /* convert data to vertex on screen */
-    data_to_pixel(scan_data, screen_data, line_data);
+    data_to_pixel(scan_data, line_data);
     printf("find the screen_data\n");
 
 
@@ -366,11 +366,16 @@ void realDemo(DensityMap& grid)
     float minz = *std::min_element(maZ.begin(), maZ.end());
     float scale = ddim / len;
     printf("%f\n", scale);
+
+    //glm::mat4 rot = Rotation::convertRotationMatrix(1.40000000, -0.00671387, 0.00335693, 0.00000000);
     for (auto l: line_data)
     {
-        glm::vec3 ps = {(l.p1.x-minx)/(maxx-minx), (l.p1.y-miny)/(maxy-miny), 0.5};
-        glm::vec3 pe = {(l.p2.x-minx)/(maxx-minx), (l.p2.y-miny)/(maxy-miny), 0.5};
+        glm::vec3 ps = {(l.p1.x-minx)/(maxx-minx), (l.p1.y-miny)/(maxy-miny), (l.p1.z-minz)/(maxz-minz)};
+        glm::vec3 pe = {(l.p2.x-minx)/(maxx-minx), (l.p2.y-miny)/(maxy-miny), (l.p2.z-minz)/(maxz-minz)};
         grid.addLine(ps, pe, l.vals);
+        //glm::vec3 ps1(rot * glm::vec4(ps, 1));
+        //glm::vec3 pe1(rot * glm::vec4(pe, 1));
+        //grid.addLine(ps1, pe1, l.vals);
     }
 
 
