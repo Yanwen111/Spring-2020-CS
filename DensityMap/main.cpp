@@ -129,6 +129,7 @@ int main() {
 		// Clears the screen and fills it a dark grey color
 		glClearColor(0.1, 0.1, 0.1, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
 		// Creating matrices to transform the vertices into NDC (screen) coordinates
 		// between -1 and 1 that OpenGL can use
@@ -141,11 +142,11 @@ int main() {
 			model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
 		}
 
+        // Draw the probe
+        probe.draw(projection, view, rotationX, rotationY);
+
 		// Draw the density map and the surrounding cube
 		grid.draw(projection, view, model);
-
-		// Draw the probe
-		probe.draw(projection, view, rotationX, rotationY);
 
 		// Used to make camera move speed consistent
 		cam.prevPos = cam.position;
