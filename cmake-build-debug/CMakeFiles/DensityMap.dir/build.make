@@ -112,24 +112,38 @@ CMakeFiles/DensityMap.dir/DensityMap/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DensityMap.dir/DensityMap/main.cpp.s"
 	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\main.cpp -o CMakeFiles\DensityMap.dir\DensityMap\main.cpp.s
 
-CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj: CMakeFiles/DensityMap.dir/flags.make
-CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj: CMakeFiles/DensityMap.dir/includes_CXX.rsp
-CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj: ../DensityMap/rotations.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj"
-	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\DensityMap.dir\DensityMap\rotations.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotations.cpp
+CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj: CMakeFiles/DensityMap.dir/flags.make
+CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj: CMakeFiles/DensityMap.dir/includes_CXX.rsp
+CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj: ../DensityMap/probe.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\DensityMap.dir\DensityMap\probe.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\probe.cpp
 
-CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.i"
-	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotations.cpp > CMakeFiles\DensityMap.dir\DensityMap\rotations.cpp.i
+CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\probe.cpp > CMakeFiles\DensityMap.dir\DensityMap\probe.cpp.i
 
-CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.s"
-	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotations.cpp -o CMakeFiles\DensityMap.dir\DensityMap\rotations.cpp.s
+CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\probe.cpp -o CMakeFiles\DensityMap.dir\DensityMap\probe.cpp.s
+
+CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj: CMakeFiles/DensityMap.dir/flags.make
+CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj: CMakeFiles/DensityMap.dir/includes_CXX.rsp
+CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj: ../DensityMap/rotation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\DensityMap.dir\DensityMap\rotation.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotation.cpp
+
+CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotation.cpp > CMakeFiles\DensityMap.dir\DensityMap\rotation.cpp.i
+
+CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\rotation.cpp -o CMakeFiles\DensityMap.dir\DensityMap\rotation.cpp.s
 
 CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj: CMakeFiles/DensityMap.dir/flags.make
 CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj: CMakeFiles/DensityMap.dir/includes_CXX.rsp
 CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj: ../DensityMap/shader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj"
 	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\DensityMap.dir\DensityMap\shader.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\DensityMap\shader.cpp
 
 CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.i: cmake_force
@@ -143,7 +157,7 @@ CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.s: cmake_force
 CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj: CMakeFiles/DensityMap.dir/flags.make
 CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj: CMakeFiles/DensityMap.dir/includes_C.rsp
 CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj: ../Dependencies/glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj"
 	D:\Software\CLion\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DensityMap.dir\Dependencies\glad\src\glad.c.obj   -c D:\Documents\CML\2019.02.17\Spring-2020-CS\Dependencies\glad\src\glad.c
 
 CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.i: cmake_force
@@ -160,7 +174,8 @@ DensityMap_OBJECTS = \
 "CMakeFiles/DensityMap.dir/DensityMap/data.cpp.obj" \
 "CMakeFiles/DensityMap.dir/DensityMap/densityMap.cpp.obj" \
 "CMakeFiles/DensityMap.dir/DensityMap/main.cpp.obj" \
-"CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj" \
+"CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj" \
+"CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj" \
 "CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj" \
 "CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj"
 
@@ -171,7 +186,8 @@ DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/camera.cpp.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/data.cpp.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/densityMap.cpp.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/main.cpp.obj
-DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj
+DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj
+DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj
 DensityMap.exe: CMakeFiles/DensityMap.dir/build.make
@@ -179,7 +195,7 @@ DensityMap.exe: Dependencies/glfw/src/libglfw3.a
 DensityMap.exe: CMakeFiles/DensityMap.dir/linklibs.rsp
 DensityMap.exe: CMakeFiles/DensityMap.dir/objects1.rsp
 DensityMap.exe: CMakeFiles/DensityMap.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable DensityMap.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable DensityMap.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DensityMap.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

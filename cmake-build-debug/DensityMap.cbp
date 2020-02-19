@@ -221,10 +221,16 @@
 		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/main.cpp">
 			<Option target="DensityMap"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/rotations.cpp">
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/probe.cpp">
 			<Option target="DensityMap"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/rotations.h">
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/probe.h">
+			<Option target="DensityMap"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/rotation.cpp">
+			<Option target="DensityMap"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/rotation.h">
 			<Option target="DensityMap"/>
 		</Unit>
 		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/shader.cpp">

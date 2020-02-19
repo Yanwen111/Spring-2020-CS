@@ -302,32 +302,59 @@ DensityMap/main.cpp.s:
 	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/main.cpp.s
 .PHONY : DensityMap/main.cpp.s
 
-DensityMap/rotations.obj: DensityMap/rotations.cpp.obj
+DensityMap/probe.obj: DensityMap/probe.cpp.obj
 
-.PHONY : DensityMap/rotations.obj
+.PHONY : DensityMap/probe.obj
 
 # target to build an object file
-DensityMap/rotations.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.obj
-.PHONY : DensityMap/rotations.cpp.obj
+DensityMap/probe.cpp.obj:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj
+.PHONY : DensityMap/probe.cpp.obj
 
-DensityMap/rotations.i: DensityMap/rotations.cpp.i
+DensityMap/probe.i: DensityMap/probe.cpp.i
 
-.PHONY : DensityMap/rotations.i
+.PHONY : DensityMap/probe.i
 
 # target to preprocess a source file
-DensityMap/rotations.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.i
-.PHONY : DensityMap/rotations.cpp.i
+DensityMap/probe.cpp.i:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.i
+.PHONY : DensityMap/probe.cpp.i
 
-DensityMap/rotations.s: DensityMap/rotations.cpp.s
+DensityMap/probe.s: DensityMap/probe.cpp.s
 
-.PHONY : DensityMap/rotations.s
+.PHONY : DensityMap/probe.s
 
 # target to generate assembly for a file
-DensityMap/rotations.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotations.cpp.s
-.PHONY : DensityMap/rotations.cpp.s
+DensityMap/probe.cpp.s:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.s
+.PHONY : DensityMap/probe.cpp.s
+
+DensityMap/rotation.obj: DensityMap/rotation.cpp.obj
+
+.PHONY : DensityMap/rotation.obj
+
+# target to build an object file
+DensityMap/rotation.cpp.obj:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj
+.PHONY : DensityMap/rotation.cpp.obj
+
+DensityMap/rotation.i: DensityMap/rotation.cpp.i
+
+.PHONY : DensityMap/rotation.i
+
+# target to preprocess a source file
+DensityMap/rotation.cpp.i:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.i
+.PHONY : DensityMap/rotation.cpp.i
+
+DensityMap/rotation.s: DensityMap/rotation.cpp.s
+
+.PHONY : DensityMap/rotation.s
+
+# target to generate assembly for a file
+DensityMap/rotation.cpp.s:
+	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.s
+.PHONY : DensityMap/rotation.cpp.s
 
 DensityMap/shader.obj: DensityMap/shader.cpp.obj
 
@@ -410,9 +437,12 @@ help:
 	@echo ... DensityMap/main.obj
 	@echo ... DensityMap/main.i
 	@echo ... DensityMap/main.s
-	@echo ... DensityMap/rotations.obj
-	@echo ... DensityMap/rotations.i
-	@echo ... DensityMap/rotations.s
+	@echo ... DensityMap/probe.obj
+	@echo ... DensityMap/probe.i
+	@echo ... DensityMap/probe.s
+	@echo ... DensityMap/rotation.obj
+	@echo ... DensityMap/rotation.i
+	@echo ... DensityMap/rotation.s
 	@echo ... DensityMap/shader.obj
 	@echo ... DensityMap/shader.i
 	@echo ... DensityMap/shader.s

@@ -39,24 +39,15 @@ void gainControl(DensityMap& grid, float Gain)
         }
     }
 
+    int forTest = deep/2;
     for (int x = 0; x < deep; ++x)
     {
         for (int y = 0; y < deep; ++y) //y is 0 at bottom and deep at top
         {
             //for (int z = 0; z < deep; ++z)
             float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y))) / deep; //the distance between the point and piezo origin
-            gMtx[x][y][deep/2] = Gain / (1 + exp(10 *r)) + 2.2;
-            //if(x == deep/2) printf("the gain is %f\n", gMtx[x][y][deep/2]);
-            /*
-                }
-            }
-            for (int x = 0; x < deep; ++x)
-            {
-                for (int y = 0; y < deep; ++y)
-                {
-            */
-            //grid.cells[x][y][0] = grid.cells[x][y][deep/2]; //uncomment this for compare
-            grid.cells[x][y][deep/2] *= gMtx[x][y][deep/2];
+            gMtx[x][y][forTest] = exp(Gain *r);
+            grid.cells[x][y][forTest]*= gMtx[x][y][forTest];
         }
     }
 }
@@ -80,7 +71,7 @@ std::vector<unsigned char> readFile(const char* directory)
     return file_bytes;
 }
 
-void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_data_struct> & _screen_data){
+void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_data_struct> & _screen_data, std::vector<line_data_struct>& _line_data){
     //printf("%d\n", (int)_scan_data.size());
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
@@ -93,12 +84,17 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<screen_
             adc_max = std::max(adc_max, _scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
+        line_data_struct dataline;
+        dataline.p1 = {Cos(piezo),Sin(piezo), 0};
         /* normalize on the go */
         for (int j = 0; j < buffer_length; ++j){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
+            dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
             screen_data_struct temp_data = {(j+1) * Cos(piezo), (j+1) * Sin(piezo), 0, intensity};
             _screen_data.push_back(temp_data);
         }
+        dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
+        _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
     /*

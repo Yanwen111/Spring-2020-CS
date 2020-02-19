@@ -12,7 +12,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad/include)
 ###################### OTHER ######################
 file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp)
 file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h)
-
+message(${INCLUDE_FILES})
 add_executable(DensityMap ${SOURCE_FILES} ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
 
 ###################### GLM ######################
@@ -24,5 +24,7 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/Dependencies/glfw)
+
+add_compile_options(-O3)
 
 target_link_libraries(DensityMap PRIVATE glfw)

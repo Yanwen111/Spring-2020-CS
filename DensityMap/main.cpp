@@ -10,7 +10,7 @@
 #include "shader.h"
 #include "camera.h"
 #include "data.h"
-#include "rotations.h"
+#include "probe.h"
 
 #include "densitymap.h"
 
@@ -111,7 +111,12 @@ int main() {
 	//fanDemo(grid);
 	//sphereDemo(grid);
 	realDemo(grid);
-	gainControl(grid, 2.0);
+	gainControl(grid, 1.4);
+
+    // Creating the probe
+    Probe probe("data/PROBE_CENTERED.stl");
+    // Open the IMU file for reading
+    probe.openIMUFile("data/fake_imu.txt");
 
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
@@ -143,6 +148,9 @@ int main() {
 
 		// Draw the density map and the surrounding cube
 		grid.draw(projection, view, model);
+
+        // Draw the probe
+        probe.draw(projection, view, rotationX, rotationY);
 
 		// Used to make camera move speed consistent
 		cam.prevPos = cam.position;
@@ -326,16 +334,48 @@ void realDemo(DensityMap& grid)
     std::vector<int> marker_locations;
     std::vector<scan_data_struct> scan_data;
     std::vector<screen_data_struct> screen_data;
+    std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("D:\\Documents\\CML\\2019.02.17\\Spring-2020-CS\\DensityMap\\tapiopca_2.txt");
+    file_bytes = readFile("DensityMap/clear_1.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
     file_to_data(file_bytes, marker_locations, scan_data);
     /* convert data to vertex on screen */
-    data_to_pixel(scan_data, screen_data);
+    data_to_pixel(scan_data, screen_data, line_data);
     printf("find the screen_data\n");
 
+
+
+    float ddim = (float)grid.getDim();
+    int len = line_data[0].vals.size();
+    std::vector<float> maX, maY, maZ;  //assume the max/min coordinate must belong to edge points
+    for (auto s: line_data) {
+        maX.push_back(s.p1.x);
+        maX.push_back(s.p2.x);
+        maY.push_back(s.p1.y);
+        maY.push_back(s.p2.y);
+        maZ.push_back(s.p1.z);
+        maZ.push_back(s.p2.z);
+    }
+    float maxx = *std::max_element(maX.begin(), maX.end());
+    float minx = *std::min_element(maX.begin(), maX.end());
+    float maxy = *std::max_element(maY.begin(), maY.end());
+    float miny = *std::min_element(maY.begin(), maY.end());
+    float maxz = *std::max_element(maZ.begin(), maZ.end());
+    float minz = *std::min_element(maZ.begin(), maZ.end());
+    float scale = ddim / len;
+    printf("%f\n", scale);
+    for (auto l: line_data)
+    {
+        glm::vec3 ps = {(l.p1.x-minx)/(maxx-minx), (l.p1.y-miny)/(maxy-miny), 0.5};
+        glm::vec3 pe = {(l.p2.x-minx)/(maxx-minx), (l.p2.y-miny)/(maxy-miny), 0.5};
+        grid.addLine(ps, pe, l.vals);
+    }
+
+
+
+/*
     //fill the cell
     double maxx = -999, maxy = -999, maxz = -999, minx = 999, miny = 999, minz = 999;
 
@@ -366,17 +406,19 @@ void realDemo(DensityMap& grid)
             }
         }
     }
-    for (auto s: screen_data)
-    {
-        int tx = (int) ((s.X-minx) / (maxx-minx) * ddim);
-        int ty = (int) ( (s.Y - miny) / (maxy-miny) * ddim);
+    for (auto s: screen_data) {
+        int tx = (int) ((s.X - minx) / (maxx - minx) * ddim);
+        int ty = (int) ((s.Y - miny) / (maxy - miny) * ddim);
         //int tz = (int) ((s.Z - minz) / (maxz-minz) * ddim); //we don't have 3D data yet
-        int tz = ddim/2;
+        int tz = ddim / 2;
         if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
             continue;
-        grid.cells[tx][ty][tz] = cnts[tx][ty][tz] == 0? static_cast<unsigned char>(s.I*255) : static_cast<unsigned char>((cnts[tx][ty][tz]*(int)grid.cells[tx][ty][tz] + s.I*255) / (cnts[tx][ty][tz] + 1));
+        grid.cells[tx][ty][tz] =
+                cnts[tx][ty][tz] == 0 ? static_cast<unsigned char>(s.I * 255) : static_cast<unsigned char>(
+                        (cnts[tx][ty][tz] * (int) grid.cells[tx][ty][tz] + s.I * 255) / (cnts[tx][ty][tz] + 1));
         //grid.cells[tx][ty][tz] = static_cast<unsigned char>(s.I*255);
         cnts[tx][ty][tz]++;
         //printf("the I at X: %d, Y:%d,  Z:%d   is: %f\n", tx, ty, tz, s.I);
     }
+*/
 }
