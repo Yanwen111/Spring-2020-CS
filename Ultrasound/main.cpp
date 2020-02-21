@@ -3,6 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -55,15 +59,22 @@ int main() {
 
 	// Initializing the OpenGL context
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-	// Needed to fix compilation on macOS
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // Decide GL+GLSL versions
+#if __APPLE__
+    // GL 3.2 + GLSL 150
+    const char* glsl_version = "#version 150";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+#else
+    // GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 150";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
-
 	// Creating the window object
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowTitle.c_str(), NULL, NULL);
 	
@@ -97,6 +108,16 @@ int main() {
 		return -1;
 	}
 
+    //     Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+//     Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+//     Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
 	// Initializing mouse info
 	lastMouseX = SCR_WIDTH / 2.0;
 	lastMouseY = SCR_HEIGHT / 2.0;
@@ -113,9 +134,9 @@ int main() {
 	gainControl(grid, 0);
 
     // Creating the probe
-    //Probe probe("data/PROBE_CENTERED.stl");
+    Probe probe("data/PROBE_CENTERED.stl");
     // Open the IMU file for reading
-    //probe.openIMUFile("data/real_imu.txt");
+    probe.openIMUFile("data/real_imu.txt");
 
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
@@ -134,6 +155,11 @@ int main() {
 		glClearColor(0.1, 0.1, 0.1, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+        //IMGUI setup
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
 		// Creating matrices to transform the vertices into NDC (screen) coordinates
 		// between -1 and 1 that OpenGL can use
 		glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
@@ -145,11 +171,28 @@ int main() {
 			model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
 		}
 
+        // Draw the probe
+        probe.draw(projection, view, rotationX, rotationY);
+
 		// Draw the density map and the surrounding cube
 		grid.draw(projection, view, model);
 
-        // Draw the probe
-        //probe.draw(projection, view, rotationX, rotationY);
+        float gain;
+        float cutoff;
+        float brightness;
+        // render your IMGUI
+        ImGui::Begin("GUI");
+//        ImGui::Text("Brightness");
+        ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
+//        ImGui::Text("Gain");
+        ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
+//        ImGui::Text("Cutoff Value");
+        ImGui::SliderFloat("Cutoff", &cutoff, 0.0f, 1.0f);
+        ImGui::End();
+
+        // Render dear imgui into screen
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// Used to make camera move speed consistent
 		cam.prevPos = cam.position;
@@ -170,6 +213,11 @@ int main() {
 		// Increment the number of frames in the past second
 		numFrames++;
 	}
+
+    // IMGUI Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
 	// GLFW cleanup
 	glfwTerminate();
@@ -260,13 +308,13 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		mousePressed = true;
-	}
+    if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        mousePressed = true;
+    }
 
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-		mousePressed = false;
-	}
+    if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        mousePressed = false;
+    }
 }
 
 void sphereDemo(DensityMap& grid) {
@@ -334,7 +382,7 @@ void realDemo(DensityMap& grid)
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("data/clear_3.txt");
+    file_bytes = readFile("data/largemarble_2.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */

@@ -154,10 +154,94 @@ CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s"
 	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\Ultrasound\rotation.cpp -o CMakeFiles\Ultrasound.dir\Ultrasound\rotation.cpp.s
 
+CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj: ../imgui/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui.cpp.s
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj: ../imgui/imgui_demo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui_demo.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_demo.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_demo.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui_demo.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_demo.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui_demo.cpp.s
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj: ../imgui/imgui_draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui_draw.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_draw.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_draw.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui_draw.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_draw.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui_draw.cpp.s
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj: ../imgui/imgui_impl_glfw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui_impl_glfw.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_glfw.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_glfw.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui_impl_glfw.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_glfw.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui_impl_glfw.cpp.s
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj: ../imgui/imgui_impl_opengl3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui_impl_opengl3.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_opengl3.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_opengl3.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui_impl_opengl3.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_impl_opengl3.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui_impl_opengl3.cpp.s
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj: CMakeFiles/Ultrasound.dir/includes_CXX.rsp
+CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj: ../imgui/imgui_widgets.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj"
+	D:\Software\CLion\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Ultrasound.dir\imgui\imgui_widgets.cpp.obj -c D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_widgets.cpp
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.i"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_widgets.cpp > CMakeFiles\Ultrasound.dir\imgui\imgui_widgets.cpp.i
+
+CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.s"
+	D:\Software\CLion\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Documents\CML\2019.02.17\Spring-2020-CS\imgui\imgui_widgets.cpp -o CMakeFiles\Ultrasound.dir\imgui\imgui_widgets.cpp.s
+
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj: CMakeFiles/Ultrasound.dir/includes_C.rsp
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj: ../Dependencies/glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj"
 	D:\Software\CLion\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Ultrasound.dir\Dependencies\glad\src\glad.c.obj   -c D:\Documents\CML\2019.02.17\Spring-2020-CS\Dependencies\glad\src\glad.c
 
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.i: cmake_force
@@ -177,6 +261,12 @@ Ultrasound_OBJECTS = \
 "CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.obj" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.obj" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj" \
+"CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj" \
 "CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj"
 
 # External object files for target Ultrasound
@@ -189,13 +279,19 @@ Ultrasound.exe: CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.obj
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.obj
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.obj
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj
+Ultrasound.exe: CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/build.make
 Ultrasound.exe: Dependencies/glfw/src/libglfw3.a
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/linklibs.rsp
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/objects1.rsp
 Ultrasound.exe: CMakeFiles/Ultrasound.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable Ultrasound.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable Ultrasound.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Ultrasound.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

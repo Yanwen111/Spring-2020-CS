@@ -86,6 +86,8 @@ Probe::Probe(std::string filename){
 }
 
 void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
+
+    glEnable(GL_DEPTH_TEST);
     //Orient and scale the probe to the center
     glm::mat4 model_probe      = glm::mat4(1.0f);
 
@@ -94,18 +96,18 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
     model_probe      = glm::scale(glm::mat4(1.0f), probeScale) * model_probe;
 
     //Rotate to match the cube
-    model_probe = glm::rotate(model_probe, rotationY, glm::vec3(0, 1, 0));
-    model_probe = glm::rotate(model_probe, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+    glm::mat4 cubeRotation = glm::mat4(1.0f);
+    cubeRotation = glm::rotate(cubeRotation, rotationY, glm::vec3(0, 1, 0));
+    cubeRotation = glm::rotate(cubeRotation, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
 
     //add in orientation of probe
-    model_probe = getOrientation() * model_probe;
+    model_probe = cubeRotation * getOrientation() * model_probe;
 
     model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 0, 1));
     model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(1, 0, 0));
 
     //Translate probe to top of cube
     glm::vec3 up = glm::vec3(0,5,0);
-    up = glm::rotate(up, rotationY, glm::vec3(0,1,0));
     up = glm::rotate(up, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
     model_probe = glm::translate(glm::mat4(1.0f), glm::vec3(0, up.y,0)) * model_probe;
 
@@ -122,6 +124,8 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
 
     glBindVertexArray(probeVAO);
     glDrawArrays(GL_TRIANGLES, 0, probeindex/3);
+
+    glDisable(GL_DEPTH_TEST);
 }
 
 void Probe::openIMUFile(const std::string& inputFileName){

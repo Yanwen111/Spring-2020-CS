@@ -9,9 +9,12 @@ find_package(OpenGL REQUIRED)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad/include)
 
+####################### IMGUI ######################
+include_directories(${PROJECT_SOURCE_DIR}/imgui)
+
 ###################### OTHER ######################
-file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.cpp)
-file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.h)
+file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp)
+file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.h ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
 
 add_executable(Ultrasound ${SOURCE_FILES} ${INCLUDE_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
 

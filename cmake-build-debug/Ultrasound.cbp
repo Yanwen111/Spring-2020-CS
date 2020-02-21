@@ -26,6 +26,7 @@
 				<Compiler>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
@@ -53,6 +54,7 @@
 				<Compiler>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
@@ -154,6 +156,7 @@
 					<Add option="-DWINVER=0x0501"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
@@ -187,6 +190,7 @@
 					<Add option="-DWINVER=0x0501"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
@@ -324,6 +328,48 @@
 		</Unit>
 		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/glfw_config.h">
 			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imconfig.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_demo.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_draw.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_glfw.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_glfw.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_opengl3.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_internal.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_widgets.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_rectpack.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_textedit.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_truetype.h">
+			<Option target="Ultrasound"/>
 		</Unit>
 		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

@@ -34,6 +34,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../Dependencies/glad"
   "../Dependencies/glad/include"
+  "../imgui"
   "../Dependencies/glm"
   "../Ultrasound"
   "../DensityMap"

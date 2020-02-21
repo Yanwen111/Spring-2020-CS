@@ -40,6 +40,7 @@
 					<Add option="-DWINVER=0x0501"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
@@ -73,6 +74,7 @@
 					<Add option="-DWINVER=0x0501"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
