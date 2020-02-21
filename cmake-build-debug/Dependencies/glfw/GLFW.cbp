@@ -41,6 +41,8 @@
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
@@ -72,6 +74,8 @@
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
+					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src"/>
 					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>

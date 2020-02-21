@@ -35,6 +35,8 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../Dependencies/glad"
   "../Dependencies/glad/include"
   "../Dependencies/glm"
+  "../Ultrasound"
+  "../DensityMap"
   "../Dependencies/glfw/include"
   "../Dependencies/glfw/src"
   "Dependencies/glfw/src"

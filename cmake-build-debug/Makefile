@@ -156,17 +156,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named DensityMap
+# Target rules for targets named Ultrasound
 
 # Build rule for target.
-DensityMap: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 DensityMap
-.PHONY : DensityMap
+Ultrasound: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 Ultrasound
+.PHONY : Ultrasound
 
 # fast build rule for target.
-DensityMap/fast:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/build
-.PHONY : DensityMap/fast
+Ultrasound/fast:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/build
+.PHONY : Ultrasound/fast
 
 #=============================================================================
 # Target rules for targets named uninstall
@@ -200,7 +200,7 @@ DensityMap/camera.obj: DensityMap/camera.cpp.obj
 
 # target to build an object file
 DensityMap/camera.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/camera.cpp.obj
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.obj
 .PHONY : DensityMap/camera.cpp.obj
 
 DensityMap/camera.i: DensityMap/camera.cpp.i
@@ -209,7 +209,7 @@ DensityMap/camera.i: DensityMap/camera.cpp.i
 
 # target to preprocess a source file
 DensityMap/camera.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/camera.cpp.i
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.i
 .PHONY : DensityMap/camera.cpp.i
 
 DensityMap/camera.s: DensityMap/camera.cpp.s
@@ -218,35 +218,8 @@ DensityMap/camera.s: DensityMap/camera.cpp.s
 
 # target to generate assembly for a file
 DensityMap/camera.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/camera.cpp.s
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.s
 .PHONY : DensityMap/camera.cpp.s
-
-DensityMap/data.obj: DensityMap/data.cpp.obj
-
-.PHONY : DensityMap/data.obj
-
-# target to build an object file
-DensityMap/data.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/data.cpp.obj
-.PHONY : DensityMap/data.cpp.obj
-
-DensityMap/data.i: DensityMap/data.cpp.i
-
-.PHONY : DensityMap/data.i
-
-# target to preprocess a source file
-DensityMap/data.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/data.cpp.i
-.PHONY : DensityMap/data.cpp.i
-
-DensityMap/data.s: DensityMap/data.cpp.s
-
-.PHONY : DensityMap/data.s
-
-# target to generate assembly for a file
-DensityMap/data.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/data.cpp.s
-.PHONY : DensityMap/data.cpp.s
 
 DensityMap/densityMap.obj: DensityMap/densityMap.cpp.obj
 
@@ -254,7 +227,7 @@ DensityMap/densityMap.obj: DensityMap/densityMap.cpp.obj
 
 # target to build an object file
 DensityMap/densityMap.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/densityMap.cpp.obj
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.obj
 .PHONY : DensityMap/densityMap.cpp.obj
 
 DensityMap/densityMap.i: DensityMap/densityMap.cpp.i
@@ -263,7 +236,7 @@ DensityMap/densityMap.i: DensityMap/densityMap.cpp.i
 
 # target to preprocess a source file
 DensityMap/densityMap.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/densityMap.cpp.i
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.i
 .PHONY : DensityMap/densityMap.cpp.i
 
 DensityMap/densityMap.s: DensityMap/densityMap.cpp.s
@@ -272,89 +245,8 @@ DensityMap/densityMap.s: DensityMap/densityMap.cpp.s
 
 # target to generate assembly for a file
 DensityMap/densityMap.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/densityMap.cpp.s
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.s
 .PHONY : DensityMap/densityMap.cpp.s
-
-DensityMap/main.obj: DensityMap/main.cpp.obj
-
-.PHONY : DensityMap/main.obj
-
-# target to build an object file
-DensityMap/main.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/main.cpp.obj
-.PHONY : DensityMap/main.cpp.obj
-
-DensityMap/main.i: DensityMap/main.cpp.i
-
-.PHONY : DensityMap/main.i
-
-# target to preprocess a source file
-DensityMap/main.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/main.cpp.i
-.PHONY : DensityMap/main.cpp.i
-
-DensityMap/main.s: DensityMap/main.cpp.s
-
-.PHONY : DensityMap/main.s
-
-# target to generate assembly for a file
-DensityMap/main.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/main.cpp.s
-.PHONY : DensityMap/main.cpp.s
-
-DensityMap/probe.obj: DensityMap/probe.cpp.obj
-
-.PHONY : DensityMap/probe.obj
-
-# target to build an object file
-DensityMap/probe.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.obj
-.PHONY : DensityMap/probe.cpp.obj
-
-DensityMap/probe.i: DensityMap/probe.cpp.i
-
-.PHONY : DensityMap/probe.i
-
-# target to preprocess a source file
-DensityMap/probe.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.i
-.PHONY : DensityMap/probe.cpp.i
-
-DensityMap/probe.s: DensityMap/probe.cpp.s
-
-.PHONY : DensityMap/probe.s
-
-# target to generate assembly for a file
-DensityMap/probe.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/probe.cpp.s
-.PHONY : DensityMap/probe.cpp.s
-
-DensityMap/rotation.obj: DensityMap/rotation.cpp.obj
-
-.PHONY : DensityMap/rotation.obj
-
-# target to build an object file
-DensityMap/rotation.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.obj
-.PHONY : DensityMap/rotation.cpp.obj
-
-DensityMap/rotation.i: DensityMap/rotation.cpp.i
-
-.PHONY : DensityMap/rotation.i
-
-# target to preprocess a source file
-DensityMap/rotation.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.i
-.PHONY : DensityMap/rotation.cpp.i
-
-DensityMap/rotation.s: DensityMap/rotation.cpp.s
-
-.PHONY : DensityMap/rotation.s
-
-# target to generate assembly for a file
-DensityMap/rotation.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/rotation.cpp.s
-.PHONY : DensityMap/rotation.cpp.s
 
 DensityMap/shader.obj: DensityMap/shader.cpp.obj
 
@@ -362,7 +254,7 @@ DensityMap/shader.obj: DensityMap/shader.cpp.obj
 
 # target to build an object file
 DensityMap/shader.cpp.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.obj
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.obj
 .PHONY : DensityMap/shader.cpp.obj
 
 DensityMap/shader.i: DensityMap/shader.cpp.i
@@ -371,7 +263,7 @@ DensityMap/shader.i: DensityMap/shader.cpp.i
 
 # target to preprocess a source file
 DensityMap/shader.cpp.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.i
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.i
 .PHONY : DensityMap/shader.cpp.i
 
 DensityMap/shader.s: DensityMap/shader.cpp.s
@@ -380,7 +272,7 @@ DensityMap/shader.s: DensityMap/shader.cpp.s
 
 # target to generate assembly for a file
 DensityMap/shader.cpp.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/DensityMap/shader.cpp.s
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.s
 .PHONY : DensityMap/shader.cpp.s
 
 Dependencies/glad/src/glad.obj: Dependencies/glad/src/glad.c.obj
@@ -389,7 +281,7 @@ Dependencies/glad/src/glad.obj: Dependencies/glad/src/glad.c.obj
 
 # target to build an object file
 Dependencies/glad/src/glad.c.obj:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.obj
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj
 .PHONY : Dependencies/glad/src/glad.c.obj
 
 Dependencies/glad/src/glad.i: Dependencies/glad/src/glad.c.i
@@ -398,7 +290,7 @@ Dependencies/glad/src/glad.i: Dependencies/glad/src/glad.c.i
 
 # target to preprocess a source file
 Dependencies/glad/src/glad.c.i:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.i
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.i
 .PHONY : Dependencies/glad/src/glad.c.i
 
 Dependencies/glad/src/glad.s: Dependencies/glad/src/glad.c.s
@@ -407,8 +299,116 @@ Dependencies/glad/src/glad.s: Dependencies/glad/src/glad.c.s
 
 # target to generate assembly for a file
 Dependencies/glad/src/glad.c.s:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/Dependencies/glad/src/glad.c.s
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.s
 .PHONY : Dependencies/glad/src/glad.c.s
+
+Ultrasound/data.obj: Ultrasound/data.cpp.obj
+
+.PHONY : Ultrasound/data.obj
+
+# target to build an object file
+Ultrasound/data.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.obj
+.PHONY : Ultrasound/data.cpp.obj
+
+Ultrasound/data.i: Ultrasound/data.cpp.i
+
+.PHONY : Ultrasound/data.i
+
+# target to preprocess a source file
+Ultrasound/data.cpp.i:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.i
+.PHONY : Ultrasound/data.cpp.i
+
+Ultrasound/data.s: Ultrasound/data.cpp.s
+
+.PHONY : Ultrasound/data.s
+
+# target to generate assembly for a file
+Ultrasound/data.cpp.s:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s
+.PHONY : Ultrasound/data.cpp.s
+
+Ultrasound/main.obj: Ultrasound/main.cpp.obj
+
+.PHONY : Ultrasound/main.obj
+
+# target to build an object file
+Ultrasound/main.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.obj
+.PHONY : Ultrasound/main.cpp.obj
+
+Ultrasound/main.i: Ultrasound/main.cpp.i
+
+.PHONY : Ultrasound/main.i
+
+# target to preprocess a source file
+Ultrasound/main.cpp.i:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.i
+.PHONY : Ultrasound/main.cpp.i
+
+Ultrasound/main.s: Ultrasound/main.cpp.s
+
+.PHONY : Ultrasound/main.s
+
+# target to generate assembly for a file
+Ultrasound/main.cpp.s:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s
+.PHONY : Ultrasound/main.cpp.s
+
+Ultrasound/probe.obj: Ultrasound/probe.cpp.obj
+
+.PHONY : Ultrasound/probe.obj
+
+# target to build an object file
+Ultrasound/probe.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.obj
+.PHONY : Ultrasound/probe.cpp.obj
+
+Ultrasound/probe.i: Ultrasound/probe.cpp.i
+
+.PHONY : Ultrasound/probe.i
+
+# target to preprocess a source file
+Ultrasound/probe.cpp.i:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.i
+.PHONY : Ultrasound/probe.cpp.i
+
+Ultrasound/probe.s: Ultrasound/probe.cpp.s
+
+.PHONY : Ultrasound/probe.s
+
+# target to generate assembly for a file
+Ultrasound/probe.cpp.s:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.s
+.PHONY : Ultrasound/probe.cpp.s
+
+Ultrasound/rotation.obj: Ultrasound/rotation.cpp.obj
+
+.PHONY : Ultrasound/rotation.obj
+
+# target to build an object file
+Ultrasound/rotation.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.obj
+.PHONY : Ultrasound/rotation.cpp.obj
+
+Ultrasound/rotation.i: Ultrasound/rotation.cpp.i
+
+.PHONY : Ultrasound/rotation.i
+
+# target to preprocess a source file
+Ultrasound/rotation.cpp.i:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.i
+.PHONY : Ultrasound/rotation.cpp.i
+
+Ultrasound/rotation.s: Ultrasound/rotation.cpp.s
+
+.PHONY : Ultrasound/rotation.s
+
+# target to generate assembly for a file
+Ultrasound/rotation.cpp.s:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s
+.PHONY : Ultrasound/rotation.cpp.s
 
 # Help Target
 help:
@@ -416,7 +416,7 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... DensityMap
+	@echo ... Ultrasound
 	@echo ... install/local
 	@echo ... install
 	@echo ... edit_cache
@@ -428,27 +428,27 @@ help:
 	@echo ... DensityMap/camera.obj
 	@echo ... DensityMap/camera.i
 	@echo ... DensityMap/camera.s
-	@echo ... DensityMap/data.obj
-	@echo ... DensityMap/data.i
-	@echo ... DensityMap/data.s
 	@echo ... DensityMap/densityMap.obj
 	@echo ... DensityMap/densityMap.i
 	@echo ... DensityMap/densityMap.s
-	@echo ... DensityMap/main.obj
-	@echo ... DensityMap/main.i
-	@echo ... DensityMap/main.s
-	@echo ... DensityMap/probe.obj
-	@echo ... DensityMap/probe.i
-	@echo ... DensityMap/probe.s
-	@echo ... DensityMap/rotation.obj
-	@echo ... DensityMap/rotation.i
-	@echo ... DensityMap/rotation.s
 	@echo ... DensityMap/shader.obj
 	@echo ... DensityMap/shader.i
 	@echo ... DensityMap/shader.s
 	@echo ... Dependencies/glad/src/glad.obj
 	@echo ... Dependencies/glad/src/glad.i
 	@echo ... Dependencies/glad/src/glad.s
+	@echo ... Ultrasound/data.obj
+	@echo ... Ultrasound/data.i
+	@echo ... Ultrasound/data.s
+	@echo ... Ultrasound/main.obj
+	@echo ... Ultrasound/main.i
+	@echo ... Ultrasound/main.s
+	@echo ... Ultrasound/probe.obj
+	@echo ... Ultrasound/probe.i
+	@echo ... Ultrasound/probe.s
+	@echo ... Ultrasound/rotation.obj
+	@echo ... Ultrasound/rotation.i
+	@echo ... Ultrasound/rotation.s
 .PHONY : help
 
 

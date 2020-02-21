@@ -33,7 +33,7 @@ DensityMap::DensityMap(int dim) {
 		"in float fShade;											 \n"
 		"															 \n"
 		"void main() {												 \n"
-		"	float shade = fShade;\n"
+		"	float shade = fShade*fShade*fShade*fShade*fShade;\n"
 		"	shade = clamp(shade, 0.0025, 1.0);						 \n"
 		"	FragColor = vec4(1.0, 1.0, 1.0, shade);					 \n"
 		"}															 \n";
@@ -202,7 +202,8 @@ void DensityMap::addLine(glm::vec3 p1, glm::vec3 p2, std::vector<unsigned char> 
 
 		if (ix != px || iy != py || iz != pz) {
 			// Write the new value to the array
-			cells[ix][iy][iz] = static_cast<unsigned char>(newValue / numNewValues);
+			//if multiple scan come to the same cell, choose the strongest one
+			cells[ix][iy][iz] = std::max(static_cast<unsigned char>(newValue / numNewValues), cells[ix][iy][iz]);
 
 			// Reset these values (since we are in a new cell now)
 			newValue = 0;

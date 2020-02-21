@@ -74,7 +74,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/DensityMap.dir/DependInfo.cmake"
+  "CMakeFiles/Ultrasound.dir/DependInfo.cmake"
   "Dependencies/glfw/CMakeFiles/uninstall.dir/DependInfo.cmake"
   "Dependencies/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )

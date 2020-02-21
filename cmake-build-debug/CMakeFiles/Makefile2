@@ -52,13 +52,13 @@ CMAKE_BINARY_DIR = D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/DensityMap.dir/all
+all: CMakeFiles/Ultrasound.dir/all
 all: Dependencies/glfw/all
 
 .PHONY : all
 
 # The main recursive "clean" target.
-clean: CMakeFiles/DensityMap.dir/clean
+clean: CMakeFiles/Ultrasound.dir/clean
 clean: Dependencies/glfw/clean
 
 .PHONY : clean
@@ -69,31 +69,31 @@ preinstall: Dependencies/glfw/preinstall
 .PHONY : preinstall
 
 #=============================================================================
-# Target rules for target CMakeFiles/DensityMap.dir
+# Target rules for target CMakeFiles/Ultrasound.dir
 
 # All Build rule for target.
-CMakeFiles/DensityMap.dir/all: Dependencies/glfw/src/CMakeFiles/glfw.dir/all
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/depend
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target DensityMap"
-.PHONY : CMakeFiles/DensityMap.dir/all
+CMakeFiles/Ultrasound.dir/all: Dependencies/glfw/src/CMakeFiles/glfw.dir/all
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/depend
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target Ultrasound"
+.PHONY : CMakeFiles/Ultrasound.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/DensityMap.dir/rule: cmake_check_build_system
+CMakeFiles/Ultrasound.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles 25
-	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/DensityMap.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/Ultrasound.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles 0
-.PHONY : CMakeFiles/DensityMap.dir/rule
+.PHONY : CMakeFiles/Ultrasound.dir/rule
 
 # Convenience name for target.
-DensityMap: CMakeFiles/DensityMap.dir/rule
+Ultrasound: CMakeFiles/Ultrasound.dir/rule
 
-.PHONY : DensityMap
+.PHONY : Ultrasound
 
 # clean rule for target.
-CMakeFiles/DensityMap.dir/clean:
-	$(MAKE) -f CMakeFiles\DensityMap.dir\build.make CMakeFiles/DensityMap.dir/clean
-.PHONY : CMakeFiles/DensityMap.dir/clean
+CMakeFiles/Ultrasound.dir/clean:
+	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/clean
+.PHONY : CMakeFiles/Ultrasound.dir/clean
 
 #=============================================================================
 # Directory level rules for directory Dependencies/glfw

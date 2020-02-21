@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(DensityMap)
+project(Ultrasound)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -10,13 +10,15 @@ include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad/include)
 
 ###################### OTHER ######################
-file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp)
-file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h)
-message(${INCLUDE_FILES})
-add_executable(DensityMap ${SOURCE_FILES} ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
+file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.cpp)
+file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.h)
+
+add_executable(Ultrasound ${SOURCE_FILES} ${INCLUDE_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
 
 ###################### GLM ######################
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glm)
+include_directories(${PROJECT_SOURCE_DIR}/Ultrasound)
+include_directories(${PROJECT_SOURCE_DIR}/DensityMap)
 
 ###################### GLFW ######################
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -27,4 +29,4 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/Dependencies/glfw)
 
 add_compile_options(-O3)
 
-target_link_libraries(DensityMap PRIVATE glfw)
+target_link_libraries(Ultrasound PRIVATE glfw)
