@@ -168,6 +168,7 @@ glm::mat4 Probe::getOrientation(){
     glm::vec4 quat = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     try{
         quat = readNextLine();
+        //printf("The readed quat are: w = %f, x = %f, y = %f, z = %f\n", quat.x, quat.y, quat.z, quat.w);
     }
     catch (int e){
         if (file.is_open()) {

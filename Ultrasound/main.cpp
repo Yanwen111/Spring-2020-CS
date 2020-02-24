@@ -383,7 +383,7 @@ void realDemo(DensityMap& grid)
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("data/largemarble_2.txt");
+    file_bytes = readFile("data/imu_test.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
