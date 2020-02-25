@@ -8,388 +8,394 @@
 		<Option virtualFolders="CMake Files\;CMake Files\Dependencies\;CMake Files\Dependencies\glfw\;CMake Files\Dependencies\glfw\src\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="Ultrasound">
-				<Option output="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Ultrasound.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="Ultrasound/fast">
-				<Option output="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Ultrasound.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound/fast"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/local">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="install">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="rebuild_cache">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="list_install_components">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/strip">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultrasound">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Ultrasound" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultrasound/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Ultrasound" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="uninstall">
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="glfw">
-				<Option output="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
-					<Add option="-D_UNICODE"/>
-					<Add option="-DUNICODE"/>
-					<Add option="-DWINVER=0x0501"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="glfw/fast">
-				<Option output="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
-					<Add option="-D_UNICODE"/>
-					<Add option="-DUNICODE"/>
-					<Add option="-DWINVER=0x0501"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glm"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src"/>
-					<Add directory="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/camera.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/camera.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/densityMap.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/densityMap.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/shader.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/shader.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/src/glad.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include/GLFW/glfw3.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include/GLFW/glfw3.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/include/GLFW/glfw3native.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/include/GLFW/glfw3native.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/context.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_init.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/egl_context.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_joystick.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/egl_context.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_joystick.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/init.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_monitor.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/input.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_platform.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/internal.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_time.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/mappings.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_window.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/monitor.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/egl_context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/egl_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/vulkan.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/init.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/wgl_context.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/input.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/wgl_context.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/internal.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_init.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/mappings.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_joystick.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/monitor.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_joystick.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/nsgl_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_monitor.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/nsgl_context.m">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_platform.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_thread.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_time.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/posix_thread.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_window.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/posix_thread.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/window.c">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/vulkan.c">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/data.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/data.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/main.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/probe.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/probe.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/rotation.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/rotation.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/glfw_config.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/glfw_config.h">
 			<Option target="glfw"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imconfig.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imconfig.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_demo.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_draw.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_glfw.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_glfw.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_opengl3.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_internal.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_internal.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_widgets.cpp">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_rectpack.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imstb_rectpack.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_textedit.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imstb_textedit.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imstb_truetype.h">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imstb_truetype.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/CMakeLists.txt">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/CMakeLists.txt">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/cmake_uninstall.cmake.in">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/cmake_uninstall.cmake.in">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/CMakeLists.txt">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/glfw3.pc.in">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/glfw3.pc.in">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/glfw3Config.cmake.in">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/glfw3Config.cmake.in">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/glfw_config.h.in">
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/glfw_config.h.in">
 			<Option virtualFolder="CMake Files\Dependencies\glfw\src\"/>
 		</Unit>
 	</Project>

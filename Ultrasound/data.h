@@ -7,7 +7,7 @@
 #include <vector>
 #include <cstdarg>
 #include <fstream>
-#include "omp.h"
+//#include "omp.h"
 #include <algorithm>
 #include <cmath>
 #include <cmath>

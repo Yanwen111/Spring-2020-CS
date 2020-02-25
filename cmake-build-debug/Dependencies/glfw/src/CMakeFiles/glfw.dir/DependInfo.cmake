@@ -4,30 +4,27 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/context.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/context.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/egl_context.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/egl_context.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/init.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/init.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/input.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/input.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/monitor.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/monitor.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/vulkan.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/vulkan.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/wgl_context.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_init.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_init.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_joystick.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_joystick.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_monitor.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_thread.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_thread.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_time.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_time.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/win32_window.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/win32_window.c.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src/window.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/window.c.obj"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_init.m" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/cocoa_init.m.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_joystick.m" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_monitor.m" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_time.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/cocoa_time.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/cocoa_window.m" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/cocoa_window.m.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/context.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/context.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/egl_context.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/init.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/init.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/input.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/input.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/monitor.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/monitor.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/nsgl_context.m" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/nsgl_context.m.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/osmesa_context.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/posix_thread.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/posix_thread.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/vulkan.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glfw/src/window.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/window.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
-  "UNICODE"
-  "WINVER=0x0501"
   "_GLFW_USE_CONFIG_H"
-  "_UNICODE"
   )
 
 # The include file search paths:

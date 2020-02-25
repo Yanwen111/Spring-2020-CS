@@ -5,9 +5,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glad/src/glad.c" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
@@ -20,21 +20,23 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../Dependencies/glfw/include"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/camera.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/densityMap.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/DensityMap/shader.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/data.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/main.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/probe.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/rotation.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_demo.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_draw.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_glfw.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj"
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/imgui/imgui_widgets.cpp" "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/camera.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/densityMap.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/DensityMap/shader.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
@@ -49,7 +51,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
