@@ -89,10 +89,6 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
 
-        //To make the origin on the top face
-        //glm::mat4 trans = glm::mat4(1.0f);
-        //trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
-
         line_data_struct dataline;
         dataline.p1 = {Cos(piezo),Sin(piezo), 0};
         /* normalize on the go */

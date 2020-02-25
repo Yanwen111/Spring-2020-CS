@@ -383,7 +383,7 @@ void realDemo(DensityMap& grid)
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("data/imu_test.txt");
+    file_bytes = readFile("data/tapioca_1.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
@@ -396,76 +396,12 @@ void realDemo(DensityMap& grid)
 
 
     float ddim = (float)grid.getDim();
-    int len = line_data[0].vals.size();
-    std::vector<float> maX, maY, maZ;  //assume the max/min coordinate must belong to edge points
-    for (auto s: line_data) {
-        maX.push_back(s.p1.x);
-        maX.push_back(s.p2.x);
-        maY.push_back(s.p1.y);
-        maY.push_back(s.p2.y);
-        maZ.push_back(s.p1.z);
-        maZ.push_back(s.p2.z);
-    }
-    float maxx = *std::max_element(maX.begin(), maX.end());
-    float minx = *std::min_element(maX.begin(), maX.end());
-    float maxy = *std::max_element(maY.begin(), maY.end());
-    float miny = *std::min_element(maY.begin(), maY.end());
-    float maxz = *std::max_element(maZ.begin(), maZ.end());
-    float minz = *std::min_element(maZ.begin(), maZ.end());
-    float scale = ddim / len;
-    printf("%f\n", scale);
-
-    for (auto l: line_data)
+    int len = line_data[0].vals.size(); // 2500, equl to buffer size
+    len = 1500; // change range
+    for  (auto l: line_data)
     {
-        glm::vec3 ps = {(l.p1.x-minx)/(maxx-minx), (l.p1.y-miny)/(maxy-miny), (l.p1.z-minz)/(maxz-minz)};
-        glm::vec3 pe = {(l.p2.x-minx)/(maxx-minx), (l.p2.y-miny)/(maxy-miny), (l.p2.z-minz)/(maxz-minz)};
+        glm::vec3 ps = {0.5, 1, 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         grid.addLine(ps, pe, l.vals);
     }
-
-/*
-    //fill the cell
-    double maxx = -999, maxy = -999, maxz = -999, minx = 999, miny = 999, minz = 999;
-
-    for (auto s: screen_data) {
-        maxx = std::max(s.X, maxx);
-        maxy = std::max(s.Y, maxy);
-        maxz = std::max(s.Z, maxz);
-        minx = std::min(s.X, minx);
-        miny = std::min(s.Y, miny);
-        minz = std::min(s.Z, minz);
-
-        //maxi = std::max(s.I, maxi);
-        //mini = std::min(s.I, mini);
-    }
-    printf("find the maxes and mins\n");
-    //printf("maxI is %f, min I is %f\n", maxi, mini);
-    std::vector<std::vector<std::vector<int>>> cnts;// = grid.cells; //101x101x101
-    //printf("the cnts size is x: %d, y: %d, z:%d\n", cnts.size(), cnts[0].size(), cnts[0][0].size());
-    int ddim = grid.getDim();
-    for (int i = 0; i < ddim; ++i) {
-        cnts.push_back(std::vector<std::vector<int>>{});
-
-        for (int j = 0; j < ddim; ++j) {
-            cnts.back().push_back(std::vector<int>{});
-
-            for (int k = 0; k < ddim; ++k) {
-                cnts.back().back().push_back(0);
-            }
-        }
-    }
-    for (auto s: screen_data) {
-        int tx = (int) ((s.X - minx) / (maxx - minx) * ddim);
-        int ty = (int) ((s.Y - miny) / (maxy - miny) * ddim);
-        //int tz = (int) ((s.Z - minz) / (maxz-minz) * ddim); //we don't have 3D data yet
-        int tz = ddim / 2;
-        if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
-            continue;
-        grid.cells[tx][ty][tz] =
-                cnts[tx][ty][tz] == 0 ? static_cast<unsigned char>(s.I * 255) : static_cast<unsigned char>(
-                        (cnts[tx][ty][tz] * (int) grid.cells[tx][ty][tz] + s.I * 255) / (cnts[tx][ty][tz] + 1));
-        //grid.cells[tx][ty][tz] = static_cast<unsigned char>(s.I*255);
-        cnts[tx][ty][tz]++;
-        //printf("the I at X: %d, Y:%d,  Z:%d   is: %f\n", tx, ty, tz, s.I);
-    }
-*/
 }

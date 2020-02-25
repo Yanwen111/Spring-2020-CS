@@ -103,8 +103,8 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
     //add in orientation of probe
     model_probe = cubeRotation * getOrientation() * model_probe;
 
-    model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 0, 1));
     model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(1, 0, 0));
+    model_probe = glm::rotate(model_probe, glm::radians(90.0f), glm::vec3(0, 1, 0));
 
     //Translate probe to top of cube
     glm::vec3 up = glm::vec3(0,5,0);
