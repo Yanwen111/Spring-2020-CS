@@ -25,6 +25,43 @@ int16_t adc;
 short buffer[2500];
 double intensity;
 
+
+void realDemo(DensityMap& grid)
+{
+    //read the data from current red pitaya 2d data.
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    char fileName[50];
+    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+    std::cin >> fileName;
+    file_bytes = readFile(fileName);
+    //file_bytes = readFile("data/tapioca_1.txt");
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+    /* convert file bytes to data struct */
+    file_to_data(file_bytes, marker_locations, scan_data);
+    printf("the size of scan_data is %d\n", scan_data.size());
+    /* convert data to vertex on screen */
+    data_to_pixel(scan_data, line_data);
+    printf("find the screen_data\n");
+
+    //float ddim = (float)grid.getDim();
+    int len = line_data[0].vals.size(); // 2500, equl to buffer size
+    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
+    std::cin >> len;
+    //len = 1500; // change range
+    for  (auto l: line_data)
+    {
+        glm::vec3 ps = {0.5, 1, 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        grid.addLine(ps, pe, l.vals);
+    }
+}
+
+
 void gainControl(DensityMap& grid, float Gain)
 {
     int deep = grid.getDim();

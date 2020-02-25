@@ -19,8 +19,8 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1080
+#define SCR_WIDTH 820
+#define SCR_HEIGHT 680
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -123,15 +123,16 @@ int main() {
 	lastMouseY = SCR_HEIGHT / 2.0;
 	firstMouse = true;
 
-	// Creating the density map
-	int dim = 101;
-	DensityMap grid(dim);
+    // Creating the density map
+    int dim = 101;
+    DensityMap grid(dim);
 
-	// Add a sphere to the center of the grid
-	//fanDemo(grid);
-	//sphereDemo(grid);
-	realDemo(grid);
-	gainControl(grid, 0);
+    // Add a sphere to the center of the grid
+    //fanDemo(grid);
+    //sphereDemo(grid);
+    realDemo(grid);
+    //gainControl(grid, 0);
+    //grid.setThreshold(0);
 
     // Creating the probe
     Probe probe("data/PROBE_CENTERED.stl");
@@ -141,6 +142,10 @@ int main() {
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
 	grid.updateVertexBuffers();
+	float fGain = 0;
+    unsigned seed; // for the random gain demo
+    seed = time(0);
+    srand(seed);
 
 	// Main event loop
 	while (!glfwWindowShouldClose(window)) {
@@ -161,6 +166,12 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // TGC in the loop for GUI control
+//        float nGain = (rand()%6)/6.0;
+//        gainControl(grid, -1 * fGain);
+//        gainControl(grid, nGain);
+//        fGain = nGain;
+//        grid.updateVertexBuffers();
 		// Creating matrices to transform the vertices into NDC (screen) coordinates
 		// between -1 and 1 that OpenGL can use
 		glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
@@ -375,33 +386,4 @@ void fanDemo(DensityMap& grid) {
 	}
 }
 
-void realDemo(DensityMap& grid)
-{
-    //read the data from current red pitaya 2d data.
-    std::vector<unsigned char> file_bytes;
-    std::vector<int> marker_locations;
-    std::vector<scan_data_struct> scan_data;
-    std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile("data/tapioca_1.txt");
-    /* find all marker locations */
-    marker_locations = find_marker(file_bytes);
-    /* convert file bytes to data struct */
-    file_to_data(file_bytes, marker_locations, scan_data);
-    printf("the size of scan_data is %d\n", scan_data.size());
-    /* convert data to vertex on screen */
-    data_to_pixel(scan_data, line_data);
-    printf("find the screen_data\n");
-
-
-
-    float ddim = (float)grid.getDim();
-    int len = line_data[0].vals.size(); // 2500, equl to buffer size
-    len = 1500; // change range
-    for  (auto l: line_data)
-    {
-        glm::vec3 ps = {0.5, 1, 0.5};
-        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
-        grid.addLine(ps, pe, l.vals);
-    }
-}
