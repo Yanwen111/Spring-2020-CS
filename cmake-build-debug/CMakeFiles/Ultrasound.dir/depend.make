@@ -403,9 +403,6 @@ CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/data.cpp
 CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/data.h
 CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/rotation.h
 
-CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../DensityMap/shader.h
-CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glad/include/KHR/khrplatform.h
-CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glad/include/glad/glad.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glfw/include/GLFW/glfw3.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glm/glm/common.hpp
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glm/glm/detail/_fixes.hpp
@@ -743,6 +740,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../imgui/imgui.h
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../imgui/imgui_impl_glfw.h
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../imgui/imgui_impl_opengl3.h
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/data.h
+CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/gui.h
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/main.cpp
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/probe.h
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/rotation.h

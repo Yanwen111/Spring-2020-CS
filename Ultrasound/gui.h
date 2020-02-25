@@ -1,7 +1,7 @@
 #include <string>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <shader.h>
+//#include <shader.h>
 
 class GUI {
 

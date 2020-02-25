@@ -21,11 +21,14 @@ public:
     void draw(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
 
     glm::mat4 getOrientation();
+    glm::vec4 getQuaternions();
+    glm::vec3 getEulerAngles();
     glm::vec4 readNextLine();
     void closeFile();
 
 private:
     unsigned int probeVAO, probeVBO, probeNormalsVBO;
+    glm::vec4 quat = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     Shader probeShader;
     int probeindex;
 
@@ -33,3 +36,4 @@ private:
 
     glm::vec4 parseLine(char *str);
 };
+

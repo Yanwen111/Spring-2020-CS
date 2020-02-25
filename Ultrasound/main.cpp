@@ -15,6 +15,7 @@
 #include "camera.h"
 #include "data.h"
 #include "probe.h"
+#include "gui.h"
 
 
 #define PI 3.141592653589
@@ -50,15 +51,15 @@ Camera cam;
 const bool ROTATE_GRID = true;
 
 int main() {
-	// Window title
-	std::string windowTitle = "Density Map";
+    // Window title
+    std::string windowTitle = "Density Map";
 
-	// Variables for measuring FPS
-	int numFrames = 0;
-	double lastFPSUpdate = 0;
+    // Variables for measuring FPS
+    int numFrames = 0;
+    double lastFPSUpdate = 0;
 
-	// Initializing the OpenGL context
-	glfwInit();
+    // Initializing the OpenGL context
+    glfwInit();
     // Decide GL+GLSL versions
 #if __APPLE__
     // GL 3.2 + GLSL 150
@@ -75,236 +76,218 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
-	// Creating the window object
+    // Creating the window object
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowTitle.c_str(), NULL, NULL);
-	
-	// If the window is not created (for any reason)
-	if (window == NULL) {
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
 
-	// Setting callbacks
-	glfwMakeContextCurrent(window);
+    // If the window is not created (for any reason)
+    if (window == NULL) {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
-	if (ROTATE_GRID) {
-		glfwSetCursorPosCallback(window, cursorPosRotationCallback);
-		glfwSetMouseButtonCallback(window, mouseButtonCallback);
-	}
-	else {
-		glfwSetCursorPosCallback(window, cursorPosMovementCallback);
-	}
+    // Setting callbacks
+    glfwMakeContextCurrent(window);
 
-	if (!ROTATE_GRID) {
-		// Lock the cursor to the center of the window
-		// and make it invisible
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
-	
-	// Load the OpenGL functions from the graphics card
-	if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+    if (ROTATE_GRID) {
+        glfwSetCursorPosCallback(window, cursorPosRotationCallback);
+        glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    }
+    else {
+        glfwSetCursorPosCallback(window, cursorPosMovementCallback);
+    }
 
-    //     Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-//     Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-//     Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    if (!ROTATE_GRID) {
+        // Lock the cursor to the center of the window
+        // and make it invisible
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
 
-	// Initializing mouse info
-	lastMouseX = SCR_WIDTH / 2.0;
-	lastMouseY = SCR_HEIGHT / 2.0;
-	firstMouse = true;
+    // Load the OpenGL functions from the graphics card
+    if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-	// Creating the density map
-	int dim = 101;
-	DensityMap grid(dim);
 
-	// Add a sphere to the center of the grid
-	//fanDemo(grid);
-	//sphereDemo(grid);
-	realDemo(grid);
-	gainControl(grid, 0);
+    // Initializing mouse info
+    lastMouseX = SCR_WIDTH / 2.0;
+    lastMouseY = SCR_HEIGHT / 2.0;
+    firstMouse = true;
+
+    // Creating the density map
+    int dim = 101;
+    DensityMap grid(dim);
+
+    // Add a sphere to the center of the grid
+    //fanDemo(grid);
+    //sphereDemo(grid);
+    realDemo(grid);
+    gainControl(grid, 0); // 0 to something
 
     // Creating the probe
     Probe probe("data/PROBE_CENTERED.stl");
     // Open the IMU file for reading
     probe.openIMUFile("data/real_imu.txt");
 
-	// Add all non-empty cells to the map
-	grid.setThreshold(1);
-	grid.updateVertexBuffers();
+    //Create the GUI
+    GUI myGUI(window, glsl_version);
 
-	// Main event loop
-	while (!glfwWindowShouldClose(window)) {
-		double currentFrame = glfwGetTime();
-		cam.deltaTime = currentFrame - cam.lastFrame;
-		cam.lastFrame = currentFrame;
+    // Add all non-empty cells to the map
+    grid.setThreshold(1);
+    grid.updateVertexBuffers();
 
-		// Self-explanatory
-		processKeyboardInput(window);
+    // Main event loop
+    while (!glfwWindowShouldClose(window)) {
+        double currentFrame = glfwGetTime();
+        cam.deltaTime = currentFrame - cam.lastFrame;
+        cam.lastFrame = currentFrame;
 
-		// Clears the screen and fills it a dark grey color
-		glClearColor(0.1, 0.1, 0.1, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+        // Self-explanatory
+        processKeyboardInput(window);
 
-        //IMGUI setup
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        // Clears the screen and fills it a dark grey color
+        glClearColor(0.1, 0.1, 0.1, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
-		// Creating matrices to transform the vertices into NDC (screen) coordinates
-		// between -1 and 1 that OpenGL can use
-		glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
-		glm::mat4 view = cam.getViewMatrix();
-		glm::mat4 model = glm::mat4(1.0);
+        // Creating matrices to transform the vertices into NDC (screen) coordinates
+        // between -1 and 1 that OpenGL can use
+        glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
+        glm::mat4 view = cam.getViewMatrix();
+        glm::mat4 model = glm::mat4(1.0);
 
-		if (ROTATE_GRID) {
-			model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
-			model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
-		}
+        if (ROTATE_GRID) {
+            model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
+            model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+        }
 
         // Draw the probe
         probe.draw(projection, view, rotationX, rotationY);
 
-		// Draw the density map and the surrounding cube
-		grid.draw(projection, view, model);
+        // Draw the density map and the surrounding cube
+        grid.draw(projection, view, model);
 
-        float gain;
-        float cutoff;
-        float brightness;
-        // render your IMGUI
-        ImGui::Begin("GUI");
-//        ImGui::Text("Brightness");
-        ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
-//        ImGui::Text("Gain");
-        ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
-//        ImGui::Text("Cutoff Value");
-        ImGui::SliderFloat("Cutoff", &cutoff, 0.0f, 1.0f);
-        ImGui::End();
+        // Draw the GUI and set parameters
+        myGUI.drawGUI(projection, view, model);
+        myGUI.setNumLinesDrawn(100);
+        myGUI.setTime(glfwGetTime());
+        myGUI.setQuaternion(probe.getQuaternions());
+        myGUI.setEulerAngles(probe.getEulerAngles());
+        if(myGUI.isReset){
+            rotationX = 0;
+            rotationY = 0;
+        }
+        cam.fov = myGUI.getZoom();
 
-        // Render dear imgui into screen
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // Used to make camera move speed consistent
+        cam.prevPos = cam.position;
 
-		// Used to make camera move speed consistent
-		cam.prevPos = cam.position;
+        // Update the screen
+        glfwSwapBuffers(window);
+        glfwPollEvents();
 
-		// Update the screen
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+        // Measuring FPS
+        if (glfwGetTime() - lastFPSUpdate >= 1) {
+            std::string newTitle = windowTitle + " (" + std::to_string(numFrames) + " FPS)";
+            glfwSetWindowTitle(window, newTitle.c_str());
 
-		// Measuring FPS
-		if (glfwGetTime() - lastFPSUpdate >= 1) {
-			std::string newTitle = windowTitle + " (" + std::to_string(numFrames) + " FPS)";
-			glfwSetWindowTitle(window, newTitle.c_str());
+            lastFPSUpdate = glfwGetTime();
+            numFrames = 0;
+        }
 
-			lastFPSUpdate = glfwGetTime();
-			numFrames = 0;
-		}
+        // Increment the number of frames in the past second
+        numFrames++;
+    }
 
-		// Increment the number of frames in the past second
-		numFrames++;
-	}
+    myGUI.cleanUp();
 
-    // IMGUI Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-	// GLFW cleanup
-	glfwTerminate();
+    // GLFW cleanup
+    glfwTerminate();
 }
 
 void processKeyboardInput(GLFWwindow *window) {
-	// If shift is held down, then the camera moves faster
-	bool sprinting = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT);
+    // If shift is held down, then the camera moves faster
+    bool sprinting = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT);
 
-	// WASD + Q and E movement
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-		glfwSetWindowShouldClose(window, true);
+    // WASD + Q and E movement
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+        glfwSetWindowShouldClose(window, true);
 
-	if (ROTATE_GRID) {
-		if (glfwGetKey(window, GLFW_KEY_R)) {
-			rotationX = 0;
-			rotationY = 0;
-		}
-	}
-	else {
-		if (glfwGetKey(window, GLFW_KEY_W))
-			cam.processKeyboard(FORWARD, sprinting);
-		if (glfwGetKey(window, GLFW_KEY_S))
-			cam.processKeyboard(BACKWARD, sprinting);
-		if (glfwGetKey(window, GLFW_KEY_A))
-			cam.processKeyboard(LEFT, sprinting);
-		if (glfwGetKey(window, GLFW_KEY_D))
-			cam.processKeyboard(RIGHT, sprinting);
-		if (glfwGetKey(window, GLFW_KEY_Q))
-			cam.processKeyboard(DOWN, sprinting);
-		if (glfwGetKey(window, GLFW_KEY_E))
-			cam.processKeyboard(UP, sprinting);
+    if (ROTATE_GRID) {
+        if (glfwGetKey(window, GLFW_KEY_R)) {
+            rotationX = 0;
+            rotationY = 0;
+        }
+    }
+    else {
+        if (glfwGetKey(window, GLFW_KEY_W))
+            cam.processKeyboard(FORWARD, sprinting);
+        if (glfwGetKey(window, GLFW_KEY_S))
+            cam.processKeyboard(BACKWARD, sprinting);
+        if (glfwGetKey(window, GLFW_KEY_A))
+            cam.processKeyboard(LEFT, sprinting);
+        if (glfwGetKey(window, GLFW_KEY_D))
+            cam.processKeyboard(RIGHT, sprinting);
+        if (glfwGetKey(window, GLFW_KEY_Q))
+            cam.processKeyboard(DOWN, sprinting);
+        if (glfwGetKey(window, GLFW_KEY_E))
+            cam.processKeyboard(UP, sprinting);
 
-		// Hold C to zoom in
-		if (glfwGetKey(window, GLFW_KEY_C)) {
-			cam.fov = 30;
-		}
-		else {
-			cam.fov = 70;
-		}
-	}
+        // Hold C to zoom in
+        if (glfwGetKey(window, GLFW_KEY_C)) {
+            cam.fov = 30;
+        }
+        else {
+            cam.fov = 70;
+        }
+    }
 }
 
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos) {
-	// Ensures that the camera faces forward on startup
-	if (firstMouse) {
-		lastMouseX = xpos;
-		lastMouseY = ypos;
-		firstMouse = false;
-	}
+    // Ensures that the camera faces forward on startup
+    if (firstMouse) {
+        lastMouseX = xpos;
+        lastMouseY = ypos;
+        firstMouse = false;
+    }
 
-	// Updating the camera angle
-	double xoffset = xpos - lastMouseX;
-	double yoffset = lastMouseY - ypos;
-	lastMouseX = xpos;
-	lastMouseY = ypos;
+    // Updating the camera angle
+    double xoffset = xpos - lastMouseX;
+    double yoffset = lastMouseY - ypos;
+    lastMouseX = xpos;
+    lastMouseY = ypos;
 
-	cam.processMouseMovement(xoffset, yoffset);
+    cam.processMouseMovement(xoffset, yoffset);
 }
 
 void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
-	// Ensures that the cube faces forward on startup
-	if (firstMouse) {
-		lastMouseX = xpos;
-		lastMouseY = ypos;
-		firstMouse = false;
-	}
+    // Ensures that the cube faces forward on startup
+    if (firstMouse) {
+        lastMouseX = xpos;
+        lastMouseY = ypos;
+        firstMouse = false;
+    }
 
-	// Updating the camera angle
-	double xoffset = xpos - lastMouseX;
-	double yoffset = lastMouseY - ypos;
-	lastMouseX = xpos;
-	lastMouseY = ypos;
+    // Updating the camera angle
+    double xoffset = xpos - lastMouseX;
+    double yoffset = lastMouseY - ypos;
+    lastMouseX = xpos;
+    lastMouseY = ypos;
 
-	if (mousePressed) {
-		rotationY += xoffset / 200.0;
-		rotationX -= yoffset / 200.0;
+    if (mousePressed) {
+        rotationY += xoffset / 200.0;
+        rotationX -= yoffset / 200.0;
 
-		// 1.5 is a bit less than pi / 2
-		if (rotationX > 1.5) {
-			rotationX = 1.5;
-		}
+        // 1.5 is a bit less than pi / 2
+        if (rotationX > 1.5) {
+            rotationX = 1.5;
+        }
 
-		if (rotationX < -1.5) {
-			rotationX = -1.5;
-		}
-	}
+        if (rotationX < -1.5) {
+            rotationX = -1.5;
+        }
+    }
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
@@ -318,60 +301,60 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 }
 
 void sphereDemo(DensityMap& grid) {
-	// Adds a sphere to the center of the volume map
+    // Adds a sphere to the center of the volume map
 
-	int dim = grid.getDim();
+    int dim = grid.getDim();
 
-	float radius = 0.3;
+    float radius = 0.3;
 
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
-			for (int k = 0; k < dim; k++) {
-				float xd = i - ((dim - 1) / 2.0);
-				float yd = j - ((dim - 1) / 2.0);
-				float zd = k - ((dim - 1) / 2.0);
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
+            for (int k = 0; k < dim; k++) {
+                float xd = i - ((dim - 1) / 2.0);
+                float yd = j - ((dim - 1) / 2.0);
+                float zd = k - ((dim - 1) / 2.0);
 
-				float mxd = (dim - 1) / 2.0;
-				float myd = (dim - 1) / 2.0;
-				float mzd = (dim - 1) / 2.0;
+                float mxd = (dim - 1) / 2.0;
+                float myd = (dim - 1) / 2.0;
+                float mzd = (dim - 1) / 2.0;
 
-				float distance = sqrt(xd * xd + yd * yd + zd * zd);
-				float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
-				float shade = (maxDistance - distance) / maxDistance;
-				shade = shade * shade;
+                float distance = sqrt(xd * xd + yd * yd + zd * zd);
+                float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
+                float shade = (maxDistance - distance) / maxDistance;
+                shade = shade * shade;
 
-				if (distance < radius * dim) {
-					grid.cells[i][j][k] = static_cast<unsigned char>(shade * 255);
-				}
-			}
-		}
-	}
+                if (distance < radius * dim) {
+                    grid.cells[i][j][k] = static_cast<unsigned char>(shade * 255);
+                }
+            }
+        }
+    }
 }
 
 void fanDemo(DensityMap& grid) {
-	// Adds a fan shape to the volume map
-	// using the DensityMap::addLine() function
+    // Adds a fan shape to the volume map
+    // using the DensityMap::addLine() function
 
-	glm::vec3 vertex = { 0.5, 0.5, 0.5 };
+    glm::vec3 vertex = { 0.5, 0.5, 0.5 };
 
-	float a1 = 1;
-	float a2 = 1;
+    float a1 = 1;
+    float a2 = 1;
 
-	float r = 0.3;
+    float r = 0.3;
 
-	for (; a2 <= 3; a2 += 0.01) {
-		float x = r * sin(a1) * cos(a2);
-		float y = r * sin(a1) * sin(a2);
-		float z = r * cos(a1);
+    for (; a2 <= 3; a2 += 0.01) {
+        float x = r * sin(a1) * cos(a2);
+        float y = r * sin(a1) * sin(a2);
+        float z = r * cos(a1);
 
-		std::vector<unsigned char> vals;
+        std::vector<unsigned char> vals;
 
-		for (int i = 0; i < 1000; i++) {
-			vals.push_back(255);
-		}
+        for (int i = 0; i < 1000; i++) {
+            vals.push_back(255);
+        }
 
-		grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
-	}
+        grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
+    }
 }
 
 void realDemo(DensityMap& grid)
@@ -391,7 +374,6 @@ void realDemo(DensityMap& grid)
     /* convert data to vertex on screen */
     data_to_pixel(scan_data, line_data);
     printf("find the screen_data\n");
-
 
 
     float ddim = (float)grid.getDim();
@@ -468,3 +450,4 @@ void realDemo(DensityMap& grid)
     }
 */
 }
+

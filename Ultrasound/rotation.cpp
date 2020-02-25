@@ -2,7 +2,7 @@
 #include "rotation.h"
 
 glm::mat4 Rotation::convertRotationMatrix(float w, float x, float y, float z){
-    glm::quat myQuat = glm::quat(w,x,y,z);
+    glm::quat myQuat = glm::quat(w, x, y, z);
     glm::mat4 rotationMatrix = glm::mat4_cast(myQuat);
 
     return rotationMatrix;

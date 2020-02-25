@@ -138,34 +138,34 @@ void Probe::closeFile(){
 
 glm::vec4 Probe::readNextLine(){
     std::string line;
-    glm::vec4 quat;
+    glm::vec4 myQuat;
     if (getline(file, line))
     {
-        quat = parseLine(&line[0]);
+        myQuat = parseLine(&line[0]);
     }
-    return quat;
+    return myQuat;
 }
 
 glm::vec4 Probe::parseLine(char str[])
 {
+    glm::vec4 myQuat;
     char *token = std::strtok(str, " ");
-    float w = std::stof(token);
+    myQuat.w = std::stof(token);
 
     token = strtok(NULL, " ");
-    float x = std::stof(token);
+    myQuat.x = std::stof(token);
 
     token = strtok(NULL, " ");
-    float y = std::stof(token);
+    myQuat.y = std::stof(token);
 
     token = strtok(NULL, " ");
-    float z = std::stof(token);
+    myQuat.z = std::stof(token);
 
-    return glm::vec4(w, x, y, z);
+    return myQuat;
 }
 
 
 glm::mat4 Probe::getOrientation(){
-    glm::vec4 quat = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     try{
         quat = readNextLine();
     }
@@ -176,69 +176,79 @@ glm::mat4 Probe::getOrientation(){
         }
     }
 
-    glm::mat4 rotationMatrix = Rotation::convertRotationMatrix(quat.x, quat.y, quat.z, quat.w);
+    glm::mat4 rotationMatrix = Rotation::convertRotationMatrix(quat.w, quat.x, quat.y, quat.z);
+//    glm::mat4 rotationMatrix = Rotation::convertRotationMatrix(quat.x, quat.y, quat.z, quat.w);
 
     return rotationMatrix;
 }
 
-int read_stl(const std::string& file_name, GLfloat * &vertices, GLfloat * &normals)
-{
+//int read_stl(const std::string& file_name, GLfloat * &vertices, GLfloat * &normals)
+//{
+//
+//    std::ifstream myfile (file_name.c_str(), std::ios::in | std::ios::binary);
+//
+//    char header_info[80] = "";
+//    char bin_n_triangles[4];
+//    unsigned int num_traingles = 0;
+//
+//    if (myfile)
+//    {
+//        myfile.read (header_info, 80);
+//        std::cout <<"Header : " << header_info << std::endl;
+//    }
+//
+//    if (myfile)
+//    {
+//        myfile.read (bin_n_triangles, 4);
+//        num_traingles = *((unsigned int*)bin_n_triangles) ;
+//        std::cout <<"Number of triangles : " << num_traingles << std::endl;
+//    }
+//
+//    vertices = new GLfloat[num_traingles * 9];
+//    normals = new GLfloat[num_traingles * 9];
+//
+//    int index = 0;
+//    int indexN = 0;
+//    for(int i = 0; i < num_traingles; i++)
+//    {
+//        char facet[50];
+//        if (myfile)
+//        {
+//            myfile.read (facet, 50);
+//
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
+//
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
+//
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
+//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
+//
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+12));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+16));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+20));
+//
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+24));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+28));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+32));
+//
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+36));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+40));
+//            vertices[index++] = *( (float*) ( ( (char*)facet)+44));
+//        }
+//    }
+//    return index;
+//}
 
-    std::ifstream myfile (file_name.c_str(), std::ios::in | std::ios::binary);
+glm::vec4 Probe::getQuaternions(){
+    return quat;
+}
 
-    char header_info[80] = "";
-    char bin_n_triangles[4];
-    unsigned int num_traingles = 0;
-
-    if (myfile)
-    {
-        myfile.read (header_info, 80);
-        std::cout <<"Header : " << header_info << std::endl;
-    }
-
-    if (myfile)
-    {
-        myfile.read (bin_n_triangles, 4);
-        num_traingles = *((unsigned int*)bin_n_triangles) ;
-        std::cout <<"Number of triangles : " << num_traingles << std::endl;
-    }
-
-    vertices = new GLfloat[num_traingles * 9];
-    normals = new GLfloat[num_traingles * 9];
-
-    int index = 0;
-    int indexN = 0;
-    for(int i = 0; i < num_traingles; i++)
-    {
-        char facet[50];
-        if (myfile)
-        {
-            myfile.read (facet, 50);
-
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-
-            vertices[index++] = *( (float*) ( ( (char*)facet)+12));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+16));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+20));
-
-            vertices[index++] = *( (float*) ( ( (char*)facet)+24));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+28));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+32));
-
-            vertices[index++] = *( (float*) ( ( (char*)facet)+36));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+40));
-            vertices[index++] = *( (float*) ( ( (char*)facet)+44));
-        }
-    }
-    return index;
+glm::vec3 Probe::getEulerAngles() {
+//    Rotation::convertToEulerAngle(quat.x, quat.y, quat.z, quat.w);
+    return Rotation::convertToEulerAngle(quat.w, quat.x, quat.y, quat.z);
 }

@@ -404,9 +404,6 @@ CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o
- ../DensityMap/shader.h
- ../Dependencies/glad/include/KHR/khrplatform.h
- ../Dependencies/glad/include/glad/glad.h
  ../Dependencies/glfw/include/GLFW/glfw3.h
  ../Dependencies/glm/glm/common.hpp
  ../Dependencies/glm/glm/detail/_fixes.hpp
@@ -744,6 +741,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o
  ../imgui/imgui_impl_glfw.h
  ../imgui/imgui_impl_opengl3.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h
+ /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h
