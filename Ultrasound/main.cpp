@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 
+#include <mutex>
+#include <thread>
+#include <chrono>
+
 #include "shader.h"
 #include "camera.h"
 #include "data.h"
@@ -19,8 +23,8 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 820
-#define SCR_HEIGHT 680
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 600
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -31,8 +35,11 @@ void processKeyboardInput(GLFWwindow* window);
 // Demo functions to show what the volume map looks like
 void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
-void realDemo(DensityMap& grid);
 
+// Used for multi-threads
+void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, std::string windowTitle);
+
+bool dataUpdate = false;
 
 // Used in the mouse movement callbacks
 double lastMouseX;
@@ -49,14 +56,17 @@ Camera cam;
 
 const bool ROTATE_GRID = true;
 
+void func1(int n, int k);
+void func1(int n, int k)
+{
+    std::this_thread::sleep_for(std::chrono::seconds(k));
+    printf("test for the thread of c++, %d\n", n);
+}
+
 int main() {
-	// Window title
-	std::string windowTitle = "Density Map";
 
-	// Variables for measuring FPS
-	int numFrames = 0;
-	double lastFPSUpdate = 0;
-
+    // Window title
+    std::string windowTitle = "Density Map";
 	// Initializing the OpenGL context
 	glfwInit();
     // Decide GL+GLSL versions
@@ -130,35 +140,67 @@ int main() {
     // Add a sphere to the center of the grid
     //fanDemo(grid);
     //sphereDemo(grid);
-    realDemo(grid);
+    //realDemo(grid);
     //gainControl(grid, 0);
     //grid.setThreshold(0);
 
     // Creating the probe
     Probe probe("data/PROBE_CENTERED.stl");
     // Open the IMU file for reading
-    probe.openIMUFile("data/real_imu.txt");
+    //probe.openIMUFile("data/real_imu.txt");
 
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
-	grid.updateVertexBuffers();
-	float fGain = 0;
-    unsigned seed; // for the random gain demo
-    seed = time(0);
-    srand(seed);
+    grid.updateVertexBuffers();
+
+    // multi-thread
+    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
+    std::thread dataThread;
+    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
+    dataThread.detach();
+
+    // thread2: add Gain control to the grid.cell after 30s automatically.
+    std::thread gainThread;
+    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+    gainThread.detach();
 
 	// Main event loop
-	while (!glfwWindowShouldClose(window)) {
-		double currentFrame = glfwGetTime();
-		cam.deltaTime = currentFrame - cam.lastFrame;
-		cam.lastFrame = currentFrame;
 
-		// Self-explanatory
-		processKeyboardInput(window);
+	renderLoop(window, probe, grid, windowTitle);
 
-		// Clears the screen and fills it a dark grey color
-		glClearColor(0.1, 0.1, 0.1, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+    // IMGUI Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+	// GLFW cleanup
+	glfwTerminate();
+}
+
+
+
+void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, std::string windowTitle)
+{
+    // Variables for measuring FPS
+    int numFrames = 0;
+    double lastFPSUpdate = 0;
+
+//    float fGain = 0;  // for update each loop
+//    unsigned seed; // for the random gain demo
+//    seed = time(0);
+//    srand(seed);
+
+    while (!glfwWindowShouldClose(window)) {
+        double currentFrame = glfwGetTime();
+        cam.deltaTime = currentFrame - cam.lastFrame;
+        cam.lastFrame = currentFrame;
+
+        // Self-explanatory
+        processKeyboardInput(window);
+
+        // Clears the screen and fills it a dark grey color
+        glClearColor(0.1, 0.1, 0.1, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
         //IMGUI setup
@@ -172,22 +214,29 @@ int main() {
 //        gainControl(grid, nGain);
 //        fGain = nGain;
 //        grid.updateVertexBuffers();
-		// Creating matrices to transform the vertices into NDC (screen) coordinates
-		// between -1 and 1 that OpenGL can use
-		glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
-		glm::mat4 view = cam.getViewMatrix();
-		glm::mat4 model = glm::mat4(1.0);
 
-		if (ROTATE_GRID) {
-			model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
-			model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
-		}
+        if (dataUpdate)
+        {
+            grid.updateVertexBuffers();
+            probe.openIMUFile("data/real_imu.txt");
+            dataUpdate = false;
+        }
+        // Creating matrices to transform the vertices into NDC (screen) coordinates
+        // between -1 and 1 that OpenGL can use
+        glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
+        glm::mat4 view = cam.getViewMatrix();
+        glm::mat4 model = glm::mat4(1.0);
+
+        if (ROTATE_GRID) {
+            model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
+            model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+        }
 
         // Draw the probe
         probe.draw(projection, view, rotationX, rotationY);
 
-		// Draw the density map and the surrounding cube
-		grid.draw(projection, view, model);
+        // Draw the density map and the surrounding cube
+        grid.draw(projection, view, model);
 
         float gain;
         float cutoff;
@@ -206,33 +255,25 @@ int main() {
         ImGui::Render();
         //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		// Used to make camera move speed consistent
-		cam.prevPos = cam.position;
+        // Used to make camera move speed consistent
+        cam.prevPos = cam.position;
 
-		// Update the screen
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+        // Update the screen
+        glfwSwapBuffers(window);
+        glfwPollEvents();
 
-		// Measuring FPS
-		if (glfwGetTime() - lastFPSUpdate >= 1) {
-			std::string newTitle = windowTitle + " (" + std::to_string(numFrames) + " FPS)";
-			glfwSetWindowTitle(window, newTitle.c_str());
+        // Measuring FPS
+        if (glfwGetTime() - lastFPSUpdate >= 1) {
+            std::string newTitle = windowTitle + " (" + std::to_string(numFrames) + " FPS)";
+            glfwSetWindowTitle(window, newTitle.c_str());
 
-			lastFPSUpdate = glfwGetTime();
-			numFrames = 0;
-		}
+            lastFPSUpdate = glfwGetTime();
+            numFrames = 0;
+        }
 
-		// Increment the number of frames in the past second
-		numFrames++;
-	}
-
-    // IMGUI Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-	// GLFW cleanup
-	glfwTerminate();
+        // Increment the number of frames in the past second
+        numFrames++;
+    }
 }
 
 void processKeyboardInput(GLFWwindow *window) {

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include "data.h"
 
@@ -26,7 +28,7 @@ short buffer[2500];
 double intensity;
 
 
-void realDemo(DensityMap& grid)
+void realDemo(DensityMap& grid, bool& dataUpdate)
 {
     //read the data from current red pitaya 2d data.
     std::vector<unsigned char> file_bytes;
@@ -34,7 +36,7 @@ void realDemo(DensityMap& grid)
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
 
-    char fileName[50];
+    char fileName[255];
     std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
     std::cin >> fileName;
     file_bytes = readFile(fileName);
@@ -59,11 +61,15 @@ void realDemo(DensityMap& grid)
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         grid.addLine(ps, pe, l.vals);
     }
+    dataUpdate = true;
 }
 
 
-void gainControl(DensityMap& grid, float Gain)
+void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
+    printf("30s later it will do some gain control\n");
+    std::this_thread::sleep_for(std::chrono::seconds(30));
+
     int deep = grid.getDim();
 
     //std::vector<std::vector<std::vector<float> > > gMtx(deep, std::vector<std::vector<float> >(deep, std::vector<float>(deep, 0.0)));
@@ -91,6 +97,7 @@ void gainControl(DensityMap& grid, float Gain)
             }
         }
     }
+    dataUpstate = true;
 }
 
 std::vector<unsigned char> readFile(const char* directory)
@@ -113,7 +120,7 @@ std::vector<unsigned char> readFile(const char* directory)
 }
 
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data){
-    //printf("%d\n", (int)_scan_data.size());
+    printf("%d\n", (int)_scan_data.size());
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
@@ -140,7 +147,6 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
         _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
-
     }
     printf("start write euler...\n");
     std::ofstream fileout("data/real_euler.txt", std::ios::trunc|std::ios::out);
@@ -226,9 +232,9 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         // add a judgement based on the quaternion values
-        float epsilon = 0.01;
-        float sumQ = 0;
-        for (auto q: quaternion) sumQ += q*q;
+//        float epsilon = 0.01;
+//        float sumQ = 0;
+//        for (auto q: quaternion) sumQ += q*q;
         /* if two crc matches */
         //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
         if(1){  // uncommented this for store all the data
