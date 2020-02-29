@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 
+#include <mutex>
+#include <thread>
+#include <chrono>
+
 //#include "shader.h"
 #include "camera.h"
 #include "data.h"
@@ -31,8 +35,11 @@ void processKeyboardInput(GLFWwindow* window);
 // Demo functions to show what the volume map looks like
 void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
-void realDemo(DensityMap& grid);
 
+// Used for multi-threads
+void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle);
+
+bool dataUpdate = false;
 
 // Used in the mouse movement callbacks
 double lastMouseX;
@@ -49,14 +56,16 @@ Camera cam;
 
 const bool ROTATE_GRID = true;
 
+void func1(int n, int k);
+void func1(int n, int k)
+{
+    std::this_thread::sleep_for(std::chrono::seconds(k));
+    printf("test for the thread of c++, %d\n", n);
+}
+
 int main() {
     // Window title
     std::string windowTitle = "Density Map";
-
-    // Variables for measuring FPS
-    int numFrames = 0;
-    double lastFPSUpdate = 0;
-
     // Initializing the OpenGL context
     glfwInit();
     // Decide GL+GLSL versions
@@ -69,11 +78,11 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 #else
     // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 150";
+    const char* glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
     // Creating the window object
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowTitle.c_str(), NULL, NULL);
@@ -108,7 +117,6 @@ int main() {
         return -1;
     }
 
-
     // Initializing mouse info
     lastMouseX = SCR_WIDTH / 2.0;
     lastMouseY = SCR_HEIGHT / 2.0;
@@ -121,8 +129,8 @@ int main() {
     // Add a sphere to the center of the grid
     //fanDemo(grid);
     //sphereDemo(grid);
-    realDemo(grid);
-    gainControl(grid, 0); // 0 to something
+    //realDemo(grid);
+    //gainControl(grid, 0); // 0 to something
 
     // Creating the probe
     Probe probe("data/PROBE_CENTERED.stl");
@@ -136,7 +144,32 @@ int main() {
     grid.setThreshold(1);
     grid.updateVertexBuffers();
 
+    // multi-thread
+    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
+    std::thread dataThread;
+    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
+    dataThread.detach();
+
+    // thread2: add Gain control to the grid.cell after 30s automatically.
+    std::thread gainThread;
+    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+    gainThread.detach();
+
     // Main event loop
+    renderLoop(window, probe, grid, myGUI, windowTitle);
+
+    myGUI.cleanUp();
+
+    // GLFW cleanup
+    glfwTerminate();
+}
+
+void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle){
+
+    // Variables for measuring FPS
+    int numFrames = 0;
+    double lastFPSUpdate = 0;
+
     while (!glfwWindowShouldClose(window)) {
         double currentFrame = glfwGetTime();
         cam.deltaTime = currentFrame - cam.lastFrame;
@@ -149,6 +182,13 @@ int main() {
         glClearColor(0.1, 0.1, 0.1, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
+
+        if (dataUpdate)
+        {
+            grid.updateVertexBuffers();
+            probe.openIMUFile("data/real_imu.txt");
+            dataUpdate = false;
+        }
 
         // Creating matrices to transform the vertices into NDC (screen) coordinates
         // between -1 and 1 that OpenGL can use
@@ -176,10 +216,6 @@ int main() {
         }
         cam.fov = myGUI.getZoom();
 
-        //Update values from GUI
-//        grid.setThreshold(myGUI.getThreshold());
-//        grid.updateVertexBuffers();
-
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
 
@@ -202,11 +238,6 @@ int main() {
         // Increment the number of frames in the past second
         numFrames++;
     }
-
-    myGUI.cleanUp();
-
-    // GLFW cleanup
-    glfwTerminate();
 }
 
 void processKeyboardInput(GLFWwindow *window) {
