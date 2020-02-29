@@ -1,9 +1,6 @@
-#include <string>
-#include <iostream>
-#include <GLFW/glfw3.h>
-#include <fstream>
+#include "helper.h"
 
-int read_stl(const std::string& file_name, GLfloat * &vertices, GLfloat * &normals)
+int Helper::read_stl(const std::string& file_name, GLfloat * &vertices, GLfloat * &normals)
 {
     std::ifstream myfile (file_name.c_str(), std::ios::in | std::ios::binary);
 

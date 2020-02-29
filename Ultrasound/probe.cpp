@@ -2,8 +2,6 @@
 #include <cmath>
 #include "probe.h"
 
-int read_stl(const std::string& fname, GLfloat * &vertices, GLfloat * &colors);
-
 Probe::Probe(std::string filename){
     std::string vProbe =
             "// VERTEX SHADER											  \n"
@@ -57,7 +55,7 @@ Probe::Probe(std::string filename){
     // Add the 3D probe
     GLfloat *probevertices = NULL;
     GLfloat *probeNormals = NULL;
-    probeindex = read_stl(filename, probevertices, probeNormals);
+    probeindex = Helper::read_stl(filename, probevertices, probeNormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &probeVBO);

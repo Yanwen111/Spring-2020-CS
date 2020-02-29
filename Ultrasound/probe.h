@@ -5,6 +5,7 @@
 #include <iostream>
 #include "shader.h"
 #include "rotation.h"
+#include "helper.h"
 
 #ifndef ETHAN_OPENGL_ROTATIONS_H
 #define ETHAN_OPENGL_ROTATIONS_H

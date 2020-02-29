@@ -109,9 +109,22 @@ CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.cpp -o CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s
 
+CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o: ../Ultrasound/fakedata.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.cpp
+
+CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.cpp > CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.i
+
+CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.cpp -o CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.s
+
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/gui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp
 
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.i: cmake_force
@@ -124,7 +137,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o: ../Ultrasound/helper.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.cpp
 
 CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.i: cmake_force
@@ -137,7 +150,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o: ../Ultrasound/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp
 
 CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.i: cmake_force
@@ -148,9 +161,22 @@ CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp -o CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s
 
+CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
+CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o: ../Ultrasound/marker.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/marker.cpp
+
+CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/marker.cpp > CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.i
+
+CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/marker.cpp -o CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.s
+
 CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o: ../Ultrasound/probe.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.cpp
 
 CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.i: cmake_force
@@ -163,7 +189,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o: ../Ultrasound/rotation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.cpp
 
 CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.i: cmake_force
@@ -176,7 +202,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o: ../imgui/imgui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.i: cmake_force
@@ -189,7 +215,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o: ../imgui/imgui_demo.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_demo.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.i: cmake_force
@@ -202,7 +228,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o: ../imgui/imgui_draw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_draw.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.i: cmake_force
@@ -215,7 +241,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o: ../imgui/imgui_impl_glfw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_glfw.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.i: cmake_force
@@ -228,7 +254,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o: ../imgui/imgui_impl_opengl3.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_impl_opengl3.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.i: cmake_force
@@ -241,7 +267,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o: ../imgui/imgui_widgets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.o -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/imgui/imgui_widgets.cpp
 
 CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.i: cmake_force
@@ -254,7 +280,7 @@ CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.s: cmake_force
 
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o: CMakeFiles/Ultrasound.dir/flags.make
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o: ../Dependencies/glad/src/glad.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o   -c /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c
 
 CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.i: cmake_force
@@ -271,9 +297,11 @@ Ultrasound_OBJECTS = \
 "CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.o" \
 "CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o" \
+"CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o" \
+"CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o" \
 "CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o" \
 "CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o" \
@@ -291,9 +319,11 @@ Ultrasound: CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o
+Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o
+Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o
 Ultrasound: CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o
@@ -306,7 +336,7 @@ Ultrasound: CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o
 Ultrasound: CMakeFiles/Ultrasound.dir/build.make
 Ultrasound: Dependencies/glfw/src/libglfw3.a
 Ultrasound: CMakeFiles/Ultrasound.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable Ultrasound"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX executable Ultrasound"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Ultrasound.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

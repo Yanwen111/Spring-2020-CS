@@ -23,6 +23,8 @@
 #include "densityMap.h"
 #include "rotation.h"
 
+#include <cstdlib> // for srand() and rand()
+
 
 
 struct scan_data_struct{

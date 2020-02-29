@@ -330,6 +330,33 @@ Ultrasound/data.cpp.s:
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s
 .PHONY : Ultrasound/data.cpp.s
 
+Ultrasound/fakedata.o: Ultrasound/fakedata.cpp.o
+
+.PHONY : Ultrasound/fakedata.o
+
+# target to build an object file
+Ultrasound/fakedata.cpp.o:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o
+.PHONY : Ultrasound/fakedata.cpp.o
+
+Ultrasound/fakedata.i: Ultrasound/fakedata.cpp.i
+
+.PHONY : Ultrasound/fakedata.i
+
+# target to preprocess a source file
+Ultrasound/fakedata.cpp.i:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.i
+.PHONY : Ultrasound/fakedata.cpp.i
+
+Ultrasound/fakedata.s: Ultrasound/fakedata.cpp.s
+
+.PHONY : Ultrasound/fakedata.s
+
+# target to generate assembly for a file
+Ultrasound/fakedata.cpp.s:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.s
+.PHONY : Ultrasound/fakedata.cpp.s
+
 Ultrasound/gui.o: Ultrasound/gui.cpp.o
 
 .PHONY : Ultrasound/gui.o
@@ -410,6 +437,33 @@ Ultrasound/main.s: Ultrasound/main.cpp.s
 Ultrasound/main.cpp.s:
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s
 .PHONY : Ultrasound/main.cpp.s
+
+Ultrasound/marker.o: Ultrasound/marker.cpp.o
+
+.PHONY : Ultrasound/marker.o
+
+# target to build an object file
+Ultrasound/marker.cpp.o:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o
+.PHONY : Ultrasound/marker.cpp.o
+
+Ultrasound/marker.i: Ultrasound/marker.cpp.i
+
+.PHONY : Ultrasound/marker.i
+
+# target to preprocess a source file
+Ultrasound/marker.cpp.i:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.i
+.PHONY : Ultrasound/marker.cpp.i
+
+Ultrasound/marker.s: Ultrasound/marker.cpp.s
+
+.PHONY : Ultrasound/marker.s
+
+# target to generate assembly for a file
+Ultrasound/marker.cpp.s:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.s
+.PHONY : Ultrasound/marker.cpp.s
 
 Ultrasound/probe.o: Ultrasound/probe.cpp.o
 
@@ -657,6 +711,9 @@ help:
 	@echo "... Ultrasound/data.o"
 	@echo "... Ultrasound/data.i"
 	@echo "... Ultrasound/data.s"
+	@echo "... Ultrasound/fakedata.o"
+	@echo "... Ultrasound/fakedata.i"
+	@echo "... Ultrasound/fakedata.s"
 	@echo "... Ultrasound/gui.o"
 	@echo "... Ultrasound/gui.i"
 	@echo "... Ultrasound/gui.s"
@@ -666,6 +723,9 @@ help:
 	@echo "... Ultrasound/main.o"
 	@echo "... Ultrasound/main.i"
 	@echo "... Ultrasound/main.s"
+	@echo "... Ultrasound/marker.o"
+	@echo "... Ultrasound/marker.i"
+	@echo "... Ultrasound/marker.s"
 	@echo "... Ultrasound/probe.o"
 	@echo "... Ultrasound/probe.i"
 	@echo "... Ultrasound/probe.s"

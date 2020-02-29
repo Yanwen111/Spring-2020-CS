@@ -25,6 +25,43 @@ int16_t adc;
 short buffer[2500];
 double intensity;
 
+
+void realDemo(DensityMap& grid)
+{
+    //read the data from current red pitaya 2d data.
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    char fileName[50];
+    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+    std::cin >> fileName;
+    file_bytes = readFile(fileName);
+    //file_bytes = readFile("data/tapioca_1.txt");
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+    /* convert file bytes to data struct */
+    file_to_data(file_bytes, marker_locations, scan_data);
+    printf("the size of scan_data is %d\n", scan_data.size());
+    /* convert data to vertex on screen */
+    data_to_pixel(scan_data, line_data);
+    printf("find the screen_data\n");
+
+    //float ddim = (float)grid.getDim();
+    int len = line_data[0].vals.size(); // 2500, equl to buffer size
+    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
+    std::cin >> len;
+    //len = 1500; // change range
+    for  (auto l: line_data)
+    {
+        glm::vec3 ps = {0.5, 1, 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        grid.addLine(ps, pe, l.vals);
+    }
+}
+
+
 void gainControl(DensityMap& grid, float Gain)
 {
     int deep = grid.getDim();
@@ -77,7 +114,6 @@ std::vector<unsigned char> readFile(const char* directory)
 
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data){
     //printf("%d\n", (int)_scan_data.size());
-    glm::mat4 rotinv = glm::mat4(1.0f);
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
@@ -90,11 +126,6 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
 
-        //To make the origin on the top face
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
-       // trans = glm::rotate(trans, glm::radians(-45.0f), glm::vec3(0.57735, 0.57735, 0.57735));
-
         line_data_struct dataline;
         dataline.p1 = {Cos(piezo),Sin(piezo), 0};
         /* normalize on the go */
@@ -105,8 +136,8 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
         dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
         glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
         //if (i == 0) rotinv = glm::inverse(rot);
-        dataline.p1 = trans * rotinv * rot * glm::vec4(dataline.p1,1);
-        dataline.p2 = trans * rotinv * rot * glm::vec4(dataline.p2,1);
+        dataline.p1 = rot * glm::vec4(dataline.p1,1);
+        dataline.p2 = rot * glm::vec4(dataline.p2,1);
         _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
 
@@ -155,7 +186,7 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         /* IMU */
         for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
             quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
-                                                        sizeof(encoder_char) + j);
+                                                sizeof(encoder_char) + j);
         }
         for (int j = 0; j < 16; j += 4)
         {
@@ -163,6 +194,10 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
             for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
             quaternion[j/4] = *(float*)temp1;
         }
+//        float qtmp = quaternion[1];
+//        quaternion[1] = quaternion[2];
+//        quaternion[2] = quaternion[3];
+//        quaternion[3] = qtmp;
         /* adc */
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
@@ -190,9 +225,14 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
+        // add a judgement based on the quaternion values
+        float epsilon = 0.01;
+        float sumQ = 0;
+        for (auto q: quaternion) sumQ += q*q;
         /* if two crc matches */
         //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
-        if (1){
+        if(1){  // uncommented this for store all the data
+            //if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
             for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];

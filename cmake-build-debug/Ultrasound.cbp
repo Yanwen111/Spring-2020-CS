@@ -308,6 +308,12 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h">
 			<Option target="Ultrasound"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.h">
+			<Option target="Ultrasound"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
@@ -317,7 +323,16 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.h">
+			<Option target="Ultrasound"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/main.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/marker.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/marker.h">
 			<Option target="Ultrasound"/>
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/probe.cpp">
