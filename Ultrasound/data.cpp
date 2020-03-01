@@ -68,7 +68,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
     printf("30s later it will do some gain control\n");
-    std::this_thread::sleep_for(std::chrono::seconds(30));
+    std::this_thread::sleep_for(std::chrono::seconds(300));
 
     int deep = grid.getDim();
 

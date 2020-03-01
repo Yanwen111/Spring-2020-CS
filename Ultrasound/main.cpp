@@ -23,8 +23,8 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 600
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -134,7 +134,7 @@ int main() {
 	firstMouse = true;
 
     // Creating the density map
-    int dim = 101;
+    int dim = 100;
     DensityMap grid(dim);
 
     // Add a sphere to the center of the grid
@@ -233,7 +233,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, std::string 
         }
 
         // Draw the probe
-        probe.draw(projection, view, rotationX, rotationY);
+        //probe.draw(projection, view, rotationX, rotationY);
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
