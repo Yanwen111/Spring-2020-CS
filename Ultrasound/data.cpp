@@ -4,6 +4,10 @@
 
 #include "data.h"
 
+/* For calculating the scale */
+#define Velocity 90000  // speed in phantom, cm/s
+#define Frequency 15.6  // MHz
+
 /* Data Processing */
 const unsigned char marker[10] = {0x00,0x01,0x00,0x01,0x00,0x01,0x00,0x01,0x00,0x01};
 int marker_index, marker_index_next, buffer_length, signal_draw_index;
@@ -50,7 +54,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     data_to_pixel(scan_data, line_data);
     printf("find the screen_data\n");
 
-    //float ddim = (float)grid.getDim();
+    int ddim = grid.getDim();
     int len = line_data[0].vals.size(); // 2500, equl to buffer size
     printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
     std::cin >> len;
@@ -60,6 +64,26 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
         glm::vec3 ps = {0.5, 1, 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         grid.addLine(ps, pe, l.vals);
+    }
+
+    /* add some scale. Each line refer to 1 centimeter */
+    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+    int d1m = d1c / 10;
+    int d1c0 = d1c, d1m0 = d1m;
+    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+    {
+        while (d1m < ddim)
+        {
+            for (int i = 0; i < ddim; ++i)
+                grid.cells[0][ddim - d1m - 1][i] = 130;
+            d1m += d1m0;
+        }
+    }
+    while (d1c < ddim)
+    {
+        for (int i = 0; i < ddim; ++i)
+            grid.cells[0][ddim - d1c -1][i] = 254;
+        d1c += d1c0;
     }
     dataUpdate = true;
 }
