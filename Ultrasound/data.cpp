@@ -3,9 +3,10 @@
 #include <chrono>
 
 #include "data.h"
+#include "rotation.h" /* for test of fake data */
 
 /* For calculating the scale */
-#define Velocity 90000  // speed in phantom, cm/s
+#define Velocity 110200  // speed in phantom, cm/s
 #define Frequency 15.6  // MHz
 
 /* Data Processing */
@@ -15,22 +16,185 @@ int16_t adc_max = 0;
 int16_t adc_min = 0;
 bool marker_flag;
 unsigned char time_stamp_char[4];
-unsigned long time_stamp;
+unsigned long time_stamp = 0;
 unsigned char quaternion_char[16];
 float quaternion[4];
 unsigned char probe_type_char;
 unsigned char encoder_char[2];
 unsigned short encoder;
+unsigned char qua_wxyz_char[16];
 unsigned char adc_char[2*2500];
 unsigned char adc_temp[2];
 unsigned char crc_char[4];
 uint32_t crc_result;
 unsigned char crc_result_char[4];
 unsigned char crc_input[4+1+2+2*2500];
+unsigned char message_buff[10+4+1+2+16+2*2500+4];
 int16_t adc;
 short buffer[2500];
 double intensity;
+unsigned char information_byte = 0xE1;
 
+
+void fakeDemo(DensityMap& grid, bool& dataUpdate)
+{
+    // directly draw the cube in the space
+    int data_length = 2500; /* eqaul to the start variables */
+    float length = 5; /* length of the vector in coordinate. the cube is 2x2x2 with origin at (0, 2, 0) */
+    int cnt = 0;
+
+    /* open file to save the data*/
+    FILE * fp;
+    fp = fopen("data/fakeCube_2.txt", "w");
+    time_stamp = changed_endian_4Bytes(time_stamp);
+    memcpy(time_stamp_char, (unsigned char *)&time_stamp, sizeof(time_stamp_char));
+//    printf("start write encoder & piezo...\n");
+//    std::ofstream fileout("data/encoder_piezo.txt", std::ios::trunc|std::ios::out);
+
+    //for (float piezo = -30; piezo < 30; piezo += 0.1)  /* angel of the piezo*/
+    for (unsigned short i = 0; i < 4096; i += 10)
+    {
+        encoder = i;
+        double angle = encoder * 360.0 / 4096.0;
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
+        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 90.0;
+        glm::vec3 ray0 = glm::vec3{length*Sin(piezo), length*Cos(piezo), 0};
+//        fileout << encoder << ' ' << piezo << std::endl;
+//        continue;
+        /* package the encoder */
+        encoder = changed_endian_2Bytes(encoder);
+        memcpy(encoder_char, &encoder, sizeof encoder_char);
+        for (float w = -1; w < 1; w += 0.1) /*quaternion*/
+        {
+            float y = pow(1 - w*w, 0.5);
+            //if (y > 0.2) y -= 0.1;
+            glm::vec3 euler = Rotation::convertToEulerAngle(w, 0, y, 0);
+            glm::mat4 rotationMatrix = glm::mat4(1.0f);
+            rotationMatrix = glm::rotate(rotationMatrix, float(euler.y), glm::vec3(0, 1, 0));
+            glm::vec3 ray = rotationMatrix * glm::vec4{ray0, 1};
+            //printf("This ray is (%f, %f, %f)\n", ray.x, ray.y, ray.z);
+            /* package the quaternion */
+            float nw = ReverseFloat(w);
+            float nx = ReverseFloat(0);
+            float ny = ReverseFloat((y));
+            float nz = ReverseFloat(0);
+            memcpy(qua_wxyz_char, &nw, sizeof(nw));
+            memcpy(qua_wxyz_char+sizeof(nw), &nx, sizeof(nx));
+            memcpy(qua_wxyz_char+sizeof(nw)+sizeof(nx), &ny, sizeof(ny));
+            memcpy(qua_wxyz_char+sizeof(nw)+sizeof(nx)+sizeof(ny), &nz, sizeof(nz));
+
+            if (cnt%10000 == 0)
+                printf("It is drawing line No.%d\n", cnt);
+
+            /* Draw the line and find the points inside the cube*/
+            float dx = ray.x / data_length, dy = ray.y / data_length, dz = ray.z / data_length;
+            std::vector<unsigned char> vals;
+            float ix = 0, iy = 0, iz = 0;
+            for (int i = 0 ; i < data_length; ++i)
+            {
+                unsigned short tmp = 30;
+                if (ix >= -1 && ix <= 1 && iy >= 2.5 && iy <= 4.5 && iz >= -1 && iz <= 1)
+                {
+                    vals.push_back(250);
+                    tmp = 250;
+                    //printf("This point is (%f, %f, %f)\n", ix, iy, iz);
+                }
+                else
+                    vals.push_back(30);
+                tmp = changed_endian_2Bytes(tmp);
+                memcpy(adc_char+i*sizeof(tmp), &tmp, sizeof tmp);
+                ix += dx;
+                iy += dy;
+                iz += dz;
+            }
+            /* generate crc and the whole data*/
+            memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
+            memcpy(crc_input+sizeof(time_stamp_char), &information_byte, sizeof(information_byte));
+            memcpy(crc_input+sizeof(time_stamp_char)+sizeof(information_byte), encoder_char, sizeof(encoder_char));
+            memcpy(crc_input+sizeof(time_stamp_char)+sizeof(information_byte)+sizeof(encoder_char), qua_wxyz_char, sizeof(qua_wxyz_char));
+            memcpy(crc_input+sizeof(time_stamp_char)+sizeof(information_byte)+sizeof(encoder_char)+sizeof(qua_wxyz_char), adc_char, sizeof(adc_char));
+            unsigned short crc_result = 36;
+            crc_result = changed_endian_4Bytes(crc_result);
+            memcpy(crc_char, (unsigned char *)&crc_result, sizeof crc_char);
+            memcpy(message_buff, marker, sizeof(marker));
+            memcpy(message_buff+sizeof(marker), crc_input, sizeof(crc_input));
+            memcpy(message_buff+sizeof(marker)+sizeof(crc_input), crc_char, sizeof(crc_char));
+            fwrite(&message_buff, sizeof(message_buff), 1, fp);
+
+            /* draw the fake data */
+            glm::vec3 ps = glm::vec3{0.5, 0.5, 0.5};
+            glm::vec3 pe = glm::vec3{0.5 *ray.x/length + 0.5, 0.5 *ray.y/length + 0.5, 0.5 * ray.z/length + 0.5};
+            grid.addLine(ps, pe, vals);
+            cnt++;
+        }
+    }
+    fclose(fp);
+//    fileout.close();
+//    printf("encoder & piezo file generate!\n");
+    dataUpdate = true;
+}
+
+void fakeDemo2(DensityMap& grid, bool& dataUpdate)
+{
+    std::ifstream infile;
+    infile.open("data/fake_data_huge.txt", std::ios::in);    // 637 * (100+3)
+    std::string fakes;
+    float tmp[103];
+    int cnt = 0;
+    while (getline(infile, fakes))
+    {
+        char *token = std::strtok(&fakes[0], " ");
+        for (int i = 0; i < 103; ++i)
+        {
+            //tmp[cnt][i]  = std::stof(token);
+            tmp[i]  = std::stof(token);
+            token = strtok(NULL, " ");
+        }
+        cnt++;
+        if (cnt % 10000 == 0)
+        {
+            printf("read dataline No. %d\n", cnt);
+            //std::this_thread::sleep_for(std::chrono::seconds(2));
+            //dataUpdate = true;
+        }
+//    }
+//    infile.close();
+//    printf("file is read into tmp[637][103]\n");
+//
+//    for (auto t : tmp)
+//    {
+
+        double angle = tmp[0] * 360.0 / 4096.0;
+        //angle = convert_angle_2d_probe(angle);
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
+        //double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
+        double piezo = angle;
+        glm::vec3 Euler = Rotation::convertToEulerAngle(tmp[1], tmp[2], tmp[3], tmp[4]);
+
+        glm::mat4 rotationMatrix = glm::mat4(1.0f);
+
+        rotationMatrix = glm::rotate(rotationMatrix, float(tmp[0]), glm::vec3(1, 0, 0));
+        rotationMatrix = glm::rotate(rotationMatrix, float(tmp[1]), glm::vec3(0, 1, 0));
+        rotationMatrix = glm::rotate(rotationMatrix, float(tmp[2]), glm::vec3(0, 0, 1));
+
+        std::vector<unsigned char> vals;
+        for (int i = 0; i < 100; ++i)
+            vals.push_back(static_cast<unsigned char>(tmp[i+3]*200 + 50));
+        glm::vec3 p1 = rotationMatrix * glm::vec4{0, 0, 0, 1};
+        glm::vec3 p2 = rotationMatrix * glm::vec4{0, 0, 10, 1};
+        //glm::vec3 p2 = glm::vec3{100* t[1] *sin(t[0])*sin};
+        glm::vec3 ps = {0.5, 0.5, 0.5};
+        glm::vec3 pe = {(p2.x-p1.x)/20 + 0.5, (p2.y-p1.y)/20 + 0.5, (p2.z-p1.z)/20 + 0.5};
+        grid.addLine(ps, pe, vals);
+
+    }
+    int a = 0;
+    printf("generate new datas\n Type an int to see it: ");
+    //std::cin >> a;
+    dataUpdate = true;
+}
 
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -56,43 +220,43 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 
     int ddim = grid.getDim();
     int len = line_data[0].vals.size(); // 2500, equl to buffer size
-    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
-    std::cin >> len;
-    //len = 1500; // change range
+//    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
+//    std::cin >> len;
+    len = 5000; // change range
     for  (auto l: line_data)
     {
-        glm::vec3 ps = {0.5, 1, 0.5};
-        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        glm::vec3 ps = {0.5, 0.5, 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 0.5, l.p2.z/len - l.p1.z/len +0.5};
         grid.addLine(ps, pe, l.vals);
     }
 
     /* add some scale. Each line refer to 1 centimeter */
-    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-    int d1m = d1c / 10;
-    int d1c0 = d1c, d1m0 = d1m;
-    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-    {
-        while (d1m < ddim)
-        {
-            for (int i = 0; i < ddim; ++i)
-                grid.cells[0][ddim - d1m - 1][i] = 130;
-            d1m += d1m0;
-        }
-    }
-    while (d1c < ddim)
-    {
-        for (int i = 0; i < ddim; ++i)
-            grid.cells[0][ddim - d1c -1][i] = 254;
-        d1c += d1c0;
-    }
+//    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+//    int d1m = d1c / 10;
+//    int d1c0 = d1c, d1m0 = d1m;
+//    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+//    {
+//        while (d1m < ddim)
+//        {
+//            for (int i = 0; i < ddim; ++i)
+//                grid.cells[0][ddim - d1m - 1][i] = 130;
+//            d1m += d1m0;
+//        }
+//    }
+//    while (d1c < ddim)
+//    {
+//        for (int i = 0; i < ddim; ++i)
+//            grid.cells[0][ddim - d1c -1][i] = 254;
+//        d1c += d1c0;
+//    }
     dataUpdate = true;
 }
 
 
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
-    printf("30s later it will do some gain control\n");
-    std::this_thread::sleep_for(std::chrono::seconds(300));
+    printf("6000s later it will do some gain control\n");
+    std::this_thread::sleep_for(std::chrono::seconds(6000));
 
     int deep = grid.getDim();
 
@@ -138,6 +302,7 @@ std::vector<unsigned char> readFile(const char* directory)
             (std::istreambuf_iterator<char>()));
     for(int i = 0; i < 20; ++i){
         printf("%02X ", file_bytes.at(i));
+        if (i % 2500 == 0) printf("\n");
     }
     printf("\n");
     return file_bytes;
@@ -148,8 +313,8 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
-        double ax = 9*Cos(angle - 85 );
-        double ay = 9*Sin(angle - 85 );
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
         double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
         /* find min and max */
         for (int j = 0; j < buffer_length; ++j){
@@ -256,13 +421,13 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         // add a judgement based on the quaternion values
-//        float epsilon = 0.01;
-//        float sumQ = 0;
-//        for (auto q: quaternion) sumQ += q*q;
+        float epsilon = 0.01;
+        float sumQ = 0;
+        for (auto q: quaternion) sumQ += q*q;
+        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
         /* if two crc matches */
         //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
-        if(1){  // uncommented this for store all the data
-        //if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
+        //if(1){  // uncommented this for store all the data
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
             for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
@@ -345,4 +510,18 @@ uint32_t crc32c(uint32_t crc, const unsigned char *buf, size_t len)
             crc = crc & 1 ? (crc >> 1) ^ 0xedb88320 : crc >> 1;
     }
     return ~crc;
+}
+
+float ReverseFloat( const float inFloat ){
+    float retVal;
+    char *floatToConvert = ( char* ) & inFloat;
+    char *returnFloat = ( char* ) & retVal;
+
+    // swap the bytes into a temporary buffer
+    returnFloat[0] = floatToConvert[3];
+    returnFloat[1] = floatToConvert[2];
+    returnFloat[2] = floatToConvert[1];
+    returnFloat[3] = floatToConvert[0];
+
+    return retVal;
 }

@@ -19,12 +19,13 @@
 #include "camera.h"
 #include "data.h"
 #include "probe.h"
+//#include "fakeData.h"
 
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 600
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -160,9 +161,9 @@ int main() {
     dataThread.detach();
 
     // thread2: add Gain control to the grid.cell after 30s automatically.
-    std::thread gainThread;
-    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-    gainThread.detach();
+//    std::thread gainThread;
+//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+//    gainThread.detach();
 
 	// Main event loop
 

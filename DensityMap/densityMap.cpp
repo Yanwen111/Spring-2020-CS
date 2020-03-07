@@ -204,7 +204,7 @@ void DensityMap::addLine(glm::vec3 p1, glm::vec3 p2, std::vector<unsigned char> 
 			// Write the new value to the array
 			//if multiple scan come to the same cell, choose the strongest one
 			cells[ix][iy][iz] = std::max(static_cast<unsigned char>(newValue / numNewValues), cells[ix][iy][iz]);
-
+            //cells[ix][iy][iz] = static_cast<unsigned char>(newValue / numNewValues);
 			// Reset these values (since we are in a new cell now)
 			newValue = 0;
 			numNewValues = 0;
