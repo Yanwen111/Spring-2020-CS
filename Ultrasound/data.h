@@ -64,7 +64,6 @@ float ReverseFloat( const float inFloat );
 void gainControl(DensityMap& grid, float Gain, bool& dataUpdate);
 std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
-void fakeDemo2(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
 #endif //ULTRASOUND_OPENGL_MAIN_H

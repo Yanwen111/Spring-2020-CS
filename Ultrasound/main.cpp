@@ -19,13 +19,14 @@
 #include "camera.h"
 #include "data.h"
 #include "probe.h"
+#include "densityMap.h"
 //#include "fakeData.h"
 
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1080
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 600
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -119,6 +120,10 @@ int main() {
 		return -1;
 	}
 
+	int x;
+	glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &x);
+	std::cout << "size: " << x << std::endl;
+
     //     Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -135,7 +140,7 @@ int main() {
 	firstMouse = true;
 
     // Creating the density map
-    int dim = 100;
+    long long dim = 100;
     DensityMap grid(dim);
 
     // Add a sphere to the center of the grid
@@ -152,7 +157,7 @@ int main() {
 
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
-    grid.updateVertexBuffers();
+    //grid.updateVertexBuffers();
 
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
@@ -161,9 +166,9 @@ int main() {
     dataThread.detach();
 
     // thread2: add Gain control to the grid.cell after 30s automatically.
-//    std::thread gainThread;
-//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-//    gainThread.detach();
+    std::thread gainThread;
+    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+    gainThread.detach();
 
 	// Main event loop
 
@@ -218,7 +223,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, std::string 
 
         if (dataUpdate)
         {
-            grid.updateVertexBuffers();
+            //grid.updateVertexBuffers();
             probe.openIMUFile("data/real_imu.txt");
             dataUpdate = false;
         }
@@ -369,63 +374,6 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         mousePressed = false;
     }
-}
-
-void sphereDemo(DensityMap& grid) {
-	// Adds a sphere to the center of the volume map
-
-	int dim = grid.getDim();
-
-	float radius = 0.3;
-
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
-			for (int k = 0; k < dim; k++) {
-				float xd = i - ((dim - 1) / 2.0);
-				float yd = j - ((dim - 1) / 2.0);
-				float zd = k - ((dim - 1) / 2.0);
-
-				float mxd = (dim - 1) / 2.0;
-				float myd = (dim - 1) / 2.0;
-				float mzd = (dim - 1) / 2.0;
-
-				float distance = sqrt(xd * xd + yd * yd + zd * zd);
-				float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
-				float shade = (maxDistance - distance) / maxDistance;
-				shade = shade * shade;
-
-				if (distance < radius * dim) {
-					grid.cells[i][j][k] = static_cast<unsigned char>(shade * 255);
-				}
-			}
-		}
-	}
-}
-
-void fanDemo(DensityMap& grid) {
-	// Adds a fan shape to the volume map
-	// using the DensityMap::addLine() function
-
-	glm::vec3 vertex = { 0.5, 0.5, 0.5 };
-
-	float a1 = 1;
-	float a2 = 1;
-
-	float r = 0.3;
-
-	for (; a2 <= 3; a2 += 0.01) {
-		float x = r * sin(a1) * cos(a2);
-		float y = r * sin(a1) * sin(a2);
-		float z = r * cos(a1);
-
-		std::vector<unsigned char> vals;
-
-		for (int i = 0; i < 1000; i++) {
-			vals.push_back(255);
-		}
-
-		grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
-	}
 }
 
 

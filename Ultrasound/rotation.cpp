@@ -9,8 +9,8 @@ glm::mat4 Rotation::convertRotationMatrix(float w, float x, float y, float z){
     glm::mat4 rotationMatrix = glm::mat4(1.0f);
 
     rotationMatrix = glm::rotate(rotationMatrix, eulers.x , glm::vec3(1, 0, 0));
-    rotationMatrix = glm::rotate(rotationMatrix, 1 * eulers.y, glm::vec3(0, 1, 0));
-    rotationMatrix = glm::rotate(rotationMatrix, eulers.z, glm::vec3(0, 0, 1));
+    rotationMatrix = glm::rotate(rotationMatrix, float(-1 * eulers.z), glm::vec3(0, 1, 0));
+    rotationMatrix = glm::rotate(rotationMatrix, eulers.y, glm::vec3(0, 0, 1));
 
 
     return rotationMatrix;
