@@ -16,7 +16,7 @@ int16_t adc_max = 0;
 int16_t adc_min = 0;
 bool marker_flag;
 unsigned char time_stamp_char[4];
-unsigned long time_stamp = 1583978389;
+unsigned long time_stamp = 0;
 unsigned char quaternion_char[16];
 float quaternion[4];
 unsigned char probe_type_char;
@@ -28,7 +28,7 @@ unsigned char adc_temp[2];
 unsigned char crc_char[4];
 uint32_t crc_result;
 unsigned char crc_result_char[4];
-unsigned char crc_input[4+1+2+2*2500];
+unsigned char crc_input[4+1+2+16+2*2500];
 unsigned char message_buff[10+4+1+2+16+2*2500+4];
 int16_t adc;
 short buffer[2500];
@@ -40,55 +40,53 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
 {
     // directly draw the cube in the space
     int data_length = 2500; /* eqaul to the start variables */
-    float length = 5; /* length of the vector in coordinate. the cube is 2x2x2 with origin at (0, 3.5, 0) */
+    float length = 5; /* length of the vector in coordinate. the cube is 2x2x2 with origin at (0, 2, 0) */
     int cnt = 0;
 
     /* open file to save the data*/
     FILE * fp;
     fp = fopen("data/fakeCube_2.txt", "w");
-//    time_stamp = changed_endian_4Bytes(time_stamp);
-//    memcpy(time_stamp_char, (unsigned char *)&time_stamp, sizeof(time_stamp_char));
+    time_stamp = changed_endian_4Bytes(time_stamp);
+    memcpy(time_stamp_char, (unsigned char *)&time_stamp, sizeof(time_stamp_char));
 //    printf("start write encoder & piezo...\n");
 //    std::ofstream fileout("data/encoder_piezo.txt", std::ios::trunc|std::ios::out);
-
-    //for (float piezo = -30; piezo < 30; piezo += 0.1)  /* angel of the piezo*/
-    for (unsigned short j = 0; j < 4096; j += 10)
+    for (unsigned short i = 1200; i < 1800; i += 10)
     {
-        encoder = j;
+        encoder = i;
         double angle = encoder * 360.0 / 4096.0;
-        double ax = 9*Cos(angle - 222.0 );
-        double ay = 9*Sin(angle - 222.0 );
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
         double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 90.0;
         glm::vec3 ray0 = glm::vec3{length*Sin(piezo), length*Cos(piezo), 0};
 //        fileout << encoder << ' ' << piezo << std::endl;
 //        continue;
-        time_stamp = 1583978389;
-        time_stamp = changed_endian_4Bytes(time_stamp);
-        memcpy(time_stamp_char, (unsigned char *)&time_stamp, sizeof(time_stamp_char));
         /* package the encoder */
         encoder = changed_endian_2Bytes(encoder);
         memcpy(encoder_char, &encoder, sizeof encoder_char);
-        for (float w = -0.99; w < 1; w += 0.1) /*quaternion*/
+        for (float w = -1; w < 1; w += 0.035) /*quaternion*/
         {
-            float y = pow(1.0 - w*w, 0.5);
+            float y = pow(1 - w*w, 0.5);
             //if (y > 0.2) y -= 0.1;
-            glm::vec3 euler = Rotation::convertToEulerAngle(w, 0.0, y, 0.0);
+            glm::vec3 euler = Rotation::convertToEulerAngle(w, 0, y, 0);
             glm::mat4 rotationMatrix = glm::mat4(1.0f);
-            rotationMatrix = glm::rotate(rotationMatrix, float(euler.y), glm::vec3(0.0, 1.0, 0.0));
+            rotationMatrix = glm::rotate(rotationMatrix, float(euler.y), glm::vec3(0, 1, 0));
             glm::vec3 ray = rotationMatrix * glm::vec4{ray0, 1};
             //printf("This ray is (%f, %f, %f)\n", ray.x, ray.y, ray.z);
             /* package the quaternion */
             float nw = ReverseFloat(w);
-            float nx = ReverseFloat(0.0);
-            float ny = ReverseFloat(y);
-            float nz = ReverseFloat(0.0);
+            float nx = ReverseFloat(0);
+            float ny = ReverseFloat((y));
+            float nz = ReverseFloat(0);
             memcpy(qua_wxyz_char, &nw, sizeof(nw));
             memcpy(qua_wxyz_char+sizeof(nw), &nx, sizeof(nx));
             memcpy(qua_wxyz_char+sizeof(nw)+sizeof(nx), &ny, sizeof(ny));
             memcpy(qua_wxyz_char+sizeof(nw)+sizeof(nx)+sizeof(ny), &nz, sizeof(nz));
 
+            if (cnt%10000 == 0)
+                printf("It is drawing line No.%d\n", cnt);
+
             /* Draw the line and find the points inside the cube*/
-            float dx = ray.x / float(data_length), dy = ray.y / float(data_length), dz = ray.z / float(data_length);
+            float dx = ray.x / data_length, dy = ray.y / data_length, dz = ray.z / data_length;
             std::vector<unsigned char> vals;
             float ix = 0, iy = 0, iz = 0;
             for (int i = 0 ; i < data_length; ++i)
@@ -101,12 +99,9 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
                     //printf("This point is (%f, %f, %f)\n", ix, iy, iz);
                 }
                 else
-                {
                     vals.push_back(30);
-                    tmp = 30;
-                }
                 tmp = changed_endian_2Bytes(tmp);
-                memcpy(adc_char+ i*sizeof(tmp), &tmp, sizeof tmp);
+                memcpy(adc_char+i*sizeof(tmp), &tmp, sizeof tmp);
                 ix += dx;
                 iy += dy;
                 iz += dz;
@@ -128,17 +123,16 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
             /* draw the fake data */
             glm::vec3 ps = glm::vec3{0.5, 0.5, 0.5};
             glm::vec3 pe = glm::vec3{0.5 *ray.x/length + 0.5, 0.5 *ray.y/length + 0.5, 0.5 * ray.z/length + 0.5};
-            grid.addLine(ps, pe, vals);
+            grid.writeLine(ps, pe, vals);
             cnt++;
         }
     }
     fclose(fp);
-    printf("fake data file is generated! \n");
+    printf("fake byte file is generated!\n");
 //    fileout.close();
 //    printf("encoder & piezo file generate!\n");
     dataUpdate = true;
 }
-
 
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -166,21 +160,19 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     int len = line_data[0].vals.size(); // 2500, equl to buffer size
 //    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
 //    std::cin >> len;
-    len = 1600; // change range
+    len = 2500; // change range
     int cnt = 0;
     for  (auto l: line_data)
     {
         glm::vec3 ps = {0.5, 1, 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
-        grid.addLine(ps, pe, l.vals);\
+        grid.writeLine(ps, pe, l.vals);
         /* for rendering line by line */
 //        cnt ++;
-//        if (cnt%20 == 0)
+//        if (cnt%200 == 0)
 //        {
 //            printf("draw line %d\n", cnt);
-//            for (auto v: l.vals)
-//                printf("%d\n", v);
-//            std::this_thread::sleep_for(std::chrono::seconds(4));
+//            std::this_thread::sleep_for(std::chrono::seconds(2));
 //        }
     }
 
@@ -209,8 +201,8 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
-    printf("30s later it will do some gain control\n");
-    std::this_thread::sleep_for(std::chrono::seconds(4000));
+    printf("6000s later it will do some gain control\n");
+    std::this_thread::sleep_for(std::chrono::seconds(6000));
 
     int deep = grid.getDim();
 
@@ -234,27 +226,11 @@ void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
             for (int z = 0; z < deep; ++z)
             {
                 float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y) + (z-deep/2)*(z-deep/2))) / deep; //the distance between the point and piezo origin
-                //gMtx[x][y][z] = exp(Gain *r);
+                gMtx[x][y][z] = exp(Gain *r);
                 //grid.cells[x][y][z]*= gMtx[x][y][z];
-                gMtx[x][y][z] = r;
             }
         }
     }
-
-    for (int i = 0; i < 10; ++i)
-    {
-        printf("Gaincontrol trial No. %d\n", i);
-        for (int x = 0; x < deep; ++x)
-        {
-            for (int y = 0; y < deep; ++y)
-            {
-                for (int z = 0; z < deep; ++z)
-                    grid.write(x, y, z, gMtx[x][y][z] * i * 10);
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-    }
-
     dataUpstate = true;
 }
 
@@ -359,18 +335,17 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
             for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
             quaternion[j/4] = *(float*)temp1;
         }
-        quaternion[0] = 1;
-        quaternion[1] = 0;
-        quaternion[2] = 0;
-        quaternion[3] = 0;
+//        float qtmp = quaternion[1];
+//        quaternion[1] = quaternion[2];
+//        quaternion[2] = quaternion[3];
+//        quaternion[3] = qtmp;
         /* adc */
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
-                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(crc_char))/2;
-        for (int j = 0; j < buffer_length; ++j)
-        {
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
+        for (int j = 0; j < buffer_length; ++j){
             for (int k = 0; k < (int)sizeof(adc_temp); ++k){
-                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j * 2 + k);
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(quaternion_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
             std::memcpy(&adc, adc_temp, sizeof(adc));
@@ -385,20 +360,20 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
         memcpy(crc_input+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
         memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), adc_char, sizeof(adc_char));
-        //memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), quaternion_char, sizeof(quaternion_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
         crc_result = crc32c(0, crc_input, sizeof(crc_input));
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         // add a judgement based on the quaternion values
-//        float epsilon = 0.01;
-//        float sumQ = 0;
-//        for (auto q: quaternion) sumQ += q*q;
-//        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
+        float epsilon = 0.01;
+        float sumQ = 0;
+        for (auto q: quaternion) sumQ += q*q;
+        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
         /* if two crc matches */
         //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
-        if(1){  // uncommented this for store all the data
+        //if(1){  // uncommented this for store all the data
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
             for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];

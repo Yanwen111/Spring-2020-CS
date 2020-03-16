@@ -19,7 +19,6 @@
 #include "camera.h"
 #include "data.h"
 #include "probe.h"
-#include "densityMap.h"
 //#include "fakeData.h"
 
 
@@ -120,10 +119,6 @@ int main() {
 		return -1;
 	}
 
-	int x;
-	glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, &x);
-	std::cout << "size: " << x << std::endl;
-
     //     Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -140,7 +135,7 @@ int main() {
 	firstMouse = true;
 
     // Creating the density map
-    long long dim = 100;
+    int dim = 100;
     DensityMap grid(dim);
 
     // Add a sphere to the center of the grid
@@ -157,7 +152,6 @@ int main() {
 
 	// Add all non-empty cells to the map
 	grid.setThreshold(1);
-    //grid.updateVertexBuffers();
 
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
@@ -166,9 +160,9 @@ int main() {
     dataThread.detach();
 
     // thread2: add Gain control to the grid.cell after 30s automatically.
-    std::thread gainThread;
-    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-    gainThread.detach();
+//    std::thread gainThread;
+//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+//    gainThread.detach();
 
 	// Main event loop
 
@@ -223,7 +217,6 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, std::string 
 
         if (dataUpdate)
         {
-            //grid.updateVertexBuffers();
             probe.openIMUFile("data/real_imu.txt");
             dataUpdate = false;
         }
@@ -375,5 +368,8 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
         mousePressed = false;
     }
 }
+
+
+
 
 
