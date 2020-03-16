@@ -22,13 +22,15 @@ float quaternion[4];
 unsigned char probe_type_char;
 unsigned char encoder_char[2];
 unsigned short encoder;
+unsigned char lx16_char[2]; /* data of the lx16. sth similar to encoder */
+unsigned short lx16;
 unsigned char qua_wxyz_char[16];
 unsigned char adc_char[2*2500];
 unsigned char adc_temp[2];
 unsigned char crc_char[4];
 uint32_t crc_result;
 unsigned char crc_result_char[4];
-unsigned char crc_input[4+1+2+16+2*2500];
+unsigned char crc_input[4+1+2+2+0+2*2500]; /* 0 stands for no IMU data */
 unsigned char message_buff[10+4+1+2+16+2*2500+4];
 int16_t adc;
 short buffer[2500];
@@ -160,7 +162,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     int len = line_data[0].vals.size(); // 2500, equl to buffer size
 //    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
 //    std::cin >> len;
-    len = 2500; // change range
+    len = 1500; // change range
     int cnt = 0;
     for  (auto l: line_data)
     {
@@ -177,24 +179,26 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     }
 
     /* add some scale. Each line refer to 1 centimeter */
-//    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-//    int d1m = d1c / 10;
-//    int d1c0 = d1c, d1m0 = d1m;
-//    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-//    {
-//        while (d1m < ddim)
-//        {
-//            for (int i = 0; i < ddim; ++i)
-//                grid.cells[0][ddim - d1m - 1][i] = 130;
-//            d1m += d1m0;
-//        }
-//    }
-//    while (d1c < ddim)
-//    {
-//        for (int i = 0; i < ddim; ++i)
-//            grid.cells[0][ddim - d1c -1][i] = 254;
-//        d1c += d1c0;
-//    }
+    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+    int d1m = d1c / 10;
+    int d1c0 = d1c, d1m0 = d1m;
+    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+    {
+        while (d1m < ddim)
+        {
+            for (int i = 0; i < ddim; ++i)
+                //grid.cells[0][ddim - d1m - 1][i] = 130;
+                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
+            d1m += d1m0;
+        }
+    }
+    while (d1c < ddim)
+    {
+        for (int i = 0; i < ddim; ++i)
+            //grid.cells[0][ddim - d1c -1][i] = 254;
+            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
+        d1c += d1c0;
+    }
     dataUpdate = true;
 }
 
@@ -259,9 +263,13 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
-        double ax = 9*Cos(angle - 222 );
-        double ay = 9*Sin(angle - 222 );
-        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
+//        double ax = 9*Cos(angle - 222 );
+//        double ay = 9*Sin(angle - 222 );
+//        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
+        float piezo = angle + 175;
+
+        /* angle of the lx16 */
+        float angle_16 = _scan_data.at(i).lx16 * 360.0 / 4096.0;
         /* find min and max */
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, _scan_data.at(i).buffer[j]);
@@ -276,8 +284,9 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
         }
         dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
-        glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
-        //if (i == 0) rotinv = glm::inverse(rot);
+        //glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
+        glm::mat4 rot = glm::mat4(1.0f);
+        rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
         _line_data.push_back(dataline);
@@ -324,28 +333,36 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
         encoder = changed_endian_2Bytes(encoder);
+
+        /* lx16 */
+        for (int j = 0; j < (int) sizeof(lx16_char); ++j){
+            lx16_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j);
+        }
+        std::memcpy(&lx16, lx16_char, sizeof(lx16));
+        lx16 = changed_endian_2Bytes(lx16);
+
         /* IMU */
-        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
-            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
-                                                        sizeof(encoder_char) + j);
-        }
-        for (int j = 0; j < 16; j += 4)
-        {
-            unsigned char temp1[4];
-            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
-            quaternion[j/4] = *(float*)temp1;
-        }
-//        float qtmp = quaternion[1];
-//        quaternion[1] = quaternion[2];
-//        quaternion[2] = quaternion[3];
-//        quaternion[3] = qtmp;
+//        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+//            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+//                                                        sizeof(encoder_char) + j);
+//        }
+//        for (int j = 0; j < 16; j += 4)
+//        {
+//            unsigned char temp1[4];
+//            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+//            quaternion[j/4] = *(float*)temp1;
+//        }
+        quaternion[0] = 1;
+        quaternion[1] = 0;
+        quaternion[2] = 0;
+        quaternion[3] = 0;
         /* adc */
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
-                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(lx16_char) - sizeof(crc_char))/2;
         for (int j = 0; j < buffer_length; ++j){
             for (int k = 0; k < (int)sizeof(adc_temp); ++k){
-                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(quaternion_char) + j * 2 + k);
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
             std::memcpy(&adc, adc_temp, sizeof(adc));
@@ -360,24 +377,25 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
         memcpy(crc_input+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
         memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), quaternion_char, sizeof(quaternion_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), lx16_char, sizeof(lx16_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(lx16_char), adc_char, sizeof(adc_char));
         crc_result = crc32c(0, crc_input, sizeof(crc_input));
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         // add a judgement based on the quaternion values
-        float epsilon = 0.01;
-        float sumQ = 0;
-        for (auto q: quaternion) sumQ += q*q;
-        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
+//        float epsilon = 0.01;
+//        float sumQ = 0;
+//        for (auto q: quaternion) sumQ += q*q;
+//        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
         /* if two crc matches */
-        //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
         //if(1){  // uncommented this for store all the data
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
             for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
             temp_struct.encoder = encoder;
+            temp_struct.lx16 = lx16;
             /* normalize on the go */
             for (int j = 0; j < buffer_length; ++j) {
                 temp_struct.buffer[j] = buffer[j];

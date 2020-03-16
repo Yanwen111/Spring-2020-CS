@@ -30,6 +30,7 @@
 struct scan_data_struct{
     unsigned long time_stamp;
     unsigned short encoder;
+    unsigned short lx16;
     float quaternion[4];
     short buffer[2500];
 };
