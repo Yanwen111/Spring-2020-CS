@@ -4,18 +4,13 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 #include "imgui.h"
-//#include "imgui_impl_opengl3.h"
-//#include "imgui_impl_glfw.h"
 
 #include <iostream>
-#include <string>
-#include <vector>
 
-#include <mutex>
+#include <string>
 #include <thread>
 #include <chrono>
 
-//#include "shader.h"
 #include "camera.h"
 #include "data.h"
 #include "probe.h"
@@ -64,6 +59,7 @@ void func1(int n, int k)
 }
 
 int main() {
+
     // Window title
     std::string windowTitle = "Density Map";
     // Initializing the OpenGL context
@@ -126,12 +122,6 @@ int main() {
     int dim = 101;
     DensityMap grid(dim);
 
-    // Add a sphere to the center of the grid
-    //fanDemo(grid);
-    //sphereDemo(grid);
-    //realDemo(grid);
-    //gainControl(grid, 0); // 0 to something
-
     // Creating the probe
     Probe probe("data/PROBE_CENTERED.stl");
     // Open the IMU file for reading
@@ -142,7 +132,6 @@ int main() {
 
     // Add all non-empty cells to the map
     grid.setThreshold(1);
-    grid.updateVertexBuffers();
 
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
@@ -185,7 +174,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
         if (dataUpdate)
         {
-            grid.updateVertexBuffers();
+//            grid.updateVertexBuffers();
             probe.openIMUFile("data/real_imu.txt");
             dataUpdate = false;
         }
@@ -205,7 +194,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         probe.draw(projection, view, rotationX, rotationY);
 
         // Draw the GUI and set parameters
-        myGUI.drawGUI(projection, view, model);
+        myGUI.drawGUI(projection, view, model, rotationX, rotationY);
         myGUI.setNumLinesDrawn(100);
         myGUI.setTime(glfwGetTime());
         myGUI.setQuaternion(probe.getQuaternions());
@@ -333,155 +322,3 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
         mousePressed = false;
     }
 }
-
-void sphereDemo(DensityMap& grid) {
-    // Adds a sphere to the center of the volume map
-
-    int dim = grid.getDim();
-
-    float radius = 0.3;
-
-    for (int i = 0; i < dim; i++) {
-        for (int j = 0; j < dim; j++) {
-            for (int k = 0; k < dim; k++) {
-                float xd = i - ((dim - 1) / 2.0);
-                float yd = j - ((dim - 1) / 2.0);
-                float zd = k - ((dim - 1) / 2.0);
-
-                float mxd = (dim - 1) / 2.0;
-                float myd = (dim - 1) / 2.0;
-                float mzd = (dim - 1) / 2.0;
-
-                float distance = sqrt(xd * xd + yd * yd + zd * zd);
-                float maxDistance = sqrt(mxd * mxd + myd * myd + mzd * mzd);
-                float shade = (maxDistance - distance) / maxDistance;
-                shade = shade * shade;
-
-                if (distance < radius * dim) {
-                    grid.cells[i][j][k] = static_cast<unsigned char>(shade * 255);
-                }
-            }
-        }
-    }
-}
-
-void fanDemo(DensityMap& grid) {
-    // Adds a fan shape to the volume map
-    // using the DensityMap::addLine() function
-
-    glm::vec3 vertex = { 0.5, 0.5, 0.5 };
-
-    float a1 = 1;
-    float a2 = 1;
-
-    float r = 0.3;
-
-    for (; a2 <= 3; a2 += 0.01) {
-        float x = r * sin(a1) * cos(a2);
-        float y = r * sin(a1) * sin(a2);
-        float z = r * cos(a1);
-
-        std::vector<unsigned char> vals;
-
-        for (int i = 0; i < 1000; i++) {
-            vals.push_back(255);
-        }
-
-        grid.addLine(vertex, vertex + glm::vec3(x, y, z), vals);
-    }
-}
-//
-//void realDemo(DensityMap& grid)
-//{
-//    //read the data from current red pitaya 2d data.
-//    std::vector<unsigned char> file_bytes;
-//    std::vector<int> marker_locations;
-//    std::vector<scan_data_struct> scan_data;
-//    std::vector<line_data_struct> line_data;
-//
-//    file_bytes = readFile("data/largemarble_2.txt");
-//    /* find all marker locations */
-//    marker_locations = find_marker(file_bytes);
-//    /* convert file bytes to data struct */
-//    file_to_data(file_bytes, marker_locations, scan_data);
-//    printf("the size of scan_data is %d\n", scan_data.size());
-//    /* convert data to vertex on screen */
-//    data_to_pixel(scan_data, line_data);
-//    printf("find the screen_data\n");
-//
-//
-//    float ddim = (float)grid.getDim();
-//    int len = line_data[0].vals.size();
-//    std::vector<float> maX, maY, maZ;  //assume the max/min coordinate must belong to edge points
-//    for (auto s: line_data) {
-//        maX.push_back(s.p1.x);
-//        maX.push_back(s.p2.x);
-//        maY.push_back(s.p1.y);
-//        maY.push_back(s.p2.y);
-//        maZ.push_back(s.p1.z);
-//        maZ.push_back(s.p2.z);
-//    }
-//    float maxx = *std::max_element(maX.begin(), maX.end());
-//    float minx = *std::min_element(maX.begin(), maX.end());
-//    float maxy = *std::max_element(maY.begin(), maY.end());
-//    float miny = *std::min_element(maY.begin(), maY.end());
-//    float maxz = *std::max_element(maZ.begin(), maZ.end());
-//    float minz = *std::min_element(maZ.begin(), maZ.end());
-//    float scale = ddim / len;
-//    printf("%f\n", scale);
-//
-//    for (auto l: line_data)
-//    {
-//        glm::vec3 ps = {(l.p1.x-minx)/(maxx-minx), (l.p1.y-miny)/(maxy-miny), (l.p1.z-minz)/(maxz-minz)};
-//        glm::vec3 pe = {(l.p2.x-minx)/(maxx-minx), (l.p2.y-miny)/(maxy-miny), (l.p2.z-minz)/(maxz-minz)};
-//        grid.addLine(ps, pe, l.vals);
-//    }
-//
-///*
-//    //fill the cell
-//    double maxx = -999, maxy = -999, maxz = -999, minx = 999, miny = 999, minz = 999;
-//
-//    for (auto s: screen_data) {
-//        maxx = std::max(s.X, maxx);
-//        maxy = std::max(s.Y, maxy);
-//        maxz = std::max(s.Z, maxz);
-//        minx = std::min(s.X, minx);
-//        miny = std::min(s.Y, miny);
-//        minz = std::min(s.Z, minz);
-//
-//        //maxi = std::max(s.I, maxi);
-//        //mini = std::min(s.I, mini);
-//    }
-//    printf("find the maxes and mins\n");
-//    //printf("maxI is %f, min I is %f\n", maxi, mini);
-//    std::vector<std::vector<std::vector<int>>> cnts;// = grid.cells; //101x101x101
-//    //printf("the cnts size is x: %d, y: %d, z:%d\n", cnts.size(), cnts[0].size(), cnts[0][0].size());
-//    int ddim = grid.getDim();
-//    for (int i = 0; i < ddim; ++i) {
-//        cnts.push_back(std::vector<std::vector<int>>{});
-//
-//        for (int j = 0; j < ddim; ++j) {
-//            cnts.back().push_back(std::vector<int>{});
-//
-//            for (int k = 0; k < ddim; ++k) {
-//                cnts.back().back().push_back(0);
-//            }
-//        }
-//    }
-//    for (auto s: screen_data) {
-//        int tx = (int) ((s.X - minx) / (maxx - minx) * ddim);
-//        int ty = (int) ((s.Y - miny) / (maxy - miny) * ddim);
-//        //int tz = (int) ((s.Z - minz) / (maxz-minz) * ddim); //we don't have 3D data yet
-//        int tz = ddim / 2;
-//        if (tx < 0 || tx >= ddim || ty < 0 || ty >= ddim || tz < 0 || tz >= ddim)
-//            continue;
-//        grid.cells[tx][ty][tz] =
-//                cnts[tx][ty][tz] == 0 ? static_cast<unsigned char>(s.I * 255) : static_cast<unsigned char>(
-//                        (cnts[tx][ty][tz] * (int) grid.cells[tx][ty][tz] + s.I * 255) / (cnts[tx][ty][tz] + 1));
-//        //grid.cells[tx][ty][tz] = static_cast<unsigned char>(s.I*255);
-//        cnts[tx][ty][tz]++;
-//        //printf("the I at X: %d, Y:%d,  Z:%d   is: %f\n", tx, ty, tz, s.I);
-//    }
-//*/
-//}
-

@@ -5,7 +5,7 @@ class GUI {
 
 public:
     GUI(GLFWwindow* window, const char* glsl_version);
-    void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model, float rotationX, float rotationY);
     static void cleanUp();
 
     int getZoom();

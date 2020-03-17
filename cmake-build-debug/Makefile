@@ -330,33 +330,6 @@ Ultrasound/data.cpp.s:
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s
 .PHONY : Ultrasound/data.cpp.s
 
-Ultrasound/fakedata.o: Ultrasound/fakedata.cpp.o
-
-.PHONY : Ultrasound/fakedata.o
-
-# target to build an object file
-Ultrasound/fakedata.cpp.o:
-	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o
-.PHONY : Ultrasound/fakedata.cpp.o
-
-Ultrasound/fakedata.i: Ultrasound/fakedata.cpp.i
-
-.PHONY : Ultrasound/fakedata.i
-
-# target to preprocess a source file
-Ultrasound/fakedata.cpp.i:
-	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.i
-.PHONY : Ultrasound/fakedata.cpp.i
-
-Ultrasound/fakedata.s: Ultrasound/fakedata.cpp.s
-
-.PHONY : Ultrasound/fakedata.s
-
-# target to generate assembly for a file
-Ultrasound/fakedata.cpp.s:
-	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.s
-.PHONY : Ultrasound/fakedata.cpp.s
-
 Ultrasound/gui.o: Ultrasound/gui.cpp.o
 
 .PHONY : Ultrasound/gui.o
@@ -711,9 +684,6 @@ help:
 	@echo "... Ultrasound/data.o"
 	@echo "... Ultrasound/data.i"
 	@echo "... Ultrasound/data.s"
-	@echo "... Ultrasound/fakedata.o"
-	@echo "... Ultrasound/fakedata.i"
-	@echo "... Ultrasound/fakedata.s"
 	@echo "... Ultrasound/gui.o"
 	@echo "... Ultrasound/gui.i"
 	@echo "... Ultrasound/gui.s"

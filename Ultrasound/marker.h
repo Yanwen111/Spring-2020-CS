@@ -10,6 +10,7 @@ class Marker {
 public:
     Marker();
     void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    float getDistance();
 
 private:
     glm::vec3 marker1;
@@ -19,4 +20,6 @@ private:
     Shader markerShader;
     unsigned int markerVAO, markerVBO, markerNormalsVBO;
     int markerIndex;
+    void drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker);
+
 };

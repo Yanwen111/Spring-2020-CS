@@ -308,12 +308,6 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h">
 			<Option target="Ultrasound"/>
 		</Unit>
-		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.cpp">
-			<Option target="Ultrasound"/>
-		</Unit>
-		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/fakedata.h">
-			<Option target="Ultrasound"/>
-		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>

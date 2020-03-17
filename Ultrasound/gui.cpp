@@ -20,12 +20,13 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     ImGui::StyleColorsClassic();
 
     marker = Marker();
-    marker1 = glm::vec3(0.0f, 0.0f, 0.0f);
-    marker2 = glm::vec3(0.0f, 10.0f, 0.0f);
+//    marker1 = glm::vec3(0.0f, 0.0f, 0.0f);
+//    marker2 = glm::vec3(0.0f, 10.0f, 0.0f);
     reset();
 }
+//glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY
 
-void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model, float rotationX, float rotationY){
     setUp();
     isReset = false;
     drawWidgets(projection, view, model);
@@ -67,7 +68,6 @@ void GUI::reset(){
 
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     marker.draw(projection, view, model);
-
 }
 
 int GUI::getThreshold() {

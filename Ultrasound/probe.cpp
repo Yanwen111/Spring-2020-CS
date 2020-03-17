@@ -19,10 +19,14 @@ Probe::Probe(std::string filename){
             "out vec3 FragPos;                                            \n"
             "                                                             \n"
             "void main() {                                                \n"
-            "   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
-            "   Normal = aNormal;                                         \n"
-            "   FragPos = vec3(model * vec4(aPos, 1.0f));                 \n"
-            "}												              \n";
+//            "   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
+//            "   Normal = vec3(view * model * vec4(aNormal, 0.0f));        \n"
+//            "   FragPos = vec3(model * vec4(aPos, 1.0f));                 \n"
+            "   vec4 mvPos = view * model * vec4(aPos, 1.0);              \n"
+            "   gl_Position = projection * mvPos;                         \n"
+            "   Normal = vec3(view * model * vec4(aNormal, 0.0f));        \n"
+            "   FragPos = vec3(view * model * vec4(aPos, 1.0f));          \n"
+            "}";
 
     std::string fProbe =
             "// FRAGMENT SHADER											 \n"
@@ -118,7 +122,7 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
     // Set lights
     probeShader.setVec3("objectColor", glm::vec3(0.8f, 0.8f, 0.8f));
     probeShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    probeShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 15.0f));
+    probeShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
     glBindVertexArray(probeVAO);
     glDrawArrays(GL_TRIANGLES, 0, probeindex/3);

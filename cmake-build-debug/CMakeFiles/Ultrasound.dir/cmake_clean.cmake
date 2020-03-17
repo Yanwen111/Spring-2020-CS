@@ -4,7 +4,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.o"
   "CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o"
-  "CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/helper.cpp.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.o"

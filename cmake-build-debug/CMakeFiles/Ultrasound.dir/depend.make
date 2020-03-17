@@ -403,8 +403,6 @@ CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/data.cpp
 CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/data.h
 CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.o: ../Ultrasound/rotation.h
 
-CMakeFiles/Ultrasound.dir/Ultrasound/fakedata.cpp.o: ../Ultrasound/fakedata.cpp
-
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../DensityMap/shader.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glad/include/KHR/khrplatform.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Dependencies/glad/include/glad/glad.h

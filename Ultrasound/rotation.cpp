@@ -1,6 +1,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include "rotation.h"
 
+//Converts from probe coordinates to OpenGL coordinates
 glm::mat4 Rotation::convertRotationMatrix(float w, float x, float y, float z){
 //    glm::quat myQuat = glm::quat(w, x, y, z);
 //    glm::mat4 rotationMatrix = glm::mat4_cast(myQuat);
@@ -8,9 +9,22 @@ glm::mat4 Rotation::convertRotationMatrix(float w, float x, float y, float z){
     glm::vec3 eulers = convertToEulerAngle(w, x, y, z);
     glm::mat4 rotationMatrix = glm::mat4(1.0f);
 
-    rotationMatrix = glm::rotate(rotationMatrix, eulers.x , glm::vec3(1, 0, 0));
-    rotationMatrix = glm::rotate(rotationMatrix, -1 * eulers.z, glm::vec3(0, 1, 0));
-    rotationMatrix = glm::rotate(rotationMatrix, eulers.y, glm::vec3(0, 0, 1));
+//    rotationMatrix = Rotation::convertRotationMatrixFromEuler(eulers.x, eulers.y, eulers.z);
+    rotationMatrix = Rotation::convertRotationMatrixFromEuler(eulers.x, -1 * eulers.z, eulers.y);
+
+//    rotationMatrix = glm::rotate(rotationMatrix, eulers.x , glm::vec3(1, 0, 0));
+//    rotationMatrix = glm::rotate(rotationMatrix, -1 * eulers.z, glm::vec3(0, 1, 0));
+//    rotationMatrix = glm::rotate(rotationMatrix, eulers.y, glm::vec3(0, 0, 1));
+
+    return rotationMatrix;
+}
+
+glm::mat4 Rotation::convertRotationMatrixFromEuler(float x, float y, float z){
+    glm::mat4 rotationMatrix = glm::mat4(1.0f);
+
+    rotationMatrix = glm::rotate(rotationMatrix, x , glm::vec3(1, 0, 0));
+    rotationMatrix = glm::rotate(rotationMatrix, y, glm::vec3(0, 1, 0));
+    rotationMatrix = glm::rotate(rotationMatrix, z, glm::vec3(0, 0, 1));
 
     return rotationMatrix;
 }

@@ -29,6 +29,7 @@
 struct scan_data_struct{
     unsigned long time_stamp;
     unsigned short encoder;
+    unsigned short lx16;
     float quaternion[4];
     short buffer[2500];
 };
@@ -59,8 +60,10 @@ std::vector<int> find_marker(std::vector<unsigned char> _file_bytes);
 void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations, std::vector<scan_data_struct> & _scan_data);
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data);
 uint32_t crc32c(uint32_t crc, const unsigned char *buf, size_t len);
+float ReverseFloat( const float inFloat );
 void gainControl(DensityMap& grid, float Gain, bool& dataUpdate);
 std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
+void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
 #endif //ULTRASOUND_OPENGL_MAIN_H

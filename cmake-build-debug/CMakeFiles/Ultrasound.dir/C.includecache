@@ -6,3 +6,31 @@
 
 #IncludeRegexTransform: 
 
+../Dependencies/glad/include/KHR/khrplatform.h
+stdint.h
+-
+inttypes.h
+-
+stdint.h
+-
+
+../Dependencies/glad/include/glad/glad.h
+../../../glad/include/KHR/khrplatform.h
+../Dependencies/glad/include/KHR/khrplatform.h
+
+/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Dependencies/glad/src/glad.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+glad/glad.h
+-
+windows.h
+-
+winapifamily.h
+-
+dlfcn.h
+-
+
