@@ -22,20 +22,21 @@ float quaternion[4];
 unsigned char probe_type_char;
 unsigned char encoder_char[2];
 unsigned short encoder;
-unsigned char lx16_char[2]; /* data of the lx16. sth similar to encoder */
-unsigned short lx16;
 unsigned char qua_wxyz_char[16];
 unsigned char adc_char[2*2500];
 unsigned char adc_temp[2];
 unsigned char crc_char[4];
 uint32_t crc_result;
 unsigned char crc_result_char[4];
-unsigned char crc_input[4+1+2+2+0+2*2500]; /* 0 stands for no IMU data */
+unsigned char crc_input[4+1+2+16+2*2500];
 unsigned char message_buff[10+4+1+2+16+2*2500+4];
 int16_t adc;
 short buffer[2500];
 double intensity;
 unsigned char information_byte = 0xE1;
+
+int len = 2500;
+int samples = -1; /* -1 stands for no data */
 
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
@@ -91,7 +92,7 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
             float dx = ray.x / data_length, dy = ray.y / data_length, dz = ray.z / data_length;
             std::vector<unsigned char> vals;
             float ix = 0, iy = 0, iz = 0;
-            for (int i = 0 ; i < data_length; ++i)
+            for (int k = 0 ; k < data_length; ++k)
             {
                 unsigned short tmp = 30;
                 if (ix >= -1 && ix <= 1 && iy >= 2.5 && iy <= 4.5 && iz >= -1 && iz <= 1)
@@ -103,7 +104,7 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
                 else
                     vals.push_back(30);
                 tmp = changed_endian_2Bytes(tmp);
-                memcpy(adc_char+i*sizeof(tmp), &tmp, sizeof tmp);
+                memcpy(adc_char+k*sizeof(tmp), &tmp, sizeof tmp);
                 ix += dx;
                 iy += dy;
                 iz += dz;
@@ -136,6 +137,104 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
     dataUpdate = true;
 }
 
+void fakeDemo2(DensityMap& grid, bool& dataUpdate) {
+    // directly draw the cube in the space
+    int data_length = 2500; /* eqaul to the start variables */
+    float length = 5; /* length of the vector in coordinate. the cube is 2x2x2 with origin at (0, 2, 0) */
+    int cnt = 0;
+
+    /* open file to save the data*/
+    FILE *fp;
+    fp = fopen("data/fakeTriangle_1.txt", "w");
+    time_stamp = changed_endian_4Bytes(time_stamp);
+    memcpy(time_stamp_char, (unsigned char *) &time_stamp, sizeof(time_stamp_char));
+//    printf("start write encoder & piezo...\n");
+//    std::ofstream fileout("data/encoder_piezo.txt", std::ios::trunc|std::ios::out);
+
+    //for (float piezo = -30; piezo < 30; piezo += 0.1)  /* angel of the piezo*/
+    for (unsigned short i = 0; i < 4096; i += 10) {
+        encoder = i;
+        double angle = encoder * 360.0 / 4096.0;
+        double ax = 9 * Cos(angle - 222);
+        double ay = 9 * Sin(angle - 222);
+        double piezo = atan2(ay + 21, ax) * 180.0 / M_PI - 90.0;
+        glm::vec3 ray0 = glm::vec3{length * Sin(piezo), length * Cos(piezo), 0};
+//        fileout << encoder << ' ' << piezo << std::endl;
+//        continue;
+        /* package the encoder */
+        encoder = changed_endian_2Bytes(encoder);
+        memcpy(encoder_char, &encoder, sizeof encoder_char);
+        for (float w = -1; w < 1; w += 0.1) /*quaternion*/
+        {
+            float y = pow(1 - w * w, 0.5);
+            //if (y > 0.2) y -= 0.1;
+            glm::vec3 euler = Rotation::convertToEulerAngle(w, 0, y, 0);
+            glm::mat4 rotationMatrix = glm::mat4(1.0f);
+            rotationMatrix = glm::rotate(rotationMatrix, float(euler.y), glm::vec3(0, 1, 0));
+            glm::vec3 ray = rotationMatrix * glm::vec4{ray0, 1};
+            //printf("This ray is (%f, %f, %f)\n", ray.x, ray.y, ray.z);
+            /* package the quaternion */
+            float nw = ReverseFloat(w);
+            float nx = ReverseFloat(0);
+            float ny = ReverseFloat(y);
+            float nz = ReverseFloat(0);
+            memcpy(qua_wxyz_char, &nw, sizeof(nw));
+            memcpy(qua_wxyz_char + sizeof(nw), &nx, sizeof(nx));
+            memcpy(qua_wxyz_char + sizeof(nw) + sizeof(nx), &ny, sizeof(ny));
+            memcpy(qua_wxyz_char + sizeof(nw) + sizeof(nx) + sizeof(ny), &nz, sizeof(nz));
+
+            if (cnt % 1000 == 0)
+                printf("It is drawing line No.%d\n", cnt);
+
+            /* Draw the line and find the points inside the cube*/
+            float dx = ray.x / data_length, dy = ray.y / data_length, dz = ray.z / data_length;
+            float ix = 0, iy = 0, iz = 0;
+            for (int k = 0; k < data_length; ++k) {
+                unsigned short tmp = 30;
+                float t;
+                //Checks if the ray (ix, iy, iz) with direction (ix+d, iy+dz, iz+dy) intersects triangle with vertices: (1,0,0), (4,0,0),(3,3.5,4.5)
+                if (rayTriangleIntersect(glm::vec3(0, 0, 0), glm::vec3(ix, iy, iz),
+                                         glm::vec3(0, 3.5, 1), glm::vec3(1, 3.5, -0.7),
+                                         glm::vec3(-1, 3.5, -0.7), t, 0.01)
+                                         )
+                {
+                    //If the ray intersects, the value t fills this equation: P = O + tR, where P is the point on the triangle
+                    //Right now I’m setting the cutoff value for t to be -1.005 and 1.005 to account for the size of the individual cells
+                    if (-1.005 < t && t < 1.005)
+                    {
+                        tmp = 230;
+                        //printf("intersect!\n");
+                    }
+
+                }
+                tmp = changed_endian_2Bytes(tmp);
+                memcpy(adc_char + k * sizeof(tmp), &tmp, sizeof tmp);
+                ix += dx;
+                iy += dy;
+                iz += dz;
+            }
+            /* generate crc and the whole data*/
+            memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
+            memcpy(crc_input + sizeof(time_stamp_char), &information_byte, sizeof(information_byte));
+            memcpy(crc_input + sizeof(time_stamp_char) + sizeof(information_byte), encoder_char, sizeof(encoder_char));
+            memcpy(crc_input + sizeof(time_stamp_char) + sizeof(information_byte) + sizeof(encoder_char), qua_wxyz_char, sizeof(qua_wxyz_char));
+            memcpy(crc_input + sizeof(time_stamp_char) + sizeof(information_byte) + sizeof(encoder_char) + sizeof(qua_wxyz_char), adc_char, sizeof(adc_char));
+            unsigned short crc_result = 36;
+            crc_result = changed_endian_4Bytes(crc_result);
+            memcpy(crc_char, (unsigned char *) &crc_result, sizeof crc_char);
+            memcpy(message_buff, marker, sizeof(marker));
+            memcpy(message_buff + sizeof(marker), crc_input, sizeof(crc_input));
+            memcpy(message_buff + sizeof(marker) + sizeof(crc_input), crc_char, sizeof(crc_char));
+            fwrite(&message_buff, sizeof(message_buff), 1, fp);
+            cnt++;
+        }
+        break;
+    }
+    fclose(fp);
+    dataUpdate = true;
+    //printf("DONE");
+}
+
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
     //read the data from current red pitaya 2d data.
@@ -153,21 +252,22 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
     file_to_data(file_bytes, marker_locations, scan_data);
-    printf("the size of scan_data is %d\n", scan_data.size());
+    samples = scan_data.size();
+    printf("the number of scan_data's samples is %d\n", samples);
     /* convert data to vertex on screen */
     data_to_pixel(scan_data, line_data);
     printf("find the screen_data\n");
 
     int ddim = grid.getDim();
-    int len = line_data[0].vals.size(); // 2500, equl to buffer size
+    len = line_data[0].vals.size(); // 2500, equl to buffer size
 //    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
 //    std::cin >> len;
-    len = 1500; // change range
+    len = 5000; // change range
     int cnt = 0;
     for  (auto l: line_data)
     {
-        glm::vec3 ps = {0.5, 1, 0.5};
-        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        glm::vec3 ps = {0.5, 0.5, 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 0.5, l.p2.z/len - l.p1.z/len +0.5};
         grid.writeLine(ps, pe, l.vals);
         /* for rendering line by line */
 //        cnt ++;
@@ -179,26 +279,24 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     }
 
     /* add some scale. Each line refer to 1 centimeter */
-    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-    int d1m = d1c / 10;
-    int d1c0 = d1c, d1m0 = d1m;
-    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-    {
-        while (d1m < ddim)
-        {
-            for (int i = 0; i < ddim; ++i)
-                //grid.cells[0][ddim - d1m - 1][i] = 130;
-                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
-            d1m += d1m0;
-        }
-    }
-    while (d1c < ddim)
-    {
-        for (int i = 0; i < ddim; ++i)
-            //grid.cells[0][ddim - d1c -1][i] = 254;
-            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
-        d1c += d1c0;
-    }
+//    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+//    int d1m = d1c / 10;
+//    int d1c0 = d1c, d1m0 = d1m;
+//    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+//    {
+//        while (d1m < ddim)
+//        {
+//            for (int i = 0; i < ddim; ++i)
+//                grid.cells[0][ddim - d1m - 1][i] = 130;
+//            d1m += d1m0;
+//        }
+//    }
+//    while (d1c < ddim)
+//    {
+//        for (int i = 0; i < ddim; ++i)
+//            grid.cells[0][ddim - d1c -1][i] = 254;
+//        d1c += d1c0;
+//    }
     dataUpdate = true;
 }
 
@@ -263,13 +361,9 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
-//        double ax = 9*Cos(angle - 222 );
-//        double ay = 9*Sin(angle - 222 );
-//        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
-        float piezo = angle + 175;
-
-        /* angle of the lx16 */
-        float angle_16 = _scan_data.at(i).lx16 * 360.0 / 4096.0;
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
+        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
         /* find min and max */
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, _scan_data.at(i).buffer[j]);
@@ -284,9 +378,8 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
         }
         dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
-        //glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
-        glm::mat4 rot = glm::mat4(1.0f);
-        rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
+        glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
+        //if (i == 0) rotinv = glm::inverse(rot);
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
         _line_data.push_back(dataline);
@@ -333,36 +426,28 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
         encoder = changed_endian_2Bytes(encoder);
-
-        /* lx16 */
-        for (int j = 0; j < (int) sizeof(lx16_char); ++j){
-            lx16_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j);
-        }
-        std::memcpy(&lx16, lx16_char, sizeof(lx16));
-        lx16 = changed_endian_2Bytes(lx16);
-
         /* IMU */
-//        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
-//            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
-//                                                        sizeof(encoder_char) + j);
-//        }
-//        for (int j = 0; j < 16; j += 4)
-//        {
-//            unsigned char temp1[4];
-//            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
-//            quaternion[j/4] = *(float*)temp1;
-//        }
-        quaternion[0] = 1;
-        quaternion[1] = 0;
-        quaternion[2] = 0;
-        quaternion[3] = 0;
+        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+                                                        sizeof(encoder_char) + j);
+        }
+        for (int j = 0; j < 16; j += 4)
+        {
+            unsigned char temp1[4];
+            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+            quaternion[j/4] = *(float*)temp1;
+        }
+//        float qtmp = quaternion[1];
+//        quaternion[1] = quaternion[2];
+//        quaternion[2] = quaternion[3];
+//        quaternion[3] = qtmp;
         /* adc */
         /* determine the length of buffer */
         buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
-                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(lx16_char) - sizeof(crc_char))/2;
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
         for (int j = 0; j < buffer_length; ++j){
             for (int k = 0; k < (int)sizeof(adc_temp); ++k){
-                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + j * 2 + k);
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(quaternion_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
             std::memcpy(&adc, adc_temp, sizeof(adc));
@@ -377,25 +462,24 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
         memcpy(crc_input, time_stamp_char, sizeof(time_stamp_char));
         memcpy(crc_input+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
         memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), lx16_char, sizeof(lx16_char));
-        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(lx16_char), adc_char, sizeof(adc_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), quaternion_char, sizeof(quaternion_char));
+        memcpy(crc_input+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
         crc_result = crc32c(0, crc_input, sizeof(crc_input));
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         // add a judgement based on the quaternion values
-//        float epsilon = 0.01;
-//        float sumQ = 0;
-//        for (auto q: quaternion) sumQ += q*q;
-//        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
+        float epsilon = 0.01;
+        float sumQ = 0;
+        for (auto q: quaternion) sumQ += q*q;
+        if (pow(sumQ, 0.5) > 1 - epsilon && pow(sumQ, 0.5) < 1 + epsilon){  // uncomment this for only using data with (w2+x2+y2+z2) == 1
         /* if two crc matches */
-        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+        //if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
         //if(1){  // uncommented this for store all the data
             scan_data_struct temp_struct;
             temp_struct.time_stamp = time_stamp;
             for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
             temp_struct.encoder = encoder;
-            temp_struct.lx16 = lx16;
             /* normalize on the go */
             for (int j = 0; j < buffer_length; ++j) {
                 temp_struct.buffer[j] = buffer[j];
@@ -488,4 +572,68 @@ float ReverseFloat( const float inFloat ){
     returnFloat[3] = floatToConvert[0];
 
     return retVal;
+}
+
+bool rayTriangleIntersect(
+        const glm::vec3 &orig, const glm::vec3 &dir,
+        const glm::vec3 &v0, const glm::vec3 &v1, const glm::vec3 &v2,
+        float &t, float kEpsilon)
+{
+    // compute plane's normal
+    glm::vec3 v0v1 = v1 - v0;
+    glm::vec3 v0v2 = v2 - v0;
+    // no need to normalize
+    glm::vec3 N = cross(v0v1, v0v2); // N
+    float area2 = length(N);
+
+    // Step 1: finding P
+
+    // check if ray and plane are parallel ?
+    float NdotRayDirection = dot(N, dir);
+    if (fabs(NdotRayDirection) < kEpsilon) // almost 0
+        return false; // they are parallel so they don't intersect !
+
+    // compute d parameter using equation 2
+    float d = dot(N, v0);
+
+    // compute t (equation 3)
+    t = (dot(N, orig) + d) / NdotRayDirection;
+    // check if the triangle is in behind the ray
+//    if (t < 0) return false; // the triangle is behind
+
+    // compute the intersection point using equation 1
+    glm::vec3 P = orig + t * dir;
+
+    // Step 2: inside-outside test
+    glm::vec3 C; // vector perpendicular to triangle's plane
+
+    // edge 0
+    glm::vec3 edge0 = v1 - v0;
+    glm::vec3 vp0 = P - v0;
+    C = cross(edge0, vp0);
+    if (dot(N, C) < 0) return false; // P is on the right side
+
+    // edge 1
+    glm::vec3 edge1 = v2 - v1;
+    glm::vec3 vp1 = P - v1;
+    C = cross(edge1, vp1);
+    if (dot(N, C) < 0)  return false; // P is on the right side
+
+    // edge 2
+    glm::vec3 edge2 = v0 - v2;
+    glm::vec3 vp2 = P - v2;
+    C = cross(edge2, vp2);
+    return !(dot(N, C) < 0); // P is on the right side;
+
+    // this ray hits the triangle
+};
+
+int getDepth()
+{
+    return len;
+}
+
+int getSamples()
+{
+    return samples;
 }

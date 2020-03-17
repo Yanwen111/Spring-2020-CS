@@ -30,7 +30,6 @@
 struct scan_data_struct{
     unsigned long time_stamp;
     unsigned short encoder;
-    unsigned short lx16;
     float quaternion[4];
     short buffer[2500];
 };
@@ -66,5 +65,12 @@ void gainControl(DensityMap& grid, float Gain, bool& dataUpdate);
 std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
+void fakeDemo2(DensityMap& grid, bool& dataUpdate); /* Hayun's triangle */
+bool rayTriangleIntersect(
+        const glm::vec3 &orig, const glm::vec3 &dir,
+        const glm::vec3 &v0, const glm::vec3 &v1, const glm::vec3 &v2,
+        float &t, float kEpsilon);
+int getSamples();
+int getDepth();
 
 #endif //ULTRASOUND_OPENGL_MAIN_H

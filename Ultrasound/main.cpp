@@ -24,8 +24,8 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1000
-#define SCR_HEIGHT 800
+#define SCR_WIDTH 800
+#define SCR_HEIGHT 600
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
