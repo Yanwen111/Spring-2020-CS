@@ -150,7 +150,6 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
     std::cin >> fileName;
     file_bytes = readFile(fileName);
-    //file_bytes = readFile("data/tapioca_1.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
@@ -163,7 +162,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 
     int ddim = grid.getDim();
     len = line_data[0].vals.size(); // 2500, equl to buffer size
-//    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
+//    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
 //    std::cin >> len;
     //len = 1500; // change range
     setDepth(1500);
@@ -206,6 +205,118 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     dataUpdate = true;
 }
 
+void realDemo2(DensityMap& grid, bool& dataUpdate)
+{
+    //read the data from current red pitaya 2d data.
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    /* for real time trial */
+    std::vector<unsigned char> sub_file_bytes;
+    std::vector<int> sub_marker_locations;
+    int sub_length = -1;
+    bool newDataline = false;
+
+    char fileName[255];
+    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+    std::cin >> fileName;
+    file_bytes = readFile(fileName);
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+
+    sub_length = marker_locations.size() / 35;
+
+    std::thread fileThread;
+    fileThread = std::thread(readSubfile, file_bytes, marker_locations, sub_length,
+            std::ref(sub_file_bytes), std::ref(sub_marker_locations),
+                             std::ref(newDataline));
+    fileThread.detach();
+
+    while(1) {
+        if (newDataline)
+        {
+            newDataline = false;
+            printf("DRAW!\n");
+            /* convert file bytes to data struct */
+            file_to_data(sub_file_bytes,sub_marker_locations, scan_data);
+            samples = scan_data.size();
+            printf("the number of scan_data samples is %d\n", samples);
+            /* convert data to vertex on screen */
+            data_to_pixel(scan_data, line_data);
+            printf("find the screen_data\n");
+
+            int ddim = grid.getDim();
+            len = line_data[0].vals.size(); // 2500, equl to buffer size
+//            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+//            std::cin >> len;
+            //len = 1500; // change range
+            setDepth(1500);
+            int cnt = 0;
+            for (auto l: line_data) {
+                glm::vec3 ps = {0.5, 1, 0.5};
+                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+                                l.p2.z / len - l.p1.z / len + 0.5};
+                grid.writeLine(ps, pe, l.vals);
+                /* for rendering line by line */
+    //        cnt ++;
+    //        if (cnt%200 == 0)
+    //        {
+    //            printf("draw line %d\n", cnt);
+    //            std::this_thread::sleep_for(std::chrono::seconds(2));
+    //        }
+            }
+
+            /* add some scale. Each line refer to 1 centimeter */
+    //    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+    //    int d1m = d1c / 10;
+    //    int d1c0 = d1c, d1m0 = d1m;
+    //    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+    //    {
+    //        while (d1m < ddim)
+    //        {
+    //            for (int i = 0; i < ddim; ++i)
+    //                //grid.cells[0][ddim - d1m - 1][i] = 130;
+    //                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
+    //            d1m += d1m0;
+    //        }
+    //    }
+    //    while (d1c < ddim)
+    //    {
+    //        for (int i = 0; i < ddim; ++i)
+    //            //grid.cells[0][ddim - d1c -1][i] = 254;
+    //            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
+    //        d1c += d1c0;
+    //    }
+            dataUpdate = true;
+        }
+    }
+}
+
+void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+        std::vector<unsigned char> & sub_file_bytes, std::vector<int> & sub_marker_locations, bool& newDataline)
+{
+    // sub_length: the length of each part of the file_bytes
+    int pt = 0; /* current position in marker_locations */
+    while (pt < marker_locations.size()-1)
+    {
+        sub_file_bytes.clear();
+        sub_marker_locations.clear();
+        int startMarker = marker_locations[pt];
+        for (int i = 0; i < sub_length; ++i)
+        {
+            if (pt >= marker_locations.size()-1) break;
+            for (int j = marker_locations[pt]; j < marker_locations[pt+1]; j++)
+                sub_file_bytes.push_back(file_bytes[j]);
+            sub_marker_locations.push_back(marker_locations[pt]-startMarker);
+            pt++;
+        }
+        printf("Read some new data lines!\n");
+        newDataline = true;
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    }
+}
 
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
@@ -320,6 +431,7 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
 }
 
 void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations, std::vector<scan_data_struct> & _scan_data){
+    _scan_data.clear();
     for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
         marker_index = _marker_locations.at(i);
         marker_index_next = _marker_locations.at(i+1);

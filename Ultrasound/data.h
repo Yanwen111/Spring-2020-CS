@@ -67,6 +67,10 @@ std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
+void realDemo2(DensityMap& grid, bool& dataUpdate);
+void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+                 std::vector<unsigned char> & sub_file_bytes, std::vector<int> & sub_marker_locations, bool& newDataline);
+
 int getDepth();
 void setDepth(int dep);
 int getSamples();
