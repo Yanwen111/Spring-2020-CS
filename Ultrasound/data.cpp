@@ -140,7 +140,6 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
 
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
-    //read the data from current red pitaya 2d data.
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;
     std::vector<scan_data_struct> scan_data;
@@ -165,11 +164,11 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 //    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
 //    std::cin >> len;
     //len = 1500; // change range
-    setDepth(1500);
+    setDepth(2500);
     int cnt = 0;
     for  (auto l: line_data)
     {
-        glm::vec3 ps = {0.5, 1, 0.5};
+        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         grid.writeLine(ps, pe, l.vals);
         /* for rendering line by line */
@@ -318,6 +317,60 @@ void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_
     }
 }
 
+void realDemo3(DensityMap& grid, bool& dataUpdate)
+{
+    printf("Try gantry ~ \n");
+    float stepLength = 0.5; /* (cm) step of the gantry*/
+    int step = stepLength * 1e6 / Velocity * 15.6;
+    printf("step is %d\n", step);
+    glm::vec3 starts = {0.2, 1, 0.5};
+
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    for (int i = 0; i < 3; ++ i)
+    {
+        file_bytes.clear();
+        marker_locations.clear();
+        scan_data.clear();
+        line_data.clear();
+
+        std::string fileNameS = "";
+        std::string fileNameBase = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_";
+        std::string fileNameTail = ".txt";
+        fileNameS = fileNameBase += std::to_string(1+i) += fileNameTail;
+        char *fileName = new char[strlen(fileNameS.c_str()) + 1];
+        strcpy(fileName, fileNameS.c_str());
+        file_bytes = readFile(fileName);
+        /* find all marker locations */
+        marker_locations = find_marker(file_bytes);
+        /* convert file bytes to data struct */
+        file_to_data(file_bytes, marker_locations, scan_data);
+        samples = scan_data.size();
+        printf("the number of scan_data samples is %d\n", samples);
+        /* convert data to vertex on screen */
+        data_to_pixel(scan_data, line_data);
+        printf("find the screen_data\n");
+
+        int ddim = grid.getDim();
+        len = line_data[0].vals.size(); // 2500, equl to buffer size
+        glm::vec3 actualStarts = {0.2+float(step)*5.0 * i/len, 1, 0.5};
+        //len = 1500; // change range
+        setDepth(2500);
+        int cnt = 0;
+        for (auto l: line_data)
+        {
+            glm::vec3 ps = {l.p1.x / len + actualStarts.x, l.p1.y / len + actualStarts.y, l.p1.z / len + actualStarts.z};
+            glm::vec3 pe = {l.p2.x / len - l.p1.x / len + actualStarts.x,
+                            l.p2.y / len - l.p1.y / len + actualStarts.y,
+                            l.p2.z / len - l.p1.z / len + actualStarts.z};
+            grid.writeLine(ps, pe, l.vals);
+        }
+    }
+}
+
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {
     printf("6000s later it will do some gain control\n");
@@ -391,14 +444,16 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
 
+        int piezoProbe = 142; /*assume v = 1000 m/s */
+
         line_data_struct dataline;
-        dataline.p1 = {Cos(piezo),Sin(piezo), 0};
+        dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
         /* normalize on the go */
         for (int j = 0; j < buffer_length; ++j){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
             dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
         }
-        dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
+        dataline.p2 = {(buffer_length+piezoProbe)*Cos(piezo), (buffer_length+piezoProbe)*Sin(piezo), 0};
         //glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
         glm::mat4 rot = glm::mat4(1.0f);
         rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
