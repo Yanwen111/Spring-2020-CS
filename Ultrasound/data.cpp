@@ -36,6 +36,8 @@ int16_t adc;
 short buffer[2500];
 double intensity;
 unsigned char information_byte = 0xE1;
+int len = 2500;
+int samples = -1; /* -1 stands for no data */
 
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
@@ -153,16 +155,18 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
     file_to_data(file_bytes, marker_locations, scan_data);
-//    printf("the size of scan_data is %d\n", scan_data.size());
+    samples = scan_data.size();
+    printf("the number of scan_data samples is %d\n", samples);
     /* convert data to vertex on screen */
     data_to_pixel(scan_data, line_data);
     printf("find the screen_data\n");
 
     int ddim = grid.getDim();
-    int len = line_data[0].vals.size(); // 2500, equl to buffer size
+    len = line_data[0].vals.size(); // 2500, equl to buffer size
 //    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
 //    std::cin >> len;
-    len = 1500; // change range
+    //len = 1500; // change range
+    setDepth(1500);
     int cnt = 0;
     for  (auto l: line_data)
     {
@@ -179,26 +183,26 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     }
 
     /* add some scale. Each line refer to 1 centimeter */
-    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-    int d1m = d1c / 10;
-    int d1c0 = d1c, d1m0 = d1m;
-    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-    {
-        while (d1m < ddim)
-        {
-            for (int i = 0; i < ddim; ++i)
-                //grid.cells[0][ddim - d1m - 1][i] = 130;
-                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
-            d1m += d1m0;
-        }
-    }
-    while (d1c < ddim)
-    {
-        for (int i = 0; i < ddim; ++i)
-            //grid.cells[0][ddim - d1c -1][i] = 254;
-            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
-        d1c += d1c0;
-    }
+//    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
+//    int d1m = d1c / 10;
+//    int d1c0 = d1c, d1m0 = d1m;
+//    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
+//    {
+//        while (d1m < ddim)
+//        {
+//            for (int i = 0; i < ddim; ++i)
+//                //grid.cells[0][ddim - d1m - 1][i] = 130;
+//                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
+//            d1m += d1m0;
+//        }
+//    }
+//    while (d1c < ddim)
+//    {
+//        for (int i = 0; i < ddim; ++i)
+//            //grid.cells[0][ddim - d1c -1][i] = 254;
+//            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
+//        d1c += d1c0;
+//    }
     dataUpdate = true;
 }
 
@@ -488,4 +492,17 @@ float ReverseFloat( const float inFloat ){
     returnFloat[3] = floatToConvert[0];
 
     return retVal;
+}
+
+int getDepth()
+{
+    return len;
+}
+void setDepth(int dep)
+{
+    len = dep;
+}
+int getSamples()
+{
+    return samples;
 }

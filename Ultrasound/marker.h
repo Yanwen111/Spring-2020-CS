@@ -10,7 +10,12 @@ class Marker {
 public:
     Marker();
     void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
-    float getDistance();
+    float getDistance(float freq, float vel, int depth);
+    void setPositionMarker1(glm::vec3 pos);
+    void setPositionMarker2(glm::vec3 pos);
+
+    glm::vec3 getMarker1Pos();
+    glm::vec3 getMarker2Pos();
 
 private:
     glm::vec3 marker1;

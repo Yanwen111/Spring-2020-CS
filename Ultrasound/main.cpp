@@ -195,7 +195,6 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, model, rotationX, rotationY);
-        myGUI.setNumLinesDrawn(100);
         myGUI.setTime(glfwGetTime());
         myGUI.setQuaternion(probe.getQuaternions());
         myGUI.setEulerAngles(probe.getEulerAngles());
@@ -204,6 +203,12 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             rotationY = 0;
         }
         cam.fov = myGUI.getZoom();
+
+        //Set up GUI paramters
+        myGUI.setNumLinesDrawn(getSamples());
+        myGUI.setNumSamples(getDepth());
+        myGUI.setVoxels(100);
+        myGUI.setFileSize(0);
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);

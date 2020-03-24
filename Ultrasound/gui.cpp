@@ -20,8 +20,15 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     ImGui::StyleColorsClassic();
 
     marker = Marker();
-//    marker1 = glm::vec3(0.0f, 0.0f, 0.0f);
-//    marker2 = glm::vec3(0.0f, 10.0f, 0.0f);
+    glm::vec3 tmpPos = marker.getMarker1Pos();
+    marker1x = tmpPos.x;
+    marker1y = tmpPos.y;
+    marker1z = tmpPos.z;
+    tmpPos = marker.getMarker2Pos();
+    marker2x = tmpPos.x;
+    marker2y = tmpPos.y;
+    marker2z = tmpPos.z;
+//    marker.setPosition(markerX, markerY, glm::mat4(1.0f));
     reset();
 }
 //glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY
@@ -62,11 +69,14 @@ void GUI::reset(){
     threshold = 0;
     isReset = true;
     setMarker = false;
-    marker1 = glm::vec3(0,0,0);
-    marker2 = glm::vec3(0,5,0);
+
+    velocity = 1102;
+    frequency = 15.6;
 }
 
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+    marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
+    marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
     marker.draw(projection, view, model);
 }
 
@@ -82,16 +92,55 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
     ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
     ImGui::SliderInt("Zoom field of view", &zoom, 80, 10);
-    ImGui::Checkbox("Set Marker", &setMarker);
     if (ImGui::Button("Reset"))
         reset();
+
+    ImGui::Checkbox("Set Marker", &setMarker);
+
+    if(setMarker) {
+        ImGui::Text("Distance between markers: %f cm", marker.getDistance(frequency, velocity, numSamples));
+
+        ImGui::Text("Marker 1 Movement");
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("X1", &marker1x, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Y1", &marker1y, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Z1", &marker1z, 0.0f, 1.0f);
+        ImGui::PopItemWidth();
+
+        ImGui::Text("Marker 2 Movement");
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("X2", &marker2x, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Y2", &marker2y, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Z2", &marker2z, 0.0f, 1.0f);
+        ImGui::PopItemWidth();
+    }
     ImGui::End();
 
     ImGui::Begin("Statistics");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+
+
+    int hr = time / 3600;
+    int min = (time - 3600 * hr) / 60.0;
+    int sec = (time - 3600 * hr - 60 * min);
+    int milli = (time - 3600*hr - 60*min - sec)*1000;
+    ImGui::Text("Time: %d:%d:%d:%d", hr, min, sec, milli);
     ImGui::Text("Time: %f", time);
+
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Text("Number of lines drawn: %d", numLines);
+    ImGui::Text("# Voxels: %d x %d x %d", voxels, voxels, voxels);
+    ImGui::Text("File size: %f", fileSize);
     ImGui::NewLine();
+
+    ImGui::Text("Number of samples per line %d", numSamples);
+    ImGui::Text("Velocity used for calculation: %f m/s", velocity);
+    ImGui::Text("Frequency: %f MHz", frequency);
+    ImGui::NewLine();
+
     ImGui::Text("Probe statistics");
     ImGui::Text("Quaternion values (xyzw):");
     ImGui::Indent(); ImGui::Text("%f %f %f %f", quat.x, quat.y, quat.z, quat.w);ImGui::Unindent();
@@ -153,6 +202,18 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
 void GUI::setNumLinesDrawn(int num){
     numLines = num;
+}
+
+void GUI::setNumSamples(int num){
+    numSamples = num;
+}
+
+void GUI::setVoxels(int size){
+    voxels = size;
+}
+
+void GUI::setFileSize(double size){
+    fileSize = size;
 }
 
 void GUI::setTime(float currTime){

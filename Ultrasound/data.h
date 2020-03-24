@@ -66,4 +66,8 @@ std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
+int getDepth();
+void setDepth(int dep);
+int getSamples();
+
 #endif //ULTRASOUND_OPENGL_MAIN_H

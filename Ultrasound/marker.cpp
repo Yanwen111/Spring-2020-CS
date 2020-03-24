@@ -82,8 +82,8 @@ Marker::Marker(){
     delete [] markervertices;
     delete [] markernormals;
 
-    marker1 = glm::vec3(4,0,0);
-    marker2 = glm::vec3(-4,0,0);
+    marker1 = glm::vec3(0.7,0,0);
+    marker2 = glm::vec3(0.2,0,0);
 }
 
 void scale(glm::mat4& model_marker, float s){
@@ -103,6 +103,13 @@ void translate(glm::mat4& model_marker, glm::mat4 modelRot, glm::vec3 position){
     model_marker = glm::translate(glm::mat4(1.0f), trans) * model_marker;
 }
 
+glm::vec3 Marker::getMarker1Pos(){
+    return marker1;
+}
+glm::vec3 Marker::getMarker2Pos(){
+    return marker2;
+}
+
 void Marker::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
     // Drawing the marker
     markerShader.use();
@@ -119,6 +126,14 @@ void Marker::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_ma
     glDrawArrays(GL_TRIANGLES, 0, markerIndex/3);
 }
 
+void Marker::setPositionMarker1(glm::vec3 pos){
+    marker1 = pos;
+}
+
+void Marker::setPositionMarker2(glm::vec3 pos) {
+    marker2 = pos;
+}
+
 void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     glEnable(GL_DEPTH_TEST);
 
@@ -127,7 +142,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
     scale(model_marker, 0.5f);
     rotate(model_marker, model);
-    translate(model_marker, model, marker1);
+    translate(model_marker, model, marker1*10 - glm::vec3(5,5,5));
 
     drawMarker(projection, view, model_marker);
 
@@ -136,13 +151,13 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
     scale(model_marker, 0.5f);
     rotate(model_marker, model);
-    translate(model_marker, model, marker2);
+    translate(model_marker, model, marker2*10 - glm::vec3(5,5,5));
 
     drawMarker(projection, view, model_marker);
 
     glDisable(GL_DEPTH_TEST);
 }
 
-float Marker::getDistance(){
-    return length(marker2 - marker1);
+float Marker::getDistance(float freq, float vel, int depth){
+    return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0;
 }
