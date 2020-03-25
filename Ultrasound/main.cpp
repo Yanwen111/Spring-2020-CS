@@ -123,7 +123,7 @@ int main() {
     DensityMap grid(dim);
 
     // Creating the probe
-    Probe probe("data/PROBE_CENTERED.stl");
+    Probe probe("data/models/PROBE_CENTERED.stl");
     // Open the IMU file for reading
     probe.openIMUFile("data/real_imu.txt");
 
@@ -193,6 +193,13 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         // Draw the probe
         probe.draw(projection, view, rotationX, rotationY);
 
+
+        //Set up GUI paramters
+        myGUI.setNumLinesDrawn(getSamples());
+        myGUI.setNumSamples(getDepth());
+        myGUI.setVoxels(100);
+        myGUI.setFileSize(0);
+
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, model, rotationX, rotationY);
         myGUI.setTime(glfwGetTime());
@@ -203,12 +210,6 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             rotationY = 0;
         }
         cam.fov = myGUI.getZoom();
-
-        //Set up GUI paramters
-        myGUI.setNumLinesDrawn(getSamples());
-        myGUI.setNumSamples(getDepth());
-        myGUI.setVoxels(100);
-        myGUI.setFileSize(0);
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);

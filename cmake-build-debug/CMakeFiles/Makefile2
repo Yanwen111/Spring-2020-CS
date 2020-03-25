@@ -76,12 +76,12 @@ preinstall: Dependencies/glfw/preinstall
 CMakeFiles/Ultrasound.dir/all: Dependencies/glfw/src/CMakeFiles/glfw.dir/all
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/depend
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 "Built target Ultrasound"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target Ultrasound"
 .PHONY : CMakeFiles/Ultrasound.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Ultrasound.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles 34
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles 35
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Ultrasound.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/Ultrasound.dir/rule
@@ -167,7 +167,7 @@ Dependencies/glfw/src/preinstall:
 Dependencies/glfw/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) -f Dependencies/glfw/src/CMakeFiles/glfw.dir/build.make Dependencies/glfw/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) -f Dependencies/glfw/src/CMakeFiles/glfw.dir/build.make Dependencies/glfw/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 "Built target glfw"
 .PHONY : Dependencies/glfw/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.

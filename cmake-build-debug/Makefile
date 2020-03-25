@@ -492,6 +492,33 @@ Ultrasound/rotation.cpp.s:
 	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s
 .PHONY : Ultrasound/rotation.cpp.s
 
+Ultrasound/scale.o: Ultrasound/scale.cpp.o
+
+.PHONY : Ultrasound/scale.o
+
+# target to build an object file
+Ultrasound/scale.cpp.o:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/scale.cpp.o
+.PHONY : Ultrasound/scale.cpp.o
+
+Ultrasound/scale.i: Ultrasound/scale.cpp.i
+
+.PHONY : Ultrasound/scale.i
+
+# target to preprocess a source file
+Ultrasound/scale.cpp.i:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/scale.cpp.i
+.PHONY : Ultrasound/scale.cpp.i
+
+Ultrasound/scale.s: Ultrasound/scale.cpp.s
+
+.PHONY : Ultrasound/scale.s
+
+# target to generate assembly for a file
+Ultrasound/scale.cpp.s:
+	$(MAKE) -f CMakeFiles/Ultrasound.dir/build.make CMakeFiles/Ultrasound.dir/Ultrasound/scale.cpp.s
+.PHONY : Ultrasound/scale.cpp.s
+
 imgui/imgui.o: imgui/imgui.cpp.o
 
 .PHONY : imgui/imgui.o
@@ -702,6 +729,9 @@ help:
 	@echo "... Ultrasound/rotation.o"
 	@echo "... Ultrasound/rotation.i"
 	@echo "... Ultrasound/rotation.s"
+	@echo "... Ultrasound/scale.o"
+	@echo "... Ultrasound/scale.i"
+	@echo "... Ultrasound/scale.s"
 	@echo "... imgui/imgui.o"
 	@echo "... imgui/imgui.i"
 	@echo "... imgui/imgui.s"

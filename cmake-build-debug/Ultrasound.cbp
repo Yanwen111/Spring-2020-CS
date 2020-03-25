@@ -341,6 +341,12 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h">
 			<Option target="Ultrasound"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/scale.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/scale.h">
+			<Option target="Ultrasound"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/glfw_config.h">
 			<Option target="glfw"/>
 		</Unit>

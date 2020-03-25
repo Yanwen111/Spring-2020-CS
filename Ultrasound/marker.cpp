@@ -3,6 +3,7 @@
 void scale(glm::mat4& model, float s);
 void rotate(glm::mat4& model_marker, glm::mat4 modelRot);
 
+//Markers have value between 0 and 1
 Marker::Marker(){
     std::string vmarker =
             "// VERTEX SHADER											  \n"
@@ -54,8 +55,8 @@ Marker::Marker(){
 
     markerShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 
-    // Add the 3D probe
-    markerIndex = Helper::read_stl("data/marker.stl", markervertices, markernormals);
+    // Add the marker
+    markerIndex = Helper::read_stl("data/models/marker.stl", markervertices, markernormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &markerVBO);
@@ -158,6 +159,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     glDisable(GL_DEPTH_TEST);
 }
 
+// Calculate distance between markers in cm
 float Marker::getDistance(float freq, float vel, int depth){
     return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0;
 }

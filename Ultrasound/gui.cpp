@@ -30,6 +30,8 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     marker2z = tmpPos.z;
 //    marker.setPosition(markerX, markerY, glm::mat4(1.0f));
     reset();
+
+    scale = Scale();
 }
 //glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY
 
@@ -40,6 +42,7 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model, float r
     if(setMarker){
         drawMarkers(projection, view, model);
     }
+    drawScale(projection, view, model);
     render();
 }
 
@@ -74,6 +77,11 @@ void GUI::reset(){
     frequency = 15.6;
 }
 
+void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+    scale.setMeasurements(frequency, velocity, numSamples);
+    scale.draw(projection, view, model);
+}
+
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
     marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
@@ -85,7 +93,6 @@ int GUI::getThreshold() {
 }
 
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-
     // render your IMGUI
     ImGui::Begin("GUI");
     ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);

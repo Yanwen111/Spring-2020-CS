@@ -10,6 +10,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Ultrasound.dir/Ultrasound/marker.cpp.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.o"
   "CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.o"
+  "CMakeFiles/Ultrasound.dir/Ultrasound/scale.cpp.o"
   "CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.o"
   "CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.o"
   "CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.o"

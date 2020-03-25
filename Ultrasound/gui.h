@@ -1,5 +1,6 @@
 #include <string>
 #include "marker.h"
+#include "scale.h"
 
 class GUI {
 
@@ -44,8 +45,11 @@ private:
 
     Marker marker;
 
+    Scale scale;
+
     static void setUp();
     void drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    void drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     static void render();
     void reset();
 
