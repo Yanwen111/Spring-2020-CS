@@ -6,7 +6,7 @@ class GUI {
 
 public:
     GUI(GLFWwindow* window, const char* glsl_version);
-    void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model, float rotationX, float rotationY);
+    void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     static void cleanUp();
 
     int getZoom();
@@ -46,6 +46,11 @@ private:
     Marker marker;
 
     Scale scale;
+    //locations of where the scales are located
+    float scaleX1, scaleX2, scaleY1, scaleY2, scaleZ1, scaleZ2;
+
+    int mediumActive;
+    char currVelocity[10] = { 0 };
 
     static void setUp();
     void drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model);

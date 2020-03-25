@@ -169,17 +169,19 @@ void Scale::setMeasurements(double freqIn, double velIn, int depthIn){
     depth = depthIn;
 
     // cm of one side
-    double sideLength = (int)((1/freq)*vel*depth/2.0f / 10000.0);
+    double sideLength = ((1/freq)*vel*depth/2.0f / 10000.0);
 
-    //Each side length is 10 in the cube. Length of each mark
+    //Each side length is 10 in the cube. Length of each full mark
     double markLength = 10.0 / sideLength;
 
     int numMarks = (int)sideLength;
 
     //Insert location of every 1/2 cm to linesPlacement
     linesPlacement.clear();
-    for(int x = 1; x < numMarks*2; x++){
-        linesPlacement.push_back(x*markLength/2.0f);
+    double location = markLength/2.0f;
+    while(location < 10){
+        linesPlacement.push_back(location);
+        location = location + markLength/2.0f;
     }
 }
 
@@ -282,15 +284,13 @@ void Scale::drawXScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
             glm::mat4 model_num = glm::mat4(1.0f);
             scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
             model_num = model * model_num;
-//            model_num = glm::rotate(model_num, glm::radians(90.0f), glm::vec3(0, 0, -1));
-            translate(model_num, model, glm::vec3(linesPlacement.at(x)-5,  positionY+0.25, positionZ+0.25+LETTER_SIZE/2.0));
+            translate(model_num, model, glm::vec3(linesPlacement.at(x)-5-LETTER_SIZE/2.0,  positionY+0.25, positionZ+0.25));
             drawNumberShader(projection, view, model_num, NUMBER_COLOR, second);
         }
         //Draw first digit
         glm::mat4 model_num = glm::mat4(1.0f);
         scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
         model_num = model * model_num;
-//        model_num = glm::rotate(model_num, glm::radians(90.0f), glm::vec3(0, -1, 0));
         translate(model_num, model, glm::vec3(linesPlacement.at(x)-5,  positionY+0.25, positionZ+0.25));
         drawNumberShader(projection, view, model_num, NUMBER_COLOR, first);
 
@@ -352,12 +352,12 @@ void Scale::drawZScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
     }
 }
 
-void Scale::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+void Scale::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec2 yPos, glm::vec2 xPos, glm::vec2 zPos){
     glEnable(GL_DEPTH_TEST);
 
-    drawYScale(projection, view, model, -5, 5);
-    drawXScale(projection, view, model, 5, 5);
-    drawZScale(projection, view, model, -5, 5);
+    drawXScale(projection, view, model, yPos.x*10-5, yPos.y*10-5);
+    drawYScale(projection, view, model, xPos.x*10-5, xPos.y*10-5);
+    drawZScale(projection, view, model, zPos.x*10-5, zPos.y*10-5);
 
     glDisable(GL_DEPTH_TEST);
 }

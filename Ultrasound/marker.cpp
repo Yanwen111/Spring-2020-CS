@@ -3,6 +3,7 @@
 void scale(glm::mat4& model, float s);
 void rotate(glm::mat4& model_marker, glm::mat4 modelRot);
 
+static const double MARKER_SIZE = 0.25;
 //Markers have value between 0 and 1
 Marker::Marker(){
     std::string vmarker =
@@ -83,8 +84,8 @@ Marker::Marker(){
     delete [] markervertices;
     delete [] markernormals;
 
-    marker1 = glm::vec3(0.7,0,0);
-    marker2 = glm::vec3(0.2,0,0);
+    marker1 = glm::vec3(0.7,0,1);
+    marker2 = glm::vec3(0.2,0,1);
 }
 
 void scale(glm::mat4& model_marker, float s){
@@ -141,7 +142,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     //Draw Marker 1
     glm::mat4 model_marker      = glm::mat4(1.0f);
 
-    scale(model_marker, 0.5f);
+    scale(model_marker, MARKER_SIZE);
     rotate(model_marker, model);
     translate(model_marker, model, marker1*10 - glm::vec3(5,5,5));
 
@@ -150,7 +151,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     //Draw Marker 2
     model_marker      = glm::mat4(1.0f);
 
-    scale(model_marker, 0.5f);
+    scale(model_marker, MARKER_SIZE);
     rotate(model_marker, model);
     translate(model_marker, model, marker2*10 - glm::vec3(5,5,5));
 

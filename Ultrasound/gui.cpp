@@ -28,17 +28,30 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     marker2x = tmpPos.x;
     marker2y = tmpPos.y;
     marker2z = tmpPos.z;
-//    marker.setPosition(markerX, markerY, glm::mat4(1.0f));
+
+    scaleX1 = scaleX2 = 1;
+    scaleY1 = 0;
+    scaleY2 = 1;
+    scaleZ1 = 0;
+    scaleZ2 = 1;
+
+    mediumActive = 0;
+
     reset();
 
     scale = Scale();
 }
-//glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY
 
-void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model, float rotationX, float rotationY){
+void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     setUp();
     isReset = false;
     drawWidgets(projection, view, model);
+
+    //set up velocity
+    if(mediumActive == 0) velocity = 1102;
+    if(mediumActive == 1) velocity = 2000; //some other medium velocity
+    if(mediumActive == 2) velocity = atof(currVelocity);
+
     if(setMarker){
         drawMarkers(projection, view, model);
     }
@@ -72,14 +85,13 @@ void GUI::reset(){
     threshold = 0;
     isReset = true;
     setMarker = false;
-
     velocity = 1102;
     frequency = 15.6;
 }
 
 void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     scale.setMeasurements(frequency, velocity, numSamples);
-    scale.draw(projection, view, model);
+    scale.draw(projection, view, model, glm::vec2(scaleX1, scaleX2), glm::vec2(scaleY1, scaleY2), glm::vec2(scaleZ1, scaleZ2));
 }
 
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
@@ -95,15 +107,25 @@ int GUI::getThreshold() {
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     // render your IMGUI
     ImGui::Begin("GUI");
+
+    ImGui::PushID(1);
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1/7.0f, 0.6f, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1/7.0f, 0.7f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1/7.0f, 0.8f, 0.8f));
+    if (ImGui::Button("Reset"))
+        reset();
+
+    ImGui::PopStyleColor(3);
+    ImGui::PopID();
+
+    ImGui::NewLine();
+
     ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
     ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
     ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
     ImGui::SliderInt("Zoom field of view", &zoom, 80, 10);
-    if (ImGui::Button("Reset"))
-        reset();
 
     ImGui::Checkbox("Set Marker", &setMarker);
-
     if(setMarker) {
         ImGui::Text("Distance between markers: %f cm", marker.getDistance(frequency, velocity, numSamples));
 
@@ -125,10 +147,39 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         ImGui::SliderFloat("Z2", &marker2z, 0.0f, 1.0f);
         ImGui::PopItemWidth();
     }
+
+    ImGui::NewLine();
+    ImGui::Text("Scale shown in cm");
+    if (ImGui::CollapsingHeader("Scale Options")) {
+        ImGui::Text("Scale X Location");
+        ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("X scale: Y", &scaleX1, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("X scale: Z", &scaleX2, 0.0f, 1.0f);
+        ImGui::PopItemWidth();
+
+        ImGui::Unindent();
+        ImGui::Text("Scale Y Location");
+        ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("Y scale: X", &scaleY1, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Y scale: Z", &scaleY2, 0.0f, 1.0f);
+        ImGui::PopItemWidth();
+
+        ImGui::Unindent();
+        ImGui::Text("Scale Z Location");
+        ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("Z scale: X", &scaleZ1, 0.0f, 1.0f);
+        ImGui::SameLine();
+        ImGui::SliderFloat("Z scale: Y", &scaleZ2, 0.0f, 1.0f);
+        ImGui::PopItemWidth();
+    }
     ImGui::End();
 
     ImGui::Begin("Statistics");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-
 
     int hr = time / 3600;
     int min = (time - 3600 * hr) / 60.0;
@@ -136,30 +187,62 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     int milli = (time - 3600*hr - 60*min - sec)*1000;
     ImGui::Text("Time: %d:%d:%d:%d", hr, min, sec, milli);
     ImGui::Text("Time: %f", time);
-
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::Text("Number of lines drawn: %d", numLines);
-    ImGui::Text("# Voxels: %d x %d x %d", voxels, voxels, voxels);
     ImGui::Text("File size: %f", fileSize);
     ImGui::NewLine();
 
-    ImGui::Text("Number of samples per line %d", numSamples);
-    ImGui::Text("Velocity used for calculation: %f m/s", velocity);
-    ImGui::Text("Frequency: %f MHz", frequency);
+    ImGui::Text("Number of lines drawn: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d", numLines);
+    ImGui::Text("# Voxels: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d x %d x %d", voxels, voxels, voxels);
+    ImGui::Text("Number of samples per line: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d", numSamples);
     ImGui::NewLine();
 
-    ImGui::Text("Probe statistics");
-    ImGui::Text("Quaternion values (xyzw):");
-    ImGui::Indent(); ImGui::Text("%f %f %f %f", quat.x, quat.y, quat.z, quat.w);ImGui::Unindent();
-    ImGui::Text("Euler Angle values:");
-    ImGui::Indent(); ImGui::TextColored(ImColor(255, 255, 0, 255),"Roll,");
-    ImGui::SameLine(0,40); ImGui::TextColored(ImColor(0, 255, 255, 255),"Pitch,");
-    ImGui::SameLine(0,30); ImGui::TextColored(ImColor(255, 0, 255, 255),"Yaw");
+    if (ImGui::CollapsingHeader("Select Speed of Sound in Medium: ")) {
+        ImGui::Indent();
+        ImGui::RadioButton("Medium 1", &mediumActive, 0);
+        ImGui::RadioButton("Medium 2", &mediumActive, 1);
+        ImGui::RadioButton("Input Speed: ", &mediumActive, 2);
+        ImGui::SameLine();
+        ImGui::PushItemWidth(80);
+        ImGui::InputText("m/s", currVelocity, IM_ARRAYSIZE(currVelocity));
+        ImGui::PopItemWidth();
+        ImGui::Unindent();
+        ImGui::NewLine();
+    }
 
-    ImGui::TextColored(ImColor(255, 255, 0, 255), "%f", euler.x);ImGui::SameLine();
-    ImGui::TextColored(ImColor(0, 255, 255, 255), "%f", euler.y);ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 0, 255, 255), "%f", euler.z);
+    ImGui::Text("Velocity used for calculation: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImColor(255, 255, 50, 255), "%f m/s", velocity);
+    ImGui::Text("Frequency: ");
+    ImGui::SameLine();
+    ImGui::TextColored(ImColor(255, 255, 50, 255), "%f MHz", frequency);
+    ImGui::NewLine();
 
+
+    if (ImGui::CollapsingHeader("Probe Statistics")) {
+        ImGui::Text("Quaternion values (xyzw):");
+        ImGui::Indent();
+        ImGui::Text("%f %f %f %f", quat.x, quat.y, quat.z, quat.w);
+        ImGui::Unindent();
+        ImGui::Text("Euler Angle values:");
+        ImGui::Indent();
+        ImGui::TextColored(ImColor(255, 255, 0, 255), "Roll,");
+        ImGui::SameLine(0, 40);
+        ImGui::TextColored(ImColor(0, 255, 255, 255), "Pitch,");
+        ImGui::SameLine(0, 30);
+        ImGui::TextColored(ImColor(255, 0, 255, 255), "Yaw");
+
+        ImGui::TextColored(ImColor(255, 255, 0, 255), "%f", euler.x);
+        ImGui::SameLine();
+        ImGui::TextColored(ImColor(0, 255, 255, 255), "%f", euler.y);
+        ImGui::SameLine();
+        ImGui::TextColored(ImColor(255, 0, 255, 255), "%f", euler.z);
+    }
     //Create reference frame
     ImVec2 cursor_pos = ImGui::GetCursorScreenPos();
     float cx = 60.0f;
@@ -208,7 +291,10 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 }
 
 void GUI::setNumLinesDrawn(int num){
-    numLines = num;
+    if(num == -1)
+        numLines = 0;
+    else
+        numLines = num;
 }
 
 void GUI::setNumSamples(int num){

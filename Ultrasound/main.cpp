@@ -201,7 +201,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         myGUI.setFileSize(0);
 
         // Draw the GUI and set parameters
-        myGUI.drawGUI(projection, view, model, rotationX, rotationY);
+        myGUI.drawGUI(projection, view, model);
         myGUI.setTime(glfwGetTime());
         myGUI.setQuaternion(probe.getQuaternions());
         myGUI.setEulerAngles(probe.getEulerAngles());
