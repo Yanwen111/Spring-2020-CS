@@ -787,6 +787,8 @@ thread
 -
 chrono
 -
+inaddr.h
+-
 data.h
 D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/data.h
 rotation.h
@@ -829,6 +831,16 @@ cinttypes
 -
 cstdint
 -
+mutex
+-
+cstdlib
+-
+stdlib.h
+-
+stdio.h
+-
+winsock2.h
+D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/winsock2.h
 densityMap.h
 D:/Documents/CML/2019.02.17/Spring-2020-CS/Ultrasound/densityMap.h
 rotation.h

@@ -19,6 +19,14 @@
 #include <string.h>
 #include <cinttypes>
 #include <cstdint>
+#include <mutex>
+
+#include <cstdlib>
+#include <stdlib.h>
+#include <stdio.h>
+#include "winsock2.h"
+#pragma comment(lib, "libws2_32.a")
+
 
 #include "densityMap.h"
 #include "rotation.h"

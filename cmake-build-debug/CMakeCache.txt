@@ -346,6 +346,9 @@ Ultrasound_BINARY_DIR:STATIC=D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-bu
 //Value Computed by CMake
 Ultrasound_SOURCE_DIR:STATIC=D:/Documents/CML/2019.02.17/Spring-2020-CS
 
+//Dependencies for the target
+glfw_LIB_DEPENDS:STATIC=general;ws2_32;
+
 
 ########################
 # INTERNAL cache entries

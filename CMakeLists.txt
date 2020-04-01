@@ -16,6 +16,11 @@ include_directories(${PROJECT_SOURCE_DIR}/imgui)
 file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp)
 file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.h ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
 
+###################### TCP #####################
+#link_directories(D:/Software/CLion/mingw64/x86_64-w64-mingw32/lib)
+link_directories(${PROJECT_SOURCE_DIR}/Dependencies)
+link_libraries(ws2_32)
+
 add_executable(Ultrasound ${SOURCE_FILES} ${INCLUDE_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
 
 ###################### GLM ######################
@@ -32,4 +37,4 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/Dependencies/glfw)
 
 add_compile_options(-O3)
 
-target_link_libraries(Ultrasound PRIVATE glfw)
+target_link_libraries(Ultrasound PRIVATE glfw ws2_32)

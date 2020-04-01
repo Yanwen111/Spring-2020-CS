@@ -1,12 +1,13 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <inaddr.h>
 
 #include "data.h"
 #include "rotation.h" /* for test of fake data */
 
 /* For calculating the scale */
-#define Velocity 110200  // speed in phantom, cm/s
+#define Velocity 153800  // speed in phantom, cm/s
 #define Frequency 15.6  // MHz
 
 /* Data Processing */
@@ -217,6 +218,7 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
     std::vector<int> sub_marker_locations;
     int sub_length = -1;
     bool newDataline = false;
+    //std::mutex readtex;
 
     char fileName[255];
     std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
@@ -233,12 +235,53 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
                              std::ref(newDataline));
     fileThread.detach();
 
+    char recvBuf[(10+4+1+2+16+2*2500+4)*1];
+    SOCKET sockConn;
+    WSADATA wsaData;
+    int port = 8888;
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+    {
+        printf("Initialize failed!\n");
+        return;
+    }
+    SOCKET sockSrv = socket(AF_INET, SOCK_STREAM, 0);
+    SOCKADDR_IN addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(port);
+    addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+    int retVal = bind(sockSrv, (LPSOCKADDR)&addrSrv, sizeof(SOCKADDR_IN));
+    if (retVal == SOCKET_ERROR)
+    {
+        printf("Connect failed: %d\n", WSAGetLastError());
+        return;
+    }
+    if (listen(sockSrv, 10) == SOCKET_ERROR)
+    {
+        printf("listen failed: %d\n", WSAGetLastError());
+        return;
+    }
+    SOCKADDR_IN addrClient;
+    int len = sizeof(SOCKADDR);
+    sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, &len);
+    if (sockConn == SOCKET_ERROR)
+    {
+        printf("wait for request fail: %d", WSAGetLastError());
+        return;
+    }
+    printf("The IP of client is :[%s]\n", inet_ntoa(addrClient.sin_addr));
+    memset(recvBuf, 0, sizeof(recvBuf));
+    recv(sockConn, recvBuf, sizeof(recvBuf), 0);
+    printf("%s\n", recvBuf);
+    closesocket(sockConn);
+    closesocket(sockSrv);
+    WSACleanup();
+
     while(1) {
         if (newDataline)
         {
-            newDataline = false;
             printf("DRAW!\n");
             /* convert file bytes to data struct */
+            //std::lock_guard<std::mutex> readlock(readtex);
             file_to_data(sub_file_bytes,sub_marker_locations, scan_data);
             samples = scan_data.size();
             printf("the number of scan_data samples is %d\n", samples);
@@ -258,37 +301,9 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
                 glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
                                 l.p2.z / len - l.p1.z / len + 0.5};
                 grid.writeLine(ps, pe, l.vals);
-                /* for rendering line by line */
-    //        cnt ++;
-    //        if (cnt%200 == 0)
-    //        {
-    //            printf("draw line %d\n", cnt);
-    //            std::this_thread::sleep_for(std::chrono::seconds(2));
-    //        }
             }
-
-            /* add some scale. Each line refer to 1 centimeter */
-    //    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-    //    int d1m = d1c / 10;
-    //    int d1c0 = d1c, d1m0 = d1m;
-    //    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-    //    {
-    //        while (d1m < ddim)
-    //        {
-    //            for (int i = 0; i < ddim; ++i)
-    //                //grid.cells[0][ddim - d1m - 1][i] = 130;
-    //                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
-    //            d1m += d1m0;
-    //        }
-    //    }
-    //    while (d1c < ddim)
-    //    {
-    //        for (int i = 0; i < ddim; ++i)
-    //            //grid.cells[0][ddim - d1c -1][i] = 254;
-    //            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
-    //        d1c += d1c0;
-    //    }
             dataUpdate = true;
+            newDataline = false;
         }
     }
 }
@@ -296,16 +311,57 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
 void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
         std::vector<unsigned char> & sub_file_bytes, std::vector<int> & sub_marker_locations, bool& newDataline)
 {
+    /* TCP client*/
+    WSADATA wsaData;
+    char buff[(10+4+1+2+16+2*2500+4)*200];
+    memset(buff, 0, sizeof(buff));
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+    {
+        printf("Winsock initialization failed!\n");
+        return;
+    }
+
+    SOCKADDR_IN addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(8888);
+    addrSrv.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+
+    SOCKET socketClient = socket(AF_INET, SOCK_STREAM, 0);
+    if (SOCKET_ERROR == socketClient)
+    {
+        printf("Socket() errr: %d", WSAGetLastError());
+        return;
+    }
+    if (connect(socketClient, (struct sockaddr*)&addrSrv, sizeof(addrSrv)) == INVALID_SOCKET)
+    {
+        printf("Connect fail: %d", WSAGetLastError());
+        return;
+    }
+    char buffs[] = "test bytes xxx";
+    //std::vector<unsigned char> buffs = {1,2,3,4,5};
+    send(socketClient, buffs, sizeof(buffs), 0);
+
+    closesocket(socketClient);
+    WSACleanup();
+
     // sub_length: the length of each part of the file_bytes
     int pt = 0; /* current position in marker_locations */
     while (pt < marker_locations.size()-1)
     {
+        if (newDataline)
+        {
+            continue;
+        }
         sub_file_bytes.clear();
         sub_marker_locations.clear();
         int startMarker = marker_locations[pt];
         for (int i = 0; i < sub_length; ++i)
         {
-            if (pt >= marker_locations.size()-1) break;
+            if (pt >= marker_locations.size()-1)
+            {
+                printf("========END========\n");
+                break;
+            }
             for (int j = marker_locations[pt]; j < marker_locations[pt+1]; j++)
                 sub_file_bytes.push_back(file_bytes[j]);
             sub_marker_locations.push_back(marker_locations[pt]-startMarker);
@@ -313,7 +369,7 @@ void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_
         }
         printf("Read some new data lines!\n");
         newDataline = true;
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        //std::this_thread::sleep_for(std::chrono::milliseconds (500));
     }
 }
 
@@ -444,7 +500,7 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
 
-        int piezoProbe = 142; /*assume v = 1000 m/s */
+        int piezoProbe = 101; /*assume v = 1000 m/s */
 
         line_data_struct dataline;
         dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
