@@ -174,7 +174,6 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
         if (dataUpdate)
         {
-//            grid.updateVertexBuffers();
             probe.openIMUFile("data/real_imu.txt");
             dataUpdate = false;
         }
@@ -193,12 +192,14 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         // Draw the probe
         probe.draw(projection, view, rotationX, rotationY);
 
-
         //Set up GUI paramters
         myGUI.setNumLinesDrawn(getSamples());
         myGUI.setNumSamples(getDepth());
         myGUI.setVoxels(100);
         myGUI.setFileSize(0);
+        myGUI.setBrightness(grid.getBrightness());
+        myGUI.setThreshold(grid.getThreshold());
+        myGUI.setContrast(grid.getContrast());
 
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, model);
@@ -210,6 +211,9 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             rotationY = 0;
         }
         cam.fov = myGUI.getZoom();
+        grid.setBrightness(myGUI.getBrightness());
+        grid.setThreshold(myGUI.getThreshold());
+        grid.setContrast(myGUI.getContrast());
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);

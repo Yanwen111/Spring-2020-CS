@@ -18,13 +18,23 @@ public:
     void setEulerAngles(glm::vec3 eulerIn);
     void setVoxels(int size);
     void setFileSize(double size);
-    int getThreshold();
     bool isReset;
+
+    float getBrightness();
+    float getGain();
+    int getThreshold();
+    float getContrast();
+
+    void setBrightness(float value);
+    void setGain(float value);
+    void setThreshold(int value);
+    void setContrast(float value);
 
 private:
     float brightness;
     float gain;
     int threshold;
+    float contrast;
     double time;
     int numLines;
     int zoom;

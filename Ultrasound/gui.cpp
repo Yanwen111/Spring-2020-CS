@@ -49,7 +49,7 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
     //set up velocity
     if(mediumActive == 0) velocity = 1102;
-    if(mediumActive == 1) velocity = 2000; //some other medium velocity
+    if(mediumActive == 1) velocity = 1538;
     if(mediumActive == 2) velocity = atof(currVelocity);
 
     if(setMarker){
@@ -82,7 +82,8 @@ void GUI::reset(){
     brightness = 0.0f;
     gain = 0.0f;
     zoom = 70;
-    threshold = 0;
+    contrast = 1.0f;
+    threshold = 1;
     isReset = true;
     setMarker = false;
     velocity = 1102;
@@ -98,10 +99,6 @@ void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
     marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
     marker.draw(projection, view, model);
-}
-
-int GUI::getThreshold() {
-    return threshold;
 }
 
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
@@ -120,14 +117,17 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
     ImGui::NewLine();
 
-    ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
-    ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
+    ImGui::SliderFloat("Brightness", &brightness, -1.0f, 1.0f);
+//    ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
+    ImGui::SliderFloat("Contrast", &contrast, 0.1f, 10.0f); //Goes to infinity, not including 0
     ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
     ImGui::SliderInt("Zoom field of view", &zoom, 80, 10);
 
     ImGui::Checkbox("Set Marker", &setMarker);
     if(setMarker) {
-        ImGui::Text("Distance between markers: %f cm", marker.getDistance(frequency, velocity, numSamples));
+        ImGui::Text("Distance between markers: ");
+        ImGui::SameLine();
+        ImGui::TextColored(ImColor(255, 255, 50, 255), "%f cm", marker.getDistance(frequency, velocity, numSamples));
 
         ImGui::Text("Marker 1 Movement");
         ImGui::PushItemWidth(80);
@@ -186,12 +186,11 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     int sec = (time - 3600 * hr - 60 * min);
     int milli = (time - 3600*hr - 60*min - sec)*1000;
     ImGui::Text("Time: %d:%d:%d:%d", hr, min, sec, milli);
-    ImGui::Text("Time: %f", time);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::Text("File size: %f", fileSize);
+//    ImGui::Text("File size: %f", fileSize);
     ImGui::NewLine();
 
-    ImGui::Text("Number of lines drawn: ");
+    ImGui::Text("Number of lines read in file: ");
     ImGui::SameLine();
     ImGui::TextColored(ImColor(255, 255, 50, 255), "%d", numLines);
     ImGui::Text("# Voxels: ");
@@ -204,8 +203,8 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
     if (ImGui::CollapsingHeader("Select Speed of Sound in Medium: ")) {
         ImGui::Indent();
-        ImGui::RadioButton("Medium 1", &mediumActive, 0);
-        ImGui::RadioButton("Medium 2", &mediumActive, 1);
+        ImGui::RadioButton("Silicone Gel", &mediumActive, 0);
+        ImGui::RadioButton("Soft Tissue", &mediumActive, 1);
         ImGui::RadioButton("Input Speed: ", &mediumActive, 2);
         ImGui::SameLine();
         ImGui::PushItemWidth(80);
@@ -303,6 +302,41 @@ void GUI::setNumSamples(int num){
 
 void GUI::setVoxels(int size){
     voxels = size;
+}
+
+//ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
+//ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
+//ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
+float GUI::getBrightness(){
+    return brightness;
+}
+
+float GUI::getGain(){
+    return gain;
+}
+
+int GUI::getThreshold() {
+    return threshold;
+}
+
+void GUI::setBrightness(float value) {
+    brightness = value;
+}
+
+void GUI::setGain(float value) {
+    gain = value;
+}
+
+void GUI::setThreshold(int value) {
+    threshold = value;
+}
+
+void GUI::setContrast(float value){
+    contrast = value;
+}
+
+float GUI::getContrast(){
+    return contrast;
 }
 
 void GUI::setFileSize(double size){
