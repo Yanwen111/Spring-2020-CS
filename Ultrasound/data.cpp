@@ -214,9 +214,8 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
     std::vector<line_data_struct> line_data;
 
     /* for real time trial */
-    std::vector<unsigned char> sub_file_bytes;
-    std::vector<int> sub_marker_locations;
-    int sub_length = -1;
+    int sub_length = 1;
+    int buffer_size = 1000;
     bool newDataline = false;
     //std::mutex readtex;
 
@@ -227,15 +226,14 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
 
-    sub_length = marker_locations.size() / 35;
+    //sub_length = marker_locations.size() / 35;
 
     std::thread fileThread;
     fileThread = std::thread(readSubfile, file_bytes, marker_locations, sub_length,
-            std::ref(sub_file_bytes), std::ref(sub_marker_locations),
-                             std::ref(newDataline));
+            std::ref(newDataline));
     fileThread.detach();
 
-    char recvBuf[(10+4+1+2+16+2*2500+4)*1];
+    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
     SOCKET sockConn;
     WSADATA wsaData;
     int port = 8888;
@@ -269,51 +267,66 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
         return;
     }
     printf("The IP of client is :[%s]\n", inet_ntoa(addrClient.sin_addr));
-    memset(recvBuf, 0, sizeof(recvBuf));
-    recv(sockConn, recvBuf, sizeof(recvBuf), 0);
-    printf("%s\n", recvBuf);
-    closesocket(sockConn);
-    closesocket(sockSrv);
-    WSACleanup();
 
+    int buffer_cnt = 0, loop_cnt = 0;
+    std::vector<unsigned char> sub_file_bytes;
     while(1) {
         if (newDataline)
         {
-            printf("DRAW!\n");
-            /* convert file bytes to data struct */
-            //std::lock_guard<std::mutex> readlock(readtex);
-            file_to_data(sub_file_bytes,sub_marker_locations, scan_data);
-            samples = scan_data.size();
-            printf("the number of scan_data samples is %d\n", samples);
-            /* convert data to vertex on screen */
-            data_to_pixel(scan_data, line_data);
-            printf("find the screen_data\n");
+            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+            buffer_cnt++;
+            memset(recvBuf, 0, sizeof(recvBuf));
+            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
 
-            int ddim = grid.getDim();
-            len = line_data[0].vals.size(); // 2500, equl to buffer size
-//            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
-//            std::cin >> len;
-            //len = 1500; // change range
-            setDepth(1500);
-            int cnt = 0;
-            for (auto l: line_data) {
-                glm::vec3 ps = {0.5, 1, 0.5};
-                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
-                                l.p2.z / len - l.p1.z / len + 0.5};
-                grid.writeLine(ps, pe, l.vals);
+            for (auto r: recvBuf)
+            {
+                sub_file_bytes.push_back(static_cast<unsigned char>(r));
             }
-            dataUpdate = true;
+
+            if (buffer_cnt == buffer_size)
+            {
+                /* convert file bytes to data struct */
+                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+                samples = scan_data.size();
+                printf("the number of scan_data samples is %d\n", samples);
+                /* convert data to vertex on screen */
+                data_to_pixel(scan_data, line_data);
+                //printf("find the screen_data\n");
+
+                int ddim = grid.getDim();
+                len = line_data[0].vals.size(); // 2500, equl to buffer size
+                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+                //            std::cin >> len;
+                len = 1500; // change range
+                //setDepth(1500);
+                int cnt = 0;
+                for (auto l: line_data)
+                {
+                    glm::vec3 ps = {0.5, 1, 0.5};
+                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+                                    l.p2.z / len - l.p1.z / len + 0.5};
+                    grid.writeLine(ps, pe, l.vals);
+                }
+                buffer_cnt = 0;
+                sub_file_bytes.clear();
+                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+                dataUpdate = true;
+            }
             newDataline = false;
         }
     }
+    closesocket(sockConn);
+    closesocket(sockSrv);
+    WSACleanup();
 }
 
 void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
-        std::vector<unsigned char> & sub_file_bytes, std::vector<int> & sub_marker_locations, bool& newDataline)
+        bool& newDataline)
 {
     /* TCP client*/
     WSADATA wsaData;
-    char buff[(10+4+1+2+16+2*2500+4)*200];
+    char buff[(10+4+1+2+2+2*2500+4)*sub_length];
     memset(buff, 0, sizeof(buff));
     if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
     {
@@ -337,12 +350,6 @@ void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_
         printf("Connect fail: %d", WSAGetLastError());
         return;
     }
-    char buffs[] = "test bytes xxx";
-    //std::vector<unsigned char> buffs = {1,2,3,4,5};
-    send(socketClient, buffs, sizeof(buffs), 0);
-
-    closesocket(socketClient);
-    WSACleanup();
 
     // sub_length: the length of each part of the file_bytes
     int pt = 0; /* current position in marker_locations */
@@ -352,25 +359,37 @@ void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_
         {
             continue;
         }
-        sub_file_bytes.clear();
-        sub_marker_locations.clear();
-        int startMarker = marker_locations[pt];
+        //sub_file_bytes.clear();
+        std::vector<unsigned char> sub_file_bytes;
         for (int i = 0; i < sub_length; ++i)
         {
             if (pt >= marker_locations.size()-1)
             {
                 printf("========END========\n");
+                closesocket(socketClient);
+                WSACleanup();
                 break;
             }
             for (int j = marker_locations[pt]; j < marker_locations[pt+1]; j++)
                 sub_file_bytes.push_back(file_bytes[j]);
-            sub_marker_locations.push_back(marker_locations[pt]-startMarker);
             pt++;
         }
-        printf("Read some new data lines!\n");
+
+        int csf = 0;
+        for (int i = 0; i < sub_file_bytes.size(); ++i)
+        {
+            memset(buff+csf, sub_file_bytes[i], sizeof(char));
+            csf++;
+        }
+        send(socketClient, buff, sizeof(buff), 0);
+        //write(socketClient, buff, sizeof(buff));
+
+        //printf("Read some new data lines!\n");
         newDataline = true;
         //std::this_thread::sleep_for(std::chrono::milliseconds (500));
     }
+    closesocket(socketClient);
+    WSACleanup();
 }
 
 void realDemo3(DensityMap& grid, bool& dataUpdate)
@@ -483,7 +502,6 @@ std::vector<unsigned char> readFile(const char* directory)
 }
 
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data){
-    printf("%d\n", (int)_scan_data.size());
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
@@ -518,14 +536,14 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
         _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
-    printf("start write euler...\n");
-    std::ofstream fileout("data/real_euler.txt", std::ios::trunc|std::ios::out);
-    for (auto s: _scan_data){
-        glm::vec3 euler = Rotation::convertToEulerAngle(s.quaternion[0], s.quaternion[1], s.quaternion[2], s.quaternion[3]);
-        fileout << euler.x << ' ' << euler.y << ' ' << euler.z << ' ' << std::endl;
-    }
-    fileout.close();
-    printf("euler file generate!\n");
+//    printf("start write euler...\n");
+//    std::ofstream fileout("data/real_euler.txt", std::ios::trunc|std::ios::out);
+//    for (auto s: _scan_data){
+//        glm::vec3 euler = Rotation::convertToEulerAngle(s.quaternion[0], s.quaternion[1], s.quaternion[2], s.quaternion[3]);
+//        fileout << euler.x << ' ' << euler.y << ' ' << euler.z << ' ' << std::endl;
+//    }
+//    fileout.close();
+//    printf("euler file generate!\n");
     /*
     Rotation rot = Rotation(glm::vec4(-0.43914795f, -0.11865234f, -0.05950928f,-PI));
     int len = _screen_data.size();
@@ -633,13 +651,13 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
     }
 
     //write probe data to test
-    printf("start write imu...\n");
+    //printf("start write imu...\n");
     std::ofstream fileout("data/real_imu.txt", std::ios::trunc|std::ios::out);
     for (auto s: _scan_data){
         fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
     }
     fileout.close();
-    printf("Real IMU file generate!\n");
+    //printf("Real IMU file generate!\n");
 }
 
 int compare_crc(unsigned char a[], unsigned char b[], size_t len){
