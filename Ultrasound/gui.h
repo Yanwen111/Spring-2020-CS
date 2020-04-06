@@ -5,7 +5,7 @@
 class GUI {
 
 public:
-    GUI(GLFWwindow* window, const char* glsl_version);
+    GUI(GLFWwindow *window, const char* glsl_version);
     void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     static void cleanUp();
 
@@ -29,6 +29,8 @@ public:
     void setGain(float value);
     void setThreshold(int value);
     void setContrast(float value);
+
+    bool mouseClickedObjects(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y);
 
 private:
     float brightness;

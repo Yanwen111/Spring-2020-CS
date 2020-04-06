@@ -6,7 +6,6 @@
 #include "rotation.h"
 
 GUI::GUI(GLFWwindow *window, const char* glsl_version){
-
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -357,4 +356,8 @@ void GUI::setEulerAngles(glm::vec3 eulerIn) {
 
 int GUI::getZoom(){
     return zoom;
+}
+
+bool GUI::mouseClickedObjects(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y) {
+    return marker.checkMouseOnMarker(imageWidth, imageHeight, fov, cameraToWorld, x, y);
 }

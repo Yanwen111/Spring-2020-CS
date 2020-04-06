@@ -309,6 +309,16 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
     lastMouseY = ypos;
 
     if (mousePressed) {
+        glm::mat4 cameraToWorld = glm::mat4(1.0f);
+        glm::vec4 rightH = glm::vec4(cam.right,1);
+        glm::vec4 upH = glm::vec4(cam.worldUp, 1);
+        cameraToWorld[1] = rightH;
+        cameraToWorld[2] = upH;
+        cameraToWorld[3] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+        cameraToWorld[4] = glm::vec4(cam.position, 1);
+//        if(myGUI.mouseClickedObjects(SCR_WIDTH, SCR_HEIGHT, cam.fov, cameraToWorld, xpos, ypos))
+//            return;
+
         rotationY += xoffset / 200.0;
         rotationX -= yoffset / 200.0;
 
