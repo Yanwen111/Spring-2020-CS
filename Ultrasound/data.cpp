@@ -259,8 +259,8 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
         return;
     }
     SOCKADDR_IN addrClient;
-    int len = sizeof(SOCKADDR);
-    sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, &len);
+    int length = sizeof(SOCKADDR);
+    sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, &length);
     if (sockConn == SOCKET_ERROR)
     {
         printf("wait for request fail: %d", WSAGetLastError());
@@ -298,8 +298,8 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
                 len = line_data[0].vals.size(); // 2500, equl to buffer size
                 //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
                 //            std::cin >> len;
-                len = 1500; // change range
-                //setDepth(1500);
+                //len = 1500; // change range
+                setDepth(1500);
                 int cnt = 0;
                 for (auto l: line_data)
                 {
@@ -445,6 +445,176 @@ void realDemo3(DensityMap& grid, bool& dataUpdate)
         }
     }
 }
+
+void realDemo4(DensityMap& grid, bool& dataUpdate)
+{
+    //read the data from current red pitaya 2d data.
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    /* for real time trial */
+    int sub_length = 1;
+    int buffer_size = 1000;
+    bool newDataline = false;
+    //std::mutex readtex;
+
+    char fileName[255];
+    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+    std::cin >> fileName;
+    file_bytes = readFile(fileName);
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+
+    //sub_length = marker_locations.size() / 35;
+
+    std::thread fileThread;
+    fileThread = std::thread(readSubfile4, file_bytes, marker_locations, sub_length,
+                             std::ref(newDataline));
+    fileThread.detach();
+
+    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
+//    SOCKET sockConn;
+    WSADATA wsaData;
+    int port = 8888;
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+    {
+        printf("Initialize failed!\n");
+        return;
+    }
+    SOCKET sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
+    SOCKADDR_IN addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(port);
+    addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+
+    bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
+
+    SOCKADDR_IN addrClient;
+    int length = sizeof(SOCKADDR);
+
+    int buffer_cnt = 0, loop_cnt = 0;
+    std::vector<unsigned char> sub_file_bytes;
+    while(1) {
+        if (newDataline)
+        {
+            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+            buffer_cnt++;
+            memset(recvBuf, 0, sizeof(recvBuf));
+//            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
+            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
+
+            for (auto r: recvBuf)
+            {
+                sub_file_bytes.push_back(static_cast<unsigned char>(r));
+            }
+
+            if (buffer_cnt == buffer_size)
+            {
+                /* convert file bytes to data struct */
+                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+                samples = scan_data.size();
+                printf("the number of scan_data samples is %d\n", samples);
+                /* convert data to vertex on screen */
+                data_to_pixel(scan_data, line_data);
+                //printf("find the screen_data\n");
+
+                int ddim = grid.getDim();
+                len = line_data[0].vals.size(); // 2500, equl to buffer size
+                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+                //            std::cin >> len;
+                //len = 1500; // change range
+                setDepth(1500);
+                int cnt = 0;
+                for (auto l: line_data)
+                {
+                    glm::vec3 ps = {0.5, 1, 0.5};
+                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+                                    l.p2.z / len - l.p1.z / len + 0.5};
+                    grid.writeLine(ps, pe, l.vals);
+                }
+                buffer_cnt = 0;
+                sub_file_bytes.clear();
+                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+                dataUpdate = true;
+            }
+            newDataline = false;
+        }
+    }
+    closesocket(sockSrv);
+    WSACleanup();
+}
+
+void readSubfile4(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+                 bool& newDataline)
+{
+    /* TCP client*/
+    WSADATA wsaData;
+    char buff[(10+4+1+2+2+2*2500+4)*sub_length];
+    memset(buff, 0, sizeof(buff));
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+    {
+        printf("Winsock initialization failed!\n");
+        return;
+    }
+
+    SOCKADDR_IN addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(8888);
+    addrSrv.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+
+    SOCKET socketClient = socket(AF_INET, SOCK_DGRAM, 0);
+    if (SOCKET_ERROR == socketClient)
+    {
+        printf("Socket() errr: %d", WSAGetLastError());
+        return;
+    }
+    int length = sizeof(SOCKADDR);
+
+    // sub_length: the length of each part of the file_bytes
+    int pt = 0; /* current position in marker_locations */
+    while (pt < marker_locations.size()-1)
+    {
+        if (newDataline)
+        {
+            continue;
+        }
+        //sub_file_bytes.clear();
+        std::vector<unsigned char> sub_file_bytes;
+        for (int i = 0; i < sub_length; ++i)
+        {
+            if (pt >= marker_locations.size()-1)
+            {
+                printf("========END========\n");
+                closesocket(socketClient);
+                WSACleanup();
+                break;
+            }
+            for (int j = marker_locations[pt]; j < marker_locations[pt+1]; j++)
+                sub_file_bytes.push_back(file_bytes[j]);
+            pt++;
+        }
+
+        int csf = 0;
+        for (int i = 0; i < sub_file_bytes.size(); ++i)
+        {
+            memset(buff+csf, sub_file_bytes[i], sizeof(char));
+            csf++;
+        }
+        //send(socketClient, buff, sizeof(buff), 0);
+        sendto(socketClient, buff, sizeof(buff), 0, (SOCKADDR*)&addrSrv, length);
+        //write(socketClient, buff, sizeof(buff));
+
+        //printf("Read some new data lines!\n");
+        newDataline = true;
+        //std::this_thread::sleep_for(std::chrono::milliseconds (500));
+    }
+    closesocket(socketClient);
+    WSACleanup();
+}
+
 
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 {

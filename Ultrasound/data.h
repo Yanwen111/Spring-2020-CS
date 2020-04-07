@@ -75,12 +75,18 @@ std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
-/* fake real-time */
+/* real-time based on TCP */
 void realDemo2(DensityMap& grid, bool& dataUpdate);
 void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
                  bool& newDataline);
 
-void realDemo3(DensityMap& grid, bool& dataUpdate); /* Gantry (for multiple files) */
+/* Gantry (for multiple files) */
+void realDemo3(DensityMap& grid, bool& dataUpdate);
+
+/* real-time based on UDP */
+void realDemo4(DensityMap& grid, bool& dataUpdate);
+void readSubfile4(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+                 bool& newDataline);
 
 int getDepth();
 void setDepth(int dep);

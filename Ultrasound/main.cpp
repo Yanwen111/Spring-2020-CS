@@ -156,7 +156,7 @@ int main() {
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
     std::thread dataThread;
-    dataThread = std::thread(realDemo2, std::ref(grid), std::ref(dataUpdate));
+    dataThread = std::thread(realDemo4, std::ref(grid), std::ref(dataUpdate));
     dataThread.detach();
 
     // thread2: add Gain control to the grid.cell after 30s automatically.
