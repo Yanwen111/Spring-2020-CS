@@ -85,8 +85,6 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
-void readSubfile4(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
-                 bool& newDataline);
 
 int getDepth();
 void setDepth(int dep);
