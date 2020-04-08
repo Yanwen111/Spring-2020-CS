@@ -45,9 +45,13 @@ float rotationX;
 float rotationY;
 
 bool mousePressed;
+int guiObjectPressed;
+double xposMarker, yposMarker;
 
 // Creating a Camera object
 Camera cam;
+
+GUI* myGUIpointer;
 
 const bool ROTATE_GRID = true;
 
@@ -129,6 +133,7 @@ int main() {
 
     //Create the GUI
     GUI myGUI(window, glsl_version);
+    myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
     grid.setThreshold(1);
@@ -309,15 +314,6 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
     lastMouseY = ypos;
 
     if (mousePressed) {
-        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-        glm::vec4 rightH = glm::vec4(cam.right,1);
-        glm::vec4 upH = glm::vec4(cam.worldUp, 1);
-        cameraToWorld[1] = rightH;
-        cameraToWorld[2] = upH;
-        cameraToWorld[3] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-        cameraToWorld[4] = glm::vec4(cam.position, 1);
-//        if(myGUI.mouseClickedObjects(SCR_WIDTH, SCR_HEIGHT, cam.fov, cameraToWorld, xpos, ypos))
-//            return;
 
         rotationY += xoffset / 200.0;
         rotationX -= yoffset / 200.0;
@@ -331,14 +327,59 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
             rotationX = -1.5;
         }
     }
+
+    if(guiObjectPressed != -1) {
+        glm::mat4 cameraToWorld = glm::mat4(1.0f);
+        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+        cameraToWorld[0] = rightH;
+        cameraToWorld[1] = upH;
+        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+        cameraToWorld[3] = glm::vec4(cam.position, 1);
+
+        myGUIpointer->moveMarker(guiObjectPressed, xpos - xposMarker, ypos - yposMarker);
+    }
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        mousePressed = true;
+
+        //Check if the mouse is on any GUI objects (like markers)
+        double xpos, ypos;
+        //getting cursor position
+        glfwGetCursorPos(window, &xpos, &ypos);
+
+        glm::mat4 cameraToWorld = glm::mat4(1.0f);
+        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+        cameraToWorld[0] = rightH;
+        cameraToWorld[1] = upH;
+        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+        cameraToWorld[3] = glm::vec4(cam.position, 1);
+
+        //Generate Ray
+        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
+        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
+        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
+        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
+        glm::vec4 rayOriginWorld, rayPWorld;
+        rayOriginWorld = cameraToWorld * rayOrigin;
+        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
+        std::cout<<"RayOriginWorld: "<< rayPWorld.x<<" "<<rayPWorld.y<<" "<<rayPWorld.z<<std::endl;
+        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
+        rayDirection = glm::normalize(rayDirection);
+
+        guiObjectPressed = myGUIpointer->mouseClickedObjects(rayOriginWorld, rayDirection);
+        if(guiObjectPressed != -1){
+            xposMarker = xpos;
+            yposMarker = ypos;
+        }
+        else
+            mousePressed = true;
     }
 
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        guiObjectPressed = -1;
         mousePressed = false;
     }
 }

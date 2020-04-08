@@ -17,12 +17,16 @@ public:
     glm::vec3 getMarker1Pos();
     glm::vec3 getMarker2Pos();
 
-    bool checkMouseOnMarker(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y);
+    int checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    void processMouseMovement(int numMarker, double xoffset, double yoffset);
 
 private:
     //locations of the two markers
     glm::vec3 marker1;
     glm::vec3 marker2;
+
+    //Rotation of the world
+    glm::mat4 modelWorld;
 
     //current model matrix for the two markers
     glm::mat4 model_marker1;

@@ -30,7 +30,9 @@ public:
     void setThreshold(int value);
     void setContrast(float value);
 
-    bool mouseClickedObjects(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y);
+    //returns int for which object is clicked
+    int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    void moveMarker(int numMarker, double xoffset, double yoffset);
 
 private:
     float brightness;
@@ -63,6 +65,8 @@ private:
 
     int mediumActive;
     char currVelocity[10] = { 0 };
+
+    glm::mat4 modelWorld;
 
     static void setUp();
     void drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model);

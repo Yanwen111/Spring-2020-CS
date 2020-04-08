@@ -44,6 +44,7 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
 void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     setUp();
     isReset = false;
+    modelWorld = model;
     drawWidgets(projection, view, model);
 
     //set up velocity
@@ -358,6 +359,29 @@ int GUI::getZoom(){
     return zoom;
 }
 
-bool GUI::mouseClickedObjects(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y) {
-    return marker.checkMouseOnMarker(imageWidth, imageHeight, fov, cameraToWorld, x, y);
+int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
+    std::cout<<"HERE I AM"<<std::endl;
+
+    //check if markers are on screen
+    if(setMarker)
+        return marker.checkMouseOnMarker(rayOrigin, rayDirection);
+
+    return -1;
+}
+
+void GUI::moveMarker(int numMarker, double xoffset, double yoffset){
+    if(numMarker == 1){
+        glm::vec4 movement = glm::vec4(xoffset, yoffset, 0, 1);
+        glm::vec3 modelMovt = modelWorld * movement / 100.0;
+        marker1x += modelMovt.x;
+        marker1y += modelMovt.y;
+        marker1z += modelMovt.z;
+    }
+    if(numMarker == 2){
+        glm::vec4 movement = glm::vec4(xoffset, yoffset, 0, 1);
+        glm::vec3 modelMovt = modelWorld * movement / 100.0;
+        marker2x += modelMovt.x;
+        marker2y += modelMovt.y;
+        marker2z += modelMovt.z;
+    }
 }

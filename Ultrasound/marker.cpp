@@ -62,7 +62,7 @@ Marker::Marker(){
     markerShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 
     // Add the marker
-    markerIndex = Helper::read_stl("data/models/marker.stl", markervertices, markernormals);
+    markerIndex = Helper::read_stl("data/models/marker1.stl", markervertices, markernormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &markerVBO);
@@ -144,6 +144,8 @@ void Marker::setPositionMarker2(glm::vec3 pos) {
 void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     glEnable(GL_DEPTH_TEST);
 
+    modelWorld = model;
+
     //Draw Marker 1
     model_marker1      = glm::mat4(1.0f);
 
@@ -170,33 +172,23 @@ float Marker::getDistance(float freq, float vel, int depth){
     return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0;
 }
 
-bool Marker::checkMouseOnMarker(int imageWidth, int imageHeight, double fov, glm::mat4 cameraToWorld, float x, float y){
-    //Generate Ray
-    float imageAspectRatio = (imageWidth+0.0f) / (imageHeight+0.0f); // assuming width > height
-    float Px = (2 * ((x + 0.5) / imageWidth) - 1) * tan(fov / 2 * M_PI / 180) * imageAspectRatio;
-    float Py = (1 - 2 * ((y + 0.5) / imageHeight)) * tan(fov / 2 * M_PI / 180);
-    glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-    glm::vec4 rayOriginWorld, rayPWorld;
-    rayOriginWorld = cameraToWorld * rayOrigin;
-    rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-    glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-    glm::normalize(rayDirection);
+int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
+    std::cout<<"HAYUN IS HERE"<<std::endl;
 
     //returns -1 for no intersection, 1 for marker1, 2 for marker2
-    int intersectMarker = intersect(rayOriginWorld, rayDirection);
-    if(intersectMarker != -1){
-        std::cout<<"INTERSECTION! "<<intersectMarker<<std::endl;
-        return true;
-    }
+    int intersectMarker = intersect(rayOrigin, rayDirection);
+    return intersectMarker;
+}
 
-    return false;
+void Marker::processMouseMovement(int numMarker, double xoffset, double yoffset){
+
 }
 
 int Marker::intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection){
     int intersected = -1;
 
     //loop over each triangle
-    for(int x = 0; x < markerIndex/3; x++){
+    for(int x = 0; x < markerIndex/9; x++){
         glm::vec4 v0 = glm::vec4(markervertices[9*x  ], markervertices[9*x+1], markervertices[9*x+2], 1);
         glm::vec4 v1 = glm::vec4(markervertices[9*x+3], markervertices[9*x+4], markervertices[9*x+5], 1);
         glm::vec4 v2 = glm::vec4(markervertices[9*x+6], markervertices[9*x+7], markervertices[9*x+8], 1);
@@ -218,58 +210,31 @@ bool rayTriangleIntersect(
         const glm::vec3 &v0, const glm::vec3 &v1, const glm::vec3 &v2,
         float &t)
 {
-    // compute plane's normal
-    glm::vec3 v0v1 = v1 - v0;
-    glm::vec3 v0v2 = v2 - v0;
-    // no need to normalize
-    glm::vec3 N = glm::cross(v0v1, v0v2);
-//    glm::vec3 N = v0v1.crossProduct(v0v2); // N
-    float area2 = N.length();
+    ///Barycentric coordinate calculation
 
-    // Step 1: finding P
+    float a = v0.x-v1.x;
+    float b = v0.y-v1.y;
+    float c = v0.z-v1.z;
+    float d = v0.x-v2.x;
+    float e = v0.y-v2.y;
+    float f = v0.z-v2.z;
+    float g = dir.x;
+    float h = dir.y;
+    float i = dir.z;
+    float j = v0.x-orig.x;
+    float k = v0.y-orig.y;
+    float l = v0.z-orig.z;
 
-    // check if ray and plane are parallel ?
-    float NdotRayDirection = glm::dot(N, dir);
-//    float NdotRayDirection = N.dotProduct(dir);
-    if (fabs(NdotRayDirection) < 0.1) // almost 0
-        return false; // they are parallel so they don't intersect !
+    float M = a*(e*i-h*f)+b*(g*f-d*i)+c*(d*h-e*g);
 
-    // compute d parameter using equation 2
-    float d = glm::dot(N, v0);
-//    float d = N.dotProduct(v0);
+    t = -1*(f*(a*k-j*b) + e*(j*c-a*l) + d*(b*l-k*c))/M;
+    if(t < 0.000001) return false;
 
-    // compute t (equation 3)
-    t = (glm::dot(N, orig) + d) / NdotRayDirection;
-//    t = (N.dotProduct(orig) + d) / NdotRayDirection;
-    // check if the triangle is in behind the ray
-    if (t < 0) return false; // the triangle is behind
+    float gamma = (i*(a*k-j*b)+h*(j*c-a*l)+g*(b*l-k*c))/M;
+    if( gamma < 0 || gamma > 1) return false;
 
-    // compute the intersection point using equation 1
-    glm::vec3 P = orig + t * dir;
+    float beta = (j*(e*i-h*f)+k*(g*f-d*i)+l*(d*h-e*g))/M;
+    if(beta < 0 || beta > 1-gamma) return false;
 
-    // Step 2: inside-outside test
-    glm::vec3 C; // vector perpendicular to triangle's plane
-
-    // edge 0
-    glm::vec3 edge0 = v1 - v0;
-    glm::vec3 vp0 = P - v0;
-    C = glm::cross(edge0, vp0);
-//    C = edge0.crossProduct(vp0);
-    if (glm::dot(N, C) < 0) return false; // P is on the right side
-
-    // edge 1
-    glm::vec3 edge1 = v2 - v1;
-    glm::vec3 vp1 = P - v1;
-    C = glm::cross(edge1, vp1);
-//    C = edge1.crossProduct(vp1);
-    if (glm::dot(N, C) < 0)  return false; // P is on the right side
-
-    // edge 2
-    glm::vec3 edge2 = v0 - v2;
-    glm::vec3 vp2 = P - v2;
-    C = cross(edge2, vp2);
-//    C = edge2.crossProduct(vp2);
-    if (glm::dot(N, C) < 0) return false; // P is on the right side;
-
-    return true; // this ray hits the triangle
+    return true;
 }
