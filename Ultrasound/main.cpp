@@ -50,7 +50,7 @@ double xposMarker, yposMarker;
 
 // Creating a Camera object
 Camera cam;
-
+Probe probe;
 GUI* myGUIpointer;
 
 const bool ROTATE_GRID = true;
@@ -127,9 +127,10 @@ int main() {
     DensityMap grid(dim);
 
     // Creating the probe
-    Probe probe("data/models/PROBE_CENTERED.stl");
+//    Probe probe("data/models/PROBE_CENTERED.stl");
+//    probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
     // Open the IMU file for reading
-    probe.openIMUFile("data/real_imu.txt");
+//    probe.openIMUFile("data/real_imu.txt");
 
     //Create the GUI
     GUI myGUI(window, glsl_version);
@@ -164,6 +165,8 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
     int numFrames = 0;
     double lastFPSUpdate = 0;
 
+    int currProbe = 0;
+
     while (!glfwWindowShouldClose(window)) {
         double currentFrame = glfwGetTime();
         cam.deltaTime = currentFrame - cam.lastFrame;
@@ -192,6 +195,22 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         if (ROTATE_GRID) {
             model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
             model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+        }
+
+        if(myGUI.loadNew()){
+            int newProbe = myGUI.getProbe();
+            //probe is submarine
+            if(newProbe == 0 && currProbe != newProbe){
+                probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
+            }
+            //probe is whiteFine
+            if(newProbe == 1 && currProbe != newProbe){
+                probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
+            }
+            currProbe = newProbe;
+
+            //Figure out how to rotate probe?
+            //Figure out how to read new file??
         }
 
         // Draw the probe

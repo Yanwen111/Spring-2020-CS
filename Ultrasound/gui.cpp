@@ -105,13 +105,36 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     // render your IMGUI
     ImGui::Begin("GUI");
 
+    ImGui::Text("Load New File");
+    ImGui::Indent();
+
+        ImGui::Text("File name: data/");
+        ImGui::SameLine();
+        ImGui::PushItemWidth(150);
+        ImGui::InputText(".txt", fileName, IM_ARRAYSIZE(currVelocity));
+        ImGui::PopItemWidth();
+
+        ImGui::Text("Select Probe Type");
+        ImGui::Indent();
+        ImGui::RadioButton("Submarine", &probeType, 0);
+        ImGui::RadioButton("White Fin", &probeType, 1);
+        ImGui::Unindent();
+
+        ImGui::Text("Depth (from 1 to %d)", numSamples);
+        ImGui::Text("Gain (from )");
+
+        if(ImGui::Button("Load")) newLoad = true;
+        else newLoad = false;
+    ImGui::Unindent();
+
+    ImGui::NewLine();
+
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1/7.0f, 0.6f, 0.6f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1/7.0f, 0.7f, 0.7f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1/7.0f, 0.8f, 0.8f));
-    if (ImGui::Button("Reset"))
+    if (ImGui::Button("Reset Settings"))
         reset();
-
     ImGui::PopStyleColor(3);
     ImGui::PopID();
 
@@ -384,4 +407,11 @@ void GUI::moveMarker(int numMarker, double xoffset, double yoffset){
         marker2y += modelMovt.y;
         marker2z += modelMovt.z;
     }
+}
+
+bool GUI::loadNew(){
+    return newLoad;
+}
+int GUI::getProbe(){
+    return probeType;
 }

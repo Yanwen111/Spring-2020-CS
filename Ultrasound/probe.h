@@ -15,7 +15,8 @@
 class Probe {
 public:
 
-    Probe(std::string filename);
+    Probe();
+    void loadNewProbe(std::string filename);
     void openIMUFile(const std::string& inputFileName);
 
     //draws the probe to the screen

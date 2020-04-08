@@ -2,7 +2,11 @@
 #include <cmath>
 #include "probe.h"
 
-Probe::Probe(std::string filename){
+Probe::Probe(){
+
+}
+
+void Probe::loadNewProbe(std::string filename){
     std::string vProbe =
             "// VERTEX SHADER											  \n"
             "															  \n"
@@ -19,9 +23,9 @@ Probe::Probe(std::string filename){
             "out vec3 FragPos;                                            \n"
             "                                                             \n"
             "void main() {                                                \n"
-//            "   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
-//            "   Normal = vec3(view * model * vec4(aNormal, 0.0f));        \n"
-//            "   FragPos = vec3(model * vec4(aPos, 1.0f));                 \n"
+            //            "   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
+            //            "   Normal = vec3(view * model * vec4(aNormal, 0.0f));        \n"
+            //            "   FragPos = vec3(model * vec4(aPos, 1.0f));                 \n"
             "   vec4 mvPos = view * model * vec4(aPos, 1.0);              \n"
             "   gl_Position = projection * mvPos;                         \n"
             "   Normal = vec3(view * model * vec4(aNormal, 0.0f));        \n"

@@ -34,6 +34,9 @@ public:
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
     void moveMarker(int numMarker, double xoffset, double yoffset);
 
+    bool loadNew();
+    int getProbe();
+
 private:
     float brightness;
     float gain;
@@ -49,6 +52,11 @@ private:
 
     double velocity;
     int numSamples;
+
+    char fileName[100] = {0};
+    int probeType;
+
+    bool newLoad;
 
     int voxels;
     double fileSize;
