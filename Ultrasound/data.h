@@ -75,6 +75,11 @@ std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
+void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len);
+void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len);
+std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+std::vector<line_data_struct> file_to_pixel_V05(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+
 /* real-time based on TCP */
 void realDemo2(DensityMap& grid, bool& dataUpdate);
 void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,

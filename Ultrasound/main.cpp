@@ -155,14 +155,25 @@ int main() {
 
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-    std::thread dataThread;
-    dataThread = std::thread(realDemo4, std::ref(grid), std::ref(dataUpdate));
-    dataThread.detach();
+//    std::thread dataThread;
+//    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
+//    dataThread.detach();
 
-    // thread2: add Gain control to the grid.cell after 30s automatically.
-//    std::thread gainThread;
-//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-//    gainThread.detach();
+    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
+//    char fN[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
+//    float GAIN = 0; /* 0 means no gain */
+//    int depth = 1500;
+//    std::thread dataThread;
+//    dataThread = std::thread(readDataWhitefin, std::ref(grid), fN, GAIN, depth);
+//    dataThread.detach();
+
+    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
+    char fN[] = "data/tapioca_3.txt";
+    float GAIN = 0; /* 0 means no gain */
+    int depth = 2500;
+    std::thread dataThread;
+    dataThread = std::thread(readDataSubmarine, std::ref(grid), fN, GAIN, depth);
+    dataThread.detach();
 
 	// Main event loop
 
