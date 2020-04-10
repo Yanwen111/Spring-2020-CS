@@ -18,7 +18,6 @@ public:
     glm::vec3 getMarker2Pos();
 
     int checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
-    void processMouseMovement(int numMarker, double xoffset, double yoffset);
 
 private:
     //locations of the two markers

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <imgui.h>
+#include <imgui_internal.h>
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
 #include "gui.h"
@@ -37,6 +38,11 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     mediumActive = 0;
 
     reset();
+
+    newLoad = false;
+    loading = false;
+    depth = 1500;
+    gain = 1.0f;
 
     scale = Scale();
 }
@@ -110,8 +116,8 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 
         ImGui::Text("File name: data/");
         ImGui::SameLine();
-        ImGui::PushItemWidth(150);
-        ImGui::InputText(".txt", fileName, IM_ARRAYSIZE(currVelocity));
+        ImGui::PushItemWidth(300);
+        ImGui::InputText(".txt", fileName, IM_ARRAYSIZE(fileName));
         ImGui::PopItemWidth();
 
         ImGui::Text("Select Probe Type");
@@ -120,11 +126,38 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         ImGui::RadioButton("White Fin", &probeType, 1);
         ImGui::Unindent();
 
-        ImGui::Text("Depth (from 1 to %d)", numSamples);
-        ImGui::Text("Gain (from )");
+        ImGui::PushItemWidth(300);
+        ImGui::SliderInt("Depth", &depth, 1, numSamples);
+        ImGui::SliderFloat("Gain", &gain, 0, 5);
+        ImGui::PopItemWidth();
 
-        if(ImGui::Button("Load")) newLoad = true;
-        else newLoad = false;
+        ImGui::PushID(1);
+        if(loading) {
+            ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
+            ImGui::Button("Load");
+            ImGui::PopStyleColor(3);
+            ImGui::SameLine();
+            ImGui::Text("Loading...");
+            newLoad = false;
+        }
+        else{
+            ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(207/360.0f, 0.6f, .6f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(207/360.0f, 0.8f, .8f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(207/360.0f, 1.0f, 1.0f));
+            if(ImGui::Button("Load"))
+            {
+                newLoad = true;
+                loading = true;
+            }
+            else{
+                newLoad = false;
+            }
+            ImGui::PopStyleColor(3);
+        }
+        ImGui::PopID();
+
     ImGui::Unindent();
 
     ImGui::NewLine();
@@ -336,6 +369,19 @@ float GUI::getBrightness(){
 
 float GUI::getGain(){
     return gain;
+}
+
+int GUI::getDepth(){
+    return depth;
+}
+
+std::string GUI::getFile(){
+    std::string s(fileName);
+    return ("data/" + s + ".txt");
+}
+
+void GUI::doneLoading(){
+    loading = false;
 }
 
 int GUI::getThreshold() {

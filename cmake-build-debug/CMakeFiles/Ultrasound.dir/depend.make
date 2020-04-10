@@ -634,6 +634,8 @@ CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imconfig.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imgui.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imgui_impl_glfw.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imgui_impl_opengl3.h
+CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imgui_internal.h
+CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../imgui/imstb_textedit.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/gui.cpp
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/gui.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/helper.h

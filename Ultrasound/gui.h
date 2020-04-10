@@ -24,6 +24,8 @@ public:
     float getGain();
     int getThreshold();
     float getContrast();
+    std::string getFile();
+    int getDepth();
 
     void setBrightness(float value);
     void setGain(float value);
@@ -37,7 +39,11 @@ public:
     bool loadNew();
     int getProbe();
 
+    void doneLoading();
+
 private:
+    bool loading;
+    int depth;
     float brightness;
     float gain;
     int threshold;

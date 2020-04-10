@@ -18,6 +18,13 @@
 #include <string.h>
 #include <cinttypes>
 #include <cstdint>
+#include <mutex>
+
+#include <cstdlib>
+#include <stdlib.h>
+#include <stdio.h>
+#pragma comment(lib, "libws2_32.a")
+
 
 #include "densityMap.h"
 #include "rotation.h"
@@ -65,6 +72,22 @@ void gainControl(DensityMap& grid, float Gain, bool& dataUpdate);
 std::vector<unsigned char> readFile(const char* directory);
 void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
+
+void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
+void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
+std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+
+/* real-time based on TCP */
+void realDemo2(DensityMap& grid, bool& dataUpdate);
+void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+                 bool& newDataline);
+
+/* Gantry (for multiple files) */
+void realDemo3(DensityMap& grid, bool& dataUpdate);
+
+/* real-time based on UDP */
+void realDemo4(DensityMap& grid, bool& dataUpdate);
 
 int getDepth();
 void setDepth(int dep);

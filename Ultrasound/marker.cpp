@@ -180,10 +180,6 @@ int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
     return intersectMarker;
 }
 
-void Marker::processMouseMovement(int numMarker, double xoffset, double yoffset){
-
-}
-
 int Marker::intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection){
     int intersected = -1;
 

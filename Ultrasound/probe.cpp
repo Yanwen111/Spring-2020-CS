@@ -89,10 +89,13 @@ void Probe::loadNewProbe(std::string filename){
     // Clear unused memory
     delete [] probevertices;
     delete [] probeNormals;
+
+    file = static_cast<std::basic_ifstream<char, std::char_traits<char>>>(NULL);
 }
 
 void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
 
+//    std::cout<<"HAYUN CHONG1 "<<std::endl;
     glEnable(GL_DEPTH_TEST);
     //Orient and scale the probe to the center
     glm::mat4 model_probe      = glm::mat4(1.0f);
@@ -128,10 +131,14 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
     probeShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
     probeShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
+
+//    std::cout<<"HAYUN CHONG2 "<<std::endl;
     glBindVertexArray(probeVAO);
     glDrawArrays(GL_TRIANGLES, 0, probeindex/3);
 
     glDisable(GL_DEPTH_TEST);
+
+//    std::cout<<"HAYUN CHONG3 "<<std::endl;
 }
 
 void Probe::openIMUFile(const std::string& inputFileName){
@@ -187,68 +194,6 @@ glm::mat4 Probe::getOrientation(){
 
     return rotationMatrix;
 }
-
-//int read_stl(const std::string& file_name, GLfloat * &vertices, GLfloat * &normals)
-//{
-//
-//    std::ifstream myfile (file_name.c_str(), std::ios::in | std::ios::binary);
-//
-//    char header_info[80] = "";
-//    char bin_n_triangles[4];
-//    unsigned int num_traingles = 0;
-//
-//    if (myfile)
-//    {
-//        myfile.read (header_info, 80);
-//        std::cout <<"Header : " << header_info << std::endl;
-//    }
-//
-//    if (myfile)
-//    {
-//        myfile.read (bin_n_triangles, 4);
-//        num_traingles = *((unsigned int*)bin_n_triangles) ;
-//        std::cout <<"Number of triangles : " << num_traingles << std::endl;
-//    }
-//
-//    vertices = new GLfloat[num_traingles * 9];
-//    normals = new GLfloat[num_traingles * 9];
-//
-//    int index = 0;
-//    int indexN = 0;
-//    for(int i = 0; i < num_traingles; i++)
-//    {
-//        char facet[50];
-//        if (myfile)
-//        {
-//            myfile.read (facet, 50);
-//
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-//
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-//
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+0));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+4));
-//            normals[indexN++] = *( (float*) ( ( (char*)facet)+8));
-//
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+12));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+16));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+20));
-//
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+24));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+28));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+32));
-//
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+36));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+40));
-//            vertices[index++] = *( (float*) ( ( (char*)facet)+44));
-//        }
-//    }
-//    return index;
-//}
 
 glm::vec4 Probe::getQuaternions(){
     return quat;

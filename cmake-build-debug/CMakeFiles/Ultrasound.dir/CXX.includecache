@@ -1848,10 +1848,6 @@ stdint.h
 imgui_user.h
 ../imgui/imgui_user.h
 
-../imgui/imgui_impl_glfw.h
-
-../imgui/imgui_impl_opengl3.h
-
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/data.h
 iostream
 -
@@ -1887,26 +1883,20 @@ cinttypes
 -
 cstdint
 -
+mutex
+-
+cstdlib
+-
+stdlib.h
+-
+stdio.h
+-
 densityMap.h
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/densityMap.h
 rotation.h
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h
 cstdlib
 -
-
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.cpp
-iostream
--
-imgui.h
--
-imgui_impl_opengl3.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/imgui_impl_opengl3.h
-imgui_impl_glfw.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/imgui_impl_glfw.h
-gui.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.h
-rotation.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/rotation.h
 
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.h
 string

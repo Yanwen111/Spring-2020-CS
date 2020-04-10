@@ -6,7 +6,7 @@
 #include "rotation.h" /* for test of fake data */
 
 /* For calculating the scale */
-#define Velocity 110200  // speed in phantom, cm/s
+#define Velocity 153800  // speed in phantom, cm/s
 #define Frequency 15.6  // MHz
 
 /* Data Processing */
@@ -138,19 +138,336 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
     dataUpdate = true;
 }
 
+void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+{
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<line_data_struct> line_data;
+
+    file_bytes = readFile(fileName);
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+    /* convert file bytes to data struct */
+    line_data = file_to_pixel_V07(file_bytes, marker_locations);
+    printf("find the screen_data\n");
+
+    for  (auto l: line_data)
+    {
+        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        for (int i = 0; i < l.vals.size(); ++i)
+        {
+            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+        }
+        grid.writeLine(ps, pe, l.vals);
+    }
+
+    dataUpdate = true;
+}
+
+std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations)
+{
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+    unsigned char crc_input_V07[4+1+2+2+0+2*2500]; /* 0 stands for no IMU data */
+
+    for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
+        marker_index = _marker_locations.at(i);
+        marker_index_next = _marker_locations.at(i+1);
+        /* time stamp */
+        for (int j = 0; j < (int)sizeof(time_stamp_char); ++j){
+            time_stamp_char[j] = _file_bytes.at(marker_index + sizeof(marker) + j);
+        }
+        std::memcpy(&time_stamp, time_stamp_char, sizeof(time_stamp));
+        time_stamp = changed_endian_4Bytes(time_stamp);
+        /* probe type char */
+        probe_type_char = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char));
+        /* encoder */
+        for (int j = 0; j < (int) sizeof(encoder_char); ++j){
+            encoder_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + j);
+        }
+        std::memcpy(&encoder, encoder_char, sizeof(encoder));
+        encoder = changed_endian_2Bytes(encoder);
+
+        /* lx16 */
+        for (int j = 0; j < (int) sizeof(lx16_char); ++j){
+            lx16_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j);
+        }
+        std::memcpy(&lx16, lx16_char, sizeof(lx16));
+        lx16 = changed_endian_2Bytes(lx16);
+
+        /* IMU */
+//        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+//            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+//                                                        sizeof(encoder_char) + j);
+//        }
+//        for (int j = 0; j < 16; j += 4)
+//        {
+//            unsigned char temp1[4];
+//            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+//            quaternion[j/4] = *(float*)temp1;
+//        }
+        quaternion[0] = 1;
+        quaternion[1] = 0;
+        quaternion[2] = 0;
+        quaternion[3] = 0;
+        /* adc */
+        /* determine the length of buffer */
+        buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(lx16_char) - sizeof(crc_char))/2;
+        for (int j = 0; j < buffer_length; ++j){
+            for (int k = 0; k < (int)sizeof(adc_temp); ++k){
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + j * 2 + k);
+                adc_char[2*j+k] = adc_temp[k];
+            }
+            std::memcpy(&adc, adc_temp, sizeof(adc));
+            adc = changed_endian_2Bytes(adc);
+            buffer[j] = adc;
+        }
+        /* checksum */
+        for (int j = 0; j < (int)sizeof(crc_char); ++j){
+            crc_char[j] = _file_bytes.at(marker_index_next-(int)sizeof(crc_char)+j);
+        }
+        /* calculate crc locally */
+        memcpy(crc_input_V07, time_stamp_char, sizeof(time_stamp_char));
+        memcpy(crc_input_V07+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
+        memcpy(crc_input_V07+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
+        memcpy(crc_input_V07+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), lx16_char, sizeof(lx16_char));
+        memcpy(crc_input_V07+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(lx16_char), adc_char, sizeof(adc_char));
+        crc_result = crc32c(0, crc_input_V07, sizeof(crc_input_V07));
+        crc_result = changed_endian_4Bytes(crc_result);
+        memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
+
+        /* if two crc matches */
+        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+            //if(1){  // uncommented this for store all the data
+            scan_data_struct temp_struct;
+            temp_struct.time_stamp = time_stamp;
+            for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
+            temp_struct.encoder = encoder;
+            temp_struct.lx16 = lx16;
+            /* normalize on the go */
+            for (int j = 0; j < buffer_length; ++j) {
+                temp_struct.buffer[j] = buffer[j];
+                //printf("Intensity:%f\n", temp_struct.buffer[j]);
+            }
+            scan_data.push_back(temp_struct);
+        }
+    }
+
+    //write probe data to test
+    //printf("start write imu...\n");
+    std::ofstream fileout("data/real_imu.txt", std::ios::trunc|std::ios::out);
+    for (auto s: scan_data){
+        fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
+    }
+    fileout.close();
+    //printf("Real IMU file generate!\n");
+
+    for (int i = 0; i < (int)scan_data.size(); ++i)
+    {
+        double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+        float piezo = angle + 175;
+        /* angle of the lx16 */
+        float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
+        /* find min and max */
+        for (int j = 0; j < buffer_length; ++j){
+            adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
+            adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
+        }
+        int piezoProbe = 101; /*assume v = 1000 m/s */
+
+        line_data_struct dataline;
+        dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
+        /* normalize on the go */
+        for (int j = 0; j < buffer_length; ++j){
+            intensity = ((double)scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
+            dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
+        }
+        dataline.p2 = {(buffer_length+piezoProbe)*Cos(piezo), (buffer_length+piezoProbe)*Sin(piezo), 0};
+        glm::mat4 rot = glm::mat4(1.0f);
+        rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
+        dataline.p1 = rot * glm::vec4(dataline.p1,1);
+        dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        line_data.push_back(dataline);
+        adc_max = 0; adc_min = 0;
+    }
+    return line_data;
+}
+
+void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+{
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<line_data_struct> line_data;
+
+    file_bytes = readFile(fileName);
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+    /* convert file bytes to data struct */
+    line_data = file_to_pixel_V06(file_bytes, marker_locations);
+    printf("find the screen_data\n");
+
+    for  (auto l: line_data)
+    {
+        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        for (int i = 0; i < l.vals.size(); ++i)
+        {
+            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+        }
+        grid.writeLine(ps, pe, l.vals);
+    }
+
+    dataUpdate = true;
+}
+
+std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations)
+{
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+    unsigned char crc_input_V06[4+1+2+16+2*2500]; /* 0 stands for no IMU data */
+
+    for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
+        marker_index = _marker_locations.at(i);
+        marker_index_next = _marker_locations.at(i+1);
+        /* time stamp */
+        for (int j = 0; j < (int)sizeof(time_stamp_char); ++j){
+            time_stamp_char[j] = _file_bytes.at(marker_index + sizeof(marker) + j);
+        }
+        std::memcpy(&time_stamp, time_stamp_char, sizeof(time_stamp));
+        time_stamp = changed_endian_4Bytes(time_stamp);
+        /* probe type char */
+        probe_type_char = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char));
+        /* encoder */
+        for (int j = 0; j < (int) sizeof(encoder_char); ++j){
+            encoder_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + j);
+        }
+        std::memcpy(&encoder, encoder_char, sizeof(encoder));
+        encoder = changed_endian_2Bytes(encoder);
+
+        /* lx16 */
+        lx16 = 0;
+
+        /* IMU */
+        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+                                                sizeof(encoder_char) + j);
+        }
+        for (int j = 0; j < 16; j += 4)
+        {
+            unsigned char temp1[4];
+            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+            quaternion[j/4] = *(float*)temp1;
+        }
+        /* adc */
+        /* determine the length of buffer */
+        buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(time_stamp_char) -
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
+        for (int j = 0; j < buffer_length; ++j){
+            for (int k = 0; k < (int)sizeof(adc_temp); ++k){
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(quaternion_char) + j * 2 + k);
+                adc_char[2*j+k] = adc_temp[k];
+            }
+            std::memcpy(&adc, adc_temp, sizeof(adc));
+            adc = changed_endian_2Bytes(adc);
+            buffer[j] = adc;
+        }
+        /* checksum */
+        for (int j = 0; j < (int)sizeof(crc_char); ++j){
+            crc_char[j] = _file_bytes.at(marker_index_next-(int)sizeof(crc_char)+j);
+        }
+        /* calculate crc locally */
+        memcpy(crc_input_V06, time_stamp_char, sizeof(time_stamp_char));
+        memcpy(crc_input_V06+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
+        memcpy(crc_input_V06+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
+        memcpy(crc_input_V06+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), quaternion_char, sizeof(quaternion_char));
+        memcpy(crc_input_V06+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)+ sizeof(quaternion_char), adc_char, sizeof(adc_char));
+        crc_result = crc32c(0, crc_input_V06, sizeof(crc_input_V06));
+        crc_result = changed_endian_4Bytes(crc_result);
+        memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
+
+        /* if two crc matches */
+        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+            //if(1){  // uncommented this for store all the data
+            scan_data_struct temp_struct;
+            temp_struct.time_stamp = time_stamp;
+            for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
+            temp_struct.encoder = encoder;
+            temp_struct.lx16 = lx16;
+            /* normalize on the go */
+            for (int j = 0; j < buffer_length; ++j) {
+                temp_struct.buffer[j] = buffer[j];
+                //printf("Intensity:%f\n", temp_struct.buffer[j]);
+            }
+            scan_data.push_back(temp_struct);
+        }
+    }
+
+    //write probe data to test
+    //printf("start write imu...\n");
+    std::ofstream fileout("data/real_imu.txt", std::ios::trunc|std::ios::out);
+    for (auto s: scan_data){
+        fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
+    }
+    fileout.close();
+    //printf("Real IMU file generate!\n");
+
+    for (int i = 0; i < (int)scan_data.size(); ++i)
+    {
+        double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+        double ax = 9*Cos(angle - 222 );
+        double ay = 9*Sin(angle - 222 );
+        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
+        /* find min and max */
+        for (int j = 0; j < buffer_length; ++j){
+            adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
+            adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
+        }
+
+        int piezoProbe = 101; /*assume v = 1000 m/s */
+
+        line_data_struct dataline;
+        dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
+        /* normalize on the go */
+        for (int j = 0; j < buffer_length; ++j){
+            intensity = ((double)scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
+            dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
+        }
+        dataline.p2 = {(buffer_length+piezoProbe)*Cos(piezo), (buffer_length+piezoProbe)*Sin(piezo), 0};
+        glm::mat4 rot = Rotation::convertRotationMatrix(scan_data.at(i).quaternion[0], scan_data.at(i).quaternion[1],
+                                                        scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3]);
+        dataline.p1 = rot * glm::vec4(dataline.p1,1);
+        dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        line_data.push_back(dataline);
+        adc_max = 0; adc_min = 0;
+    }
+    return line_data;
+}
+
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
-    //read the data from current red pitaya 2d data.
+    char fileName[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
+//    switch (MODE)
+//    {
+//        case 1:
+//            readDataSubmarine(fileName, Gain, len);
+//            break;
+//        case 2:
+//            readDataWhitefin(fileName, Gain, len);
+//            break;
+//        default:
+//            printf("<%d> is an invalid mode!\n");
+//    }
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
 
-    char fileName[255];
-    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
-    std::cin >> fileName;
+//    char fileName[255];
+//    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+//    std::cin >> fileName;
     file_bytes = readFile(fileName);
-    //file_bytes = readFile("data/tapioca_1.txt");
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
@@ -163,84 +480,380 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 
     int ddim = grid.getDim();
     len = line_data[0].vals.size(); // 2500, equl to buffer size
-//    printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d):", len);
-//    std::cin >> len;
-    //len = 1500; // change range
-    setDepth(1500);
+    setDepth(2500);
     int cnt = 0;
     for  (auto l: line_data)
     {
-        glm::vec3 ps = {0.5, 1, 0.5};
+        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         grid.writeLine(ps, pe, l.vals);
-        /* for rendering line by line */
-//        cnt ++;
-//        if (cnt%200 == 0)
-//        {
-//            printf("draw line %d\n", cnt);
-//            std::this_thread::sleep_for(std::chrono::seconds(2));
-//        }
     }
-
-    /* add some scale. Each line refer to 1 centimeter */
-//    int d1c = (ddim * 2 * Frequency * 1e6)/(Velocity * len) ;
-//    int d1m = d1c / 10;
-//    int d1c0 = d1c, d1m0 = d1m;
-//    if (d1m > 2 ) /* zoom big, so we can add milimeter scales */
-//    {
-//        while (d1m < ddim)
-//        {
-//            for (int i = 0; i < ddim; ++i)
-//                //grid.cells[0][ddim - d1m - 1][i] = 130;
-//                grid.writeCell(ddim/2, ddim - d1m - 1, i, 130);
-//            d1m += d1m0;
-//        }
-//    }
-//    while (d1c < ddim)
-//    {
-//        for (int i = 0; i < ddim; ++i)
-//            //grid.cells[0][ddim - d1c -1][i] = 254;
-//            grid.writeCell(ddim/2, ddim - d1c - 1, i, 254);
-//        d1c += d1c0;
-//    }
     dataUpdate = true;
 }
-
-
-void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
-{
-    printf("6000s later it will do some gain control\n");
-    std::this_thread::sleep_for(std::chrono::seconds(6000));
-
-    int deep = grid.getDim();
-
-    //std::vector<std::vector<std::vector<float> > > gMtx(deep, std::vector<std::vector<float> >(deep, std::vector<float>(deep, 0.0)));
-    std::vector<std::vector<std::vector<float>>> gMtx;
-    for (int i = 0; i < deep; ++i) {
-        gMtx.push_back(std::vector<std::vector<float>>{});
-        for (int j = 0; j < deep; ++j) {
-            gMtx.back().push_back(std::vector<float>{});
-            for (int k = 0; k < deep; ++k) {
-                gMtx.back().back().push_back(0);
-            }
-        }
-    }
-
-    //int forTest = deep/2;
-    for (int x = 0; x < deep; ++x)
-    {
-        for (int y = 0; y < deep; ++y) //y is 0 at bottom and deep at top
-        {
-            for (int z = 0; z < deep; ++z)
-            {
-                float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y) + (z-deep/2)*(z-deep/2))) / deep; //the distance between the point and piezo origin
-                gMtx[x][y][z] = exp(Gain *r);
-                //grid.cells[x][y][z]*= gMtx[x][y][z];
-            }
-        }
-    }
-    dataUpstate = true;
-}
+//
+//void realDemo2(DensityMap& grid, bool& dataUpdate)
+//{
+//    //read the data from current red pitaya 2d data.
+//    std::vector<unsigned char> file_bytes;
+//    std::vector<int> marker_locations;
+//    std::vector<scan_data_struct> scan_data;
+//    std::vector<line_data_struct> line_data;
+//
+//    /* for real time trial */
+//    int sub_length = 1;
+//    int buffer_size = 1000;
+//    bool newDataline = true;
+//    //std::mutex readtex;
+//
+////    char fileName[255];
+////    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
+////    std::cin >> fileName;
+////    file_bytes = readFile(fileName);
+////    /* find all marker locations */
+////    marker_locations = find_marker(file_bytes);
+////
+////    //sub_length = marker_locations.size() / 35;
+////
+////    std::thread fileThread;
+////    fileThread = std::thread(readSubfile, file_bytes, marker_locations, sub_length,
+////            std::ref(newDataline));
+////    fileThread.detach();
+//
+//    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
+//    char sendBuf[100] = "I received!";
+//    SOCKET sockConn;
+//    WSADATA wsaData;
+//    int port = 8888;
+//    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+//    {
+//        printf("Initialize failed!\n");
+//        return;
+//    }
+//    SOCKET sockSrv = socket(AF_INET, SOCK_STREAM, 0);
+//    SOCKADDR_IN addrSrv;
+//    addrSrv.sin_family = AF_INET;
+//    addrSrv.sin_port = htons(port);
+//    addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+//    int retVal = bind(sockSrv, (LPSOCKADDR)&addrSrv, sizeof(SOCKADDR_IN));
+//    if (retVal == SOCKET_ERROR)
+//    {
+//        printf("Connect failed: %d\n", WSAGetLastError());
+//        return;
+//    }
+//    if (listen(sockSrv, 10) == SOCKET_ERROR)
+//    {
+//        printf("listen failed: %d\n", WSAGetLastError());
+//        return;
+//    }
+//    SOCKADDR_IN addrClient;
+//    int length = sizeof(SOCKADDR);
+//    sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, &length);
+//    if (sockConn == SOCKET_ERROR)
+//    {
+//        printf("wait for request fail: %d", WSAGetLastError());
+//        return;
+//    }
+//    printf("The IP of client is :[%s]\n", inet_ntoa(addrClient.sin_addr));
+//
+//    int buffer_cnt = 0, loop_cnt = 0;
+//    std::vector<unsigned char> sub_file_bytes;
+//    while(1)
+//    {
+//        //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+//        memset(recvBuf, 0, sizeof(recvBuf));
+//        recv(sockConn, recvBuf, sizeof(recvBuf), 0);
+//        buffer_cnt++;
+//
+//        for (auto r: recvBuf)
+//        {
+//            sub_file_bytes.push_back(static_cast<unsigned char>(r));
+//        }
+//
+//        if (buffer_cnt == buffer_size)
+//        {
+//            /* convert file bytes to data struct */
+//            std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+//            file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+//            samples = scan_data.size();
+//            printf("the number of scan_data samples is %d\n", samples);
+//            /* convert data to vertex on screen */
+//            data_to_pixel(scan_data, line_data);
+//            //printf("find the screen_data\n");
+//
+//            int ddim = grid.getDim();
+//            len = line_data[0].vals.size(); // 2500, equl to buffer size
+//            //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+//            //            std::cin >> len;
+//            //len = 1500; // change range
+//            setDepth(1500);
+//            int cnt = 0;
+//            for (auto l: line_data)
+//            {
+//                glm::vec3 ps = {0.5, 1, 0.5};
+//                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+//                                l.p2.z / len - l.p1.z / len + 0.5};
+//                grid.writeLine(ps, pe, l.vals);
+//            }
+//            buffer_cnt = 0;
+//            sub_file_bytes.clear();
+//            printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+//            dataUpdate = true;
+//        }
+//    }
+//    closesocket(sockConn);
+//    closesocket(sockSrv);
+//    WSACleanup();
+//}
+//
+//void readSubfile(std::vector<unsigned char> file_bytes, std::vector<int> marker_locations, int sub_length,
+//                 bool& newDataline)
+//{
+//    /* TCP client*/
+//    WSADATA wsaData;
+//    char buff[(10+4+1+2+2+2*2500+4)*sub_length];
+//    memset(buff, 0, sizeof(buff));
+//    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+//    {
+//        printf("Winsock initialization failed!\n");
+//        return;
+//    }
+//
+//    SOCKADDR_IN addrSrv;
+//    addrSrv.sin_family = AF_INET;
+//    addrSrv.sin_port = htons(8888);
+//    addrSrv.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+//
+//    SOCKET socketClient = socket(AF_INET, SOCK_STREAM, 0);
+//    if (SOCKET_ERROR == socketClient)
+//    {
+//        printf("Socket() errr: %d", WSAGetLastError());
+//        return;
+//    }
+//    if (connect(socketClient, (struct sockaddr*)&addrSrv, sizeof(addrSrv)) == INVALID_SOCKET)
+//    {
+//        printf("Connect fail: %d", WSAGetLastError());
+//        return;
+//    }
+//
+//    // sub_length: the length of each part of the file_bytes
+//    int pt = 0; /* current position in marker_locations */
+//    while (pt < marker_locations.size()-1)
+//    {
+//        if (newDataline)
+//        {
+//            continue;
+//        }
+//        //sub_file_bytes.clear();
+//        std::vector<unsigned char> sub_file_bytes;
+//        for (int i = 0; i < sub_length; ++i)
+//        {
+//            if (pt >= marker_locations.size()-1)
+//            {
+//                printf("========END========\n");
+//                closesocket(socketClient);
+//                WSACleanup();
+//                break;
+//            }
+//            for (int j = marker_locations[pt]; j < marker_locations[pt+1]; j++)
+//                sub_file_bytes.push_back(file_bytes[j]);
+//            pt++;
+//        }
+//
+//        int csf = 0;
+//        for (int i = 0; i < sub_file_bytes.size(); ++i)
+//        {
+//            memset(buff+csf, sub_file_bytes[i], sizeof(char));
+//            csf++;
+//        }
+//        send(socketClient, buff, sizeof(buff), 0);
+//        //write(socketClient, buff, sizeof(buff));
+//
+//        //printf("Read some new data lines!\n");
+//        newDataline = true;
+//        //std::this_thread::sleep_for(std::chrono::milliseconds (500));
+//    }
+//    closesocket(socketClient);
+//    WSACleanup();
+//}
+//
+//void realDemo3(DensityMap& grid, bool& dataUpdate)
+//{
+//    printf("Try gantry ~ \n");
+//    float stepLength = 0.5; /* (cm) step of the gantry*/
+//    int step = stepLength * 1e6 / Velocity * 15.6;
+//    printf("step is %d\n", step);
+//    glm::vec3 starts = {0.2, 1, 0.5};
+//
+//    std::vector<unsigned char> file_bytes;
+//    std::vector<int> marker_locations;
+//    std::vector<scan_data_struct> scan_data;
+//    std::vector<line_data_struct> line_data;
+//
+//    for (int i = 0; i < 3; ++ i)
+//    {
+//        file_bytes.clear();
+//        marker_locations.clear();
+//        scan_data.clear();
+//        line_data.clear();
+//
+//        std::string fileNameS = "";
+//        std::string fileNameBase = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_";
+//        std::string fileNameTail = ".txt";
+//        fileNameS = fileNameBase += std::to_string(1+i) += fileNameTail;
+//        char *fileName = new char[strlen(fileNameS.c_str()) + 1];
+//        strcpy(fileName, fileNameS.c_str());
+//        file_bytes = readFile(fileName);
+//        /* find all marker locations */
+//        marker_locations = find_marker(file_bytes);
+//        /* convert file bytes to data struct */
+//        file_to_data(file_bytes, marker_locations, scan_data);
+//        samples = scan_data.size();
+//        printf("the number of scan_data samples is %d\n", samples);
+//        /* convert data to vertex on screen */
+//        data_to_pixel(scan_data, line_data);
+//        printf("find the screen_data\n");
+//
+//        int ddim = grid.getDim();
+//        len = line_data[0].vals.size(); // 2500, equl to buffer size
+//        glm::vec3 actualStarts = {0.2+float(step)*5.0 * i/len, 1, 0.5};
+//        //len = 1500; // change range
+//        setDepth(2500);
+//        int cnt = 0;
+//        for (auto l: line_data)
+//        {
+//            glm::vec3 ps = {l.p1.x / len + actualStarts.x, l.p1.y / len + actualStarts.y, l.p1.z / len + actualStarts.z};
+//            glm::vec3 pe = {l.p2.x / len - l.p1.x / len + actualStarts.x,
+//                            l.p2.y / len - l.p1.y / len + actualStarts.y,
+//                            l.p2.z / len - l.p1.z / len + actualStarts.z};
+//            grid.writeLine(ps, pe, l.vals);
+//        }
+//    }
+//}
+//
+//void realDemo4(DensityMap& grid, bool& dataUpdate)
+//{
+//    //read the data from current red pitaya 2d data.
+//    std::vector<unsigned char> file_bytes;
+//    std::vector<int> marker_locations;
+//    std::vector<scan_data_struct> scan_data;
+//    std::vector<line_data_struct> line_data;
+//
+//    /* for real time trial */
+//    int sub_length = 1;
+//    int buffer_size = 1000;
+//    //bool newDataline = false;
+//    bool newDataline = true;
+//    //std::mutex readtex;
+//
+//    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
+//    char sendBuf[100] = "I received";
+////    SOCKET sockConn;
+//    WSADATA wsaData;
+//    int port = 8888;
+//    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+//    {
+//        printf("Initialize failed!\n");
+//        return;
+//    }
+//    SOCKET sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
+//    SOCKADDR_IN addrSrv;
+//    addrSrv.sin_family = AF_INET;
+//    addrSrv.sin_port = htons(port);
+//    addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+//
+//    bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
+//
+//    SOCKADDR_IN addrClient;
+//    int length = sizeof(SOCKADDR);
+//
+//    int buffer_cnt = 0, loop_cnt = 0;
+//    std::vector<unsigned char> sub_file_bytes;
+//    while(1) {
+//        if (newDataline)
+//        {
+//            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+//            memset(recvBuf, 0, sizeof(recvBuf));
+////            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
+//            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
+//            buffer_cnt++;
+//
+//            for (auto r: recvBuf)
+//            {
+//                sub_file_bytes.push_back(static_cast<unsigned char>(r));
+//            }
+//
+//            if (buffer_cnt == buffer_size)
+//            {
+//                /* convert file bytes to data struct */
+//                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+//                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+//                samples = scan_data.size()+1; /* The last line is abandoned due to some reasons*/
+//                printf("the number of scan_data samples is %d\n", samples);
+//                /* convert data to vertex on screen */
+//                data_to_pixel(scan_data, line_data);
+//                //printf("find the screen_data\n");
+//
+//                int ddim = grid.getDim();
+//                len = line_data[0].vals.size(); // 2500, equl to buffer size
+//                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+//                //            std::cin >> len;
+//                //len = 1500; // change range
+//                setDepth(1500);
+//                int cnt = 0;
+//                for (auto l: line_data)
+//                {
+//                    glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+//                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+//                                    l.p2.z / len - l.p1.z / len + 0.5};
+//                    grid.writeLine(ps, pe, l.vals);
+//                }
+//                buffer_cnt = 0;
+//                sub_file_bytes.clear();
+//                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+//                dataUpdate = true;
+//            }
+//            //newDataline = false;
+//            sendto(sockSrv, sendBuf, sizeof(sendBuf), 0, (SOCKADDR*)&addrClient, length);
+//        }
+//    }
+//    closesocket(sockSrv);
+//    WSACleanup();
+//}
+//
+//void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
+//{
+//    printf("6000s later it will do some gain control\n");
+//    std::this_thread::sleep_for(std::chrono::seconds(6000));
+//
+//    int deep = grid.getDim();
+//
+//    //std::vector<std::vector<std::vector<float> > > gMtx(deep, std::vector<std::vector<float> >(deep, std::vector<float>(deep, 0.0)));
+//    std::vector<std::vector<std::vector<float>>> gMtx;
+//    for (int i = 0; i < deep; ++i) {
+//        gMtx.push_back(std::vector<std::vector<float>>{});
+//        for (int j = 0; j < deep; ++j) {
+//            gMtx.back().push_back(std::vector<float>{});
+//            for (int k = 0; k < deep; ++k) {
+//                gMtx.back().back().push_back(0);
+//            }
+//        }
+//    }
+//
+//    //int forTest = deep/2;
+//    for (int x = 0; x < deep; ++x)
+//    {
+//        for (int y = 0; y < deep; ++y) //y is 0 at bottom and deep at top
+//        {
+//            for (int z = 0; z < deep; ++z)
+//            {
+//                float r = sqrt((float)((x-deep/2)*(x-deep/2) + (deep-y)*(deep-y) + (z-deep/2)*(z-deep/2))) / deep; //the distance between the point and piezo origin
+//                gMtx[x][y][z] = exp(Gain *r);
+//                //grid.cells[x][y][z]*= gMtx[x][y][z];
+//            }
+//        }
+//    }
+//    dataUpstate = true;
+//}
 
 std::vector<unsigned char> readFile(const char* directory)
 {
@@ -263,7 +876,6 @@ std::vector<unsigned char> readFile(const char* directory)
 }
 
 void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_data_struct>& _line_data){
-    printf("%d\n", (int)_scan_data.size());
     for (int i = 0; i < (int)_scan_data.size(); ++i){
         double angle = _scan_data.at(i).encoder * 360.0 / 4096.0;
         //angle = convert_angle_2d_probe(angle);
@@ -280,14 +892,16 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
             adc_min = std::min(adc_min, _scan_data.at(i).buffer[j]);
         }
 
+        int piezoProbe = 101; /*assume v = 1000 m/s */
+
         line_data_struct dataline;
-        dataline.p1 = {Cos(piezo),Sin(piezo), 0};
+        dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
         /* normalize on the go */
         for (int j = 0; j < buffer_length; ++j){
             intensity = ((double)_scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
             dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
         }
-        dataline.p2 = {buffer_length*Cos(piezo), buffer_length*Sin(piezo), 0};
+        dataline.p2 = {(buffer_length+piezoProbe)*Cos(piezo), (buffer_length+piezoProbe)*Sin(piezo), 0};
         //glm::mat4 rot = Rotation::convertRotationMatrix(_scan_data.at(i).quaternion[0], _scan_data.at(i).quaternion[1], _scan_data.at(i).quaternion[2], _scan_data.at(i).quaternion[3]);
         glm::mat4 rot = glm::mat4(1.0f);
         rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
@@ -296,30 +910,18 @@ void data_to_pixel(std::vector<scan_data_struct> _scan_data, std::vector<line_da
         _line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
-    printf("start write euler...\n");
-    std::ofstream fileout("data/real_euler.txt", std::ios::trunc|std::ios::out);
-    for (auto s: _scan_data){
-        glm::vec3 euler = Rotation::convertToEulerAngle(s.quaternion[0], s.quaternion[1], s.quaternion[2], s.quaternion[3]);
-        fileout << euler.x << ' ' << euler.y << ' ' << euler.z << ' ' << std::endl;
-    }
-    fileout.close();
-    printf("euler file generate!\n");
-    /*
-    Rotation rot = Rotation(glm::vec4(-0.43914795f, -0.11865234f, -0.05950928f,-PI));
-    int len = _screen_data.size();
-    printf("%d\n", _screen_data.size());
-    for (int i = 0; i < len; ++i)
-    {
-        glm::vec4 origin = {_screen_data[i].X, _screen_data[i].Y, _screen_data[i].Z, 1};
-        glm::vec4 trans = rot.getRotationMatrix()*origin;
-        screen_data_struct tmp = {trans.x, trans.y, trans.z, _screen_data[i].I};
-        _screen_data.push_back(tmp);
-    }
-    printf("%d\n", _screen_data.size());
-     */
+//    printf("start write euler...\n");
+//    std::ofstream fileout("data/real_euler.txt", std::ios::trunc|std::ios::out);
+//    for (auto s: _scan_data){
+//        glm::vec3 euler = Rotation::convertToEulerAngle(s.quaternion[0], s.quaternion[1], s.quaternion[2], s.quaternion[3]);
+//        fileout << euler.x << ' ' << euler.y << ' ' << euler.z << ' ' << std::endl;
+//    }
+//    fileout.close();
+//    printf("euler file generate!\n");
 }
 
 void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations, std::vector<scan_data_struct> & _scan_data){
+    _scan_data.clear();
     for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
         marker_index = _marker_locations.at(i);
         marker_index_next = _marker_locations.at(i+1);
@@ -410,13 +1012,13 @@ void file_to_data(std::vector<unsigned char> _file_bytes, std::vector<int> _mark
     }
 
     //write probe data to test
-    printf("start write imu...\n");
+    //printf("start write imu...\n");
     std::ofstream fileout("data/real_imu.txt", std::ios::trunc|std::ios::out);
     for (auto s: _scan_data){
         fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
     }
     fileout.close();
-    printf("Real IMU file generate!\n");
+    //printf("Real IMU file generate!\n");
 }
 
 int compare_crc(unsigned char a[], unsigned char b[], size_t len){

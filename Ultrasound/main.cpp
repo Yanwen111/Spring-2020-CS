@@ -53,7 +53,11 @@ Camera cam;
 Probe probe;
 GUI* myGUIpointer;
 
+int depth = 2500;
+
 const bool ROTATE_GRID = true;
+
+std::thread dataThread;
 
 void func1(int n, int k);
 void func1(int n, int k)
@@ -139,16 +143,16 @@ int main() {
     // Add all non-empty cells to the map
     grid.setThreshold(1);
 
-    // multi-thread
-    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-    std::thread dataThread;
-    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
-    dataThread.detach();
-
-    // thread2: add Gain control to the grid.cell after 30s automatically.
-    std::thread gainThread;
-    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-    gainThread.detach();
+//    // multi-thread
+//    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
+//    std::thread dataThread;
+//    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
+//    dataThread.detach();
+//
+//    // thread2: add Gain control to the grid.cell after 30s automatically.
+//    std::thread gainThread;
+//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
+//    gainThread.detach();
 
     // Main event loop
     renderLoop(window, probe, grid, myGUI, windowTitle);
@@ -165,7 +169,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
     int numFrames = 0;
     double lastFPSUpdate = 0;
 
-    int currProbe = 0;
+    int currProbe = -1;
 
     while (!glfwWindowShouldClose(window)) {
         double currentFrame = glfwGetTime();
@@ -180,15 +184,10 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        if (dataUpdate)
-        {
-            probe.openIMUFile("data/real_imu.txt");
-            dataUpdate = false;
-        }
-
         // Creating matrices to transform the vertices into NDC (screen) coordinates
         // between -1 and 1 that OpenGL can use
-        glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01, 500.0);
+        glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01,
+                                                       500.0);
         glm::mat4 view = cam.getViewMatrix();
         glm::mat4 model = glm::mat4(1.0);
 
@@ -197,28 +196,54 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
         }
 
-        if(myGUI.loadNew()){
+        if (myGUI.loadNew()) {
             int newProbe = myGUI.getProbe();
             //probe is submarine
-            if(newProbe == 0 && currProbe != newProbe){
+            if (newProbe == 0) {
                 probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
             }
-            //probe is whiteFine
-            if(newProbe == 1 && currProbe != newProbe){
+            //probe is whiteFin
+            if (newProbe == 1) {
                 probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
             }
             currProbe = newProbe;
 
+            dataUpdate = false;
+            grid.clear();
+            //read new file
+            if (newProbe == 0) {
+                std::string file = myGUI.getFile();
+                char *c = const_cast<char *>(file.c_str());
+                float GAIN = myGUI.getGain(); /* 0 means no gain */
+                depth = myGUI.getDepth();
+                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                dataThread.detach();
+            }
+            if (newProbe == 1) {
+//                std::string file = std::string("data/beansouplarge_startionary_3d_1.txt");
+                std::string file = myGUI.getFile();
+                std::cout<<"FILENAME: "<<file<<std::endl;
+                char *c = &file[0];
+//                char *c = const_cast<char *>(file.c_str());
+                char *c1 = "data/beansouplarge_startionary_3d_1.txt";
+                std::cout<<strcmp (c,c1)<<std::endl;
+                float GAIN = myGUI.getGain(); /* 0 means no gain */
+                depth = myGUI.getDepth();
+                dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                dataThread.detach();
+            }
             //Figure out how to rotate probe?
-            //Figure out how to read new file??
+            //Add in error checking on GUI side later
         }
 
-        // Draw the probe
-        probe.draw(projection, view, rotationX, rotationY);
+        if(currProbe != -1) {
+            // Draw the probe
+            probe.draw(projection, view, rotationX, rotationY);
+        }
 
         //Set up GUI paramters
         myGUI.setNumLinesDrawn(getSamples());
-        myGUI.setNumSamples(getDepth());
+        myGUI.setNumSamples(depth);
         myGUI.setVoxels(100);
         myGUI.setFileSize(0);
         myGUI.setBrightness(grid.getBrightness());
@@ -230,9 +255,14 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         myGUI.setTime(glfwGetTime());
         myGUI.setQuaternion(probe.getQuaternions());
         myGUI.setEulerAngles(probe.getEulerAngles());
-        if(myGUI.isReset){
+        if (myGUI.isReset) {
             rotationX = 0;
             rotationY = 0;
+        }
+        if(dataUpdate){
+            myGUI.doneLoading();
+            probe.openIMUFile("data/real_imu.txt");
+            dataUpdate = false;
         }
         cam.fov = myGUI.getZoom();
         grid.setBrightness(myGUI.getBrightness());
