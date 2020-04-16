@@ -63,13 +63,6 @@ const bool ROTATE_GRID = true;
 
 std::thread dataThread;
 
-void func1(int n, int k);
-void func1(int n, int k)
-{
-    std::this_thread::sleep_for(std::chrono::seconds(k));
-    printf("test for the thread of c++, %d\n", n);
-}
-
 int main() {
 
     // Window title
@@ -134,29 +127,12 @@ int main() {
     int dim = 101;
     DensityMap grid(dim);
 
-    // Creating the probe
-//    Probe probe("data/models/PROBE_CENTERED.stl");
-//    probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
-    // Open the IMU file for reading
-//    probe.openIMUFile("data/real_imu.txt");
-
     //Create the GUI
-    GUI myGUI(window, glsl_version);
+    GUI myGUI(window, glsl_version, &grid);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
     grid.setThreshold(1);
-
-//    // multi-thread
-//    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-//    std::thread dataThread;
-//    dataThread = std::thread(realDemo, std::ref(grid), std::ref(dataUpdate));
-//    dataThread.detach();
-//
-//    // thread2: add Gain control to the grid.cell after 30s automatically.
-//    std::thread gainThread;
-//    gainThread = std::thread(gainControl, std::ref(grid), 2, std::ref(dataUpdate));
-//    gainThread.detach();
 
     // Main event loop
     renderLoop(window, probe, grid, myGUI, windowTitle);
@@ -229,7 +205,6 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
                 std::string file = myGUI.getFile();
                 std::cout<<"FILENAME: "<<file<<std::endl;
                 char *c = &file[0];
-//                char *c = const_cast<char *>(file.c_str());
                 char *c1 = "data/beansouplarge_startionary_3d_1.txt";
                 std::cout<<strcmp (c,c1)<<std::endl;
                 float GAIN = myGUI.getGain(); /* 0 means no gain */
@@ -251,7 +226,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         //Set up GUI paramters
         myGUI.setNumLinesDrawn(getSamples());
         myGUI.setNumSamples(depth);
-        myGUI.setVoxels(100);
+        myGUI.setVoxels(grid.getDim());
         myGUI.setFileSize(0);
         myGUI.setBrightness(grid.getBrightness());
         myGUI.setThreshold(grid.getThreshold());
@@ -405,11 +380,6 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
         std::cout<<"RayOriginWorld: "<< rayPWorld.x<<" "<<rayPWorld.y<<" "<<rayPWorld.z<<std::endl;
         glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
         rayDirection = glm::normalize(rayDirection);
-
-//        glm::vec4 viewport(0.0f, 0.0f, SCR_WIDTH, SCR_HEIGHT);
-//        glm::vec3 unprojected = glm::unProject(glm::vec3(xpos, ypos, 2), model*view, projection, viewport);
-//
-//        myGUIpointer->moveMarker1(guiObjectPressed, unprojected);
 
         myGUIpointer->moveMarker(guiObjectPressed, rayOriginWorld, rayDirection);
     }

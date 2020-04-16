@@ -1,11 +1,12 @@
 #include <string>
+#include <densityMap.h>
 #include "marker.h"
 #include "scale.h"
 
 class GUI {
 
 public:
-    GUI(GLFWwindow *window, const char* glsl_version);
+    GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer);
     void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     static void cleanUp();
 
@@ -44,6 +45,8 @@ public:
     void doneLoading();
 
 private:
+    DensityMap* gridPointer;
+
     bool loading;
     int depth;
     float brightness;
@@ -54,6 +57,10 @@ private:
     int numLines;
     int zoom;
     bool setMarker;
+
+    //whether or not to enable snapping when moving markers
+    bool snap;
+    int snapThreshold;
 
     float updateCoefficient;
 
@@ -94,5 +101,8 @@ private:
 
     void drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     double rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOrig, glm::vec3 rayDir);
+    glm::vec3 getSnapPoint(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    static bool intersectGrid(glm::vec3 rayOriginGrid, glm::vec3 rayDirectionGrid, float& tmin, float& tmax);
+    glm::vec3 getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals);
 
 };
