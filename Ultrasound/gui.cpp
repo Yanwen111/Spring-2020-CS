@@ -43,6 +43,7 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     loading = false;
     depth = 1500;
     gain = 1.0f;
+    updateCoefficient = 1.0f;
 
     scale = Scale();
 }
@@ -127,8 +128,9 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         ImGui::Unindent();
 
         ImGui::PushItemWidth(300);
-        ImGui::SliderInt("Depth", &depth, 1, numSamples);
+        ImGui::SliderInt("Depth", &depth, 1, 2500);//CHECK?? IS THE DEPTH ALWAYS 2500???
         ImGui::SliderFloat("Gain", &gain, 0, 5);
+        ImGui::SliderFloat("Update Weight", &updateCoefficient, 0, 1);
         ImGui::PopItemWidth();
 
         ImGui::PushID(1);
@@ -371,6 +373,14 @@ float GUI::getGain(){
     return gain;
 }
 
+float GUI::getUpdateCoefficient(){
+    return updateCoefficient;
+}
+
+void GUI::setUpdateCoefficient(float value){
+    updateCoefficient = value;
+}
+
 int GUI::getDepth(){
     return depth;
 }
@@ -438,21 +448,67 @@ int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
     return -1;
 }
 
-void GUI::moveMarker(int numMarker, double xoffset, double yoffset){
+
+void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     if(numMarker == 1){
-        glm::vec4 movement = glm::vec4(xoffset, yoffset, 0, 1);
-        glm::vec3 modelMovt = modelWorld * movement / 100.0;
-        marker1x += modelMovt.x;
-        marker1y += modelMovt.y;
-        marker1z += modelMovt.z;
+        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
+        glm::vec4 normal = glm::vec4(0,0,1,0);
+        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+
+        //Find the intersection point on the plane
+        glm::vec3 P = rayOrigin + t*rayDirection;
+
+        //Transform back to marker coordinates
+        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+
+        P = (P + glm::vec3(5, 5, 5)) / 10.0;
+
+        if(P.x > 1) P.x = 1;
+        if(P.x < 0) P.x = 0;
+        if(P.y > 1) P.y = 1;
+        if(P.y < 0) P.y = 0;
+        if(P.z > 1) P.z = 1;
+        if(P.z < 0) P.z = 0;
+
+        marker1x = P.x;
+        marker1y = P.y;
+        marker1z = P.z;
     }
     if(numMarker == 2){
-        glm::vec4 movement = glm::vec4(xoffset, yoffset, 0, 1);
-        glm::vec3 modelMovt = modelWorld * movement / 100.0;
-        marker2x += modelMovt.x;
-        marker2y += modelMovt.y;
-        marker2z += modelMovt.z;
+        glm::vec3 v0 = modelWorld*(glm::vec4(marker2x, marker2y, marker2z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
+        glm::vec4 normal = glm::vec4(0,0,1,0);
+        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+
+        //Find the intersection point on the plane
+        glm::vec3 P = rayOrigin + t*rayDirection;
+
+        //Transform back to marker coordinates
+        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+
+        P = (P + glm::vec3(5, 5, 5)) / 10.0;
+
+        if(P.x > 1) P.x = 1;
+        if(P.x < 0) P.x = 0;
+        if(P.y > 1) P.y = 1;
+        if(P.y < 0) P.y = 0;
+        if(P.z > 1) P.z = 1;
+        if(P.z < 0) P.z = 0;
+
+        marker2x = P.x;
+        marker2y = P.y;
+        marker2z = P.z;
     }
+}
+double GUI::rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOrig, glm::vec3 rayDir){
+    float denom = glm::dot(normal, rayDir);
+    if (abs(denom) > 0.0001f) // your favorite epsilon
+    {
+        float t = glm::dot((point - rayOrig), normal) / denom;
+        if (t >= 0) return t; // you might want to allow an epsilon here too
+    }
+    return -1;
 }
 
 bool GUI::loadNew(){

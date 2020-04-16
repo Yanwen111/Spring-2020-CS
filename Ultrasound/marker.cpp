@@ -62,7 +62,7 @@ Marker::Marker(){
     markerShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 
     // Add the marker
-    markerIndex = Helper::read_stl("data/models/marker1.stl", markervertices, markernormals);
+    markerIndex = Helper::read_stl("data/models/marker.stl", markervertices, markernormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &markerVBO);
@@ -117,7 +117,7 @@ glm::vec3 Marker::getMarker2Pos(){
     return marker2;
 }
 
-void Marker::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
+void Marker:: drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
     // Drawing the marker
     markerShader.use();
     markerShader.setMat4("projection", projection);

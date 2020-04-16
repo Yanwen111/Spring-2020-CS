@@ -55,6 +55,10 @@ GUI* myGUIpointer;
 
 int depth = 2500;
 
+glm::mat4 projection;
+glm::mat4 view;
+glm::mat4 model;
+
 const bool ROTATE_GRID = true;
 
 std::thread dataThread;
@@ -186,10 +190,10 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
         // Creating matrices to transform the vertices into NDC (screen) coordinates
         // between -1 and 1 that OpenGL can use
-        glm::mat4 projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01,
+        projection = glm::perspective<float>(glm::radians(cam.fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.01,
                                                        500.0);
-        glm::mat4 view = cam.getViewMatrix();
-        glm::mat4 model = glm::mat4(1.0);
+        view = cam.getViewMatrix();
+        model = glm::mat4(1.0);
 
         if (ROTATE_GRID) {
             model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
@@ -216,11 +220,12 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
                 char *c = const_cast<char *>(file.c_str());
                 float GAIN = myGUI.getGain(); /* 0 means no gain */
                 depth = myGUI.getDepth();
+                float updateCoefficient = myGUI.getUpdateCoefficient();
+                grid.setUpdateCoefficient(updateCoefficient);
                 dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
                 dataThread.detach();
             }
             if (newProbe == 1) {
-//                std::string file = std::string("data/beansouplarge_startionary_3d_1.txt");
                 std::string file = myGUI.getFile();
                 std::cout<<"FILENAME: "<<file<<std::endl;
                 char *c = &file[0];
@@ -229,6 +234,8 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
                 std::cout<<strcmp (c,c1)<<std::endl;
                 float GAIN = myGUI.getGain(); /* 0 means no gain */
                 depth = myGUI.getDepth();
+                float updateCoefficient = myGUI.getUpdateCoefficient();
+                grid.setUpdateCoefficient(updateCoefficient);
                 dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
                 dataThread.detach();
             }
@@ -260,6 +267,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             rotationY = 0;
         }
         if(dataUpdate){
+            std::cout<<"Done Loading File"<<std::endl;
             myGUI.doneLoading();
             probe.openIMUFile("data/real_imu.txt");
             dataUpdate = false;
@@ -386,7 +394,24 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
         cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
         cameraToWorld[3] = glm::vec4(cam.position, 1);
 
-        myGUIpointer->moveMarker(guiObjectPressed, xpos - xposMarker, ypos - yposMarker);
+        //Generate Ray
+        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
+        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
+        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
+        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
+        glm::vec4 rayOriginWorld, rayPWorld;
+        rayOriginWorld = cameraToWorld * rayOrigin;
+        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
+        std::cout<<"RayOriginWorld: "<< rayPWorld.x<<" "<<rayPWorld.y<<" "<<rayPWorld.z<<std::endl;
+        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
+        rayDirection = glm::normalize(rayDirection);
+
+//        glm::vec4 viewport(0.0f, 0.0f, SCR_WIDTH, SCR_HEIGHT);
+//        glm::vec3 unprojected = glm::unProject(glm::vec3(xpos, ypos, 2), model*view, projection, viewport);
+//
+//        myGUIpointer->moveMarker1(guiObjectPressed, unprojected);
+
+        myGUIpointer->moveMarker(guiObjectPressed, rayOriginWorld, rayDirection);
     }
 }
 

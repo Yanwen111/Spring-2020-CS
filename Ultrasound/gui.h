@@ -26,15 +26,17 @@ public:
     float getContrast();
     std::string getFile();
     int getDepth();
+    float getUpdateCoefficient();
 
     void setBrightness(float value);
     void setGain(float value);
     void setThreshold(int value);
     void setContrast(float value);
+    void setUpdateCoefficient(float value);
 
     //returns int for which object is clicked
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
-    void moveMarker(int numMarker, double xoffset, double yoffset);
+    void moveMarker(int numMarker, glm::vec3 rayOrigin, glm::vec3 rayDirection);
 
     bool loadNew();
     int getProbe();
@@ -52,6 +54,8 @@ private:
     int numLines;
     int zoom;
     bool setMarker;
+
+    float updateCoefficient;
 
     float marker1x, marker1y, marker1z;
     float marker2x, marker2y, marker2z;
@@ -89,5 +93,6 @@ private:
     void reset();
 
     void drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    double rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOrig, glm::vec3 rayDir);
 
 };
