@@ -234,7 +234,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
-        
+
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, model);
         myGUI.setTime(glfwGetTime());
