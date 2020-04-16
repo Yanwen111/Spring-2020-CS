@@ -6,7 +6,7 @@
 #include "gui.h"
 #include "rotation.h"
 
-GUI::GUI(GLFWwindow *window, const char* glsl_version){
+GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer){
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -44,8 +44,12 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version){
     depth = 1500;
     gain = 1.0f;
     updateCoefficient = 1.0f;
+    snap = false;
+    snapThreshold = 70;
 
     scale = Scale();
+
+    gridPointer = pointer;
 }
 
 void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
@@ -95,6 +99,7 @@ void GUI::reset(){
     setMarker = false;
     velocity = 1102;
     frequency = 15.6;
+    snap = false;
 }
 
 void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
@@ -176,10 +181,17 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     ImGui::NewLine();
 
     ImGui::SliderFloat("Brightness", &brightness, -1.0f, 1.0f);
-//    ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
     ImGui::SliderFloat("Contrast", &contrast, 0.1f, 10.0f); //Goes to infinity, not including 0
     ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
     ImGui::SliderInt("Zoom field of view", &zoom, 80, 10);
+
+    ImGui::NewLine();
+    ImGui::Checkbox("Enable Snapping", &snap);
+    ImGui::Indent();
+    ImGui::PushItemWidth(300);
+    ImGui::SliderInt("Snap Threshold", &snapThreshold, 0, 255);
+    ImGui::PopItemWidth();
+    ImGui::Unindent();
 
     ImGui::Checkbox("Set Marker", &setMarker);
     if(setMarker) {
@@ -439,8 +451,6 @@ int GUI::getZoom(){
 }
 
 int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
-    std::cout<<"HERE I AM"<<std::endl;
-
     //check if markers are on screen
     if(setMarker)
         return marker.checkMouseOnMarker(rayOrigin, rayDirection);
@@ -448,6 +458,116 @@ int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
     return -1;
 }
 
+bool GUI::intersectGrid(glm::vec3 rayOriginGrid, glm::vec3 rayDirectionGrid, float& tmin, float& tmax) {
+    //dimensions of box: -5, 5 for all axes
+    float min = -5;
+    float max = 5;
+
+    tmin = (min - rayOriginGrid.x) / rayDirectionGrid.x;
+    tmax = (max - rayOriginGrid.x) / rayDirectionGrid.x;
+
+    if (tmin > tmax) std::swap(tmin, tmax);
+
+    float tymin = (min - rayOriginGrid.y) / rayDirectionGrid.y;
+    float tymax = (max - rayOriginGrid.y) / rayDirectionGrid.y;
+
+    if (tymin > tymax) std::swap(tymin, tymax);
+
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+
+    if (tymax < tmax)
+        tmax = tymax;
+
+    float tzmin = (min - rayOriginGrid.z) / rayDirectionGrid.z;
+    float tzmax = (max - rayOriginGrid.z) / rayDirectionGrid.z;
+
+    if (tzmin > tzmax) std::swap(tzmin, tzmax);
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    if (tzmin > tmin)
+        tmin = tzmin;
+
+    if (tzmax < tmax)
+        tmax = tzmax;
+
+    return true;
+}
+
+
+glm::vec3 GUI::getSnapPoint(glm::vec3 rayOrigin, glm::vec3 currPoint){
+
+    float tmin, tmax;
+
+    glm::vec3 rayDirection = glm::normalize(currPoint - rayOrigin);
+
+    //Transform to grid coordinates
+    glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+    glm::vec3 rayOriginGrid = glm::transpose(rotation)*glm::vec4(rayOrigin.x, rayOrigin.y, rayOrigin.z, 1);
+    glm::vec3 rayDirectionGrid = glm::transpose(rotation)*glm::vec4(rayDirection.x, rayDirection.y, rayDirection.z, 1);
+
+    //Get intersection t values for ray with DensityMap grid in grid coordinates
+    if(!intersectGrid(rayOriginGrid, rayDirectionGrid, tmin, tmax))
+        return currPoint;
+
+    //convert grid coordinates to grid cell values [0 - 1]
+    glm::vec3 p0 = (rayOriginGrid + tmin*rayDirectionGrid + glm::vec3(5,5,5))/10.0;
+    glm::vec3 p1 = (rayOriginGrid + tmax*rayDirectionGrid + glm::vec3(5,5,5))/10.0;
+
+    //get point to snap to in grid cell values
+    glm::vec3 destP = getSnapPointGrid(p0, p1, 100);
+
+    //If nothing to snap to, then get original point
+    if(destP.x == -1 && destP.y == -1 && destP.z == -1)
+        return currPoint;
+
+    //convert grid cell coordinates to grid coordinates
+    destP = destP*10.0 - glm::vec3(5, 5, 5);
+    //convert grid coordinates to world coordinates
+    destP = modelWorld*glm::vec4(destP.x, destP.y, destP.z, 1);
+
+    return destP;
+}
+
+//get snap point in grid coordinate frame
+glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
+    // x, y, and z coordinates of the current data point
+    // Moves along the line defined by p1 and p2
+    float x = p1.x;
+    float y = p1.y;
+    float z = p1.z;
+
+    // Direction of the line defined by p1 and p2
+    float dx = (p2.x - p1.x) / numVals;
+    float dy = (p2.y - p1.y) / numVals;
+    float dz = (p2.z - p1.z) / numVals;
+
+    for (int i = 0; i < numVals; i++) {
+        auto val = (float)gridPointer->readCellInterpolated(x, y, z);
+
+        //check if val meets snap criteria
+//        float shade = contrast * (val - 0.5) + 0.5 + brightness;
+//        shade = shade * shade * shade * shade * shade;
+//        if(shade < 0.003) shade = 0;
+//        if(shade > 1.0) shade = 1.0;
+
+        if(val > snapThreshold)
+            return glm::vec3(x, y, z);
+
+        // Move x, y, and z along the line
+        x += dx;
+        y += dy;
+        z += dz;
+    }
+
+    //if none meets criteria, return null point
+    return glm::vec3(-1, -1, -1);
+}
 
 void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     if(numMarker == 1){
@@ -457,6 +577,10 @@ void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirectio
 
         //Find the intersection point on the plane
         glm::vec3 P = rayOrigin + t*rayDirection;
+
+        //Find the snapping point on the plane
+        if(snap)
+            P = getSnapPoint(rayOrigin, P);
 
         //Transform back to marker coordinates
         glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
@@ -483,6 +607,10 @@ void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirectio
         //Find the intersection point on the plane
         glm::vec3 P = rayOrigin + t*rayDirection;
 
+        //Find the snapping point on the plane
+        if(snap)
+            P = getSnapPoint(rayOrigin, P);
+
         //Transform back to marker coordinates
         glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
         P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
@@ -501,6 +629,7 @@ void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirectio
         marker2z = P.z;
     }
 }
+
 double GUI::rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOrig, glm::vec3 rayDir){
     float denom = glm::dot(normal, rayDir);
     if (abs(denom) > 0.0001f) // your favorite epsilon
