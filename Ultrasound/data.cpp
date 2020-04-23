@@ -40,6 +40,8 @@ unsigned char information_byte = 0xE1;
 int len = 2500;
 int samples = -1; /* -1 stands for no data */
 
+std::mutex time_mutex;
+
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -160,7 +162,7 @@ void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int le
         {
             l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
         }
-        grid.writeLine(ps, pe, l.vals);
+        grid.writeLine(ps, pe, l.vals, DensityMap::WriteMode::Max);
     }
 }
 
@@ -730,19 +732,15 @@ void realDemo3(DensityMap& grid, bool& dataUpdate)
 void realDemo4(DensityMap& grid, bool& dataUpdate)
 {
     //read the data from current red pitaya 2d data.
-    std::vector<unsigned char> file_bytes;
-    std::vector<int> marker_locations;
-    std::vector<scan_data_struct> scan_data;
-    std::vector<line_data_struct> line_data;
 
     /* for real time trial */
     int sub_length = 1;
     int buffer_size = 1000;
     //bool newDataline = false;
     bool newDataline = true;
-    //std::mutex readtex;
 
-    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
+    int total_bytes_v07 = 10+4+1+2+2+2*2500+4;
+    char recvBuf[total_bytes_v07 * sub_length];
     char sendBuf[100] = "I received";
 //    SOCKET sockConn;
     WSADATA wsaData;
@@ -765,56 +763,82 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 
     int buffer_cnt = 0, loop_cnt = 0;
     std::vector<unsigned char> sub_file_bytes;
-    while(1) {
-        if (newDataline)
-        {
-            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
-            memset(recvBuf, 0, sizeof(recvBuf));
-//            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
-            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
-            buffer_cnt++;
 
+    int time_milisecond = 0;
+    std::thread timer_thread;
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread.detach();
+    int update_rate = 200; /* ms */
+
+    while(1) {
+        //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+        if (time_milisecond < update_rate || sub_file_bytes.empty())
+        {
+            memset(recvBuf, 0, sizeof(recvBuf));
+            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR *) &addrClient, &length);
+            buffer_cnt++;
             for (auto r: recvBuf)
             {
                 sub_file_bytes.push_back(static_cast<unsigned char>(r));
             }
-
-            if (buffer_cnt == buffer_size)
-            {
-                /* convert file bytes to data struct */
-                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
-                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
-                samples = scan_data.size()+1; /* The last line is abandoned due to some reasons*/
-                printf("the number of scan_data samples is %d\n", samples);
-                /* convert data to vertex on screen */
-                data_to_pixel(scan_data, line_data);
-                //printf("find the screen_data\n");
-
-                int ddim = grid.getDim();
-                len = line_data[0].vals.size(); // 2500, equl to buffer size
-                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
-                //            std::cin >> len;
-                //len = 1500; // change range
-                setDepth(1500);
-                int cnt = 0;
-                for (auto l: line_data)
-                {
-                    glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
-                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
-                                    l.p2.z / len - l.p1.z / len + 0.5};
-                    grid.writeLine(ps, pe, l.vals);
-                }
-                buffer_cnt = 0;
-                sub_file_bytes.clear();
-                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
-                dataUpdate = true;
-            }
-            //newDataline = false;
-            sendto(sockSrv, sendBuf, sizeof(sendBuf), 0, (SOCKADDR*)&addrClient, length);
         }
+
+        if (buffer_cnt == buffer_size || (time_milisecond >= update_rate && buffer_cnt >= 1))
+        {
+            printf("==> timer is %d, buffer count is %d <==\n", time_milisecond, buffer_cnt);
+            std::vector<scan_data_struct> scan_data;
+            std::vector<line_data_struct> line_data;
+            /* convert file bytes to data struct */
+            for (auto m: marker)
+                sub_file_bytes.push_back(m);
+            std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+            file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+            samples = scan_data.size(); /* The last line is abandoned due to some reasons. Update: now do not need to abandon */
+            printf("the number of scan_data samples is %d\n", samples);
+            /* convert data to vertex on screen */
+            data_to_pixel(scan_data, line_data);
+            //printf("find the screen_data\n");
+
+            int ddim = grid.getDim();
+            len = line_data[0].vals.size(); // 2500, equl to buffer size
+            //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+            //            std::cin >> len;
+            //len = 1500; // change range
+            setDepth(1500);
+            int cnt = 0;
+            for (auto l: line_data)
+            {
+                glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+                                l.p2.z / len - l.p1.z / len + 0.5};
+                grid.writeLine(ps, pe, l.vals);
+            }
+            buffer_cnt = 0;
+            sub_file_bytes.clear();
+            printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+            dataUpdate = true;
+
+            time_mutex.lock();
+            printf("Time milisecond value is %d \n", time_milisecond);
+            time_milisecond = 0;
+            time_mutex.unlock();
+        }
+        sendto(sockSrv, sendBuf, sizeof(sendBuf), 0, (SOCKADDR*)&addrClient, length);
     }
     closesocket(sockSrv);
     WSACleanup();
+}
+
+void UDP_timer(int& time_milisecond)
+{
+    int step = 10;
+    while(1)
+    {
+        time_mutex.lock();
+        time_milisecond += step;
+        time_mutex.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(step));
+    }
 }
 
 void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
