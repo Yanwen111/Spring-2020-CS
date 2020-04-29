@@ -3,6 +3,9 @@
 #include "marker.h"
 #include "scale.h"
 
+/**
+ * GUI class handles all the GUI features on the screen and interactions with them
+ */
 class GUI {
 
 public:

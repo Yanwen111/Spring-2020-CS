@@ -12,6 +12,10 @@
 
 #endif //ETHAN_OPENGL_ROTATIONS_H
 
+/**
+ * The Probe class loads an STL file of the probe onto the screen with the correct orientation.
+ * At each draw, it applies the rotations found onto the probe.
+ */
 class Probe {
 public:
 

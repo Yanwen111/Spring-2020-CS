@@ -2,10 +2,17 @@
 #include <cmath>
 #include "probe.h"
 
+/**
+ * The Probe class loads an STL file of the probe onto the screen with the correct orientation.
+ * At each draw, it applies the rotations found onto the probe.
+ */
 Probe::Probe(){
-
 }
 
+/**
+ * Loads a new probe and sets up OpenGL buffers
+ * @param filename the STL file of the probe
+ */
 void Probe::loadNewProbe(std::string filename){
     std::string vProbe =
             "// VERTEX SHADER											  \n"
@@ -93,9 +100,15 @@ void Probe::loadNewProbe(std::string filename){
     file = static_cast<std::basic_ifstream<char, std::char_traits<char>>>(NULL);
 }
 
+/**
+ * Draws the probe on the screen with the applied rotations
+ * @param projection projection matrix
+ * @param view view matrix
+ * @param rotationX the rotationX of the grid
+ * @param rotationY the rotationY of the grid
+ */
 void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
 
-//    std::cout<<"HAYUN CHONG1 "<<std::endl;
     glEnable(GL_DEPTH_TEST);
     //Orient and scale the probe to the center
     glm::mat4 model_probe      = glm::mat4(1.0f);
@@ -132,23 +145,31 @@ void Probe::draw(glm::mat4 projection, glm::mat4 view, float rotationX, float ro
     probeShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
 
-//    std::cout<<"HAYUN CHONG2 "<<std::endl;
     glBindVertexArray(probeVAO);
     glDrawArrays(GL_TRIANGLES, 0, probeindex/3);
 
     glDisable(GL_DEPTH_TEST);
-
-//    std::cout<<"HAYUN CHONG3 "<<std::endl;
 }
 
+/**
+ * Opens an IMU file (the file to read the probe rotations from)
+ * @param inputFileName filename of the IMU file
+ */
 void Probe::openIMUFile(const std::string& inputFileName){
     file.open(inputFileName);
 }
 
+/**
+ * close the file
+ */
 void Probe::closeFile(){
     file.close();
 }
 
+/**
+ * Reads the next line of the IMU file
+ * @return the next rotation in quaternion rotations
+ */
 glm::vec4 Probe::readNextLine(){
     std::string line;
     glm::vec4 myQuat;
@@ -177,7 +198,10 @@ glm::vec4 Probe::parseLine(char str[])
     return myQuat;
 }
 
-
+/**
+ * Gets the rotation of the probe based on the rotation file
+ * @return the rotation matrix
+ */
 glm::mat4 Probe::getOrientation(){
     try{
         quat = readNextLine();

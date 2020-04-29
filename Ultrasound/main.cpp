@@ -151,6 +151,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 
     int currProbe = -1;
 
+    //The render loop to draw until the user closes the window
     while (!glfwWindowShouldClose(window)) {
         double currentFrame = glfwGetTime();
         cam.deltaTime = currentFrame - cam.lastFrame;
@@ -171,12 +172,15 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         view = cam.getViewMatrix();
         model = glm::mat4(1.0);
 
+        // Creates the model matrix for the grid based on the rotationX and rotationY values
         if (ROTATE_GRID) {
             model = glm::rotate(model, rotationY, glm::vec3(0, 1, 0));
             model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
         }
 
+        //Checks if the user clicked the load button on the GUI
         if (myGUI.loadNew()) {
+            //Creates the probe to load
             int newProbe = myGUI.getProbe();
             //probe is submarine
             if (newProbe == 0) {
@@ -188,25 +192,26 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
             }
             currProbe = newProbe;
 
+            //stays false until the data processing thread is done processing the data
             dataUpdate = false;
             grid.clear();
+
             //read new file
             if (newProbe == 0) {
+                //gets the file name, time gain value, depth,
                 std::string file = myGUI.getFile();
                 char *c = const_cast<char *>(file.c_str());
                 float GAIN = myGUI.getGain(); /* 0 means no gain */
                 depth = myGUI.getDepth();
                 float updateCoefficient = myGUI.getUpdateCoefficient();
+
                 grid.setUpdateCoefficient(updateCoefficient);
                 dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
                 dataThread.detach();
             }
             if (newProbe == 1) {
                 std::string file = myGUI.getFile();
-                std::cout<<"FILENAME: "<<file<<std::endl;
                 char *c = &file[0];
-                char *c1 = "data/beansouplarge_startionary_3d_1.txt";
-                std::cout<<strcmp (c,c1)<<std::endl;
                 float GAIN = myGUI.getGain(); /* 0 means no gain */
                 depth = myGUI.getDepth();
                 float updateCoefficient = myGUI.getUpdateCoefficient();
@@ -378,7 +383,6 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
         glm::vec4 rayOriginWorld, rayPWorld;
         rayOriginWorld = cameraToWorld * rayOrigin;
         rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        std::cout<<"RayOriginWorld: "<< rayPWorld.x<<" "<<rayPWorld.y<<" "<<rayPWorld.z<<std::endl;
         glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
         rayDirection = glm::normalize(rayDirection);
 
@@ -410,7 +414,6 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
         glm::vec4 rayOriginWorld, rayPWorld;
         rayOriginWorld = cameraToWorld * rayOrigin;
         rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        std::cout<<"RayOriginWorld: "<< rayPWorld.x<<" "<<rayPWorld.y<<" "<<rayPWorld.z<<std::endl;
         glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
         rayDirection = glm::normalize(rayDirection);
 

@@ -19,39 +19,54 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer){
     // Setup Dear ImGui style
     ImGui::StyleColorsClassic();
 
+    // Setup Marker class
     marker = Marker();
+    // position of marker 1
     glm::vec3 tmpPos = marker.getMarker1Pos();
     marker1x = tmpPos.x;
     marker1y = tmpPos.y;
     marker1z = tmpPos.z;
+    // position of marker 2
     tmpPos = marker.getMarker2Pos();
     marker2x = tmpPos.x;
     marker2y = tmpPos.y;
     marker2z = tmpPos.z;
 
+    //position of the three scales
     scaleX1 = scaleX2 = 1;
     scaleY1 = 0;
     scaleY2 = 1;
     scaleZ1 = 0;
     scaleZ2 = 1;
 
+    //the medium selected to set up velocity
     mediumActive = 0;
 
     reset();
 
+    //Whether the user clicked the load button
     newLoad = false;
+    //If the data thread is loading a new file
     loading = false;
+    // depth of the line data to display (0th cell to the depth cell)
     depth = 1500;
+    // parameter for the time gain control
     gain = 1.0f;
+    // weighting value (to control how DensityMap handles new data in the same cells)
     updateCoefficient = 1.0f;
+    // Enable snapping when moving markers
     snap = false;
+    // The threshold of values to snap to
     snapThreshold = 70;
 
+    //Set up the scale
     scale = Scale();
 
+    //Pointer to the DensityMap grid object
     gridPointer = pointer;
 }
 
+//Draws the GUI on the screen and processes different user interactions to update values
 void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     setUp();
     isReset = false;
@@ -89,6 +104,7 @@ void GUI::cleanUp(){
     ImGui::DestroyContext();
 }
 
+// Resets parameters to original default values
 void GUI::reset(){
     brightness = 0.0f;
     gain = 0.0f;
@@ -102,21 +118,25 @@ void GUI::reset(){
     snap = false;
 }
 
+//Draw the scales
 void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     scale.setMeasurements(frequency, velocity, numSamples);
     scale.draw(projection, view, model, glm::vec2(scaleX1, scaleX2), glm::vec2(scaleY1, scaleY2), glm::vec2(scaleZ1, scaleZ2));
 }
 
+//Draw the markers
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
     marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
     marker.draw(projection, view, model);
 }
 
+//Draws the ImGui widgets on the screen
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     // render your IMGUI
     ImGui::Begin("GUI");
 
+    //Load new file
     ImGui::Text("Load New File");
     ImGui::Indent();
 
@@ -133,7 +153,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         ImGui::Unindent();
 
         ImGui::PushItemWidth(300);
-        ImGui::SliderInt("Depth", &depth, 1, 2500);//CHECK?? IS THE DEPTH ALWAYS 2500???
+        ImGui::SliderInt("Depth", &depth, 1, 2500);
         ImGui::SliderFloat("Gain", &gain, 0, 5);
         ImGui::SliderFloat("Update Weight", &updateCoefficient, 0, 1);
         ImGui::PopItemWidth();
@@ -164,11 +184,11 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
             ImGui::PopStyleColor(3);
         }
         ImGui::PopID();
-
     ImGui::Unindent();
 
     ImGui::NewLine();
 
+    // Reset Button
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1/7.0f, 0.6f, 0.6f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1/7.0f, 0.7f, 0.7f));
@@ -374,9 +394,6 @@ void GUI::setVoxels(int size){
     voxels = size;
 }
 
-//ImGui::SliderFloat("Brightness", &brightness, 0.0f, 100.0f);
-//ImGui::SliderFloat("Gain", &gain, 0.0f, 1.0f);
-//ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
 float GUI::getBrightness(){
     return brightness;
 }
@@ -450,6 +467,12 @@ int GUI::getZoom(){
     return zoom;
 }
 
+/**
+ * Returns whether the mouse ray intersects any specific GUI object on the screen.
+ * @param rayOrigin The origin of the ray created by the mouse. Most likely the camera location
+ * @param rayDirection The direction of the ray
+ * @return which marker is intersected. -1 otherwise
+ */
 int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
     //check if markers are on screen
     if(setMarker)
@@ -458,6 +481,14 @@ int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
     return -1;
 }
 
+/**
+ * Finds the intersection of a ray with a cube and sets the starting t and ending t for the two intersections.
+ * @param rayOriginGrid ray origin (e)
+ * @param rayDirectionGrid ray direction (d)
+ * @param tmin Satisfies the first point of intersection: e + t_min * d = P1
+ * @param tmax Satisfies the second point of intersection: e + t_max * d = P2
+ * @return true for intersection, false otherwise
+ */
 bool GUI::intersectGrid(glm::vec3 rayOriginGrid, glm::vec3 rayDirectionGrid, float& tmin, float& tmax) {
     //dimensions of box: -5, 5 for all axes
     float min = -5;
@@ -499,7 +530,12 @@ bool GUI::intersectGrid(glm::vec3 rayOriginGrid, glm::vec3 rayDirectionGrid, flo
     return true;
 }
 
-
+/**
+ * Gets the point to snap to with the current ray and point
+ * @param rayOrigin
+ * @param currPoint
+ * @return the new point to snap to
+ */
 glm::vec3 GUI::getSnapPoint(glm::vec3 rayOrigin, glm::vec3 currPoint){
 
     float tmin, tmax;
@@ -534,7 +570,13 @@ glm::vec3 GUI::getSnapPoint(glm::vec3 rayOrigin, glm::vec3 currPoint){
     return destP;
 }
 
-//get snap point in grid coordinate frame
+/**
+ * get snap point in grid coordinate frame
+ * @param p1 First point of intersection
+ * @param p2 Second point of intersection
+ * @param numVals Number of values to get between the two points
+ * @return The first point between p1 and p2 where the grid value is greater than the threshold
+ */
 glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
     // x, y, and z coordinates of the current data point
     // Moves along the line defined by p1 and p2
@@ -550,12 +592,6 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
     for (int i = 0; i < numVals; i++) {
         auto val = (float)gridPointer->readCellInterpolated(x, y, z);
 
-        //check if val meets snap criteria
-//        float shade = contrast * (val - 0.5) + 0.5 + brightness;
-//        shade = shade * shade * shade * shade * shade;
-//        if(shade < 0.003) shade = 0;
-//        if(shade > 1.0) shade = 1.0;
-
         if(val > snapThreshold)
             return glm::vec3(x, y, z);
 
@@ -569,9 +605,16 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
     return glm::vec3(-1, -1, -1);
 }
 
+/**
+ * Move the specified marker to the cursor position.
+ * @param numMarker Which marker the cursor is on
+ * @param rayOrigin origin of the ray
+ * @param rayDirection direction of the ray
+ */
 void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     if(numMarker == 1){
-        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
+        //transform to world coordinates
+        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
         glm::vec4 normal = glm::vec4(0,0,1,0);
         double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
 
@@ -630,6 +673,14 @@ void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirectio
     }
 }
 
+/**
+ * Calculates the value for t in the intersection between a plane and a ray
+ * @param normal normal of the plane
+ * @param point point on the plane
+ * @param rayOrig ray origin (e)
+ * @param rayDir ray direction (d)
+ * @return the t value that satisfied e + td = P, where P is the intersection of the ray with the plane. -1 if no intersection
+ */
 double GUI::rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOrig, glm::vec3 rayDir){
     float denom = glm::dot(normal, rayDir);
     if (abs(denom) > 0.0001f) // your favorite epsilon

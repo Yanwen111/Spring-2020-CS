@@ -117,6 +117,12 @@ glm::vec3 Marker::getMarker2Pos(){
     return marker2;
 }
 
+/**
+ * Draws a marker on the screen
+ * @param projection the projection matrix
+ * @param view the view matrix
+ * @param model_marker the model matrix of the marker
+ */
 void Marker:: drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
     // Drawing the marker
     markerShader.use();
@@ -141,6 +147,14 @@ void Marker::setPositionMarker2(glm::vec3 pos) {
     marker2 = pos;
 }
 
+/**
+ * Applies matrix transformations and calls the drawMarker method to render
+ * the two markers on the screen on the location specified by marker1 and marker2.
+ * @param projection the projection matrix
+ * @param view the view matrix
+ * @param model the model matrix of the grid's orientation. The Marker class will
+ * apply transformations to get the actual model matrix of the individual markers.
+ */
 void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     glEnable(GL_DEPTH_TEST);
 
@@ -172,15 +186,19 @@ float Marker::getDistance(float freq, float vel, int depth){
     return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0;
 }
 
+//int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
+//    //returns -1 for no intersection, 1 for marker1, 2 for marker2
+//    int intersectMarker = intersect(rayOrigin, rayDirection);
+//    return intersectMarker;
+//}
+
+/**
+ * Checks whether the ray created from the mouse intersects with a marker
+ * @param rayOrigin
+ * @param rayDirection
+ * @return -1 for no intersection, 1 for marker1, 2 for marker2
+ */
 int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
-    std::cout<<"HAYUN IS HERE"<<std::endl;
-
-    //returns -1 for no intersection, 1 for marker1, 2 for marker2
-    int intersectMarker = intersect(rayOrigin, rayDirection);
-    return intersectMarker;
-}
-
-int Marker::intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection){
     int intersected = -1;
 
     //loop over each triangle
@@ -201,6 +219,17 @@ int Marker::intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection){
     return intersected;
 }
 
+/**
+ * Checks whether a ray intersects a triangle with vertices v0, v1, v2
+ * @param orig ray origin
+ * @param dir ray direction
+ * @param v0 vertex 0 of the triangle
+ * @param v1 vertex 1 of the triangle
+ * @param v2 vertex 2 of the triangle
+ * @param t this method sets the value of t to be the point V = O + tD, when the ray intersects with the triangle.
+ * Let P = the point of intersection, O = ray origin, D = ray direction.
+ * @return true if it intersects, false otherwise.
+ */
 bool rayTriangleIntersect(
         const glm::vec3 &orig, const glm::vec3 &dir,
         const glm::vec3 &v0, const glm::vec3 &v1, const glm::vec3 &v2,
