@@ -102,5 +102,5 @@ If ROTATE_GRID is false, then the camera can be moved around using WASD plus Q a
 
 If ROTATE_GRID is true, then the camera is stationary, and the grid can be rotated by clicking the left mouse button and dragging. Press R to reset the orientation.  
 
-![The image is in the images folder](https://github.com/ColumbiaOpenSourceUltrasound/Spring-2020-CS/tree/master/images/Density Map (24 FPS).png "Code demo")
+![The image is in the images folder](https://github.com/ColumbiaOpenSourceUltrasound/Spring-2020-CS/blob/master/images/Density%20Map%20(24%20FPS).png "Code demo")
 
