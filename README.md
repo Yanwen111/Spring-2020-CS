@@ -1,45 +1,100 @@
-# DensityMap
+# Columbia Open Source Ultrasound Spring 2020
+To run the program, pull from the master branch and run the main. 
 
+<b> Live Rendering</b>
+To test the live rendering code, switch to the Yanwen2 branch and pull the code there.
+
+## Ultrasound Folder
+This folder contains the majority of the CS code worked on this Spring 2020 semester. The folder is divded into 2 sections, the data processing and the GUI
+
+### Data processing
+All the data processing methods can be found in the data class, with methods to load and read data files based on the probe used to collect the data.
+
+### GUI
+The GUI is made up of the following classes: GUI, Probe, Scale, Marker.
+
+#### GUI Class
+This class creates the two panels to the left and right of the screen. It contains widgets such as sliders and input buttons to load new file and change different parameter values. This class creates the scale and marker classes as features that the user can interact with through the GUI.
+
+#### Scale Class
+The scale class consists of drawing the scale and rendering the three axes on the screen. The class contains methods to set the positions of the scales and change the distance calculation.
+
+#### Marker Class
+The marker class creates two markers on the screen and returns the distance between the markers. The class consists of methods to draw the markers, change their positions, and check for intersections.
+
+#### Probe Class
+The probe class loads an STL file and renders it on the screen. It can also take in a file of rotation values for the probe and apply each rotation when drawing the object. 
+
+### Helper classes
+The helper class and the rotation class contain methods needed throughout the program. They contain methods to read an STL file to display on the screen and methods to convert between euler angles and quaternions.
+
+## DensityMap Folder
+The DensityMap folder contains the code for the image rendering process (the basic grid structure and the camera and shader classes)
+
+### DensityMap Class
 DensityMap is a class that stores a 3D array of unsigned bytes between 0 and 255 (inclusive) and allows them to be displayed using OpenGL.
 
-## Public Members
-
-<b>std::vector&lt;std::vector&lt;std::vector&lt;unsigned char&gt;&gt;&gt; cells</b>  
-The 3D array containing the density at each position, consisting of unsigned bytes.
-
-## Methods
+#### Methods
 
 <b>DensityMap(int dim)</b>  
 Initializes the DensityMap with a cubic array of side length dim.
 
-<b>void addLine(glm::vec3 p1, glm::vec3 p2, std::vector&lt;unsigned char&gt; vals)</b>  
-Adds a line of data to the array along the line segment defined by p1 and p2.
-The more values there are in vals, the smoother the line will be.
-
 <b>void clear(int value = 0)</b>  
 Fills the whole array with a given value. Defaults to 0.
 
-<b>std::vector&lt;float&gt; getVertexPositions()</b>  
-Returns a vector containing the positions of vertices used to display the density map.
+<b>void writeLine(glm::vec3 p1, glm::vec3 p2, std::vector&lt;unsigned char&gt; vals, WriteMode writeMode = DensityMap::WriteMode::Avg)</b>  
+Adds a line of data to the array along the line segment defined by p1 and p2. The more values there are in vals, the smoother the line will be.  
+The value written to the cell will be the weighted average of the new and old value. The coefficient used in this formula is determined by setUpdateCoefficient().
 
-<b>std::vector&lt;unsigned char&gt; getVertexDensities()</b>  
-Returns a vector containing the densities of each cell (used to display the density map).
+<b>void writeCell(unsigned int x, unsigned int y, unsigned int z, unsigned char value)</b>  
+Writes to one cell of the buffer on the graphics card.
+
+Multiple data values can fall into the same cell (especially if there is a lot of data), so there are multiple ways to combine them.  
+If writeMode is equal to DensityMap::WriteMode::Avg, then all values in the same cell will be averaged, and that value will be written to the cell.  
+If writeMode is equal to DensityMap::WriteMode::Max, then the maximum of all the values in the cell will be written (this can be better if your data is sparse).
 
 <b>int getDim()</b>  
 Returns the side length of the cube.
 
-<b>void draw(glm::dmat4 projection, glm::dmat4 view, glm::dmat4 model)</b>  
+<b>void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model)</b>  
 Draws the density map and a white box around it to the screen.
-
-<b>void updateVertexBuffer()</b>  
-Writes the new densities to the graphics card. Densities below the threshold set by DensityMap::setThreshold() are not written.  
-This function should not be called too frequently, since it can take a while to complete (the time taken increases with the size of the array).
 
 <b>void setThreshold(unsigned char value)</b>  
 <b>unsigned char getThreshold()</b>  
-These set and get the minimum threshold for writing a cell of the density map to the graphics card. 0 means that everything is written, and 255 means that only the brightest values are written.
+These set and get the minimum value needed to draw a cell. The fewer cells are drawn, the faster your program will run.
 
-## Movement
+<b>void setUpdateCoefficient(float value)</b>  
+<b>float getUpdateCoefficient()</b>  
+These set and get the update coefficient used for the weighted average in writeLine().  
+If it is 1, then the new value completely overwrites the old value. If it is 0.5, then the mean of the new and old values is taken. If it is 0, then writing new values has no effect (not recommended for obvious reasons).
+
+<b>void setBrightness(float value)</b>  
+<b>float getBrightness()</b>  
+<b>void setContrast(float value)</b>  
+<b>float getContrast()</b>  
+
+These set and get the image brightness and contrast.  
+After the cell shades are mapped onto the closed interval [0, 1], the following formula is applied:
+
+```
+shade = contrast * (shade - 0.5) + 0.5 + brightness
+```
+
+When the brightness is 1, all cells will be white, and when the brightness is -1, all cells will be invisible.  
+When the contrast is between 0 and 1, cells will appear less contrasted with their neighbors, and when it is more than 1, they will appear more contrasted with their neighbors.
+
+<b>unsigned char readCell(int x, int y, int z)</b>  
+Gets the value at a specific index in the array. Blocks when drawing is happening.
+
+<b>unsigned char readCellInterpolated(float x, float y, float z)</b>  
+Gets the interpolated value at a position in the cube. Blocks when drawing is happening.  
+x, y, and z must all be on the half-open range [0, 1)
+
+<b>void readLine(glm::vec3 p1, glm::vec3 p2, int numVals, unsigned char* vals)</b>  
+Gets the interpolated values along the line between two points and writes them to a given array.  
+Make sure at least `numVals` bytes of memory are allocated for `vals`.
+
+#### Movement
 
 There are two movement options, controlled by setting ROTATE_GRID at the top of main.cpp to either true or false.  
 
@@ -47,9 +102,5 @@ If ROTATE_GRID is false, then the camera can be moved around using WASD plus Q a
 
 If ROTATE_GRID is true, then the camera is stationary, and the grid can be rotated by clicking the left mouse button and dragging. Press R to reset the orientation.  
 
-## To Do
- 
-Add GUI features.  
-Speed optimizations !!!!!  
+![The image is in the images folder](https://github.com/ColumbiaOpenSourceUltrasound/Spring-2020-CS/tree/master/images/Density Map (24 FPS).png "Code demo")
 
-![The image is in the images folder](https://github.com/ethanlipson/DensityMap/raw/master/images/sphere.png "Sphere demo")
