@@ -9,19 +9,44 @@ DensityMap::DensityMap(long long int dim) {
 	updateCoefficient = 1;
 
 	std::string vCells =
-		"// VERTEX SHADER						\n"
-		"										\n"
-		"#version 330 core						\n"
-		"										\n"
-		"uniform int dim;						\n"
-		"										\n"
-		"void main() {							\n"
-		"	int x = gl_VertexID / (dim * dim);	\n"
-		"	int y = (gl_VertexID / dim) % dim;	\n"
-		"	int z = gl_VertexID % dim;			\n"
-		"										\n"
-		"	gl_Position = vec4(x, y, z, 1.0);	\n"
-		"}										\n";
+            "// VERTEX SHADER						\n"
+            "										\n"
+            "#version 330 core						\n"
+            "										\n"
+            "uniform int dim;						\n"
+            "										\n"
+            "void main() {							\n"
+            "	int x = gl_VertexID / (dim * dim);	\n"
+            "	int y = (gl_VertexID / dim) % dim;	\n"
+            "	int z = gl_VertexID % dim;			\n"
+            "										\n"
+            "	gl_Position = vec4(x, y, z, 1.0);	\n"
+            "}										\n";
+
+    std::string neo_vCells =
+            "// VERTEX SHADER						                                \n"
+            "										                                \n"
+            "#version 330 core						                                \n"
+            "										                                \n"
+            "out float fShade;						                                \n"
+            "uniform int dim;						                                \n"
+            "uniform float threshold;				                                \n"
+            "uniform samplerBuffer densities;		                                \n"
+            "uniform mat4 projection;												\n"
+            "uniform mat4 view;														\n"
+            "uniform mat4 model;													\n"
+            "										                                \n"
+            "void main() {							                                \n"
+            "	int x = gl_VertexID / (dim * dim);	                                \n"
+            "	int y = (gl_VertexID / dim) % dim;	                                \n"
+            "	int z = gl_VertexID % dim;			                                \n"
+            "	fShade = texelFetch(densities, gl_VertexID).x;		                \n"
+            "	if (fShade < threshold) {								            \n"
+            "		return;															\n"
+            "	}																	\n"
+            "										                                \n"
+            "	gl_Position = projection * view * model * vec4(x, y, z, 1.0);	                                \n"
+            "}										                                \n";
 
 	std::string fCells =
 		"// FRAGMENT SHADER												\n"
@@ -115,6 +140,54 @@ DensityMap::DensityMap(long long int dim) {
 		"	}																	\n"
 		"}																		\n";
 
+    std::string neo_gCells =
+            "// GEOMETRY SHADER														\n"
+            "																		\n"
+            "#version 330 core														\n"
+            "																		\n"
+            "layout(points) in;														\n"
+            "layout(points) out;							                        \n"
+            "																		\n"
+            "out float fShade;														\n"
+            "																		\n"
+            "uniform mat4 projection;												\n"
+            "uniform mat4 view;														\n"
+            "uniform mat4 model;													\n"
+            "																		\n"
+            "uniform int dim;														\n"
+            "uniform float threshold;												\n"
+            "																		\n"
+            "uniform samplerBuffer densities;										\n"
+            "																		\n"
+            "vec4 transform(float x, float y, float z) {							\n"
+            "	return projection * view * model * vec4(x, y, z, 1.0);				\n"
+            "}																		\n"
+            "																		\n"
+            "float getDensity(int x, int y, int z) {								\n"
+            "	return texelFetch(densities, x * dim * dim + y * dim + z).x;		\n"
+            "}																		\n"
+            "																		\n"
+            "void genSquare(int x, int y, int z) {				                    \n"
+            "	gl_Position = transform(x, y, z);									\n"
+            "	fShade = getDensity(x, y, z);										\n"
+            "	EmitVertex();														\n"
+            "	EndPrimitive();														\n"
+            "}																		\n"
+            "																		\n"
+            "void main() {															\n"
+            "	int x = int(gl_in[0].gl_Position.x);								\n"
+            "	int y = int(gl_in[0].gl_Position.y);								\n"
+            "	int z = int(gl_in[0].gl_Position.z);								\n"
+            "																		\n"
+            "	if (getDensity(x, y, z) < threshold) {								\n"
+            "		return;															\n"
+            "	}																	\n"
+            "																		\n"
+            "	if (x != dim - 1 && y != dim - 1) {									\n"
+            "		genSquare(x, y, z);									            \n"
+            "	}																	\n"
+            "}																		\n";
+
 	std::string vLines =
 		"// VERTEX SHADER												\n"
 		"																\n"
@@ -141,7 +214,9 @@ DensityMap::DensityMap(long long int dim) {
 		"	FragColor = vec4(1.0);	\n"
 		"}							\n";
 
-	cellShader = Shader(vCells.c_str(), fCells.c_str(), gCells.c_str(), false);
+	//cellShader = Shader(vCells.c_str(), fCells.c_str(), gCells.c_str(), false);
+    //cellShader = Shader(vCells.c_str(), fCells.c_str(), neo_gCells.c_str(), false);
+    cellShader = Shader(neo_vCells.c_str(), fCells.c_str(), false);
 	lineShader = Shader(vLines.c_str(), fLines.c_str(), false);
 
 	unsigned char* tempCells = new unsigned char[dim * dim * dim];

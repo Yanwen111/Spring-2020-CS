@@ -135,7 +135,7 @@ int main() {
 	firstMouse = true;
 
     // Creating the density map
-    int dim = 100;
+    int dim = 500;
     DensityMap grid(dim);
 
     // Add a sphere to the center of the grid
@@ -155,20 +155,20 @@ int main() {
 
     // multi-thread
     // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-    std::thread dataThread;
-    dataThread = std::thread(realDemo4, std::ref(grid), std::ref(dataUpdate));
-    dataThread.detach();
-
-    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-//    char fN[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
-//    float GAIN = 0; /* 0 means no gain */
-//    int depth = 1500;
 //    std::thread dataThread;
-//    dataThread = std::thread(readDataWhitefin, std::ref(grid), fN, GAIN, depth);
+//    dataThread = std::thread(realDemo4, std::ref(grid), std::ref(dataUpdate));
 //    dataThread.detach();
 
-    // thread1: read data from txt files, generate IMU file, and modify the grid.cell
-//    char fN[] = "data/original_3.txt";
+    // Test the function readDataWhitefin()
+    char fN[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
+    float GAIN = 0; /* 0 means no gain */
+    int depth = 1500;
+    std::thread dataThread;
+    dataThread = std::thread(readDataWhitefin, std::ref(grid), fN, GAIN, depth);
+    dataThread.detach();
+
+    // Test the function readDataSubmarine()
+//    char fN[] = "data/tapioca_1.txt";
 //    float GAIN = 0; /* 0 means no gain */
 //    int depth = 1500;
 //    std::thread dataThread;

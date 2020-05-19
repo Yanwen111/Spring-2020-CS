@@ -57,7 +57,7 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
     memcpy(time_stamp_char, (unsigned char *)&time_stamp, sizeof(time_stamp_char));
 //    printf("start write encoder & piezo...\n");
 //    std::ofstream fileout("data/encoder_piezo.txt", std::ios::trunc|std::ios::out);
-    for (unsigned short i = 1200; i < 1800; i += 10)
+    for (unsigned short i = 700; i < 2300; i += 10)
     {
         encoder = i;
         double angle = encoder * 360.0 / 4096.0;
@@ -447,17 +447,6 @@ std::vector<line_data_struct> file_to_pixel_V05(std::vector<unsigned char> _file
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
     char fileName[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
-//    switch (MODE)
-//    {
-//        case 1:
-//            readDataSubmarine(fileName, Gain, len);
-//            break;
-//        case 2:
-//            readDataWhitefin(fileName, Gain, len);
-//            break;
-//        default:
-//            printf("<%d> is an invalid mode!\n");
-//    }
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;
     std::vector<scan_data_struct> scan_data;
@@ -484,7 +473,8 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     for  (auto l: line_data)
     {
         glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
-        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1,
+                        l.p2.z/len - l.p1.z/len +0.5};
         grid.writeLine(ps, pe, l.vals);
     }
     dataUpdate = true;
@@ -502,21 +492,6 @@ void realDemo2(DensityMap& grid, bool& dataUpdate)
     int sub_length = 1;
     int buffer_size = 1000;
     bool newDataline = true;
-    //std::mutex readtex;
-
-//    char fileName[255];
-//    std::cout << "Please type the file you want to open (<data/xxxx.txt>): " << std::endl;
-//    std::cin >> fileName;
-//    file_bytes = readFile(fileName);
-//    /* find all marker locations */
-//    marker_locations = find_marker(file_bytes);
-//
-//    //sub_length = marker_locations.size() / 35;
-//
-//    std::thread fileThread;
-//    fileThread = std::thread(readSubfile, file_bytes, marker_locations, sub_length,
-//            std::ref(newDataline));
-//    fileThread.detach();
 
     char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
     char sendBuf[100] = "I received!";
@@ -742,7 +717,7 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     int total_bytes_v07 = 10+4+1+2+2+2*2500+4;
     char recvBuf[total_bytes_v07 * sub_length];
     char sendBuf[100] = "I received";
-//    SOCKET sockConn;
+
     WSADATA wsaData;
     int port = 8888;
     if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
@@ -831,8 +806,8 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 
 void UDP_timer(int& time_milisecond)
 {
-    int step = 10;
-    while(1)
+    int step = 10; /* time slot */
+    while(true)
     {
         time_mutex.lock();
         time_milisecond += step;

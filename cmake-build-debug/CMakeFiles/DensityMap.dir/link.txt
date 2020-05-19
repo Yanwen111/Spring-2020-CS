@@ -1,3 +1,0 @@
-"D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\DensityMap.dir/objects.a
-D:\Software\CLion\mingw64\bin\ar.exe cr CMakeFiles\DensityMap.dir/objects.a @CMakeFiles\DensityMap.dir\objects1.rsp
-D:\Software\CLion\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\DensityMap.dir/objects.a -Wl,--no-whole-archive  -o DensityMap.exe -Wl,--out-implib,libDensityMap.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\DensityMap.dir\linklibs.rsp

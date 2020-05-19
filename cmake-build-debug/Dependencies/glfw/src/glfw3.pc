@@ -1,7 +1,7 @@
-prefix=C:/Program Files (x86)/DensityMap
+prefix=C:/Program Files (x86)/Ultrasound
 exec_prefix=${prefix}
-includedir=C:/Program Files (x86)/DensityMap/include
-libdir=C:/Program Files (x86)/DensityMap/lib
+includedir=C:/Program Files (x86)/Ultrasound/include
+libdir=C:/Program Files (x86)/Ultrasound/lib
 
 Name: GLFW
 Description: A multi-platform library for OpenGL, window and input

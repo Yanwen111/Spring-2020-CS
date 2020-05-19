@@ -1,9 +1,9 @@
 
-if (NOT EXISTS "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt\"")
+if (NOT EXISTS "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt\"")
 endif()
 
-file(READ "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt" files)
+file(READ "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})

@@ -47,10 +47,10 @@ RM = "D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Documents\CML\2019.02.17\Spring-2020-CS
+CMAKE_SOURCE_DIR = D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug
+CMAKE_BINARY_DIR = D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -125,9 +125,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles\progress.marks
 	$(MAKE) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\2019.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target

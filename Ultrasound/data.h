@@ -22,10 +22,9 @@
 #include <mutex>
 
 #include <cstdlib>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdio>
 #include "winsock2.h"
-#pragma comment(lib, "libws2_32.a")
+//#pragma comment(lib, "libws2_32.a") /* This is the same as link library in cmakefile */
 
 
 #include "densityMap.h"

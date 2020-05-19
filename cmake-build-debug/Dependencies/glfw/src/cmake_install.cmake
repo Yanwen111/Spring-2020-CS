@@ -1,8 +1,8 @@
-# Install script for directory: D:/Documents/CML/2019.02.17/Spring-2020-CS/Dependencies/glfw/src
+# Install script for directory: D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/Dependencies/glfw/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/DensityMap")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Ultrasound")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,6 +33,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "D:/Documents/CML/2019.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/src/libglfw3.a")
 endif()
 
