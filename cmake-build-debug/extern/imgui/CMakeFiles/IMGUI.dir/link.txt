@@ -1,0 +1,2 @@
+D:\Software\CLion\mingw64\bin\ar.exe qc libIMGUI.a  CMakeFiles/IMGUI.dir/imgui.cpp.obj CMakeFiles/IMGUI.dir/imgui_demo.cpp.obj CMakeFiles/IMGUI.dir/imgui_draw.cpp.obj CMakeFiles/IMGUI.dir/imgui_impl_glfw.cpp.obj CMakeFiles/IMGUI.dir/imgui_impl_opengl3.cpp.obj CMakeFiles/IMGUI.dir/imgui_widgets.cpp.obj
+D:\Software\CLion\mingw64\bin\ranlib.exe libIMGUI.a

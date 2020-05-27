@@ -156,17 +156,56 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Ultrasound
+# Target rules for targets named Ultrasound_AIO
 
 # Build rule for target.
-Ultrasound: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 Ultrasound
-.PHONY : Ultrasound
+Ultrasound_AIO: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 Ultrasound_AIO
+.PHONY : Ultrasound_AIO
 
 # fast build rule for target.
-Ultrasound/fast:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/build
-.PHONY : Ultrasound/fast
+Ultrasound_AIO/fast:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/build
+.PHONY : Ultrasound_AIO/fast
+
+#=============================================================================
+# Target rules for targets named ULTRASOUND
+
+# Build rule for target.
+ULTRASOUND: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 ULTRASOUND
+.PHONY : ULTRASOUND
+
+# fast build rule for target.
+ULTRASOUND/fast:
+	$(MAKE) -f source\Ultrasound\CMakeFiles\ULTRASOUND.dir\build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build
+.PHONY : ULTRASOUND/fast
+
+#=============================================================================
+# Target rules for targets named DENSITYMAP
+
+# Build rule for target.
+DENSITYMAP: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 DENSITYMAP
+.PHONY : DENSITYMAP
+
+# fast build rule for target.
+DENSITYMAP/fast:
+	$(MAKE) -f source\DensityMap\CMakeFiles\DENSITYMAP.dir\build.make source/DensityMap/CMakeFiles/DENSITYMAP.dir/build
+.PHONY : DENSITYMAP/fast
+
+#=============================================================================
+# Target rules for targets named IMGUI
+
+# Build rule for target.
+IMGUI: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 IMGUI
+.PHONY : IMGUI
+
+# fast build rule for target.
+IMGUI/fast:
+	$(MAKE) -f extern\imgui\CMakeFiles\IMGUI.dir\build.make extern/imgui/CMakeFiles/IMGUI.dir/build
+.PHONY : IMGUI/fast
 
 #=============================================================================
 # Target rules for targets named uninstall
@@ -178,7 +217,7 @@ uninstall: cmake_check_build_system
 
 # fast build rule for target.
 uninstall/fast:
-	$(MAKE) -f Dependencies\glfw\CMakeFiles\uninstall.dir\build.make Dependencies/glfw/CMakeFiles/uninstall.dir/build
+	$(MAKE) -f extern\glfw\CMakeFiles\uninstall.dir\build.make extern/glfw/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
 
 #=============================================================================
@@ -191,386 +230,62 @@ glfw: cmake_check_build_system
 
 # fast build rule for target.
 glfw/fast:
-	$(MAKE) -f Dependencies\glfw\src\CMakeFiles\glfw.dir\build.make Dependencies/glfw/src/CMakeFiles/glfw.dir/build
+	$(MAKE) -f extern\glfw\src\CMakeFiles\glfw.dir\build.make extern/glfw/src/CMakeFiles/glfw.dir/build
 .PHONY : glfw/fast
 
-DensityMap/camera.obj: DensityMap/camera.cpp.obj
+extern/glad/src/glad.obj: extern/glad/src/glad.c.obj
 
-.PHONY : DensityMap/camera.obj
-
-# target to build an object file
-DensityMap/camera.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.obj
-.PHONY : DensityMap/camera.cpp.obj
-
-DensityMap/camera.i: DensityMap/camera.cpp.i
-
-.PHONY : DensityMap/camera.i
-
-# target to preprocess a source file
-DensityMap/camera.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.i
-.PHONY : DensityMap/camera.cpp.i
-
-DensityMap/camera.s: DensityMap/camera.cpp.s
-
-.PHONY : DensityMap/camera.s
-
-# target to generate assembly for a file
-DensityMap/camera.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/camera.cpp.s
-.PHONY : DensityMap/camera.cpp.s
-
-DensityMap/densityMap.obj: DensityMap/densityMap.cpp.obj
-
-.PHONY : DensityMap/densityMap.obj
+.PHONY : extern/glad/src/glad.obj
 
 # target to build an object file
-DensityMap/densityMap.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.obj
-.PHONY : DensityMap/densityMap.cpp.obj
+extern/glad/src/glad.c.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.obj
+.PHONY : extern/glad/src/glad.c.obj
 
-DensityMap/densityMap.i: DensityMap/densityMap.cpp.i
+extern/glad/src/glad.i: extern/glad/src/glad.c.i
 
-.PHONY : DensityMap/densityMap.i
+.PHONY : extern/glad/src/glad.i
 
 # target to preprocess a source file
-DensityMap/densityMap.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.i
-.PHONY : DensityMap/densityMap.cpp.i
+extern/glad/src/glad.c.i:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.i
+.PHONY : extern/glad/src/glad.c.i
 
-DensityMap/densityMap.s: DensityMap/densityMap.cpp.s
+extern/glad/src/glad.s: extern/glad/src/glad.c.s
 
-.PHONY : DensityMap/densityMap.s
+.PHONY : extern/glad/src/glad.s
 
 # target to generate assembly for a file
-DensityMap/densityMap.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/densityMap.cpp.s
-.PHONY : DensityMap/densityMap.cpp.s
+extern/glad/src/glad.c.s:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.s
+.PHONY : extern/glad/src/glad.c.s
 
-DensityMap/shader.obj: DensityMap/shader.cpp.obj
+main.obj: main.cpp.obj
 
-.PHONY : DensityMap/shader.obj
+.PHONY : main.obj
 
 # target to build an object file
-DensityMap/shader.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.obj
-.PHONY : DensityMap/shader.cpp.obj
+main.cpp.obj:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/main.cpp.obj
+.PHONY : main.cpp.obj
 
-DensityMap/shader.i: DensityMap/shader.cpp.i
+main.i: main.cpp.i
 
-.PHONY : DensityMap/shader.i
-
-# target to preprocess a source file
-DensityMap/shader.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.i
-.PHONY : DensityMap/shader.cpp.i
-
-DensityMap/shader.s: DensityMap/shader.cpp.s
-
-.PHONY : DensityMap/shader.s
-
-# target to generate assembly for a file
-DensityMap/shader.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/DensityMap/shader.cpp.s
-.PHONY : DensityMap/shader.cpp.s
-
-Dependencies/glad/src/glad.obj: Dependencies/glad/src/glad.c.obj
-
-.PHONY : Dependencies/glad/src/glad.obj
-
-# target to build an object file
-Dependencies/glad/src/glad.c.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.obj
-.PHONY : Dependencies/glad/src/glad.c.obj
-
-Dependencies/glad/src/glad.i: Dependencies/glad/src/glad.c.i
-
-.PHONY : Dependencies/glad/src/glad.i
+.PHONY : main.i
 
 # target to preprocess a source file
-Dependencies/glad/src/glad.c.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.i
-.PHONY : Dependencies/glad/src/glad.c.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-Dependencies/glad/src/glad.s: Dependencies/glad/src/glad.c.s
+main.s: main.cpp.s
 
-.PHONY : Dependencies/glad/src/glad.s
-
-# target to generate assembly for a file
-Dependencies/glad/src/glad.c.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Dependencies/glad/src/glad.c.s
-.PHONY : Dependencies/glad/src/glad.c.s
-
-Ultrasound/data.obj: Ultrasound/data.cpp.obj
-
-.PHONY : Ultrasound/data.obj
-
-# target to build an object file
-Ultrasound/data.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.obj
-.PHONY : Ultrasound/data.cpp.obj
-
-Ultrasound/data.i: Ultrasound/data.cpp.i
-
-.PHONY : Ultrasound/data.i
-
-# target to preprocess a source file
-Ultrasound/data.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.i
-.PHONY : Ultrasound/data.cpp.i
-
-Ultrasound/data.s: Ultrasound/data.cpp.s
-
-.PHONY : Ultrasound/data.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-Ultrasound/data.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/data.cpp.s
-.PHONY : Ultrasound/data.cpp.s
-
-Ultrasound/main.obj: Ultrasound/main.cpp.obj
-
-.PHONY : Ultrasound/main.obj
-
-# target to build an object file
-Ultrasound/main.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.obj
-.PHONY : Ultrasound/main.cpp.obj
-
-Ultrasound/main.i: Ultrasound/main.cpp.i
-
-.PHONY : Ultrasound/main.i
-
-# target to preprocess a source file
-Ultrasound/main.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.i
-.PHONY : Ultrasound/main.cpp.i
-
-Ultrasound/main.s: Ultrasound/main.cpp.s
-
-.PHONY : Ultrasound/main.s
-
-# target to generate assembly for a file
-Ultrasound/main.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/main.cpp.s
-.PHONY : Ultrasound/main.cpp.s
-
-Ultrasound/probe.obj: Ultrasound/probe.cpp.obj
-
-.PHONY : Ultrasound/probe.obj
-
-# target to build an object file
-Ultrasound/probe.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.obj
-.PHONY : Ultrasound/probe.cpp.obj
-
-Ultrasound/probe.i: Ultrasound/probe.cpp.i
-
-.PHONY : Ultrasound/probe.i
-
-# target to preprocess a source file
-Ultrasound/probe.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.i
-.PHONY : Ultrasound/probe.cpp.i
-
-Ultrasound/probe.s: Ultrasound/probe.cpp.s
-
-.PHONY : Ultrasound/probe.s
-
-# target to generate assembly for a file
-Ultrasound/probe.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/probe.cpp.s
-.PHONY : Ultrasound/probe.cpp.s
-
-Ultrasound/rotation.obj: Ultrasound/rotation.cpp.obj
-
-.PHONY : Ultrasound/rotation.obj
-
-# target to build an object file
-Ultrasound/rotation.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.obj
-.PHONY : Ultrasound/rotation.cpp.obj
-
-Ultrasound/rotation.i: Ultrasound/rotation.cpp.i
-
-.PHONY : Ultrasound/rotation.i
-
-# target to preprocess a source file
-Ultrasound/rotation.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.i
-.PHONY : Ultrasound/rotation.cpp.i
-
-Ultrasound/rotation.s: Ultrasound/rotation.cpp.s
-
-.PHONY : Ultrasound/rotation.s
-
-# target to generate assembly for a file
-Ultrasound/rotation.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/Ultrasound/rotation.cpp.s
-.PHONY : Ultrasound/rotation.cpp.s
-
-imgui/imgui.obj: imgui/imgui.cpp.obj
-
-.PHONY : imgui/imgui.obj
-
-# target to build an object file
-imgui/imgui.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.obj
-.PHONY : imgui/imgui.cpp.obj
-
-imgui/imgui.i: imgui/imgui.cpp.i
-
-.PHONY : imgui/imgui.i
-
-# target to preprocess a source file
-imgui/imgui.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.i
-.PHONY : imgui/imgui.cpp.i
-
-imgui/imgui.s: imgui/imgui.cpp.s
-
-.PHONY : imgui/imgui.s
-
-# target to generate assembly for a file
-imgui/imgui.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui.cpp.s
-.PHONY : imgui/imgui.cpp.s
-
-imgui/imgui_demo.obj: imgui/imgui_demo.cpp.obj
-
-.PHONY : imgui/imgui_demo.obj
-
-# target to build an object file
-imgui/imgui_demo.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.obj
-.PHONY : imgui/imgui_demo.cpp.obj
-
-imgui/imgui_demo.i: imgui/imgui_demo.cpp.i
-
-.PHONY : imgui/imgui_demo.i
-
-# target to preprocess a source file
-imgui/imgui_demo.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.i
-.PHONY : imgui/imgui_demo.cpp.i
-
-imgui/imgui_demo.s: imgui/imgui_demo.cpp.s
-
-.PHONY : imgui/imgui_demo.s
-
-# target to generate assembly for a file
-imgui/imgui_demo.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_demo.cpp.s
-.PHONY : imgui/imgui_demo.cpp.s
-
-imgui/imgui_draw.obj: imgui/imgui_draw.cpp.obj
-
-.PHONY : imgui/imgui_draw.obj
-
-# target to build an object file
-imgui/imgui_draw.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.obj
-.PHONY : imgui/imgui_draw.cpp.obj
-
-imgui/imgui_draw.i: imgui/imgui_draw.cpp.i
-
-.PHONY : imgui/imgui_draw.i
-
-# target to preprocess a source file
-imgui/imgui_draw.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.i
-.PHONY : imgui/imgui_draw.cpp.i
-
-imgui/imgui_draw.s: imgui/imgui_draw.cpp.s
-
-.PHONY : imgui/imgui_draw.s
-
-# target to generate assembly for a file
-imgui/imgui_draw.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_draw.cpp.s
-.PHONY : imgui/imgui_draw.cpp.s
-
-imgui/imgui_impl_glfw.obj: imgui/imgui_impl_glfw.cpp.obj
-
-.PHONY : imgui/imgui_impl_glfw.obj
-
-# target to build an object file
-imgui/imgui_impl_glfw.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.obj
-.PHONY : imgui/imgui_impl_glfw.cpp.obj
-
-imgui/imgui_impl_glfw.i: imgui/imgui_impl_glfw.cpp.i
-
-.PHONY : imgui/imgui_impl_glfw.i
-
-# target to preprocess a source file
-imgui/imgui_impl_glfw.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.i
-.PHONY : imgui/imgui_impl_glfw.cpp.i
-
-imgui/imgui_impl_glfw.s: imgui/imgui_impl_glfw.cpp.s
-
-.PHONY : imgui/imgui_impl_glfw.s
-
-# target to generate assembly for a file
-imgui/imgui_impl_glfw.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_glfw.cpp.s
-.PHONY : imgui/imgui_impl_glfw.cpp.s
-
-imgui/imgui_impl_opengl3.obj: imgui/imgui_impl_opengl3.cpp.obj
-
-.PHONY : imgui/imgui_impl_opengl3.obj
-
-# target to build an object file
-imgui/imgui_impl_opengl3.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.obj
-.PHONY : imgui/imgui_impl_opengl3.cpp.obj
-
-imgui/imgui_impl_opengl3.i: imgui/imgui_impl_opengl3.cpp.i
-
-.PHONY : imgui/imgui_impl_opengl3.i
-
-# target to preprocess a source file
-imgui/imgui_impl_opengl3.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.i
-.PHONY : imgui/imgui_impl_opengl3.cpp.i
-
-imgui/imgui_impl_opengl3.s: imgui/imgui_impl_opengl3.cpp.s
-
-.PHONY : imgui/imgui_impl_opengl3.s
-
-# target to generate assembly for a file
-imgui/imgui_impl_opengl3.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_impl_opengl3.cpp.s
-.PHONY : imgui/imgui_impl_opengl3.cpp.s
-
-imgui/imgui_widgets.obj: imgui/imgui_widgets.cpp.obj
-
-.PHONY : imgui/imgui_widgets.obj
-
-# target to build an object file
-imgui/imgui_widgets.cpp.obj:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.obj
-.PHONY : imgui/imgui_widgets.cpp.obj
-
-imgui/imgui_widgets.i: imgui/imgui_widgets.cpp.i
-
-.PHONY : imgui/imgui_widgets.i
-
-# target to preprocess a source file
-imgui/imgui_widgets.cpp.i:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.i
-.PHONY : imgui/imgui_widgets.cpp.i
-
-imgui/imgui_widgets.s: imgui/imgui_widgets.cpp.s
-
-.PHONY : imgui/imgui_widgets.s
-
-# target to generate assembly for a file
-imgui/imgui_widgets.cpp.s:
-	$(MAKE) -f CMakeFiles\Ultrasound.dir\build.make CMakeFiles/Ultrasound.dir/imgui/imgui_widgets.cpp.s
-.PHONY : imgui/imgui_widgets.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles\Ultrasound_AIO.dir\build.make CMakeFiles/Ultrasound_AIO.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -578,57 +293,24 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... Ultrasound
+	@echo ... Ultrasound_AIO
 	@echo ... install/local
 	@echo ... install
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... list_install_components
 	@echo ... install/strip
+	@echo ... ULTRASOUND
+	@echo ... DENSITYMAP
+	@echo ... IMGUI
 	@echo ... uninstall
 	@echo ... glfw
-	@echo ... DensityMap/camera.obj
-	@echo ... DensityMap/camera.i
-	@echo ... DensityMap/camera.s
-	@echo ... DensityMap/densityMap.obj
-	@echo ... DensityMap/densityMap.i
-	@echo ... DensityMap/densityMap.s
-	@echo ... DensityMap/shader.obj
-	@echo ... DensityMap/shader.i
-	@echo ... DensityMap/shader.s
-	@echo ... Dependencies/glad/src/glad.obj
-	@echo ... Dependencies/glad/src/glad.i
-	@echo ... Dependencies/glad/src/glad.s
-	@echo ... Ultrasound/data.obj
-	@echo ... Ultrasound/data.i
-	@echo ... Ultrasound/data.s
-	@echo ... Ultrasound/main.obj
-	@echo ... Ultrasound/main.i
-	@echo ... Ultrasound/main.s
-	@echo ... Ultrasound/probe.obj
-	@echo ... Ultrasound/probe.i
-	@echo ... Ultrasound/probe.s
-	@echo ... Ultrasound/rotation.obj
-	@echo ... Ultrasound/rotation.i
-	@echo ... Ultrasound/rotation.s
-	@echo ... imgui/imgui.obj
-	@echo ... imgui/imgui.i
-	@echo ... imgui/imgui.s
-	@echo ... imgui/imgui_demo.obj
-	@echo ... imgui/imgui_demo.i
-	@echo ... imgui/imgui_demo.s
-	@echo ... imgui/imgui_draw.obj
-	@echo ... imgui/imgui_draw.i
-	@echo ... imgui/imgui_draw.s
-	@echo ... imgui/imgui_impl_glfw.obj
-	@echo ... imgui/imgui_impl_glfw.i
-	@echo ... imgui/imgui_impl_glfw.s
-	@echo ... imgui/imgui_impl_opengl3.obj
-	@echo ... imgui/imgui_impl_opengl3.i
-	@echo ... imgui/imgui_impl_opengl3.s
-	@echo ... imgui/imgui_widgets.obj
-	@echo ... imgui/imgui_widgets.i
-	@echo ... imgui/imgui_widgets.s
+	@echo ... extern/glad/src/glad.obj
+	@echo ... extern/glad/src/glad.i
+	@echo ... extern/glad/src/glad.s
+	@echo ... main.obj
+	@echo ... main.i
+	@echo ... main.s
 .PHONY : help
 
 

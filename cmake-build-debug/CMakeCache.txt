@@ -151,7 +151,7 @@ CMAKE_INSTALL_MANDIR:PATH=
 CMAKE_INSTALL_OLDINCLUDEDIR:PATH=/usr/include
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Ultrasound
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Ultrasound_AIO
 
 //Run-time variable data (LOCALSTATEDIR/run)
 CMAKE_INSTALL_RUNSTATEDIR:PATH=
@@ -207,7 +207,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Ultrasound
+CMAKE_PROJECT_NAME:STATIC=Ultrasound_AIO
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=3.3.2
@@ -305,7 +305,13 @@ CMAKE_STRIP:FILEPATH=D:/Software/CLion/mingw64/bin/strip.exe
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-GLFW_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw
+DENSITYMAP_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap
+
+//Value Computed by CMake
+DENSITYMAP_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap
+
+//Value Computed by CMake
+GLFW_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw
 
 //Build the GLFW documentation
 GLFW_BUILD_DOCS:BOOL=OFF
@@ -320,13 +326,19 @@ GLFW_BUILD_TESTS:BOOL=OFF
 GLFW_INSTALL:BOOL=ON
 
 //Value Computed by CMake
-GLFW_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/Dependencies/glfw
+GLFW_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw
 
 //Force use of high-performance GPU on hybrid systems
 GLFW_USE_HYBRID_HPG:BOOL=OFF
 
 //Assume the Vulkan loader is linked with the application
 GLFW_VULKAN_STATIC:BOOL=OFF
+
+//Value Computed by CMake
+IMGUI_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/imgui
+
+//Value Computed by CMake
+IMGUI_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui
 
 //OpenGL library for win32
 OPENGL_gl_LIBRARY:STRING=opengl32
@@ -335,13 +347,16 @@ OPENGL_gl_LIBRARY:STRING=opengl32
 OPENGL_glu_LIBRARY:STRING=glu32
 
 //Value Computed by CMake
-Ultrasound_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug
+ULTRASOUND_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound
 
 //Value Computed by CMake
-Ultrasound_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS
+ULTRASOUND_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound
 
-//Dependencies for the target
-glfw_LIB_DEPENDS:STATIC=general;ws2_32;
+//Value Computed by CMake
+Ultrasound_AIO_BINARY_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug
+
+//Value Computed by CMake
+Ultrasound_AIO_SOURCE_DIR:STATIC=D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS
 
 
 ########################
@@ -488,7 +503,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -561,5 +576,5 @@ _GLFW_HAS_ASLR:INTERNAL=1
 //Test _GLFW_HAS_DEP
 _GLFW_HAS_DEP:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
-_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/Ultrasound
+_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/Ultrasound_AIO
 

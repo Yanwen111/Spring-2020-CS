@@ -1,0 +1,2 @@
+D:\Software\CLion\mingw64\bin\ar.exe qc libULTRASOUND.a  CMakeFiles/ULTRASOUND.dir/source/data.cpp.obj CMakeFiles/ULTRASOUND.dir/source/gui.cpp.obj CMakeFiles/ULTRASOUND.dir/source/helper.cpp.obj CMakeFiles/ULTRASOUND.dir/source/marker.cpp.obj CMakeFiles/ULTRASOUND.dir/source/probe.cpp.obj CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.obj CMakeFiles/ULTRASOUND.dir/source/scale.cpp.obj
+D:\Software\CLion\mingw64\bin\ranlib.exe libULTRASOUND.a

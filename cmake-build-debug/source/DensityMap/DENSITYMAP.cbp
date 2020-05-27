@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="DENSITYMAP"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DENSITYMAP">
+				<Option output="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/libDENSITYMAP.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glm"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glad/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glm"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 DENSITYMAP"/>
+					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DENSITYMAP/fast">
+				<Option output="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/libDENSITYMAP.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glm"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glad/include"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/../../extern/glm"/>
+					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 DENSITYMAP/fast"/>
+					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/camera.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/camera.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/densityMap.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/densityMap.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/shader.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/shader.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\DensityMap\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\Ultrasound\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw_config.h.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,3 +1,0 @@
-"D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\Ultrasound.dir/objects.a
-D:\Software\CLion\mingw64\bin\ar.exe cr CMakeFiles\Ultrasound.dir/objects.a @CMakeFiles\Ultrasound.dir\objects1.rsp
-D:\Software\CLion\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\Ultrasound.dir/objects.a -Wl,--no-whole-archive  -o Ultrasound.exe -Wl,--out-implib,libUltrasound.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Ultrasound.dir\linklibs.rsp

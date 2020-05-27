@@ -42,10 +42,10 @@ RM = "D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS
+CMAKE_SOURCE_DIR = D:\Documents\CML\Summer2020\Spring-2020-CS
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug
+CMAKE_BINARY_DIR = D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug
 
 # Utility rule file for uninstall.
 
@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-b
 include Dependencies/glfw/CMakeFiles/uninstall.dir/progress.make
 
 Dependencies/glfw/CMakeFiles/uninstall:
-	cd /d D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\Dependencies\glfw && "D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -P D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/cmake_uninstall.cmake
+	cd /d D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug\Dependencies\glfw && "D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -P D:/Documents/CML/Summer2020/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/cmake_uninstall.cmake
 
 uninstall: Dependencies/glfw/CMakeFiles/uninstall
 uninstall: Dependencies/glfw/CMakeFiles/uninstall.dir/build.make
@@ -66,10 +66,10 @@ Dependencies/glfw/CMakeFiles/uninstall.dir/build: uninstall
 .PHONY : Dependencies/glfw/CMakeFiles/uninstall.dir/build
 
 Dependencies/glfw/CMakeFiles/uninstall.dir/clean:
-	cd /d D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\Dependencies\glfw && $(CMAKE_COMMAND) -P CMakeFiles\uninstall.dir\cmake_clean.cmake
+	cd /d D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug\Dependencies\glfw && $(CMAKE_COMMAND) -P CMakeFiles\uninstall.dir\cmake_clean.cmake
 .PHONY : Dependencies/glfw/CMakeFiles/uninstall.dir/clean
 
 Dependencies/glfw/CMakeFiles/uninstall.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\Dependencies\glfw D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\Dependencies\glfw D:\Documents\CML\Spring2020\2020.02.17\Spring-2020-CS\cmake-build-debug\Dependencies\glfw\CMakeFiles\uninstall.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Documents\CML\Summer2020\Spring-2020-CS D:\Documents\CML\Summer2020\Spring-2020-CS\Dependencies\glfw D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug\Dependencies\glfw D:\Documents\CML\Summer2020\Spring-2020-CS\cmake-build-debug\Dependencies\glfw\CMakeFiles\uninstall.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : Dependencies/glfw/CMakeFiles/uninstall.dir/depend
 
