@@ -591,7 +591,6 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 //        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
 
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
-        printf("%f\n", angle);
         float piezo = 270-angle;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;

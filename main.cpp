@@ -69,6 +69,21 @@ int main() {
 
     /* test remote codes */
     soc.getComputerIP();
+    soc.setRPIP((char*)"192.168.1.42");
+    soc.setRPName((char*)"pi");
+    soc.setRPPassword((char*)"raspberry");
+    printf("The basic information we need for remote control are:\n"
+           "Computer IP: %s\n"
+           "Red Pitaya IP: %s\n"
+           "Red Pitaya user: %s\n"
+           "Red Pitaya Password: %s\n"
+           "#############\n#############\n\n\n",
+           soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
+    soc.linkStart();
+    soc.changeFolder((char*)"IOT_Project/iot");
+    sleep(1);
+    soc.listAllFiles();
+    soc.linkTerminated();
 
     // Window title
     std::string windowTitle = "Density Map";
