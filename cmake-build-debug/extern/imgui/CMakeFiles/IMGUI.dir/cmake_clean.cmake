@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/IMGUI.dir/imgui.cpp.obj"
-  "CMakeFiles/IMGUI.dir/imgui_demo.cpp.obj"
-  "CMakeFiles/IMGUI.dir/imgui_draw.cpp.obj"
-  "CMakeFiles/IMGUI.dir/imgui_impl_glfw.cpp.obj"
-  "CMakeFiles/IMGUI.dir/imgui_impl_opengl3.cpp.obj"
-  "CMakeFiles/IMGUI.dir/imgui_widgets.cpp.obj"
+  "CMakeFiles/IMGUI.dir/imgui.cpp.o"
+  "CMakeFiles/IMGUI.dir/imgui_demo.cpp.o"
+  "CMakeFiles/IMGUI.dir/imgui_draw.cpp.o"
+  "CMakeFiles/IMGUI.dir/imgui_impl_glfw.cpp.o"
+  "CMakeFiles/IMGUI.dir/imgui_impl_opengl3.cpp.o"
+  "CMakeFiles/IMGUI.dir/imgui_widgets.cpp.o"
   "libIMGUI.a"
   "libIMGUI.pdb"
 )

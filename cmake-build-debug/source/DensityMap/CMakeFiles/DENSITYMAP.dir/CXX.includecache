@@ -750,11 +750,11 @@ detail/type_vec4.hpp
 detail/func_vector_relational.hpp
 ../extern/glm/glm/detail/func_vector_relational.hpp
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/camera.cpp
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/camera.cpp
 camera.h
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/camera.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/camera.h
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/camera.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/camera.h
 glm/glm.hpp
 -
 glm/gtc/matrix_transform.hpp
@@ -762,11 +762,11 @@ glm/gtc/matrix_transform.hpp
 iostream
 -
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/densityMap.cpp
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/densityMap.cpp
 densityMap.h
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/densityMap.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/densityMap.h
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/densityMap.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/densityMap.h
 glad/glad.h
 -
 glm/glm.hpp
@@ -774,7 +774,7 @@ glm/glm.hpp
 glm/gtc/matrix_transform.hpp
 -
 shader.h
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/shader.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/shader.h
 vector
 -
 queue
@@ -782,11 +782,11 @@ queue
 mutex
 -
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/shader.cpp
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/shader.cpp
 shader.h
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/shader.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/shader.h
 
-D:/Documents/CML/Summer2020/Spring-2020-CS/source/DensityMap/shader.h
+/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/shader.h
 glad/glad.h
 -
 glm/glm.hpp

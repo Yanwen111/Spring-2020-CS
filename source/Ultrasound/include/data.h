@@ -34,6 +34,7 @@
 
 
 struct scan_data_struct{
+    unsigned char version;
     unsigned long time_stamp;
     unsigned short encoder;
     unsigned short lx16;
@@ -75,8 +76,10 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
 void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
 void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
+void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
 std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
 std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
 
 /* real-time based on TCP */
 void realDemo2(DensityMap& grid, bool& dataUpdate);

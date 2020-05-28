@@ -5,133 +5,149 @@
 		<Option title="ULTRASOUND"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ULTRASOUND">
-				<Option output="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
+				<Option output="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glad/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glm"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ULTRASOUND/fast">
-				<Option output="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
+				<Option output="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glad/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glm"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
-					<Add directory="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="D:/Software/CLion/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND/fast"/>
-					<CompileFile command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/Software/CLion/mingw64/bin/mingw32-make.exe -f &quot;D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/data.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/data.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/gui.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/gui.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/helper.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/helper.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/marker.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/marker.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/probe.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/probe.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/rotation.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/remote.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/scale.cpp">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/rotation.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/scale.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/DensityMap/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\source\DensityMap\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\source\Ultrasound\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\glfw\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/cmake_uninstall.cmake.in">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/cmake_uninstall.cmake.in">
 			<Option virtualFolder="CMake Files\extern\glfw\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw3.pc.in">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src/glfw3.pc.in">
 			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw3Config.cmake.in">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src/glfw3Config.cmake.in">
 			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/src/glfw_config.h.in">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src/glfw_config.h.in">
 			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
 		</Unit>
-		<Unit filename="D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/imgui/CMakeLists.txt">
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config-debug.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

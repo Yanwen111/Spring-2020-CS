@@ -166,8 +166,8 @@ DensityMap::DensityMap(long long int dim) {
 		"	FragColor = vec4(1.0);	\n"
 		"}							\n";
 
-	//cellShader = Shader(vCells.c_str(), fCells.c_str(), gCells.c_str(), false);
-    cellShader = Shader(neo_vCells.c_str(), fCells.c_str(), false);
+	cellShader = Shader(vCells.c_str(), fCells.c_str(), gCells.c_str(), false);
+    //cellShader = Shader(neo_vCells.c_str(), fCells.c_str(), false);
 	lineShader = Shader(vLines.c_str(), fLines.c_str(), false);
 
 	unsigned char* tempCells = new unsigned char[dim * dim * dim];

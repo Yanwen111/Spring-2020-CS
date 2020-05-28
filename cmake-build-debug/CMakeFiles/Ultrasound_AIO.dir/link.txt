@@ -1,3 +1,1 @@
-"D:\Software\CLion\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\Ultrasound_AIO.dir/objects.a
-D:\Software\CLion\mingw64\bin\ar.exe cr CMakeFiles\Ultrasound_AIO.dir/objects.a @CMakeFiles\Ultrasound_AIO.dir\objects1.rsp
-D:\Software\CLion\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\Ultrasound_AIO.dir/objects.a -Wl,--no-whole-archive  -o Ultrasound_AIO.exe -Wl,--out-implib,libUltrasound_AIO.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Ultrasound_AIO.dir\linklibs.rsp
+/usr/bin/c++  -g   CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.o CMakeFiles/Ultrasound_AIO.dir/main.cpp.o  -o Ultrasound_AIO  extern/glfw/src/libglfw3.a source/Ultrasound/libULTRASOUND.a source/DensityMap/libDENSITYMAP.a extern/imgui/libIMGUI.a /usr/lib/x86_64-linux-gnu/libssh.so.4.8.5 extern/glfw/src/libglfw3.a /usr/lib/x86_64-linux-gnu/librt.so -lm -ldl /usr/lib/x86_64-linux-gnu/libX11.so -lpthread 

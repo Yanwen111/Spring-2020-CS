@@ -1,2 +1,2 @@
-D:\Software\CLion\mingw64\bin\ar.exe qc libDENSITYMAP.a  CMakeFiles/DENSITYMAP.dir/camera.cpp.obj CMakeFiles/DENSITYMAP.dir/densityMap.cpp.obj CMakeFiles/DENSITYMAP.dir/shader.cpp.obj
-D:\Software\CLion\mingw64\bin\ranlib.exe libDENSITYMAP.a
+/usr/bin/ar qc libDENSITYMAP.a  CMakeFiles/DENSITYMAP.dir/camera.cpp.o CMakeFiles/DENSITYMAP.dir/densityMap.cpp.o CMakeFiles/DENSITYMAP.dir/shader.cpp.o
+/usr/bin/ranlib libDENSITYMAP.a

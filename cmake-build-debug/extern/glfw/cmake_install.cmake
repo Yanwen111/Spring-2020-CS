@@ -1,8 +1,8 @@
-# Install script for directory: D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw
+# Install script for directory: /home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Ultrasound_AIO")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -27,19 +27,24 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
+# Install shared libraries without execute permission?
+if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
+endif()
+
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glfw/include/GLFW" FILES_MATCHING REGEX "/glfw3\\.h$" REGEX "/glfw3native\\.h$")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/include/GLFW" FILES_MATCHING REGEX "/glfw3\\.h$" REGEX "/glfw3native\\.h$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES
-    "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3Config.cmake"
-    "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3ConfigVersion.cmake"
+    "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3Config.cmake"
+    "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3ConfigVersion.cmake"
     )
 endif()
 
@@ -47,7 +52,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets.cmake"
-         "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
+         "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -56,19 +61,19 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-debug.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-debug.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw3.pc")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/cmake_install.cmake")
+  include("/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/cmake_install.cmake")
 
 endif()
 

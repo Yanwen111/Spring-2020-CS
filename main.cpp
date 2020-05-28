@@ -15,6 +15,7 @@
 #include "data.h"
 #include "probe.h"
 #include "gui.h"
+#include "remote.h"
 
 #define PI 3.141592653589
 
@@ -52,6 +53,7 @@ double xposMarker, yposMarker;
 Camera cam;
 Probe probe;
 GUI* myGUIpointer;
+Socket soc((char*)"Linux");
 
 int depth = 2500;
 
@@ -64,6 +66,9 @@ const bool ROTATE_GRID = true;
 std::thread dataThread;
 
 int main() {
+
+    /* test remote codes */
+    soc.getComputerIP();
 
     // Window title
     std::string windowTitle = "Density Map";
@@ -206,7 +211,8 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
                 float updateCoefficient = myGUI.getUpdateCoefficient();
 
                 grid.setUpdateCoefficient(updateCoefficient);
-                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                //dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                dataThread = std::thread(readDataTest, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
                 dataThread.detach();
             }
             if (newProbe == 1) {

@@ -1,22 +1,22 @@
 
-if (NOT EXISTS "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt\"")
+if (NOT EXISTS "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt\"")
 endif()
 
-file(READ "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt" files)
+file(READ "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})
   message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
   if (EXISTS "$ENV{DESTDIR}${file}")
-    exec_program("D:/Software/CLion/CLion 2019.3.1/bin/cmake/win/bin/cmake.exe" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    exec_program("/snap/clion/112/bin/cmake/linux/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)
       MESSAGE(FATAL_ERROR "Problem when removing \"$ENV{DESTDIR}${file}\"")
     endif()
   elseif (IS_SYMLINK "$ENV{DESTDIR}${file}")
-    EXEC_PROGRAM("D:/Software/CLion/CLion 2019.3.1/bin/cmake/win/bin/cmake.exe" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    EXEC_PROGRAM("/snap/clion/112/bin/cmake/linux/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)

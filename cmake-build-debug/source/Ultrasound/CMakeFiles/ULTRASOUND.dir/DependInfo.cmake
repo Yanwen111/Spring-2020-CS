@@ -4,13 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/data.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/gui.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/helper.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/marker.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/marker.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/probe.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/rotation.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.obj"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/source/Ultrasound/source/scale.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/scale.cpp.obj"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/data.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/gui.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/helper.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/marker.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/marker.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/probe.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/remote.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/rotation.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/scale.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/scale.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -31,8 +32,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/CMakeFiles/DENSITYMAP.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/DensityMap/CMakeFiles/DENSITYMAP.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

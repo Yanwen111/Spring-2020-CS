@@ -5,7 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/extern/glad/src/glad.c" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.obj"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/src/glad.c" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound_AIO.dir/extern/glad/src/glad.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -19,7 +19,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../extern/glfw/include"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/main.cpp" "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound_AIO.dir/main.cpp.obj"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/main.cpp" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/CMakeFiles/Ultrasound_AIO.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -35,10 +35,10 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/DependInfo.cmake"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/source/DensityMap/CMakeFiles/DENSITYMAP.dir/DependInfo.cmake"
-  "D:/Documents/CML/Spring2020/2020.02.17/Spring-2020-CS/cmake-build-debug/extern/imgui/CMakeFiles/IMGUI.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/DensityMap/CMakeFiles/DENSITYMAP.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/imgui/CMakeFiles/IMGUI.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

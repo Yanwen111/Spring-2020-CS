@@ -326,7 +326,7 @@ std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file
 {
     std::vector<scan_data_struct> scan_data;
     std::vector<line_data_struct> line_data;
-    unsigned char crc_input_V06[4+1+2+16+2*2500]; /* 0 stands for no IMU data */
+    unsigned char crc_input_V06[4+1+2+16+2*2500]; /* 16 stands for IMU data */
 
     for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
         marker_index = _marker_locations.at(i);
@@ -445,6 +445,185 @@ std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file
     return line_data;
 }
 
+void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+{
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<line_data_struct> line_data;
+
+    file_bytes = readFile(fileName);
+    /* find all marker locations */
+    marker_locations = find_marker(file_bytes);
+    /* convert file bytes to data struct */
+    line_data = file_to_pixel_V08(file_bytes, marker_locations);
+    printf("find the screen_data\n");
+
+    for  (auto l: line_data)
+    {
+        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+        for (int i = 0; i < l.vals.size(); ++i)
+        {
+            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+        }
+        grid.writeLine(ps, pe, l.vals);
+    }
+
+    dataUpdate = true;
+}
+
+std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations)
+{
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+    unsigned char version_number_char;
+    //unsigned char version_number;
+    unsigned char crc_input_V08[1+4+1+2+2+16+2*2500]; /* 16 stands for IMU data */
+
+    for (int i = 0; i < (int)_marker_locations.size()-1; ++i){
+        marker_index = _marker_locations.at(i);
+        marker_index_next = _marker_locations.at(i+1);
+        /* version number */
+        version_number_char = _file_bytes.at(marker_index + sizeof(marker));
+        /* time stamp */
+        for (int j = 0; j < (int)sizeof(time_stamp_char); ++j){
+            time_stamp_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + j);
+        }
+        std::memcpy(&time_stamp, time_stamp_char, sizeof(time_stamp));
+        time_stamp = changed_endian_4Bytes(time_stamp);
+        /* probe type char */
+        probe_type_char = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char));
+        /* encoder (sweeping angle) */
+        for (int j = 0; j < (int) sizeof(encoder_char); ++j){
+            encoder_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char) + sizeof(probe_type_char) + j);
+        }
+        std::memcpy(&encoder, encoder_char, sizeof(encoder));
+        encoder = changed_endian_2Bytes(encoder);
+
+        /* lx16 (rotation angle) */
+        for (int j = 0; j < (int) sizeof(lx16_char); ++j){
+            lx16_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char) + sizeof(probe_type_char) + sizeof(encoder_char) + j);
+        }
+        std::memcpy(&lx16, lx16_char, sizeof(lx16));
+        lx16 = changed_endian_2Bytes(lx16);
+
+        /* IMU (still just a place holder) */
+        for (int j = 0; j < (int) sizeof(quaternion_char); ++j){
+            quaternion_char[j] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char) + sizeof(probe_type_char) +
+                                                sizeof(encoder_char) + sizeof(lx16_char)+ j);
+        }
+//        for (int j = 0; j < 16; j += 4)
+//        {
+//            unsigned char temp1[4];
+//            for (int k = 0; k < 4; ++k) temp1[k] = quaternion_char[j+3-k];
+//            quaternion[j/4] = *(float*)temp1;
+//        }
+        quaternion[0] = 1;
+        quaternion[1] = 0;
+        quaternion[2] = 0;
+        quaternion[3] = 0;
+        /* adc */
+        /* determine the length of buffer */
+        buffer_length = (int)(_marker_locations.at(i+1) - _marker_locations.at(i) - sizeof(marker) - sizeof(version_number_char) - sizeof(time_stamp_char) -
+                              sizeof(probe_type_char) - sizeof(encoder_char) - sizeof(lx16_char) - sizeof(quaternion_char) - sizeof(crc_char))/2;
+        for (int j = 0; j < buffer_length; ++j){
+            for (int k = 0; k < (int)sizeof(adc_temp); ++k){
+                adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char)
+                        + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + sizeof(quaternion_char) + j * 2 + k);
+                adc_char[2*j+k] = adc_temp[k];
+            }
+            std::memcpy(&adc, adc_temp, sizeof(adc));
+            adc = changed_endian_2Bytes(adc);
+            buffer[j] = adc;
+        }
+        /* checksum */
+        for (int j = 0; j < (int)sizeof(crc_char); ++j){
+            crc_char[j] = _file_bytes.at(marker_index_next-(int)sizeof(crc_char)+j);
+        }
+        /* calculate crc locally */
+        memcpy(crc_input_V08, &version_number_char, sizeof(version_number_char));
+        memcpy(crc_input_V08+sizeof(version_number_char), time_stamp_char, sizeof(time_stamp_char));
+        memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char), &probe_type_char, sizeof(probe_type_char));
+        memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
+        memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), lx16_char, sizeof(lx16_char));
+        memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)
+        +sizeof(lx16_char), quaternion_char, sizeof(quaternion_char));
+        memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)
+        +sizeof(lx16_char)+sizeof(quaternion_char), adc_char, sizeof(adc_char));
+        crc_result = crc32c(0, crc_input_V08, sizeof(crc_input_V08));
+        crc_result = changed_endian_4Bytes(crc_result);
+        memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
+
+        /* if two crc matches */
+        if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
+        //if(1){  // uncommented this for store all the data
+            scan_data_struct temp_struct;
+            temp_struct.version = version_number_char;
+            temp_struct.time_stamp = time_stamp;
+            for (int j = 0; j < 4; ++j) temp_struct.quaternion[j] = quaternion[j];
+            temp_struct.encoder = encoder;
+            temp_struct.lx16 = lx16;
+            /* normalize on the go */
+            for (int j = 0; j < buffer_length; ++j) {
+                temp_struct.buffer[j] = buffer[j];
+                //printf("Intensity:%f\n", temp_struct.buffer[j]);
+            }
+            scan_data.push_back(temp_struct);
+        }
+    }
+
+    //write probe data to test
+    //printf("start write imu...\n");
+    std::ofstream fileout("data/real_imu.txt", std::ios::trunc|std::ios::out);
+    for (auto s: scan_data){
+        fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
+    }
+    fileout.close();
+    //printf("Real IMU file generate!\n");
+
+    //printf("the version of this data is %d \n", scan_data[0].version);
+
+    for (int i = 0; i < (int)scan_data.size(); ++i)
+    {
+//        double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+//        double ax = 9*Cos(angle - 222 );
+//        double ay = 9*Sin(angle - 222 );
+//        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
+
+        double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+        printf("%f\n", angle);
+        float piezo = 270-angle;
+        /* angle of the lx16 */
+        float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
+        /* find min and max */
+        for (int j = 0; j < buffer_length; ++j){
+            adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
+            adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
+        }
+
+        int piezoProbe = 101; /*assume v = 1000 m/s */
+
+        line_data_struct dataline;
+        dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
+        /* normalize on the go */
+        for (int j = 0; j < buffer_length; ++j){
+            intensity = ((double)scan_data.at(i).buffer[j] - adc_min)/(adc_max-adc_min);
+            dataline.vals.push_back(static_cast<unsigned char>(intensity*255));
+        }
+        dataline.p2 = {(buffer_length+piezoProbe)*Cos(piezo), (buffer_length+piezoProbe)*Sin(piezo), 0};
+//        glm::mat4 rot = Rotation::convertRotationMatrix(scan_data.at(i).quaternion[0], scan_data.at(i).quaternion[1],
+//                                                        scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3]);
+        glm::mat4 rot = glm::mat4(1.0f);
+        rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
+        dataline.p1 = rot * glm::vec4(dataline.p1,1);
+        dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        line_data.push_back(dataline);
+        adc_max = 0; adc_min = 0;
+    }
+    return line_data;
+}
+
+
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
     char fileName[] = "../ALLDATA/0316_RedPitaya_WhiteFin/beansouplarge_startionary_3d_1.txt";
@@ -490,6 +669,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     }
     dataUpdate = true;
 }
+
 //
 //void realDemo2(DensityMap& grid, bool& dataUpdate)
 //{
