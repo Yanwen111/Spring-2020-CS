@@ -80,10 +80,13 @@ int main() {
            "#############\n#############\n\n\n",
            soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
     soc.linkStart();
-    soc.changeFolder((char*)"IOT_Project/iot");
-    sleep(1);
+    //soc.interactiveShell();
+    soc.listAllFiles();
+    soc.changeFolder((char*)"IOT_project");
     soc.listAllFiles();
     soc.linkTerminated();
+
+    return 0; /* Only test the libssh part */
 
     // Window title
     std::string windowTitle = "Density Map";

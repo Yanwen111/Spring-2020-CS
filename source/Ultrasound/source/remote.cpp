@@ -45,57 +45,113 @@ void Socket::saveConfig() {}
 
 void Socket::loadConfig(int number) {}
 
-void Socket::linkStart() {
+int Socket::linkStart() {
     int rc;
     // connect session to host
     rc = connect_session(red_pitaya_session, RP_IP, RP_name, RP_password);
     fprintf(stdout, "SSH Session Return %d\n", rc);
+    // create shell channel
+    shell_channel = ssh_channel_new(red_pitaya_session);
+    // use session to connect channel
+    rc = connect_channel(shell_channel, red_pitaya_session);
+    fprintf(stdout, "Channel Return %d\n", rc);
+
+    rc = ssh_channel_request_pty(shell_channel);
+    if (rc != SSH_OK) return rc;
+    rc = ssh_channel_change_pty_size(shell_channel, 80, 24);
+    if (rc != SSH_OK) return rc;
+    rc = ssh_channel_request_shell(shell_channel);
+    if (rc != SSH_OK) return rc;
+    return 0;
+}
+
+int Socket::interactiveShell() {
+    int rc;
+    char buffer[256];
+    int nbytes, nwritten;
+
+    while (ssh_channel_is_open(shell_channel) && !ssh_channel_is_eof(shell_channel))
+    {
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+        if (nbytes < 0) return SSH_ERROR;
+        if (nbytes > 0)
+        {
+            nwritten = write(1, buffer, nbytes);
+            if (nwritten != nbytes) return SSH_ERROR;
+        }
+        if (!kbhit())
+        {
+            usleep(50000L); // 0.05 second
+            continue;
+        }
+
+        nbytes = read(0, buffer, sizeof(buffer));
+        if (nbytes < 0) return SSH_ERROR;
+        if (nbytes > 0)
+        {
+            nwritten = ssh_channel_write(shell_channel, buffer, nbytes);
+            if (nwritten != nbytes) return SSH_ERROR;
+        }
+    }
+    return rc;
 }
 
 void Socket::changeFolder(char* folder_name) {
     int rc;
     char command[100] = "cd ";
     char buffer[1024];
-    unsigned int nbytes;
-
-    // create shell channel
-    shell_channel = ssh_channel_new(red_pitaya_session);
-    // use session to connect channel
-    rc = connect_channel(shell_channel, red_pitaya_session);
-    fprintf(stdout, "Channel Return %d\n", rc);
+    unsigned int nbytes, nwritten;
 
     strcat(command, folder_name);
+    strcat(command, "\n");
     printf("Executing remote command...\n");
-    rc = ssh_channel_request_exec(shell_channel, command);
+    //rc = ssh_channel_request_exec(shell_channel, command);
 
-    printf("Received:\n");
-    nbytes = ssh_channel_read(shell_channel, buffer, sizeof(buffer), 0);
-    while (nbytes > 0) {
+    nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    while (nbytes>0)
+    {
         fwrite(buffer, 1, nbytes, stdout);
-        nbytes = ssh_channel_read(shell_channel, buffer, sizeof(buffer), 0);
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
     }
-    printf("Has changed to folder %s\n", folder_name);
+
+    usleep(50000L);
+    nwritten = ssh_channel_write(shell_channel, command, sizeof(command));
+    usleep(50000L);
+    nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    usleep(50000L);
+    while (nbytes > 0)
+    {
+        fwrite(buffer, 1, nbytes, stdout);
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+        usleep(5000L);
+    }
+
+    printf("\nHas changed to folder %s\n", folder_name);
 }
 
 void Socket::listAllFiles() {
     int rc;
     char buffer[1024];
-    unsigned int nbytes;
+    unsigned int nbytes, nwritten;
+    char command[9] = "ls -alh\n";
 
-    // create shell channel
-    shell_channel = ssh_channel_new(red_pitaya_session);
-    // use session to connect channel
-    rc = connect_channel(shell_channel, red_pitaya_session);
-    fprintf(stdout, "Channel Return %d\n", rc);
-
-    printf("Executing remote command...\n");
-    rc = ssh_channel_request_exec(shell_channel, "ls -alh");
-
-    printf("Received:\n");
-    nbytes = ssh_channel_read(shell_channel, buffer, sizeof(buffer), 0);
-    while (nbytes > 0) {
+    nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    while (nbytes>0)
+    {
         fwrite(buffer, 1, nbytes, stdout);
-        nbytes = ssh_channel_read(shell_channel, buffer, sizeof(buffer), 0);
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    }
+
+    usleep(50000L);
+    nwritten = ssh_channel_write(shell_channel, command, sizeof(command));
+    usleep(50000L);
+    nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    usleep(50000L);
+    while (nbytes > 0)
+    {
+        fwrite(buffer, 1, nbytes, stdout);
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+        usleep(5000L);
     }
 }
 
@@ -183,4 +239,14 @@ int Socket::connect_channel (ssh_channel channel, ssh_session session) {
         exit(-1);
     }
     return rc;
+}
+
+int Socket::kbhit() {
+    struct timeval tv = { 0L, 0L };
+    fd_set fds;
+
+    FD_ZERO(&fds);
+    FD_SET(0, &fds);
+
+    return select(1, &fds, NULL, NULL, &tv);
 }

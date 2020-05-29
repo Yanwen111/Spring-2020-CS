@@ -28,9 +28,10 @@ public:
     void saveConfig();
     void loadConfig(int number);
 
-    void linkStart();
+    int linkStart();
     void changeFolder(char* folder_name); /* IOT_Project */
     void listAllFiles();
+    int interactiveShell();
     void linkTerminated();
 
 private:
@@ -38,6 +39,7 @@ private:
     void print_result(FILE *fp);
     int connect_session(ssh_session session, char *hostname, char *username, char *password);
     int connect_channel (ssh_channel channel, ssh_session session);
+    int kbhit();/* Under Linux, it determines whether a key has been pressed. Under Windows, it is a standard function */
 
 };
 
