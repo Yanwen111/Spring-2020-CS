@@ -41,9 +41,41 @@ void Socket::setRPPassword(char* password) {
     strcpy(RP_password, password);
 }
 
-void Socket::saveConfig() {}
+void Socket::saveConfig() {
+    std::string config_name = "config_file/ssh_config_" + std::to_string(number) + ".txt";
+    std::ofstream fileout(config_name, std::ios::trunc|std::ios::out);
+//    for (auto s: scan_data){
+//        fileout << s.quaternion[0] << ' ' << s.quaternion[1] << ' ' << s.quaternion[2] << ' ' << s.quaternion[3] << std::endl;
+//    }
+    fileout << "IP address: " << RP_IP << std::endl;
+    fileout << "User name: " << RP_name << std::endl;
+    fileout << "Password: " << RP_password << std::endl;
+    fileout.close();
+    printf("Config file No.%d has been saved!\n", number);
+    number ++;
+}
 
-void Socket::loadConfig(int number) {}
+void Socket::loadConfig(int number) {
+    std::string stemp;
+    std::string config_name = "config_file/ssh_config_" + std::to_string(number) + ".txt";
+
+    std::ifstream filein(config_name);
+
+    filein.getline(RP_IP, 100);
+    stemp = RP_IP;
+    strcpy(RP_IP, stemp.substr(12).c_str());
+
+    filein.getline(RP_name, 100);
+    stemp = RP_name;
+    strcpy(RP_name, stemp.substr(11).c_str());
+
+    filein.getline(RP_password, 100);
+    stemp = RP_password;
+    strcpy(RP_password, stemp.substr(10).c_str());
+
+    filein.close();
+    printf("Config file No.%d has been loaded!\n", number);
+}
 
 int Socket::linkStart() {
     int rc;

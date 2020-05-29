@@ -69,9 +69,10 @@ int main() {
 
     /* test remote codes */
     soc.getComputerIP();
-    soc.setRPIP((char*)"192.168.1.42");
-    soc.setRPName((char*)"pi");
-    soc.setRPPassword((char*)"raspberry");
+//    soc.setRPIP((char*)"192.168.1.42");
+//    soc.setRPName((char*)"pi");
+//    soc.setRPPassword((char*)"raspberry");
+    soc.loadConfig(0);
     printf("The basic information we need for remote control are:\n"
            "Computer IP: %s\n"
            "Red Pitaya IP: %s\n"
@@ -79,12 +80,13 @@ int main() {
            "Red Pitaya Password: %s\n"
            "#############\n#############\n\n\n",
            soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
-    soc.linkStart();
-    //soc.interactiveShell();
-    soc.listAllFiles();
-    soc.changeFolder((char*)"IOT_project");
-    soc.listAllFiles();
-    soc.linkTerminated();
+//    soc.saveConfig();
+//    soc.linkStart();
+//    //soc.interactiveShell();
+//    soc.listAllFiles();
+//    soc.changeFolder((char*)"IOT_project");
+//    soc.listAllFiles();
+//    soc.linkTerminated();
 
     return 0; /* Only test the libssh part */
 
