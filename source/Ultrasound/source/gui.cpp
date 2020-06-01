@@ -416,9 +416,9 @@ int GUI::getDepth(){
 
 std::string GUI::getFile(){
     std::string s(fileName);
-    //return ("data/" + s + ".txt");
+    return ("data/" + s + ".txt");
     //return "data/cl_1.txt";
-    return "data/S821.dat";
+   // return "data/S821.dat";
 }
 
 void GUI::doneLoading(){

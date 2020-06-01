@@ -81,12 +81,13 @@ int main() {
            "#############\n#############\n\n\n",
            soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
 //    soc.saveConfig();
-//    soc.linkStart();
-//    //soc.interactiveShell();
+    soc.linkStart();
+//    soc.interactiveShell();
 //    soc.listAllFiles();
+    soc.multiCommands();
 //    soc.changeFolder((char*)"IOT_project");
 //    soc.listAllFiles();
-//    soc.linkTerminated();
+    soc.linkTerminated();
 
     return 0; /* Only test the libssh part */
 
@@ -231,8 +232,8 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
                 float updateCoefficient = myGUI.getUpdateCoefficient();
 
                 grid.setUpdateCoefficient(updateCoefficient);
-                //dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                dataThread = std::thread(readDataTest, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+                //dataThread = std::thread(readDataTest, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
                 dataThread.detach();
             }
             if (newProbe == 1) {

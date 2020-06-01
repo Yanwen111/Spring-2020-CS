@@ -32,6 +32,8 @@ public:
     int linkStart();
     void changeFolder(char* folder_name); /* IOT_Project */
     void listAllFiles();
+    void customCommand(char* command);
+    void multiCommands();
     int interactiveShell();
     void linkTerminated();
 

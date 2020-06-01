@@ -187,6 +187,53 @@ void Socket::listAllFiles() {
     }
 }
 
+void Socket::customCommand(char* command) {
+    int rc;
+    char buffer[1024];
+    unsigned int nbytes, nwritten;
+    char command1[500] = "";
+
+    strcat(command1, command);
+    strcat(command1, "\n");
+    //printf("%s\n", command1);
+
+    nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    while (nbytes>0)
+    {
+        //fwrite(buffer, 1, nbytes, stdout);
+        nbytes = ssh_channel_read_nonblocking(shell_channel, buffer, sizeof(buffer), 0);
+    }
+
+    usleep(50000L); /* 50 ms*/
+    nwritten = ssh_channel_write(shell_channel, command1, sizeof(command1));
+    usleep(50000L);
+    nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 5);
+    usleep(50000L);
+    while (nbytes > 0)
+    {
+        fwrite(buffer, 1, nbytes, stdout);
+        nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 5);
+        usleep(5000L);
+    }
+    sleep(1);
+
+    printf("\n^v^v^v^v^v^\n");
+}
+
+void Socket::multiCommands() {
+//    customCommand("cd sonoring_staros/");
+//    usleep(50000L);
+//    //customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg");
+//    customCommand("make clean && make all && ./adc");
+    customCommand("cd IOT_project/sshtest");
+    customCommand("ls");
+    customCommand("make clean");
+    customCommand("ls");
+    customCommand("make all");
+    customCommand("./test");
+    //customCommand("./test");
+}
+
 void Socket::linkTerminated() {
     // close and free channel
     ssh_channel_close(shell_channel);
