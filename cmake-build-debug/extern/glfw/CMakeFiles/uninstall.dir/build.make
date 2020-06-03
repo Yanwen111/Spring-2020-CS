@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/112/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/114/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/112/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/114/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-d
 include extern/glfw/CMakeFiles/uninstall.dir/progress.make
 
 extern/glfw/CMakeFiles/uninstall:
-	cd "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw" && /snap/clion/112/bin/cmake/linux/bin/cmake -P /home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/cmake_uninstall.cmake
+	cd "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw" && /snap/clion/114/bin/cmake/linux/bin/cmake -P /home/yanwen/CML_CS/Summer\ 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/cmake_uninstall.cmake
 
 uninstall: extern/glfw/CMakeFiles/uninstall
 uninstall: extern/glfw/CMakeFiles/uninstall.dir/build.make
