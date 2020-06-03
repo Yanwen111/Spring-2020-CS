@@ -138,7 +138,7 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
     dataUpdate = true;
 }
 
-void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+void readDataWhitefin(DensityMap& grid, const char * fileName, float Gain, int len, bool& dataUpdate)
 {
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;

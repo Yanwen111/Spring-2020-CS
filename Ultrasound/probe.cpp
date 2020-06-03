@@ -97,7 +97,7 @@ void Probe::loadNewProbe(std::string filename){
     delete [] probevertices;
     delete [] probeNormals;
 
-    file = static_cast<std::basic_ifstream<char, std::char_traits<char>>>(NULL);
+//    file = static_cast<std::basic_ifstream<char, std::char_traits<char>>>(nullptr);
 }
 
 /**

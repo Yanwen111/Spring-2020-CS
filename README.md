@@ -5,7 +5,7 @@ To run the program, pull from the master branch and run the main.
 To test the live rendering code, switch to the Yanwen2 branch and pull the code there.
 
 ## Ultrasound Folder
-This folder contains the majority of the CS code worked on this Spring 2020 semester. The folder is divded into 2 sections, the data processing and the GUI
+This folder contains the majority of the CS code worked on this Spring 2020 semester. The folder is divided into 2 sections, the data processing and the GUI
 
 ### Data processing
 All the data processing methods can be found in the data class, with methods to load and read data files based on the probe used to collect the data.

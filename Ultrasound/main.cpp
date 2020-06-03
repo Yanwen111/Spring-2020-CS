@@ -34,7 +34,7 @@ void fanDemo(DensityMap& grid);
 // Used for multi-threads
 void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle);
 
-bool dataUpdate = false;
+//bool dataUpdate = false;
 
 // Used in the mouse movement callbacks
 double lastMouseX;
@@ -53,7 +53,7 @@ Camera cam;
 Probe probe;
 GUI* myGUIpointer;
 
-int depth = 2500;
+//int depth = 2500;
 
 glm::mat4 projection;
 glm::mat4 view;
@@ -62,6 +62,95 @@ glm::mat4 model;
 const bool ROTATE_GRID = true;
 
 std::thread dataThread;
+
+//Load File function pointer
+bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& error){
+    try
+    {
+        char* c = new char[file.size() + 1];
+        strcpy(c, file.c_str());
+        std::cout<<"READDATA: "<<c<<std::endl;
+        dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate));
+        dataThread.detach();
+        std::cout<<"END READ DATA"<<std::endl;
+        return true;
+    }
+    catch(...)
+    {
+        error = "Failed to open file. ERROR";
+        return false;
+    }
+}
+
+bool connectToProbe(std::string probeIP, std::string username, std::string password, std::string compIP,
+        bool isSubmarine,
+        int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+        std::string customCommand,
+        int connectionType, std::string& output, bool& connected
+        ) {
+    if(connectionType == 0){
+        std::cout<<"======== Sending Live Scan =========="<<std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+
+        if(!isSubmarine){
+            std::cout<<"Lx-16: "<<std::endl;
+            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
+            std::cout<<"     Res: "<<lxRes<<std::endl;
+
+
+            std::cout<<"Servo: "<<std::endl;
+            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
+            std::cout<<"     Res: "<<servoRes<<std::endl;
+        }
+    }
+    if(connectionType == 1){
+        std::cout<<"======== Scan to File =========="<<std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+
+        if(!isSubmarine){
+            std::cout<<"Lx-16: "<<std::endl;
+            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
+            std::cout<<"     Res: "<<lxRes<<std::endl;
+
+
+            std::cout<<"Servo: "<<std::endl;
+            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
+            std::cout<<"     Res: "<<servoRes<<std::endl;
+        }
+    }
+    if(connectionType == 2) {
+        std::cout << "======== Sending Custom Command ==========" << std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+        std::cout<<"COMMAND: "<<customCommand<<std::endl;
+    }
+
+    output = "Successfully Sent Command!";
+    connected = true;
+    return true; //success!
+}
+
+//set camera zoom
+void setZoom(int zoomVal){
+    cam.fov = zoomVal;
+}
 
 int main() {
 
@@ -127,8 +216,10 @@ int main() {
     int dim = 101;
     DensityMap grid(dim);
 
+//    void (*foo)(int);
+//    foo = &my_int_func;
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbe);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
@@ -179,49 +270,49 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         }
 
         //Checks if the user clicked the load button on the GUI
-        if (myGUI.loadNew()) {
-            //Creates the probe to load
-            int newProbe = myGUI.getProbe();
-            //probe is submarine
-            if (newProbe == 0) {
-                probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
-            }
-            //probe is whiteFin
-            if (newProbe == 1) {
-                probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
-            }
-            currProbe = newProbe;
-
-            //stays false until the data processing thread is done processing the data
-            dataUpdate = false;
-            grid.clear();
-
-            //read new file
-            if (newProbe == 0) {
-                //gets the file name, time gain value, depth,
-                std::string file = myGUI.getFile();
-                char *c = const_cast<char *>(file.c_str());
-                float GAIN = myGUI.getGain(); /* 0 means no gain */
-                depth = myGUI.getDepth();
-                float updateCoefficient = myGUI.getUpdateCoefficient();
-
-                grid.setUpdateCoefficient(updateCoefficient);
-                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                dataThread.detach();
-            }
-            if (newProbe == 1) {
-                std::string file = myGUI.getFile();
-                char *c = &file[0];
-                float GAIN = myGUI.getGain(); /* 0 means no gain */
-                depth = myGUI.getDepth();
-                float updateCoefficient = myGUI.getUpdateCoefficient();
-                grid.setUpdateCoefficient(updateCoefficient);
-                dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                dataThread.detach();
-            }
-            //Figure out how to rotate probe?
-            //Add in error checking on GUI side later
-        }
+//        if (myGUI.loadNew()) {
+//            //Creates the probe to load
+//            int newProbe = myGUI.getProbe();
+//            //probe is submarine
+//            if (newProbe == 0) {
+//                probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
+//            }
+//            //probe is whiteFin
+//            if (newProbe == 1) {
+//                probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
+//            }
+//            currProbe = newProbe;
+//
+//            //stays false until the data processing thread is done processing the data
+//            dataUpdate = false;
+//            grid.clear();
+//
+//            //read new file
+//            if (newProbe == 0) {
+//                //gets the file name, time gain value, depth,
+//                std::string file = myGUI.getFile();
+//                char *c = const_cast<char *>(file.c_str());
+//                float GAIN = myGUI.getGain(); /* 0 means no gain */
+//                depth = myGUI.getDepth();
+//                float updateCoefficient = myGUI.getUpdateCoefficient();
+//
+//                grid.setUpdateCoefficient(updateCoefficient);
+//                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+//                dataThread.detach();
+//            }
+//            if (newProbe == 1) {
+//                std::string file = myGUI.getFile();
+//                char *c = &file[0];
+//                float GAIN = myGUI.getGain(); /* 0 means no gain */
+//                depth = myGUI.getDepth();
+//                float updateCoefficient = myGUI.getUpdateCoefficient();
+//                grid.setUpdateCoefficient(updateCoefficient);
+//                dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+//                dataThread.detach();
+//            }
+//            //Figure out how to rotate probe?
+//            //Add in error checking on GUI side later
+//        }
 
         if(currProbe != -1) {
             // Draw the probe
@@ -229,36 +320,36 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         }
 
         //Set up GUI paramters
-        myGUI.setNumLinesDrawn(getSamples());
-        myGUI.setNumSamples(depth);
-        myGUI.setVoxels(grid.getDim());
-        myGUI.setFileSize(0);
-        myGUI.setBrightness(grid.getBrightness());
-        myGUI.setThreshold(grid.getThreshold());
-        myGUI.setContrast(grid.getContrast());
+//        myGUI.setNumLinesDrawn(getSamples());
+//        myGUI.setNumSamples(depth);
+//        myGUI.setVoxels(grid.getDim());
+//        myGUI.setFileSize(0);
+//        myGUI.setBrightness(grid.getBrightness());
+//        myGUI.setThreshold(grid.getThreshold());
+//        myGUI.setContrast(grid.getContrast());
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
 
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, model);
-        myGUI.setTime(glfwGetTime());
-        myGUI.setQuaternion(probe.getQuaternions());
-        myGUI.setEulerAngles(probe.getEulerAngles());
-        if (myGUI.isReset) {
-            rotationX = 0;
-            rotationY = 0;
-        }
-        if(dataUpdate){
-            std::cout<<"Done Loading File"<<std::endl;
-            myGUI.doneLoading();
-            probe.openIMUFile("data/real_imu.txt");
-            dataUpdate = false;
-        }
-        cam.fov = myGUI.getZoom();
-        grid.setBrightness(myGUI.getBrightness());
-        grid.setThreshold(myGUI.getThreshold());
-        grid.setContrast(myGUI.getContrast());
+//        myGUI.setTime(glfwGetTime());
+//        myGUI.setQuaternion(probe.getQuaternions());
+//        myGUI.setEulerAngles(probe.getEulerAngles());
+//        if (myGUI.isReset) {
+//            rotationX = 0;
+//            rotationY = 0;
+//        }
+//        if(dataUpdate){
+//            std::cout<<"Done Loading File"<<std::endl;
+//            myGUI.doneLoading();
+//            probe.openIMUFile("data/real_imu.txt");
+//            dataUpdate = false;
+//        }
+//        cam.fov = myGUI.getZoom();
+//        grid.setBrightness(myGUI.getBrightness());
+//        grid.setThreshold(myGUI.getThreshold());
+//        grid.setContrast(myGUI.getContrast());
 
 
         // Used to make camera move speed consistent
