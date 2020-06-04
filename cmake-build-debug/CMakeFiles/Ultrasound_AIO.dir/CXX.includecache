@@ -1891,6 +1891,14 @@ stdlib.h
 -
 stdio.h
 -
+netinet/in.h
+-
+unistd.h
+-
+sys/socket.h
+-
+arpa/inet.h
+-
 densityMap.h
 ../source/Ultrasound/include/densityMap.h
 rotation.h

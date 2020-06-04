@@ -23,8 +23,12 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <stdio.h>
-#pragma comment(lib, "libws2_32.a")
-
+//#pragma comment(lib, "libws2_32.a")
+// for linux UDP
+#include <netinet/in.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "densityMap.h"
 #include "rotation.h"

@@ -909,95 +909,104 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 //    }
 //}
 //
-//void realDemo4(DensityMap& grid, bool& dataUpdate)
-//{
-//    //read the data from current red pitaya 2d data.
-//    std::vector<unsigned char> file_bytes;
-//    std::vector<int> marker_locations;
-//    std::vector<scan_data_struct> scan_data;
-//    std::vector<line_data_struct> line_data;
-//
-//    /* for real time trial */
-//    int sub_length = 1;
-//    int buffer_size = 1000;
-//    //bool newDataline = false;
-//    bool newDataline = true;
-//    //std::mutex readtex;
-//
-//    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
-//    char sendBuf[100] = "I received";
-////    SOCKET sockConn;
+void realDemo4(DensityMap& grid, bool& dataUpdate)
+{
+    //read the data from current red pitaya 2d data.
+    std::vector<unsigned char> file_bytes;
+    std::vector<int> marker_locations;
+    std::vector<scan_data_struct> scan_data;
+    std::vector<line_data_struct> line_data;
+
+    /* for real time trial */
+    int sub_length = 1;
+    int buffer_size = 1000;
+    //bool newDataline = false;
+    bool newDataline = true;
+    //std::mutex readtex;
+
+    char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
+    char sendBuf[100] = "I received";
+//    SOCKET sockConn;
 //    WSADATA wsaData;
-//    int port = 8888;
+    int port = 8888;
 //    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
 //    {
 //        printf("Initialize failed!\n");
 //        return;
 //    }
-//    SOCKET sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
-//    SOCKADDR_IN addrSrv;
-//    addrSrv.sin_family = AF_INET;
-//    addrSrv.sin_port = htons(port);
-//    addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
-//
-//    bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
-//
-//    SOCKADDR_IN addrClient;
-//    int length = sizeof(SOCKADDR);
-//
-//    int buffer_cnt = 0, loop_cnt = 0;
-//    std::vector<unsigned char> sub_file_bytes;
-//    while(1) {
-//        if (newDataline)
-//        {
-//            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
-//            memset(recvBuf, 0, sizeof(recvBuf));
-////            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
-//            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
-//            buffer_cnt++;
-//
-//            for (auto r: recvBuf)
-//            {
-//                sub_file_bytes.push_back(static_cast<unsigned char>(r));
-//            }
-//
-//            if (buffer_cnt == buffer_size)
-//            {
-//                /* convert file bytes to data struct */
-//                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
-//                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
-//                samples = scan_data.size()+1; /* The last line is abandoned due to some reasons*/
-//                printf("the number of scan_data samples is %d\n", samples);
-//                /* convert data to vertex on screen */
-//                data_to_pixel(scan_data, line_data);
-//                //printf("find the screen_data\n");
-//
-//                int ddim = grid.getDim();
-//                len = line_data[0].vals.size(); // 2500, equl to buffer size
-//                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
-//                //            std::cin >> len;
-//                //len = 1500; // change range
-//                setDepth(1500);
-//                int cnt = 0;
-//                for (auto l: line_data)
-//                {
-//                    glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
-//                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
-//                                    l.p2.z / len - l.p1.z / len + 0.5};
-//                    grid.writeLine(ps, pe, l.vals);
-//                }
-//                buffer_cnt = 0;
-//                sub_file_bytes.clear();
-//                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
-//                dataUpdate = true;
-//            }
-//            //newDataline = false;
-//            sendto(sockSrv, sendBuf, sizeof(sendBuf), 0, (SOCKADDR*)&addrClient, length);
-//        }
-//    }
-//    closesocket(sockSrv);
+    //SOCKET sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
+    int sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
+    //SOCKADDR_IN addrSrv;
+    sockaddr_in addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(port);
+    //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+    addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    //bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
+    bind(sockSrv, (sockaddr*)&addrSrv, sizeof(sockaddr));
+
+    //SOCKADDR_IN addrClient;
+    //int length = sizeof(SOCKADDR);
+    sockaddr_in addrClient;
+    int length = sizeof(sockaddr);
+
+    int buffer_cnt = 0, loop_cnt = 0;
+    std::vector<unsigned char> sub_file_bytes;
+    while(1) {
+        if (newDataline)
+        {
+            //if (buffer_cnt % 100 == 0) printf("time try no. %d\n", buffer_cnt);
+            memset(recvBuf, 0, sizeof(recvBuf));
+//            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
+            //recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
+            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr*)&addrClient, (socklen_t *)&length);
+            buffer_cnt++;
+
+            for (auto r: recvBuf)
+            {
+                sub_file_bytes.push_back(static_cast<unsigned char>(r));
+            }
+
+            if (buffer_cnt == buffer_size)
+            {
+                /* convert file bytes to data struct */
+                std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+                file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+                samples = scan_data.size()+1; /* The last line is abandoned due to some reasons*/
+                printf("the number of scan_data samples is %d\n", samples);
+                /* convert data to vertex on screen */
+                data_to_pixel(scan_data, line_data);
+                //printf("find the screen_data\n");
+
+                int ddim = grid.getDim();
+                len = line_data[0].vals.size(); // 2500, equl to buffer size
+                //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
+                //            std::cin >> len;
+                //len = 1500; // change range
+                setDepth(1500);
+                int cnt = 0;
+                for (auto l: line_data)
+                {
+                    glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+                    glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+                                    l.p2.z / len - l.p1.z / len + 0.5};
+                    grid.writeLine(ps, pe, l.vals);
+                }
+                buffer_cnt = 0;
+                sub_file_bytes.clear();
+                printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+                dataUpdate = true;
+            }
+            //newDataline = false;
+            //sendto(sockSrv, sendBuf, sizeof(sendBuf), 0, (SOCKADDR*)&addrClient, length);
+            sendto(sockSrv, sendBuf, sizeof(sendBuf), MSG_NOSIGNAL, (sockaddr*)&addrClient, length);
+        }
+    }
+    //closesocket(sockSrv);
+    close(sockSrv);
 //    WSACleanup();
-//}
+}
 //
 //void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 //{
