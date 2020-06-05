@@ -9,6 +9,7 @@
 class Marker {
 public:
     Marker();
+    Marker(glm::vec3 color);
     void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     float getDistance(float freq, float vel, int depth);
     void setPositionMarker1(glm::vec3 pos);
@@ -19,10 +20,16 @@ public:
 
     int checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
 
+    void setHidden(bool val);
+    bool getHidden();
+
 private:
     //locations of the two markers
     glm::vec3 marker1;
     glm::vec3 marker2;
+
+    //marker color
+    glm::vec3 color;
 
     //Rotation of the world
     glm::mat4 modelWorld;
@@ -43,5 +50,8 @@ private:
 
     //methods to move marker through mouse
     int intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+
+    //whether marker is drawn
+    bool isHidden;
 
 };

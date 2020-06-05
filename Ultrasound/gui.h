@@ -97,21 +97,28 @@ private:
     std::string screen2CompIP;
     bool screen2IsSub = false;
     bool screen2IsDefault = true;
-    std::string screen2LxMin;
-    std::string screen2LxMax;
-    std::string screen2LxRes;
-    std::string screen2ServoMin;
-    std::string screen2ServoMax;
-    std::string screen2ServoRes;
     std::string screen2CustomCommand;
+    float screen2LxMin = -180;
+    float screen2LxMax = 180;
+    int screen2LxRes = 200;
+    float screen2ServoMin = -30;
+    float screen2ServoMax = 30;
+    int screen2ServoRes = 200;
 
     bool screen2LiveScan = false;
     bool screen2ScanToFile = false;
     bool screen2SendCustom = false;
-    //0 = first, 1 = loading, 2 = success, 3 = error
+    //0 = first, 1 = loading, 2 = success,
+    // 3 = error connection,
+    // 4 = probeIP error, 5 = probeUsername error, 6 = probePassword error
+    // 7 = compIP error
+    // 8 = lxMin error, 9 = lxMax error, 10 = lxMin > lxMax, 11 = lxRes error
+    // 12 = servoMin error, 13 = servoMax error, 14 = servoMin > servoMax, 15 = servoRes error
     int screen2CurrState = 0;
     std::string screen2Output = "";
     bool screen2Connected = false;
+
+    bool passErrorCheckingScreen2();
 
 
     //***********************Display vars******************************************
@@ -175,6 +182,8 @@ private:
 //
 //    Marker marker;
 //
+    std::vector<Marker> markers;
+
     Scale scale;
 //    //locations of where the scales are located
 //    float scaleX1, scaleX2, scaleY1, scaleY2, scaleZ1, scaleZ2;

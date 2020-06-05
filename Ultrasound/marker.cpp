@@ -89,8 +89,32 @@ Marker::Marker(){
 //    delete [] markervertices;
 //    delete [] markernormals;
 
-    marker1 = glm::vec3(0.7,0,1);
-    marker2 = glm::vec3(0.2,0,1);
+    marker1 = glm::vec3(
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
+    marker2 = glm::vec3(
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
+            static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
+
+    isHidden = false;
+
+    color = glm::vec3(1.0f, 0.0f, 0.8f); //default color
+}
+
+Marker::Marker(glm::vec3 startColor) : Marker() {
+    color = startColor;
+
+//    std::cout<<"MY COLOR: "<<color.x<<" "<<color.y<<" "<<color.z<<std::endl;
+}
+
+void Marker::setHidden(bool val) {
+    isHidden = val;
+}
+
+bool Marker::getHidden(){
+    return isHidden;
 }
 
 void scale(glm::mat4& model_marker, float s){
@@ -131,7 +155,7 @@ void Marker:: drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_m
     markerShader.setMat4("model", model_marker);
 
     // Set lights
-    markerShader.setVec3("objectColor", glm::vec3(1.0f, 0.0f, 0.8f));
+    markerShader.setVec3("objectColor", color);
     markerShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
     markerShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 

@@ -18,6 +18,8 @@ const int INPUT_TEXT_CHARS_DECIMAL = 1;
 const float GUI_WIDTH = 550;
 const float GUI_HEIGHT = 700;
 
+const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::vec3(1.0f, 0.8f,0.0f), glm::vec3(0.0f, 1.0f, 0.8f)};
+
 GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
         void (*setZoom)(int),
         bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&),
@@ -59,7 +61,6 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
 
     style.FrameRounding = 4;
     style.WindowPadding = ImVec2(15,15);
-
 
 
 //    // Setup Marker class
@@ -127,6 +128,7 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 //        drawMarkers(projection, view, model);
 //    }
     drawScale(projection, view, model);
+    drawMarkers(projection, view, model);
     render();
 }
 
@@ -167,11 +169,12 @@ void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 }
 
 ////Draw the markers
-//void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-//    marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
-//    marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
-//    marker.draw(projection, view, model);
-//}
+void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+    for(auto & marker : markers) {
+        if(!marker.getHidden())
+            marker.draw(projection, view, model);
+    }
+}
 
 void addText(const char* text, ImVec4 color=ImVec4(0,0,0,1.0f), float size=1.0f){
     ImGui::SetWindowFontScale(size);
@@ -275,7 +278,10 @@ void displaySettings(bool isLoadData,
                      float velocity, float freq, std::string& inputVel,
 
                      //scale
-                     float& scaleXY, float& scaleXZ, float& scaleYX, float& scaleYZ, float& scaleZX, float& scaleZY
+                     float& scaleXY, float& scaleXZ, float& scaleYX, float& scaleYZ, float& scaleZX, float& scaleZY,
+
+                     //marker
+                     std::vector<Marker>& markerList
         ) {
     ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
@@ -377,30 +383,141 @@ void displaySettings(bool isLoadData,
         addText((std::to_string(freq) + " MHz").c_str(), purple);
         ImGui::NewLine();
     }
+
     if(ImGui::CollapsingHeader("Marker Options")){
         ImGui::NewLine(); ImGui::Indent();
         addText("Select Marker Pair"); ImGui::SameLine();
         //Select marker pair
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
-        const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD"};
-        static const char* current_item = NULL;
-        if (ImGui::BeginCombo("##markerPair", current_item)) // The second parameter is the label previewed before opening the combo.
+
+        static int current_marker_id = -1;
+        std::vector<std::string> items;
+        for(int n = 0; n < markerList.size(); n++){
+            items.push_back("Marker Pair " + std::to_string(n));
+        }
+        items.emplace_back("+ Add Marker Pair");
+
+        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, current_marker_id == -1 ? ImVec4(0,0,0, 1.00f) : ImVec4(currColor.x, currColor.y, currColor.z, 1.00f));
+        if (ImGui::BeginCombo("##markerPair",
+                current_marker_id == -1 ? "" : (char*)("Marker Pair " + std::to_string(current_marker_id)).c_str())) // The second parameter is the label previewed before opening the combo.
         {
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1, 1, 1.00f));
-            for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+            for (int n = 0; n < items.size(); n++)
             {
-                bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-                if (ImGui::Selectable(items[n], is_selected))
-                    current_item = items[n];
+                glm::vec3 itemColor = markerColors[n % markerColors.size()];
+                ImGui::PushStyleColor(ImGuiCol_Text, n == items.size() -1 ? ImVec4(1.0f, 1, 1, 1.00f) : ImVec4(itemColor.x, itemColor.y, itemColor.z, 1.00f));
+                bool is_selected = (current_marker_id == n); // You can store your selection however you want, outside or inside your objects
+                if (ImGui::Selectable((char*)items[n].c_str(), is_selected)){
+                    if(n == items.size() - 1){
+                        //If the user adds a new marker
+                        current_marker_id = items.size() - 1;
+                        markerList.emplace_back(markerColors[current_marker_id % markerColors.size()]);
+                    } else {
+                        current_marker_id = n;
+                    }
+                }
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+                ImGui::PopStyleColor();
             }
-            ImGui::PopStyleColor();
             ImGui::EndCombo();
         }
-        ImGui::PopStyleColor();
+        ImGui::PopStyleColor(2);
         ImGui::Unindent(); ImGui::NewLine();
+
+        //Load the marker options
+        if(current_marker_id != -1 && current_marker_id != markerList.size()){
+            addText("Distance between markers: "); ImGui::SameLine();
+            addText(std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)).c_str(), purple);
+
+            //get marker positions
+            Marker currMarker = markerList[current_marker_id];
+            glm::vec3 marker1Pos = currMarker.getMarker1Pos();
+            float marker1X = marker1Pos.x;
+            float marker1Y = marker1Pos.y;
+            float marker1Z = marker1Pos.z;
+
+            glm::vec3 marker2Pos = currMarker.getMarker2Pos();
+            float marker2X = marker2Pos.x;
+            float marker2Y = marker2Pos.y;
+            float marker2Z = marker2Pos.z;
+
+            ImGui::NewLine(); ImGui::Indent();
+            addText("Click and drag markers to move, or use the sliders below", blue); ImGui::NewLine();
+
+            ImGui::Indent();
+            addText("Marker 1 Position"); ImGui::Indent();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker1X", &marker1X, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("X     ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker1Y", &marker1Y, 0, 1);
+            ImGui::SameLine();
+            addText("Y     ");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##marker1Z", &marker1Z, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("Z     ");
+            ImGui::Unindent(); ImGui::Unindent();ImGui::Unindent();
+
+            ImGui::NewLine(); ImGui::Indent();
+            ImGui::Indent();
+            addText("Marker 2 Position"); ImGui::Indent();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker2X", &marker2X, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("X     ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker2Y", &marker2Y, 0, 1);
+            ImGui::SameLine();
+            addText("Y     ");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##marker2Z", &marker2Z, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("Z     ");
+            ImGui::Unindent(); ImGui::Unindent();
+
+            //show/hide markers
+            ImGui::NewLine();
+            bool isShown = false;
+            if(currMarker.getHidden()){
+                yellowButton("  Show  ", isShown);
+
+                if(isShown)
+                    markerList[current_marker_id].setHidden(false);
+            }
+            else{
+                yellowButton("  Hide  ", isShown);
+
+                if(isShown)
+                    markerList[current_marker_id].setHidden(true);
+            }
+
+            ImGui::NewLine();
+            bool remove = false;
+            purpleButton("Remove Markers", remove, 120, 30);
+            ImGui::NewLine();
+
+            //update marker positions
+            markerList[current_marker_id].setPositionMarker1(glm::vec3(marker1X, marker1Y, marker1Z));
+            markerList[current_marker_id].setPositionMarker2(glm::vec3(marker2X, marker2Y, marker2Z));
+
+            //remove marker
+            if(remove){
+                markerList.erase(markerList.begin() + current_marker_id);
+                current_marker_id = -1;
+            }
+        }
     }
+
+
     if(ImGui::CollapsingHeader("Scale Options")){
         ImGui::NewLine();
         addText("Scale shown in cm", blue);
@@ -512,7 +629,8 @@ void loadDataFromFile(
 
     std::vector<std::string> items = getFileDirectories(filterType);
     static std::string current_item;
-    if (ImGui::BeginCombo("##combo", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
+    if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    if (ImGui::BeginCombo("##fileSelector", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
     {
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1, 1, 1.00f));
         for (auto & item : items)
@@ -527,6 +645,7 @@ void loadDataFromFile(
         ImGui::PopStyleColor();
         ImGui::EndCombo();
     }
+    if(currState == 4) ImGui::PopStyleColor();
     if (!current_item.empty())
         file.assign(current_item);
 
@@ -587,20 +706,24 @@ void loadDataFromFile(
         ImGui::SameLine();
         addText("Error Message", orange);
     }
+    else if(currState == 4){
+        purpleButton("Load", load);
+        ImGui::SameLine();
+        addText("Select a file to load", orange);
+    }
 
     ImGui::End();
 }
-
 void scanFromProbe(
         std::string* probeIP, std::string* probeUsername, std::string* probePassword, std::string* compIP,
         bool& isSubmarine, bool& isDefault,
-        std::string* lxRangeMin, std::string* lxRangeMax, std::string* lxRes,
-        std::string* servoRangeMin, std::string* servoRangeMax, std::string* servoRes,
+        float& lxRangeMin, float& lxRangeMax, int& lxRes,
+        float& servoRangeMin, float& servoRangeMax, int& servoRes,
         std::string* customCommand,
         bool& liveScan, bool& scanToFile, bool& sendCustom,
         int& currState,
-        std::string output
-        ){
+        std::string& output
+){
     ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Scan From Probe");
 
@@ -612,22 +735,28 @@ void scanFromProbe(
 
     addText("IP Address: ");ImGui::SameLine();
     ImGui::PushItemWidth(-1);
+    if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     ImGui::InputText("##ipAddressProbe", (char*)probeIP->c_str(), probeIP->capacity()+1,
-            (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+                     (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+    if(currState == 4) ImGui::PopStyleColor();
     ImGui::PopItemWidth();
     createToolTip("Probe IP Address Finding Instructions");
 
     addText("username:   "); ImGui::SameLine();
     ImGui::PushItemWidth(-1);
+    if(currState == 5) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     ImGui::InputText("##username", (char*)probeUsername->c_str(), probeUsername->capacity()+1,
                      (currState == 1) ? INPUT_TEXT_READ_ONLY : 0);
+    if(currState == 5) ImGui::PopStyleColor();
     ImGui::PopItemWidth();
     createToolTip("Default is set to 'root'");
 
     addText("password:   ");ImGui::SameLine();
     ImGui::PushItemWidth(-1);
+    if(currState == 6) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     ImGui::InputText("##password", (char*)probePassword->c_str(), probePassword->capacity()+1,
                      (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_PASSWORD);
+    if(currState == 6) ImGui::PopStyleColor();
     ImGui::PopItemWidth();
     createToolTip("Default is set to 'root'");
 
@@ -637,8 +766,10 @@ void scanFromProbe(
 
     addText("IP Address: ");ImGui::SameLine();
     ImGui::PushItemWidth(-1);
+    if(currState == 7) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     ImGui::InputText("##ipAddressComp", (char*)compIP->c_str(), compIP->capacity()+1,
                      (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+    if(currState == 7) ImGui::PopStyleColor();
     ImGui::PopItemWidth();
     createToolTip("Run the following commands on your terminal to find the IP address based on your operating system.\n\n"
                   "Windows:   ipconfig | findstr IPv4\n"
@@ -687,6 +818,12 @@ void scanFromProbe(
     ImGui::NewLine();
     ImGui::PopStyleColor();
 
+    static std::string lxRangeMinInput = std::to_string(lxRangeMin);
+    static std::string lxRangeMaxInput = std::to_string(lxRangeMax);
+    static std::string lxResInput = std::to_string(lxRes);
+    static std::string servoRangeMinInput = std::to_string(servoRangeMin);
+    static std::string servoRangeMaxInput = std::to_string(servoRangeMax);
+    static std::string servoResInput = std::to_string(servoRes);
     if(isDefault) {
         //White Fin Option
         if (!isSubmarine) {
@@ -704,15 +841,19 @@ void scanFromProbe(
             addText("Range:      ");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##lxMin", (char*)lxRangeMin->c_str(), lxRangeMin->capacity()+1,
+            if(currState == 8 || currState == 10) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxMin", (char*)lxRangeMinInput.c_str(), lxRangeMinInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 8 || currState == 10) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("to");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##lxMax", (char*)lxRangeMax->c_str(), lxRangeMax->capacity()+1,
+            if(currState == 9 || currState == 10) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxMax", (char*)lxRangeMaxInput.c_str(), lxRangeMaxInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 9 || currState == 10) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("degrees");
@@ -720,8 +861,10 @@ void scanFromProbe(
             addText("Resolution: ");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##lxRes", (char*)lxRes->c_str(), lxRes->capacity()+1,
+            if(currState == 11) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxRes", (char*)lxResInput.c_str(), lxResInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 11) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("steps");
@@ -734,15 +877,19 @@ void scanFromProbe(
             addText("Range:      ");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##servoMin", (char*)servoRangeMin->c_str(), servoRangeMin->capacity()+1,
+            if(currState == 12 || currState == 14) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoMin", (char*)servoRangeMinInput.c_str(), servoRangeMinInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 12 || currState == 14) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("to");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##servoMax", (char*)servoRangeMax->c_str(), servoRangeMax->capacity()+1,
+            if(currState == 13 || currState == 14) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoMax", (char*)servoRangeMaxInput.c_str(), servoRangeMaxInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 13 || currState == 14) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("degrees");
@@ -750,8 +897,10 @@ void scanFromProbe(
             addText("Resolution: ");
             ImGui::SameLine();
             ImGui::PushItemWidth(80);
-            ImGui::InputText("##servoRes", (char*)servoRes->c_str(), servoRes->capacity()+1,
+            if(currState == 15) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoRes", (char*)servoResInput.c_str(), servoResInput.capacity()+1,
                              (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 15) ImGui::PopStyleColor();
             ImGui::PopItemWidth();
             ImGui::SameLine();
             addText("steps");
@@ -788,12 +937,37 @@ void scanFromProbe(
     }
 
     //add user messages
+    ImGui::NewLine();
     if(currState == 1)
         addText("Connecting to probe...", purple);
     if(currState == 2)
         addText("Successfully connected to probe", blue);
     if(currState == 3)
         addText("ERROR connecting to probe", orange);
+    if(currState == 4)
+        addText("Probe IP cannot be empty", orange);
+    if(currState == 5)
+        addText("Probe username cannot be empty", orange);
+    if(currState == 6)
+        addText("Probe password cannot be empty", orange);
+    if(currState == 7)
+        addText("Computer IP cannot be empty", orange);
+    if(currState == 8)
+        addText("Lx-16 min range should be a number greater than or equal to -180", orange);
+    if(currState == 9)
+        addText("Lx-16 max range should be a number less than or equal to 180", orange);
+    if(currState == 10)
+        addText("Lx-16 max range should be greater than the min value", orange);
+    if(currState == 11)
+        addText("Lx-16 resolution should be between 1 - 200", orange);
+    if(currState == 12)
+        addText("Servo min range should be a number greater than or equal to -30", orange);
+    if(currState == 13)
+        addText("Servo max range should be a number less than or equal to 30", orange);
+    if(currState == 14)
+        addText("Servo max range should be greater than the min value", orange);
+    if(currState == 15)
+        addText("Servo resolution should be between 1 - 200", orange);
 
     ImGui::NewLine();
 
@@ -812,8 +986,37 @@ void scanFromProbe(
         ImGui::PopStyleColor();
     }
 
+//  if user clicks a send button, then get the input values
+    if(!isSubmarine && (liveScan || scanToFile)){
+
+        //update lx-16 values. If conversion fails, set value to one out of range
+        try{
+            lxRangeMin = std::stof(lxRangeMinInput);
+        } catch(...) {lxRangeMin = -1000;}
+
+        try {
+            lxRangeMax = std::stof(lxRangeMaxInput);
+        } catch(...) {lxRangeMax = 1000;}
+        try {
+            lxRes = std::stoi(lxResInput);
+        } catch(...) {currState = 0;}
+
+        //update servo values
+        try{
+            servoRangeMin = std::stof(servoRangeMinInput);
+        } catch(...) {currState = -1000;}
+        try{
+            servoRangeMax = std::stof(servoRangeMaxInput);
+        } catch(...) {currState = 1000;}
+        try{
+            servoRes = std::stoi(servoResInput);
+        } catch(...) {currState = 0;}
+    }
+
     ImGui::End();
 }
+
+
 //Draws the ImGui widgets on the screen
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     // render your IMGUI
@@ -823,7 +1026,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         loadDataFromFile(screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1Error);
     else if(renderedScreen == 2)
         scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP, screen2IsSub, screen2IsDefault,
-                &screen2LxMin, &screen2LxMax, &screen2LxRes, &screen2ServoMin, &screen2ServoMax, &screen2ServoRes,
+                screen2LxMin, screen2LxMax, screen2LxRes, screen2ServoMin, screen2ServoMax, screen2ServoRes,
                 &screen2CustomCommand,
                 screen2LiveScan, screen2ScanToFile, screen2SendCustom,
                 screen2CurrState, screen2Output
@@ -834,7 +1037,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers
         );
 }
 
@@ -852,13 +1055,17 @@ void GUI::interactionHandler() {
     if(renderedScreen == 1){
         if(screen1Load){
             //first time clicking load
-            if(screen1CurrState == 0 || screen1CurrState == 2){
+            if(screen1CurrState != 1){
+                //check to make sure file is selected
+                if(screen1File.empty()){
+                    screen1CurrState = 4;
+                    return;
+                }
+
                 //reload file
                 gridPointer -> clear();
                 screen1DataUpdate = false;
                 isDataLoaded = false;
-
-                //maybe do checks to make sure all fields populated?
 
                 screen1CurrState = 1;
 
@@ -881,67 +1088,61 @@ void GUI::interactionHandler() {
     if(renderedScreen == 2){
         try {
             if (screen2LiveScan && screen2CurrState != 1) {
-                screen2Connected = false;
-                screen2CurrState = 1;
-                gridPointer->clear();
-                isDataLoaded = false;
-                if (screen2IsSub) {
-                    bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-                                                      screen2ProbePassword.c_str(), screen2CompIP.c_str(),
-                                                      screen2IsSub, 0, 0, 0,
-                                                      0, 0, 0,
-                                                      "", 0, screen2Output, screen2Connected);
-                    if (!noError) screen2CurrState = 3;
-                } else {
-                    bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-                                                      screen2ProbePassword.c_str(),
-                                                      screen2CompIP.c_str(),
-                                                      screen2IsSub, std::stoi(screen2LxMin), std::stoi(screen2LxMax),
-                                                      std::stoi(screen2LxRes),
-                                                      std::stoi(screen2ServoMin), std::stoi(screen2ServoMax),
-                                                      std::stoi(screen2ServoRes),
-                                                      "", 0, screen2Output, screen2Connected);
-                    if (!noError) screen2CurrState = 3;
-                }
-            }
-            if (screen2ScanToFile && screen2CurrState != 1) {
-                screen2Connected = false;
-                screen2CurrState = 1;
-                gridPointer->clear();
-                isDataLoaded = false;
-                if (screen2IsSub) {
-                    bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-                                                      screen2ProbePassword.c_str(), screen2CompIP.c_str(),
-                                                      screen2IsSub, 0, 0, 0,
-                                                      0, 0, 0,
-                                                      "", 1, screen2Output, screen2Connected);
-                    if (!noError) screen2CurrState = 3;
-                } else {
-                    bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-                                                      screen2ProbePassword.c_str(),
-                                                      screen2CompIP.c_str(),
-                                                      screen2IsSub, std::stoi(screen2LxMin), std::stoi(screen2LxMax),
-                                                      std::stoi(screen2LxRes),
-                                                      std::stoi(screen2ServoMin), std::stoi(screen2ServoMax),
-                                                      std::stoi(screen2ServoRes),
-                                                      "", 1, screen2Output, screen2Connected);
-                    if (!noError) screen2CurrState = 3;
-                }
-            }
-            if (screen2SendCustom && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
                 screen2Connected = false;
                 screen2CurrState = 1;
                 gridPointer->clear();
                 isDataLoaded = false;
                 bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-                                                  screen2ProbePassword.c_str(), screen2CompIP.c_str(),
-                                                  screen2IsSub, 0, 0, 0,
-                                                  0, 0, 0,
-                                                  screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected);
+                        screen2ProbePassword.c_str(),
+                        screen2CompIP.c_str(),
+                        screen2IsSub, screen2LxMin, screen2LxMax,
+                        screen2LxRes,
+                        screen2ServoMin, screen2ServoMax,
+                        screen2ServoRes,
+                        "", 0, screen2Output, screen2Connected);
+                if (!noError) screen2CurrState = 3;
+
+            }
+            if (screen2ScanToFile && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
+                screen2Connected = false;
+                screen2CurrState = 1;
+                gridPointer->clear();
+                isDataLoaded = false;
+                bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                        screen2ProbePassword.c_str(),
+                        screen2CompIP.c_str(),
+                        screen2IsSub, screen2LxMin, screen2LxMax,
+                        screen2LxRes,
+                        screen2ServoMin, screen2ServoMax,
+                        screen2ServoRes,
+                        "", 1, screen2Output, screen2Connected);
+                if (!noError) screen2CurrState = 3;
+
+            }
+            if (screen2SendCustom && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
+                screen2Connected = false;
+                screen2CurrState = 1;
+                gridPointer->clear();
+                isDataLoaded = false;
+                bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                        screen2ProbePassword.c_str(), screen2CompIP.c_str(),
+                        screen2IsSub, 0, 0, 0,
+                        0, 0, 0,
+                        screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected);
                 if (!noError) screen2CurrState = 3;
             }
         }
         catch (...) {
+            //connection error
             screen2CurrState = 3;
         }
 
@@ -968,6 +1169,53 @@ void GUI::interactionHandler() {
         if(mediumActive == 1) dispVel = 1538;
         if(mediumActive == 2) dispVel = atof(inputVel.c_str());
     }
+}
+
+bool GUI::passErrorCheckingScreen2(){
+    if(strcmp(screen2ProbeIP.c_str(),"") == 0) {screen2CurrState = 4; return false;}
+    if(strcmp(screen2ProbeUsername.c_str(),"") == 0) {screen2CurrState = 5; return false;}
+    if(strcmp(screen2ProbePassword.c_str(),"") == 0) {screen2CurrState = 6; return false;}
+    if(strcmp(screen2CompIP.c_str(),"") == 0) {screen2CurrState = 7; return false;}
+
+    //if the user is running white fin in default mode, then check values
+    if(screen2IsDefault && !screen2IsSub) {
+        //lx values
+        if (screen2LxMin < -180) {
+            screen2CurrState = 8;
+            return false;
+        }
+        if (screen2LxMax > 180) {
+            screen2CurrState = 9;
+            return false;
+        }
+        if (screen2LxMin > screen2LxMax) {
+            screen2CurrState = 10;
+            return false;
+        }
+        if (screen2LxRes > 200 || screen2LxRes < 1) {
+            screen2CurrState = 11;
+            return false;
+        }
+        //servo values
+        if (screen2ServoMin < -30) {
+            screen2CurrState = 12;
+            return false;
+        }
+        if (screen2ServoMax > 30) {
+            screen2CurrState = 13;
+            return false;
+        }
+        if (screen2ServoMin > screen2ServoMax) {
+            screen2CurrState = 14;
+            return false;
+        }
+        if (screen2ServoRes > 200 || screen2ServoRes < 1) {
+            screen2CurrState = 15;
+            return false;
+        }
+    }
+
+    return true;
 }
 
 //void GUI::setNumLinesDrawn(int num){

@@ -161,7 +161,28 @@ void GUI::reset(){
     frequency = 15.6;
     snap = false;
 }
-
+//Select File Directory
+//    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+//
+//    std::vector<std::string> items = getFileDirectories(filterType);
+//    static std::string current_item;
+//    if (ImGui::BeginCombo("##combo", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
+//    {
+//        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1, 1, 1.00f));
+//        for (auto & item : items)
+//        {
+//            const char* currItem = (char*)item.c_str();
+//            bool is_selected = (current_item == currItem); // You can store your selection however you want, outside or inside your objects
+//            if (ImGui::Selectable(currItem, is_selected))
+//                current_item = currItem;
+//            if (is_selected)
+//                ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+//        }
+//        ImGui::PopStyleColor();
+//        ImGui::EndCombo();
+//    }
+//    if (!current_item.empty())
+//        file.assign(current_item);
 //Draw the scales
 void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     scale.setMeasurements(frequency, velocity, numSamples);
