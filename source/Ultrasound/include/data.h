@@ -95,6 +95,7 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
+void UDP_timer(int& time_milisecond);
 
 int getDepth();
 void setDepth(int dep);
