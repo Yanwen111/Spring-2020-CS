@@ -13,7 +13,7 @@
 
 #include "camera.h"
 #include "data.h"
-#include "probe.h"
+//#include "probe.h"
 #include "gui.h"
 
 #define PI 3.141592653589
@@ -32,7 +32,7 @@ void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
 
 // Used for multi-threads
-void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle);
+void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string windowTitle);
 
 //bool dataUpdate = false;
 
@@ -46,11 +46,12 @@ float rotationY;
 
 bool mousePressed;
 int guiObjectPressed;
+bool mouseOnGui;
 double xposMarker, yposMarker;
 
 // Creating a Camera object
 Camera cam;
-Probe probe;
+//Probe probe;
 GUI* myGUIpointer;
 
 //int depth = 2500;
@@ -64,7 +65,7 @@ const bool ROTATE_GRID = true;
 std::thread dataThread;
 
 //Load File function pointer
-bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& error){
+bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& error, int& probeType){
     try
     {
         char* c = new char[file.size() + 1];
@@ -72,6 +73,7 @@ bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& d
         std::cout<<"READDATA: "<<c<<std::endl;
         dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate));
         dataThread.detach();
+        probeType = 1; // 1 for white fin, 0 for submarine
         std::cout<<"END READ DATA"<<std::endl;
         return true;
     }
@@ -226,7 +228,7 @@ int main() {
     grid.setThreshold(1);
 
     // Main event loop
-    renderLoop(window, probe, grid, myGUI, windowTitle);
+    renderLoop(window, grid, myGUI, windowTitle);
 
     myGUI.cleanUp();
 
@@ -234,13 +236,13 @@ int main() {
     glfwTerminate();
 }
 
-void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle){
+void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string windowTitle){
 
     // Variables for measuring FPS
     int numFrames = 0;
     double lastFPSUpdate = 0;
 
-    int currProbe = -1;
+//    int currProbe = -1;
 
     //The render loop to draw until the user closes the window
     while (!glfwWindowShouldClose(window)) {
@@ -314,10 +316,10 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
 //            //Add in error checking on GUI side later
 //        }
 
-        if(currProbe != -1) {
-            // Draw the probe
-            probe.draw(projection, view, rotationX, rotationY);
-        }
+//        if(currProbe != -1) {
+//            // Draw the probe
+//            probe.draw(projection, view, rotationX, rotationY);
+//        }
 
         //Set up GUI paramters
 //        myGUI.setNumLinesDrawn(getSamples());
@@ -332,7 +334,7 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         grid.draw(projection, view, model);
 
         // Draw the GUI and set parameters
-        myGUI.drawGUI(projection, view, model);
+        myGUI.drawGUI(projection, view, rotationX, rotationY);
 //        myGUI.setTime(glfwGetTime());
 //        myGUI.setQuaternion(probe.getQuaternions());
 //        myGUI.setEulerAngles(probe.getEulerAngles());
@@ -456,69 +458,75 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
             rotationX = -1.5;
         }
     }
+    //get matrices needed to calculate ray and detect intersections
+    glm::mat4 cameraToWorld = glm::mat4(1.0f);
+    glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+    glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+    cameraToWorld[0] = rightH;
+    cameraToWorld[1] = upH;
+    cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+    cameraToWorld[3] = glm::vec4(cam.position, 1);
 
-    if(guiObjectPressed != -1) {
-        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-        cameraToWorld[0] = rightH;
-        cameraToWorld[1] = upH;
-        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-        cameraToWorld[3] = glm::vec4(cam.position, 1);
+    //Generate Ray
+    float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
+    float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
+    float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
+    glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
+    glm::vec4 rayOriginWorld, rayPWorld;
+    rayOriginWorld = cameraToWorld * rayOrigin;
+    rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
+    glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
+    rayDirection = glm::normalize(rayDirection);
 
-        //Generate Ray
-        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
-        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
-        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
-        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-        glm::vec4 rayOriginWorld, rayPWorld;
-        rayOriginWorld = cameraToWorld * rayOrigin;
-        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-        rayDirection = glm::normalize(rayDirection);
-
-        myGUIpointer->moveMarker(guiObjectPressed, rayOriginWorld, rayDirection);
+    if(guiObjectPressed){
+        myGUIpointer->moveMarker(rayOriginWorld, rayDirection);
+    }
+    else {
+        //check if mouse is on object
+        mouseOnGui = myGUIpointer->mouseOnObjects(rayOriginWorld, rayDirection);
     }
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 
-        //Check if the mouse is on any GUI objects (like markers)
-        double xpos, ypos;
-        //getting cursor position
-        glfwGetCursorPos(window, &xpos, &ypos);
+//        //Check if the mouse is on any GUI objects (like markers)
+//        double xpos, ypos;
+//        //getting cursor position
+//        glfwGetCursorPos(window, &xpos, &ypos);
+//
+//        glm::mat4 cameraToWorld = glm::mat4(1.0f);
+//        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+//        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+//        cameraToWorld[0] = rightH;
+//        cameraToWorld[1] = upH;
+//        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+//        cameraToWorld[3] = glm::vec4(cam.position, 1);
+//
+//        //Generate Ray
+//        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
+//        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
+//        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
+//        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
+//        glm::vec4 rayOriginWorld, rayPWorld;
+//        rayOriginWorld = cameraToWorld * rayOrigin;
+//        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
+//        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
+//        rayDirection = glm::normalize(rayDirection);
 
-        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-        cameraToWorld[0] = rightH;
-        cameraToWorld[1] = upH;
-        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-        cameraToWorld[3] = glm::vec4(cam.position, 1);
-
-        //Generate Ray
-        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
-        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
-        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
-        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-        glm::vec4 rayOriginWorld, rayPWorld;
-        rayOriginWorld = cameraToWorld * rayOrigin;
-        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-        rayDirection = glm::normalize(rayDirection);
-
-        guiObjectPressed = myGUIpointer->mouseClickedObjects(rayOriginWorld, rayDirection);
-        if(guiObjectPressed != -1){
-            xposMarker = xpos;
-            yposMarker = ypos;
-        }
+//        guiObjectPressed = myGUIpointer->mouseClickedObjects(rayOriginWorld, rayDirection);
+//        if(guiObjectPressed != -1){
+//            xposMarker = xpos;
+//            yposMarker = ypos;
+//        }
+        if(mouseOnGui)
+            guiObjectPressed = 1;
         else
             mousePressed = true;
     }
 
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        guiObjectPressed = -1;
         mousePressed = false;
+        guiObjectPressed = 0;
     }
 }

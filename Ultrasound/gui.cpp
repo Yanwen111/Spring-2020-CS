@@ -22,7 +22,7 @@ const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::v
 
 GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
         void (*setZoom)(int),
-        bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&),
+        bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&),
          bool (*connectToProbe)(std::string, std::string, std::string, std::string,
                                 bool, int, int, int, int, int, int,
                                 std::string, int, std::string&, bool&
@@ -107,16 +107,24 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
     //Set up the scale
     scale = Scale();
 
+    //Set up the probe
+    probe = Probe();
+
     //Pointer to the DensityMap grid object
     gridPointer = pointer;
+
+    //set all parameter values
+    reset();
+
+    dispVel = 1102;
 }
 
 //Draws the GUI on the screen and processes different user interactions to update values
-void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
     setUp();
 //    isReset = false;
 //    modelWorld = model;
-    drawWidgets(projection, view, model);
+    drawWidgets(projection, view);
     interactionHandler();
 
 //    //set up velocity
@@ -127,8 +135,15 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
 //    if(setMarker){
 //        drawMarkers(projection, view, model);
 //    }
-    drawScale(projection, view, model);
-    drawMarkers(projection, view, model);
+
+    glm::mat4 cubeRotation = glm::mat4(1.0f);
+    cubeRotation = glm::rotate(cubeRotation, rotationY, glm::vec3(0, 1, 0));
+    cubeRotation = glm::rotate(cubeRotation, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+    drawScale(projection, view, cubeRotation);
+    drawMarkers(projection, view, cubeRotation);
+
+    drawProbe(projection, view, rotationX, rotationY);
+
     render();
 }
 
@@ -514,6 +529,7 @@ void displaySettings(bool isLoadData,
                 markerList.erase(markerList.begin() + current_marker_id);
                 current_marker_id = -1;
             }
+            ImGui::Unindent();
         }
     }
 
@@ -545,6 +561,7 @@ void displaySettings(bool isLoadData,
         ImGui::SameLine();
         addText("X     ");
         ImGui::SameLine();
+
         ImGui::PushItemWidth(80);
         ImGui::SliderFloat("##scaleYZ", &scaleYZ, 0, 1);
         ImGui::PopItemWidth();
@@ -1016,9 +1033,26 @@ void scanFromProbe(
     ImGui::End();
 }
 
+void GUI::drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY) {
+    if(isProbeLoaded){
+        //draw the probe
+        probe.draw(projection, view, rotationX, rotationY);
+    }
+
+    if(isDataLoaded && !isProbeLoaded){
+        if(probeType == 0)
+            probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
+        else
+            probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
+        isProbeLoaded = true;
+    }
+    if(!isDataLoaded){
+        isProbeLoaded = false;
+    }
+}
 
 //Draws the ImGui widgets on the screen
-void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
     // render your IMGUI
     if(renderedScreen == 0)
         drawOpenFrame(screen0Load, screen0Scan);
@@ -1032,13 +1066,15 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
                 screen2CurrState, screen2Output
                 );
 
-    if(isDataLoaded)
+    if(isDataLoaded){
         displaySettings(
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
                 scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers
         );
+    }
+
 }
 
 void GUI::interactionHandler() {
@@ -1070,7 +1106,7 @@ void GUI::interactionHandler() {
                 screen1CurrState = 1;
 
                 //loadFile pointer function from main --> will only have 1 load file now with new data type
-                bool noError = readDataMain(*gridPointer, screen1File, dispGain, dispDepth, screen1DataUpdate, screen1Error);
+                bool noError = readDataMain(*gridPointer, screen1File, dispGain, dispDepth, screen1DataUpdate, screen1Error, probeType);
                 gridPointer -> setUpdateCoefficient(screen1DataUpdate);
 
                 if(!noError){
@@ -1105,6 +1141,7 @@ void GUI::interactionHandler() {
                         "", 0, screen2Output, screen2Connected);
                 if (!noError) screen2CurrState = 3;
 
+                probeType = screen2IsSub ? 0 : 1;
             }
             if (screen2ScanToFile && screen2CurrState != 1) {
                 //error handling
@@ -1124,6 +1161,7 @@ void GUI::interactionHandler() {
                         "", 1, screen2Output, screen2Connected);
                 if (!noError) screen2CurrState = 3;
 
+                probeType = screen2IsSub ? 0 : 1;
             }
             if (screen2SendCustom && screen2CurrState != 1) {
                 //error handling
@@ -1139,6 +1177,8 @@ void GUI::interactionHandler() {
                         0, 0, 0,
                         screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected);
                 if (!noError) screen2CurrState = 3;
+
+                probeType = screen2IsSub ? 0 : 1;
             }
         }
         catch (...) {
@@ -1313,11 +1353,61 @@ bool GUI::passErrorCheckingScreen2(){
  * @return which marker is intersected. -1 otherwise
  */
 int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
-    //check if markers are on screen
-//    if(setMarker)
-//        return marker.checkMouseOnMarker(rayOrigin, rayDirection);
 
-    return -1;
+    float minT = -1;
+    for(auto& marker: markers){
+        float tmpT = -1;
+        int tmpMarker = -1;
+
+        tmpMarker = marker.checkMouseOnMarker(rayOrigin, rayDirection, tmpT);
+        if(tmpMarker != -1){
+            if(minT == -1 || (tmpT < minT && tmpT != -1)){
+                intersectedMarker = &marker;
+                intersectedMarkerNum = tmpMarker;
+                minT = tmpT;
+            }
+        }
+    }
+
+    if(minT == -1)
+        return -1;
+
+    std::cout<<"Mouse INTERSECT!"<<std::endl;
+
+    if(intersectedMarker != nullptr)
+        intersectedMarker->setIntersected(true);
+
+    return 1;
+}
+
+bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection){
+    intersectedMarker = nullptr;
+
+    float minT = -1;
+    for(auto& marker: markers){
+        float tmpT = -1;
+        int tmpMarker = -1;
+        marker.setIntersected(-1);
+
+        tmpMarker = marker.checkMouseOnMarker(rayOrigin, rayDirection, tmpT);
+        if(tmpMarker != -1){
+            if(minT == -1 || (tmpT < minT && tmpT != -1)){
+                intersectedMarker = &marker;
+                intersectedMarkerNum = tmpMarker;
+                minT = tmpT;
+            }
+        }
+    }
+
+    if(minT == -1)
+        return false;
+
+    std::cout<<"Mouse INTERSECT!"<<std::endl;
+
+    if(intersectedMarker != nullptr)
+        intersectedMarker->setIntersected(intersectedMarkerNum);
+
+    return true;
 }
 
 /**
@@ -1446,70 +1536,109 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
 
 /**
  * Move the specified marker to the cursor position.
- * @param numMarker Which marker the cursor is on
  * @param rayOrigin origin of the ray
  * @param rayDirection direction of the ray
  */
-void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirection){
-    if(numMarker == 1){
+void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection){
+    glm::vec3 markerPos;
+    if(intersectedMarkerNum == 1)
+        markerPos = intersectedMarker->getMarker1Pos();
+    else
+        markerPos = intersectedMarker->getMarker2Pos();
+
+    glm::vec3 v0 = modelWorld*(glm::vec4(markerPos.x, markerPos.y, markerPos.z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
+    glm::vec4 normal = glm::vec4(0,0,1,0);
+    double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+
+    //Find the intersection point on the plane
+    glm::vec3 P = rayOrigin + t*rayDirection;
+
+//    //Find the snapping point on the plane
+//    if(snap)
+//        P = getSnapPoint(rayOrigin, P);
+
+    //Transform back to marker coordinates
+    glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+    P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+
+    P = (P + glm::vec3(5, 5, 5)) / 10.0;
+
+    if(P.x > 1) P.x = 1;
+    if(P.x < 0) P.x = 0;
+    if(P.y > 1) P.y = 1;
+    if(P.y < 0) P.y = 0;
+    if(P.z > 1) P.z = 1;
+    if(P.z < 0) P.z = 0;
+
+//    marker1x = P.x;
+//    marker1y = P.y;
+//    marker1z = P.z;
+
+    if(intersectedMarkerNum == 1)
+        intersectedMarker->setPositionMarker1(P);
+    else
+        intersectedMarker->setPositionMarker2(P);
+
+
+//    if(numMarker == 1){
         //transform to world coordinates
-        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
-        glm::vec4 normal = glm::vec4(0,0,1,0);
-        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
-
-        //Find the intersection point on the plane
-        glm::vec3 P = rayOrigin + t*rayDirection;
-
-        //Find the snapping point on the plane
-        if(snap)
-            P = getSnapPoint(rayOrigin, P);
-
-        //Transform back to marker coordinates
-        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
-
-        P = (P + glm::vec3(5, 5, 5)) / 10.0;
-
-        if(P.x > 1) P.x = 1;
-        if(P.x < 0) P.x = 0;
-        if(P.y > 1) P.y = 1;
-        if(P.y < 0) P.y = 0;
-        if(P.z > 1) P.z = 1;
-        if(P.z < 0) P.z = 0;
-
-        marker1x = P.x;
-        marker1y = P.y;
-        marker1z = P.z;
-    }
-    if(numMarker == 2){
-        glm::vec3 v0 = modelWorld*(glm::vec4(marker2x, marker2y, marker2z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
-        glm::vec4 normal = glm::vec4(0,0,1,0);
-        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
-
-        //Find the intersection point on the plane
-        glm::vec3 P = rayOrigin + t*rayDirection;
-
-        //Find the snapping point on the plane
-        if(snap)
-            P = getSnapPoint(rayOrigin, P);
-
-        //Transform back to marker coordinates
-        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
-
-        P = (P + glm::vec3(5, 5, 5)) / 10.0;
-
-        if(P.x > 1) P.x = 1;
-        if(P.x < 0) P.x = 0;
-        if(P.y > 1) P.y = 1;
-        if(P.y < 0) P.y = 0;
-        if(P.z > 1) P.z = 1;
-        if(P.z < 0) P.z = 0;
-
-        marker2x = P.x;
-        marker2y = P.y;
-        marker2z = P.z;
-    }
+//        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
+//        glm::vec4 normal = glm::vec4(0,0,1,0);
+//        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+//
+//        //Find the intersection point on the plane
+//        glm::vec3 P = rayOrigin + t*rayDirection;
+//
+//        //Find the snapping point on the plane
+//        if(snap)
+//            P = getSnapPoint(rayOrigin, P);
+//
+//        //Transform back to marker coordinates
+//        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+//        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+//
+//        P = (P + glm::vec3(5, 5, 5)) / 10.0;
+//
+//        if(P.x > 1) P.x = 1;
+//        if(P.x < 0) P.x = 0;
+//        if(P.y > 1) P.y = 1;
+//        if(P.y < 0) P.y = 0;
+//        if(P.z > 1) P.z = 1;
+//        if(P.z < 0) P.z = 0;
+//
+//        marker1x = P.x;
+//        marker1y = P.y;
+//        marker1z = P.z;
+//    }
+//    if(numMarker == 2){
+//        glm::vec3 v0 = modelWorld*(glm::vec4(marker2x, marker2y, marker2z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
+//        glm::vec4 normal = glm::vec4(0,0,1,0);
+//        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+//
+//        //Find the intersection point on the plane
+//        glm::vec3 P = rayOrigin + t*rayDirection;
+//
+//        //Find the snapping point on the plane
+//        if(snap)
+//            P = getSnapPoint(rayOrigin, P);
+//
+//        //Transform back to marker coordinates
+//        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+//        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+//
+//        P = (P + glm::vec3(5, 5, 5)) / 10.0;
+//
+//        if(P.x > 1) P.x = 1;
+//        if(P.x < 0) P.x = 0;
+//        if(P.y > 1) P.y = 1;
+//        if(P.y < 0) P.y = 0;
+//        if(P.z > 1) P.z = 1;
+//        if(P.z < 0) P.z = 0;
+//
+//        marker2x = P.x;
+//        marker2y = P.y;
+//        marker2z = P.z;
+//    }
 }
 
 /**

@@ -100,13 +100,13 @@ Marker::Marker(){
 
     isHidden = false;
 
+//    intersected1 = false;
+
     color = glm::vec3(1.0f, 0.0f, 0.8f); //default color
 }
 
 Marker::Marker(glm::vec3 startColor) : Marker() {
     color = startColor;
-
-//    std::cout<<"MY COLOR: "<<color.x<<" "<<color.y<<" "<<color.z<<std::endl;
 }
 
 void Marker::setHidden(bool val) {
@@ -147,7 +147,7 @@ glm::vec3 Marker::getMarker2Pos(){
  * @param view the view matrix
  * @param model_marker the model matrix of the marker
  */
-void Marker:: drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
+void Marker::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker, bool intersected){
     // Drawing the marker
     markerShader.use();
     markerShader.setMat4("projection", projection);
@@ -155,7 +155,12 @@ void Marker:: drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_m
     markerShader.setMat4("model", model_marker);
 
     // Set lights
-    markerShader.setVec3("objectColor", color);
+    if(intersected){
+        markerShader.setVec3("objectColor", glm::vec3(0.5,0.5,0.5));
+    }
+    else{
+        markerShader.setVec3("objectColor", color);
+    }
     markerShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
     markerShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
@@ -191,7 +196,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     rotate(model_marker1, model);
     translate(model_marker1, model, marker1*10 - glm::vec3(5,5,5));
 
-    drawMarker(projection, view, model_marker1);
+    drawMarker(projection, view, model_marker1, intersectedMarker == 1);
 
     //Draw Marker 2
     model_marker2      = glm::mat4(1.0f);
@@ -200,7 +205,7 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     rotate(model_marker2, model);
     translate(model_marker2, model, marker2*10 - glm::vec3(5,5,5));
 
-    drawMarker(projection, view, model_marker2);
+    drawMarker(projection, view, model_marker2, intersectedMarker == 2);
 
     glDisable(GL_DEPTH_TEST);
 }
@@ -216,13 +221,18 @@ float Marker::getDistance(float freq, float vel, int depth){
 //    return intersectMarker;
 //}
 
+void Marker::setIntersected(int markerNum = -1){
+    intersectedMarker = markerNum;
+}
+
 /**
  * Checks whether the ray created from the mouse intersects with a marker
  * @param rayOrigin
  * @param rayDirection
+ * @param t where on the ray the marker is located
  * @return -1 for no intersection, 1 for marker1, 2 for marker2
  */
-int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
+int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float& t){
     int intersected = -1;
 
     //loop over each triangle
@@ -231,7 +241,6 @@ int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){
         glm::vec4 v1 = glm::vec4(markervertices[9*x+3], markervertices[9*x+4], markervertices[9*x+5], 1);
         glm::vec4 v2 = glm::vec4(markervertices[9*x+6], markervertices[9*x+7], markervertices[9*x+8], 1);
 
-        float t;
         if(rayTriangleIntersect(rayOrigin, rayDirection, model_marker1*v0, model_marker1*v1, model_marker1*v2, t))
             intersected = 1;
         if(rayTriangleIntersect(rayOrigin, rayDirection, model_marker2*v0, model_marker2*v1, model_marker2*v2, t))

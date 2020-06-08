@@ -18,7 +18,9 @@ public:
     glm::vec3 getMarker1Pos();
     glm::vec3 getMarker2Pos();
 
-    int checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    int checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float& t);
+
+    void setIntersected(int markerNum);
 
     void setHidden(bool val);
     bool getHidden();
@@ -38,6 +40,9 @@ private:
     glm::mat4 model_marker1;
     glm::mat4 model_marker2;
 
+    //-1 for no marker intersected, 1 for marker 1, 2 for marker 2
+    int intersectedMarker = -1;
+
     //vertices and normals of the marker in STL file
     GLfloat *markervertices = NULL;
     GLfloat *markernormals = NULL;
@@ -46,7 +51,7 @@ private:
     unsigned int markerVAO, markerVBO, markerNormalsVBO;
     //number of vertices in the STL file
     int markerIndex;
-    void drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker);
+    void drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker, bool intersected);
 
     //methods to move marker through mouse
     int intersect(glm::vec3 rayOrigin, glm::vec3 rayDirection);

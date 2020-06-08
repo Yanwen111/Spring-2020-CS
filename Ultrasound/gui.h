@@ -10,6 +10,7 @@
 #include <densityMap.h>
 #include "marker.h"
 #include "scale.h"
+#include "probe.h"
 
 /**
  * GUI class handles all the GUI features on the screen and interactions with them
@@ -17,54 +18,56 @@
 class GUI {
 public:
     GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer, void (*setZoom)(int),
-            bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&),
+            bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&),
             bool (*connectToProbe)(std::string, std::string, std::string, std::string,
                     bool, int, int, int, int, int, int,
                     std::string, int, std::string&, bool&
                     )
             );
 
-    void drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
     static void cleanUp();
 
-    int getZoom();
-
-    void setNumLinesDrawn(int num);
-    void setNumSamples(int num);
-    void setTime(float time);
-    void setQuaternion(glm::vec4 quatIn);
-    void setEulerAngles(glm::vec3 eulerIn);
-    void setVoxels(int size);
-    void setFileSize(double size);
-    bool isReset;
-
-    float getBrightness();
-    float getGain();
-    int getThreshold();
-    float getContrast();
-    std::string getFile();
-    int getDepth();
-    float getUpdateCoefficient();
-
-    void setBrightness(float value);
-    void setGain(float value);
-    void setThreshold(int value);
-    void setContrast(float value);
-    void setUpdateCoefficient(float value);
+//    int getZoom();
+//
+//    void setNumLinesDrawn(int num);
+//    void setNumSamples(int num);
+//    void setTime(float time);
+//    void setQuaternion(glm::vec4 quatIn);
+//    void setEulerAngles(glm::vec3 eulerIn);
+//    void setVoxels(int size);
+//    void setFileSize(double size);
+//    bool isReset;
+//
+//    float getBrightness();
+//    float getGain();
+//    int getThreshold();
+//    float getContrast();
+//    std::string getFile();
+//    int getDepth();
+//    float getUpdateCoefficient();
+//
+//    void setBrightness(float value);
+//    void setGain(float value);
+//    void setThreshold(int value);
+//    void setContrast(float value);
+//    void setUpdateCoefficient(float value);
 
     //returns int for which object is clicked
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
-    void moveMarker(int numMarker, glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
 
-    bool loadNew();
-    int getProbe();
+    bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
 
-    void doneLoading();
+//    bool loadNew();
+//    int getProbe();
+//
+//    void doneLoading();
 
 private:
     DensityMap* gridPointer;
     void (*setZoomMain)(int);
-    bool (*readDataMain)(DensityMap&, std::string, float, int, bool&, std::string&);
+    bool (*readDataMain)(DensityMap&, std::string, float, int, bool&, std::string&, int&);
     bool (*connectToProbeMain)(std::string, std::string, std::string, std::string,
                            bool, int, int, int, int, int, int,
                            std::string, int, std::string&, bool&);
@@ -79,18 +82,19 @@ private:
     // which path user takes load file vs scan
     bool isLoadFile;
 
-    //Screen 0 (opening screen) vars
+    //**************  Screen 0 (opening screen) vars  **********************************
     bool screen0Load = false;
     bool screen0Scan = false;
 
-    //Screen 1 (loadFile) vars
+    //**************  Screen 1 (loadFile) vars  **********************************
+    //1 = loading, 2 = loaded, 3 = read file error, 4 = no file selected error
     int screen1CurrState = 0;
     std::string screen1Error;
     std::string screen1File;
     bool screen1Load = false;
     bool screen1DataUpdate = false;
 
-    //Screen 2 (scan probe) vars
+    //**************  Screen 2 (scan probe) vars  **********************************
     std::string screen2ProbeIP;
     std::string screen2ProbeUsername = "root";
     std::string screen2ProbePassword = "root";
@@ -108,6 +112,7 @@ private:
     bool screen2LiveScan = false;
     bool screen2ScanToFile = false;
     bool screen2SendCustom = false;
+
     //0 = first, 1 = loading, 2 = success,
     // 3 = error connection,
     // 4 = probeIP error, 5 = probeUsername error, 6 = probePassword error
@@ -120,8 +125,7 @@ private:
 
     bool passErrorCheckingScreen2();
 
-
-    //***********************Display vars******************************************
+    //***********************  Display vars  ******************************************
     //display settings
     int dispDepth = 1500;
     float dispGain = 0;
@@ -157,7 +161,7 @@ private:
 //    bool setMarker;
 //
 //    //whether or not to enable snapping when moving markers
-    bool snap;
+    bool snap = false;
     int snapThreshold;
 //
 //    float updateCoefficient;
@@ -184,7 +188,18 @@ private:
 //
     std::vector<Marker> markers;
 
+    //marker pair that mouse is on
+    int intersectedMarkerIndex = -1;
+    //marker within pair that mouse is on
+    int intersectedMarkerNum;
+
+    Marker* intersectedMarker = nullptr;
+
     Scale scale;
+    Probe probe;
+
+    bool isProbeLoaded = false;
+    int probeType = 0; // 0 for submarine, 1 for white fin
 //    //locations of where the scales are located
 //    float scaleX1, scaleX2, scaleY1, scaleY2, scaleZ1, scaleZ2;
 //
@@ -194,8 +209,9 @@ private:
     glm::mat4 modelWorld;
 
     static void setUp();
-    void drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    void drawWidgets(glm::mat4 projection, glm::mat4 view);
     void drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+    void drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
     static void render();
     void interactionHandler();
     void reset();
@@ -205,6 +221,4 @@ private:
     glm::vec3 getSnapPoint(glm::vec3 rayOrigin, glm::vec3 rayDirection);
     static bool intersectGrid(glm::vec3 rayOriginGrid, glm::vec3 rayDirectionGrid, float& tmin, float& tmax);
     glm::vec3 getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals);
-
-
 };

@@ -641,6 +641,7 @@ CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/gui.cpp
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/gui.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/helper.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/marker.h
+CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/probe.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/rotation.h
 CMakeFiles/Ultrasound.dir/Ultrasound/gui.cpp.o: ../Ultrasound/scale.h
 
