@@ -102,6 +102,7 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o
  ../source/DensityMap/densityMap.h
  ../source/DensityMap/shader.h
  ../source/Ultrasound/include/data.h
+ ../source/Ultrasound/include/remote.h
  ../source/Ultrasound/include/rotation.h
  /home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/data.cpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o

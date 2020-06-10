@@ -15,7 +15,6 @@
 #include "data.h"
 #include "probe.h"
 #include "gui.h"
-#include "remote.h"
 
 #define PI 3.141592653589
 

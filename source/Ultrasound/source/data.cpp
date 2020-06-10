@@ -923,6 +923,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
 //    }
 //}
 //
+
 void realDemo4(DensityMap& grid, bool& dataUpdate)
 {
     //read the data from current red pitaya 2d data.
@@ -1020,11 +1021,14 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
                 sub_file_bytes.push_back(m);
             /* convert file bytes to data struct */
             std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
-            file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
-            samples = scan_data.size(); /* The last line is abandoned due to some reasons*/
+//            file_to_data(sub_file_bytes, sub_marker_locations, scan_data);
+//            samples = scan_data.size(); /* The last line is abandoned due to some reasons*/
+//            printf("the number of scan_data samples is %d\n", samples);
+//            /* convert data to vertex on screen */
+//            data_to_pixel(scan_data, line_data);
+            line_data = file_to_pixel_V07(sub_file_bytes, sub_marker_locations);
+            samples = line_data.size(); /* The last line is abandoned due to some reasons*/
             printf("the number of scan_data samples is %d\n", samples);
-            /* convert data to vertex on screen */
-            data_to_pixel(scan_data, line_data);
             //printf("find the screen_data\n");
 
             //len = line_data[0].vals.size(); // 2500, equl to buffer size
@@ -1088,6 +1092,183 @@ void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
         grid.writeLine(ps, pe, l.vals);
     }
 }
+
+bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
+                    bool isSubmarine,
+                    int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+                    std::string customCommand,
+                    int connectionType, std::string& output, bool& connected
+) {
+    /* connect to Red Pitaya */
+    Socket soc("Linux");
+
+    soc.setRPName(const_cast<char*>(probeIP.c_str()));
+    soc.setRPName(const_cast<char*>(username.c_str()));
+    soc.setRPPassword(const_cast<char*>(password.c_str()));
+    soc.saveConfig();
+    soc.linkStart();
+
+    if (connectionType == 3) /* custom command */
+    {
+        soc.customCommand(const_cast<char*>(customCommand.c_str()));
+        //soc.interactiveShell();
+        connected = true;
+        return connected;
+    }
+
+    /* start the live rendering server on the computer */
+    bool transmit_end = false;
+    std::thread live_thread;
+    live_thread = std::thread(live_rendering, std::ref(grid), isSubmarine, probeIP, compIP, std::ref(transmit_end));
+    live_thread.detach();
+
+    /* pass some parameters */
+    soc.customCommand("cd");
+    soc.customCommand("make all");
+    std::string command0 = "./test";
+    for (int i = 0; i < 6; ++i)
+    {
+        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
+        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
+        if (lxRes) command0 += " " + std::to_string(lxRes);
+        if (servoRangeMin) command0 += " " + std::to_string(servoRangeMin);
+        if (servoRangeMax) command0 += " " + std::to_string(servoRangeMax);
+        if (servoRes) command0 += " " + std::to_string(servoRes);
+    }
+    soc.customCommand(const_cast<char*>(command0.c_str()));
+
+    printf(">>> Live rendering starts! <<<\n");
+    while(!transmit_end); /* waiting for live rendering */
+    if (connectionType == 0) /* sending live scan */
+    {
+        soc.remove_cachefile();
+    }
+    else if (connectionType == 1) /* save to file */
+    {
+        std::string newname;
+        if (isSubmarine)
+            newname += "submarine ";
+        else
+            newname += "whitefin ";
+
+        time_t now = time(0);
+        tm *ltm = localtime(&now);
+        newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
+                + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
+        soc.save_datafile(const_cast<char*>(newname.c_str()));
+    }
+
+    return true;
+
+}
+
+void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end)
+{
+    // read the data from current red pitaya 2d data.
+    // only for Linux right now
+
+    /* for real time trial */
+    int sub_length = 1;
+    int buffer_size = 1000;
+    bool newDataline = true;
+    bool in_transmit = true;
+    int recv_buffer_size;
+
+    if (isSubmarine)
+        recv_buffer_size = (10+4+1+2+16+2*2500+4) * sub_length;
+    else
+        recv_buffer_size = (10+4+1+2+2+2*2500+4) * sub_length;
+    char recvBuf[recv_buffer_size];
+    char sendBuf[100] = "I received";
+
+    int sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
+
+    sockaddr_in addrSrv;
+    addrSrv.sin_family = AF_INET;
+    addrSrv.sin_port = htons(8888);
+    addrSrv.sin_addr.s_addr = inet_addr(compIP.c_str());
+
+    sockaddr_in addrClt;
+    addrClt.sin_family = AF_INET;
+    addrClt.sin_port = htons(8000);
+    addrClt.sin_addr.s_addr = inet_addr(probeIP.c_str());
+
+    bind(sockSrv, (sockaddr*)&addrSrv, sizeof(sockaddr));
+
+    int length = sizeof(sockaddr);
+
+    int buffer_cnt = 0, loop_cnt = 0;
+    std::vector<unsigned char> sub_file_bytes;
+
+    int time_milisecond = 0;
+    std::thread timer_thread;
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread.detach();
+    int update_rate = 200; /* ms */
+
+    //write bytes data to a file
+    std::ofstream fileout("data/tempr.dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
+    setDepth(1500);
+    setGain(1.0);
+
+    while(in_transmit) {
+        if (time_milisecond < update_rate || sub_file_bytes.empty())
+        {
+            memset(recvBuf, 0, sizeof(recvBuf));
+
+            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            buffer_cnt++;
+
+            if (recvBuf[0] == 'O')
+            {
+                if (recvBuf[1] == 'v' && recvBuf[2] == 'e'&& recvBuf[3] == 'r')
+                {
+                    printf(">>>>> Transmitting over! <<<<<\n");
+                    buffer_cnt = buffer_size;
+                    in_transmit = false;
+                }
+            } else{
+                for (auto r: recvBuf) {
+                    sub_file_bytes.push_back(static_cast<unsigned char>(r));
+                    fileout << r;
+                }
+            }
+        }
+
+        if (buffer_cnt == buffer_size || (time_milisecond >= update_rate && buffer_cnt >= 1))
+        {
+            printf("==> timer is %d, buffer count is %d <==\n", time_milisecond, buffer_cnt);
+            std::vector<scan_data_struct> scan_data;
+            std::vector<line_data_struct> line_data;
+            for (auto m: marker)
+                sub_file_bytes.push_back(m);
+            /* convert file bytes to data struct */
+            std::vector<int> sub_marker_locations = find_marker(sub_file_bytes);
+            if (isSubmarine)
+                line_data = file_to_pixel_V06(sub_file_bytes, sub_marker_locations);
+            else
+                line_data = file_to_pixel_V07(sub_file_bytes, sub_marker_locations);
+            samples = line_data.size(); /* The last line is abandoned due to some reasons*/
+            printf("the number of scan_data samples is %d\n", samples);
+
+            render_lines(grid, line_data);
+            buffer_cnt = 0;
+            sub_file_bytes.clear();
+            printf("new buffer No. %d has been drawned!\n", loop_cnt++);
+
+            time_mutex.lock();
+            printf("Time milisecond value is %d \n", time_milisecond);
+            time_milisecond = 0;
+            time_mutex.unlock();
+        }
+        sendto(sockSrv, sendBuf, sizeof(sendBuf), MSG_NOSIGNAL, (sockaddr*)&addrClt, length);
+    }
+    fileout.close();
+    printf("Transmitting end!\n");
+    close(sockSrv);
+    transmit_end = true;
+}
+
 //
 //void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
 //{

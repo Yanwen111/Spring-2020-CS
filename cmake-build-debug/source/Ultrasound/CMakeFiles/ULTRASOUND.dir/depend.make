@@ -101,6 +101,7 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../extern/glm/glm
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/DensityMap/densityMap.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/DensityMap/shader.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/data.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/remote.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/rotation.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/source/data.cpp
 

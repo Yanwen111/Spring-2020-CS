@@ -1903,6 +1903,8 @@ densityMap.h
 ../source/Ultrasound/include/densityMap.h
 rotation.h
 ../source/Ultrasound/include/rotation.h
+remote.h
+../source/Ultrasound/include/remote.h
 cstdlib
 -
 
@@ -2031,6 +2033,4 @@ probe.h
 /home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/probe.h
 gui.h
 /home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/gui.h
-remote.h
-/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/remote.h
 

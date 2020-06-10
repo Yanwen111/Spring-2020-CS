@@ -32,6 +32,7 @@
 
 #include "densityMap.h"
 #include "rotation.h"
+#include "remote.h"
 
 #include <cstdlib> // for srand() and rand()
 
@@ -97,6 +98,15 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 void realDemo4(DensityMap& grid, bool& dataUpdate);
 void UDP_timer(int& time_milisecond);
 void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data);
+
+/* ALL-IN-ONE for GUI */
+bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
+                    bool isSubmarine,
+                    int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+                    std::string customCommand,
+                    int connectionType, std::string& output, bool& connected
+);
+void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 
 int getDepth();
 void setDepth(int dep);
