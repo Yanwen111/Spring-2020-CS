@@ -28,6 +28,8 @@ public:
 
     void saveConfig();
     void loadConfig(int number);
+    int remove_cachefile();
+    int save_datafile(char* newfilename); /* 0 for success, -1 for fail */
 
     int linkStart();
     void changeFolder(char* folder_name); /* IOT_Project */

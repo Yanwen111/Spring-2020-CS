@@ -77,6 +77,17 @@ void Socket::loadConfig(int number) {
     printf("Config file No.%d has been loaded!\n", number);
 }
 
+int Socket::remove_cachefile() {
+    if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
+        return system("rm data/tempr.dat");
+    else if (strcmp(OS_name, "Windows") == 0)
+        return system("del data/tempr.dat");
+}
+
+int Socket::save_datafile(char* newfilename) {
+    return rename("data/tempr.dat", newfilename);
+}
+
 int Socket::linkStart() {
     int rc;
     // connect session to host

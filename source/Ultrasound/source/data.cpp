@@ -36,7 +36,9 @@ int16_t adc;
 short buffer[2500];
 double intensity;
 unsigned char information_byte = 0xE1;
-int len = 2500;
+
+int DEPTH = 2500;
+float GAIN = 1.0;
 int samples = -1; /* -1 stands for no data */
 
 std::mutex time_mutex;
@@ -146,7 +148,12 @@ void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int le
     std::vector<int> marker_locations;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile(fileName);
+    //file_bytes = readFile(fileName);
+    try {
+        file_bytes = readFile(fileName);
+    } catch(const char* msg){
+        std::cerr << msg << std::endl;
+    }
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
     /* convert file bytes to data struct */
@@ -303,11 +310,11 @@ void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int l
     std::vector<int> marker_locations;
     std::vector<line_data_struct> line_data;
 
-    file_bytes = readFile(fileName);
-    if (file_bytes.size() == 0)
-    {
-        printf("Invalid file name! Please input another file name.\n");
-        return;
+    //file_bytes = readFile(fileName);
+    try {
+        file_bytes = readFile(fileName);
+    } catch(const char* msg){
+        std::cerr << msg << std::endl;
     }
     /* find all marker locations */
     marker_locations = find_marker(file_bytes);
@@ -664,7 +671,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate)
     printf("find the screen_data\n");
 
     int ddim = grid.getDim();
-    len = line_data[0].vals.size(); // 2500, equl to buffer size
+    int len = line_data[0].vals.size(); // 2500, equl to buffer size
     setDepth(2500);
     int cnt = 0;
     for  (auto l: line_data)
@@ -925,6 +932,7 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     int buffer_size = 1000;
     //bool newDataline = false;
     bool newDataline = true;
+    bool in_transmit = true;
     //std::mutex readtex;
 
     char recvBuf[(10+4+1+2+2+2*2500+4)*sub_length];
@@ -968,7 +976,14 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     timer_thread.detach();
     int update_rate = 200; /* ms */
 
-    while(1) {
+    //write bytes data to a file
+    //printf("start write imu...\n");
+    std::ofstream fileout("data/tempr.dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
+    //printf("Real IMU file generate!\n");
+    setDepth(1500);
+    setGain(1.0);
+
+    while(in_transmit) {
         //if (newDataline)
         if (time_milisecond < update_rate || sub_file_bytes.empty())
         {
@@ -980,8 +995,19 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
             recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
             buffer_cnt++;
 
-            for (auto r: recvBuf) {
-                sub_file_bytes.push_back(static_cast<unsigned char>(r));
+            if (recvBuf[0] == 'O')
+            {
+                if (recvBuf[1] == 'v' && recvBuf[2] == 'e'&& recvBuf[3] == 'r')
+                {
+                    printf(">>>>> Transmitting over! <<<<<\n");
+                    buffer_cnt = buffer_size;
+                    in_transmit = false;
+                }
+            } else{
+                for (auto r: recvBuf) {
+                    sub_file_bytes.push_back(static_cast<unsigned char>(r));
+                    fileout << r;
+                }
             }
         }
 
@@ -1001,20 +1027,19 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
             data_to_pixel(scan_data, line_data);
             //printf("find the screen_data\n");
 
-            int ddim = grid.getDim();
-            len = line_data[0].vals.size(); // 2500, equl to buffer size
+            //len = line_data[0].vals.size(); // 2500, equl to buffer size
             //            printf("=====\nPlease choose the maximum depth you want to show ( from 1 to %d): ", len);
             //            std::cin >> len;
             //len = 1500; // change range
-            setDepth(1500);
-            int cnt = 0;
-            for (auto l: line_data)
-            {
-                glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
-                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
-                                l.p2.z / len - l.p1.z / len + 0.5};
-                grid.writeLine(ps, pe, l.vals);
-            }
+//            setDepth(1500);
+//            for (auto l: line_data)
+//            {
+//                glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+//                glm::vec3 pe = {l.p2.x / len - l.p1.x / len + 0.5, l.p2.y / len - l.p1.y / len + 1,
+//                                l.p2.z / len - l.p1.z / len + 0.5};
+//                grid.writeLine(ps, pe, l.vals);
+//            }
+            render_lines(grid, line_data);
             buffer_cnt = 0;
             sub_file_bytes.clear();
             printf("new buffer No. %d has been drawned!\n", loop_cnt++);
@@ -1031,9 +1056,12 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
         sendto(sockSrv, sendBuf, sizeof(sendBuf), MSG_NOSIGNAL, (sockaddr*)&addrClt, length);
     }
     //closesocket(sockSrv);
+    fileout.close();
+    printf("Transmitting end!\n");
     close(sockSrv);
 //    WSACleanup();
 }
+
 void UDP_timer(int& time_milisecond)
 {
     int step = 10;
@@ -1043,6 +1071,21 @@ void UDP_timer(int& time_milisecond)
         time_milisecond += step;
         time_mutex.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(step));
+    }
+}
+
+void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
+{
+    for (auto l: line_data)
+    {
+        glm::vec3 ps = {l.p1.x/DEPTH + 0.5, l.p1.y/DEPTH + 1, l.p1.z/DEPTH + 0.5};
+        glm::vec3 pe = {l.p2.x / DEPTH - l.p1.x / DEPTH + 0.5, l.p2.y / DEPTH - l.p1.y / DEPTH + 1,
+                        l.p2.z / DEPTH - l.p1.z / DEPTH + 0.5};
+        for (int i = 0; i < l.vals.size(); ++i)
+        {
+            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(GAIN*(i/DEPTH))), 255));
+        }
+        grid.writeLine(ps, pe, l.vals);
     }
 }
 //
@@ -1086,7 +1129,8 @@ std::vector<unsigned char> readFile(const char* directory)
     printf("===> %s <===\n", directory);
     std::ifstream inFile(directory, std::ios::in | std::ios::binary);
     if (!inFile){
-        printf("Failed to open file.\n");
+        //printf("Failed to open file.\n");
+        throw "Failed to open file!\n";
         std::vector<unsigned char> fail_out;
         return fail_out;
     }
@@ -1326,12 +1370,24 @@ float ReverseFloat( const float inFloat ){
 
 int getDepth()
 {
-    return len;
+    return DEPTH;
 }
+
 void setDepth(int dep)
 {
-    len = dep;
+    DEPTH = dep;
 }
+
+float getGain()
+{
+    return GAIN;
+}
+
+void setGain(float g)
+{
+    GAIN = g;
+}
+
 int getSamples()
 {
     return samples;

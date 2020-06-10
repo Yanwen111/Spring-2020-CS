@@ -96,9 +96,12 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
 void UDP_timer(int& time_milisecond);
+void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data);
 
 int getDepth();
 void setDepth(int dep);
+void setGain(float g);
+float getGain();
 int getSamples();
 
 #endif //ULTRASOUND_OPENGL_MAIN_H
