@@ -961,7 +961,7 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     addrClt.sin_port = htons(8000);
     //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     //addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
-    addrClt.sin_addr.s_addr = inet_addr("192.168.1.39");
+    addrClt.sin_addr.s_addr = inet_addr("192.168.1.42");
 
     //bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
     bind(sockSrv, (sockaddr*)&addrSrv, sizeof(sockaddr));
@@ -1141,7 +1141,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
     while(!transmit_end); /* waiting for live rendering */
     if (connectionType == 0) /* sending live scan */
     {
-        soc.remove_cachefile();
+        if (soc.remove_cachefile() == -1) printf("Remove cachefile failed!\n");
     }
     else if (connectionType == 1) /* save to file */
     {
@@ -1155,7 +1155,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         tm *ltm = localtime(&now);
         newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
                 + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
-        soc.save_datafile(const_cast<char*>(newname.c_str()));
+        if (soc.save_datafile(const_cast<char*>(newname.c_str())) == -1) printf("save and rename the data file failed!\n");
     }
 
     return true;
