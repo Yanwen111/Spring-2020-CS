@@ -122,19 +122,8 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
 //Draws the GUI on the screen and processes different user interactions to update values
 void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
     setUp();
-//    isReset = false;
-//    modelWorld = model;
     drawWidgets(projection, view);
     interactionHandler();
-
-//    //set up velocity
-//    if(mediumActive == 0) velocity = 1102;
-//    if(mediumActive == 1) velocity = 1538;
-//    if(mediumActive == 2) velocity = atof(currVelocity);
-//
-//    if(setMarker){
-//        drawMarkers(projection, view, model);
-//    }
 
     glm::mat4 cubeRotation = glm::mat4(1.0f);
     cubeRotation = glm::rotate(cubeRotation, rotationY, glm::vec3(0, 1, 0));
@@ -143,6 +132,8 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float r
     drawMarkers(projection, view, cubeRotation);
 
     drawProbe(projection, view, rotationX, rotationY);
+
+    modelWorld = cubeRotation;
 
     render();
 }
@@ -183,7 +174,7 @@ void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     scale.draw(projection, view, model, glm::vec2(scaleXY, scaleXZ), glm::vec2(scaleYX, scaleYZ), glm::vec2(scaleZX, scaleZY));
 }
 
-////Draw the markers
+//Draw the markers
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     for(auto & marker : markers) {
         if(!marker.getHidden())
@@ -296,7 +287,10 @@ void displaySettings(bool isLoadData,
                      float& scaleXY, float& scaleXZ, float& scaleYX, float& scaleYZ, float& scaleZX, float& scaleZY,
 
                      //marker
-                     std::vector<Marker>& markerList
+                     std::vector<Marker>& markerList,
+
+                     //snap
+                     bool& enableSnap, int& snapThresholdIn
         ) {
     ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
@@ -438,7 +432,26 @@ void displaySettings(bool isLoadData,
             ImGui::EndCombo();
         }
         ImGui::PopStyleColor(2);
-        ImGui::Unindent(); ImGui::NewLine();
+
+        bool enableSnapTmp = false;
+        if(enableSnap){
+            yellowButton("Disable Snap", enableSnapTmp); ImGui::SameLine();
+
+            addText("          Snap Threshold"); ImGui::SameLine();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderInt("##snapThreshold", &snapThresholdIn, 0, 255);
+            ImGui::PopItemWidth();
+
+            if(enableSnapTmp)
+                enableSnap = false;
+        }
+        else{
+            yellowButton("Enable Snap", enableSnapTmp);
+            if(enableSnapTmp)
+                enableSnap = true;
+        }
+        ImGui::NewLine();
+
 
         //Load the marker options
         if(current_marker_id != -1 && current_marker_id != markerList.size()){
@@ -531,8 +544,8 @@ void displaySettings(bool isLoadData,
             }
             ImGui::Unindent();
         }
+        ImGui::Unindent();
     }
-
 
     if(ImGui::CollapsingHeader("Scale Options")){
         ImGui::NewLine();
@@ -1071,7 +1084,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, snap, snapThreshold
         );
     }
 
@@ -1554,8 +1567,8 @@ void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     glm::vec3 P = rayOrigin + t*rayDirection;
 
 //    //Find the snapping point on the plane
-//    if(snap)
-//        P = getSnapPoint(rayOrigin, P);
+    if(snap)
+        P = getSnapPoint(rayOrigin, P);
 
     //Transform back to marker coordinates
     glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));

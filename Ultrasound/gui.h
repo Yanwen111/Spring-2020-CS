@@ -162,7 +162,7 @@ private:
 //
 //    //whether or not to enable snapping when moving markers
     bool snap = false;
-    int snapThreshold;
+    int snapThreshold = 130;
 //
 //    float updateCoefficient;
 //

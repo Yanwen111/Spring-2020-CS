@@ -156,12 +156,13 @@ void Marker::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_ma
 
     // Set lights
     if(intersected){
-        markerShader.setVec3("objectColor", glm::vec3(0.5,0.5,0.5));
+        markerShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        markerShader.setVec3("objectColor", color*1.5f);
     }
-    else{
+    else {
+        markerShader.setVec3("lightColor", glm::vec3(0.7f, 0.7f, 0.7f));
         markerShader.setVec3("objectColor", color);
     }
-    markerShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
     markerShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
     glBindVertexArray(markerVAO);
