@@ -306,6 +306,33 @@ source/probe.cpp.s:
 	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.s
 .PHONY : source/probe.cpp.s
 
+source/remote.o: source/remote.cpp.o
+
+.PHONY : source/remote.o
+
+# target to build an object file
+source/remote.cpp.o:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o
+.PHONY : source/remote.cpp.o
+
+source/remote.i: source/remote.cpp.i
+
+.PHONY : source/remote.i
+
+# target to preprocess a source file
+source/remote.cpp.i:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.i
+.PHONY : source/remote.cpp.i
+
+source/remote.s: source/remote.cpp.s
+
+.PHONY : source/remote.s
+
+# target to generate assembly for a file
+source/remote.cpp.s:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.s
+.PHONY : source/remote.cpp.s
+
 source/rotation.o: source/rotation.cpp.o
 
 .PHONY : source/rotation.o
@@ -388,6 +415,9 @@ help:
 	@echo "... source/probe.o"
 	@echo "... source/probe.i"
 	@echo "... source/probe.s"
+	@echo "... source/remote.o"
+	@echo "... source/remote.i"
+	@echo "... source/remote.s"
 	@echo "... source/rotation.o"
 	@echo "... source/rotation.i"
 	@echo "... source/rotation.s"

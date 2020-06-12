@@ -66,22 +66,24 @@ std::thread dataThread;
 
 //Load File function pointer
 bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& error, int& probeType){
+
+    char* c = new char[file.size() + 1];
+    strcpy(c, file.c_str());
+    std::cout<<"READDATA: "<<c<<std::endl;
+
     try
     {
-        char* c = new char[file.size() + 1];
-        strcpy(c, file.c_str());
-        std::cout<<"READDATA: "<<c<<std::endl;
         dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate));
-        dataThread.detach();
-        probeType = 1; // 1 for white fin, 0 for submarine
-        std::cout<<"END READ DATA"<<std::endl;
-        return true;
     }
     catch(...)
     {
         error = "Failed to open file. ERROR";
         return false;
     }
+    dataThread.detach();
+    probeType = 1; // 1 for white fin, 0 for submarine
+    std::cout<<"END READ DATA"<<std::endl;
+    return true;
 }
 
 bool connectToProbe(std::string probeIP, std::string username, std::string password, std::string compIP,

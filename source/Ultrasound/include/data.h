@@ -23,17 +23,23 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <stdio.h>
-#pragma comment(lib, "libws2_32.a")
-
+//#pragma comment(lib, "libws2_32.a")
+// for linux UDP
+#include <netinet/in.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "densityMap.h"
 #include "rotation.h"
+#include "remote.h"
 
 #include <cstdlib> // for srand() and rand()
 
 
 
 struct scan_data_struct{
+    unsigned char version;
     unsigned long time_stamp;
     unsigned short encoder;
     unsigned short lx16;
@@ -75,8 +81,10 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
 void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
 void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
+void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
 std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
 std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
+std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
 
 /* real-time based on TCP */
 void realDemo2(DensityMap& grid, bool& dataUpdate);
@@ -88,9 +96,22 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
+void UDP_timer(int& time_milisecond);
+void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data);
+
+/* ALL-IN-ONE for GUI */
+bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
+                    bool isSubmarine,
+                    int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+                    std::string customCommand,
+                    int connectionType, std::string& output, bool& connected
+);
+void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 
 int getDepth();
 void setDepth(int dep);
+void setGain(float g);
+float getGain();
 int getSamples();
 
 #endif //ULTRASOUND_OPENGL_MAIN_H

@@ -102,8 +102,11 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o
  ../source/DensityMap/densityMap.h
  ../source/DensityMap/shader.h
  ../source/Ultrasound/include/data.h
+ ../source/Ultrasound/include/remote.h
  ../source/Ultrasound/include/rotation.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/data.cpp
+ /usr/local/include/libssh/legacy.h
+ /usr/local/include/libssh/libssh.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o
  ../extern/glad/include/KHR/khrplatform.h
  ../extern/glad/include/glad/glad.h
@@ -813,6 +816,9 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o
  ../source/Ultrasound/include/probe.h
  ../source/Ultrasound/include/rotation.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/probe.cpp
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o
+ ../source/Ultrasound/include/remote.h
+ /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/remote.cpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o
  ../extern/glm/glm/common.hpp
  ../extern/glm/glm/detail/_fixes.hpp

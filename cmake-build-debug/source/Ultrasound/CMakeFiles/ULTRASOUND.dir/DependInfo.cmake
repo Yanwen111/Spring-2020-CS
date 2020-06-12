@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/helper.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/marker.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/marker.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/probe.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/remote.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/rotation.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/scale.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/scale.cpp.o"
   )
@@ -27,6 +28,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../source/Ultrasound/../../extern/glm"
   "../source/Ultrasound/../../source/DensityMap"
   "../extern/glfw/include"
+  "/usr/local/include"
   )
 
 # Targets to which this target links.

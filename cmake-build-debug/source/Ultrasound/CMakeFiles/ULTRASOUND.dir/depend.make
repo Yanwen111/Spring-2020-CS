@@ -101,8 +101,11 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../extern/glm/glm
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/DensityMap/densityMap.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/DensityMap/shader.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/data.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/remote.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/include/rotation.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: ../source/Ultrasound/source/data.cpp
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: /usr/local/include/libssh/legacy.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/data.cpp.o: /usr/local/include/libssh/libssh.h
 
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../extern/glad/include/KHR/khrplatform.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../extern/glad/include/glad/glad.h
@@ -812,6 +815,9 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o: ../source/Ultras
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o: ../source/Ultrasound/include/probe.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o: ../source/Ultrasound/include/rotation.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o: ../source/Ultrasound/source/probe.cpp
+
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: ../source/Ultrasound/include/remote.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: ../source/Ultrasound/source/remote.cpp
 
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o: ../extern/glm/glm/common.hpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o: ../extern/glm/glm/detail/_fixes.hpp
