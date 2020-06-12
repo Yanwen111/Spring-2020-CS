@@ -1,35 +1,34 @@
 cmake_minimum_required(VERSION 3.15)
-project(Ultrasound)
+project(Ultrasound_AIO)
 
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 
-###################### GLAD ######################
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad)
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glad/include)
+###################### Includes for main.cpp ######################
+include_directories(${PROJECT_SOURCE_DIR}/extern/glad/include)
+include_directories(${PROJECT_SOURCE_DIR}/extern/imgui)
+include_directories(${PROJECT_SOURCE_DIR}/extern/glm)
+include_directories(${PROJECT_SOURCE_DIR}/source/Ultrasound/include)
+include_directories(${PROJECT_SOURCE_DIR}/source/DensityMap)
 
-####################### IMGUI ######################
-include_directories(${PROJECT_SOURCE_DIR}/imgui)
+file(GLOB SOURCE_FILES main.cpp ${PROJECT_SOURCE_DIR}/extern/glad/src/glad.c)
 
-###################### OTHER ######################
-file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp)
-file(GLOB INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/DensityMap/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Ultrasound/*.h ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
+add_subdirectory(source/Ultrasound)
+add_subdirectory(source/DensityMap)
+add_subdirectory(extern/imgui)
 
-add_executable(Ultrasound ${SOURCE_FILES} ${INCLUDE_FILES} ${PROJECT_SOURCE_DIR}/Dependencies/glad/src/glad.c)
-
-###################### GLM ######################
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glm)
-include_directories(${PROJECT_SOURCE_DIR}/Ultrasound)
-include_directories(${PROJECT_SOURCE_DIR}/DensityMap)
+add_executable(Ultrasound_AIO ${SOURCE_FILES})
 
 ###################### GLFW ######################
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/Dependencies/glfw)
+###################### libssh ######################
+find_package(libssh REQUIRED)
 
 add_compile_options(-O3)
 
-target_link_libraries(Ultrasound PRIVATE glfw)
+target_link_libraries(Ultrasound_AIO PRIVATE glfw ULTRASOUND DENSITYMAP IMGUI ssh)

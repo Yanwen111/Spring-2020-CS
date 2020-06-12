@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="IMGUI"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="IMGUI">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/libIMGUI.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 IMGUI"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="IMGUI/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/libIMGUI.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 IMGUI/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_demo.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_draw.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_impl_glfw.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_impl_glfw.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_impl_opengl3.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_impl_opengl3.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui_widgets.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\DensityMap\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\Ultrasound\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/src/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/src/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/src/glfw_config.h.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/libssh/libssh-config-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/libssh/libssh-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/libssh/libssh-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

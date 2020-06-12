@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libDENSITYMAP.a  CMakeFiles/DENSITYMAP.dir/camera.cpp.o CMakeFiles/DENSITYMAP.dir/densityMap.cpp.o CMakeFiles/DENSITYMAP.dir/shader.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libDENSITYMAP.a

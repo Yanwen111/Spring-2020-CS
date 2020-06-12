@@ -314,6 +314,12 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui.h">
 			<Option target="Ultrasound"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui2.cpp">
+			<Option target="Ultrasound"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/gui2.h">
+			<Option target="Ultrasound"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/Ultrasound/helper.cpp">
 			<Option target="Ultrasound"/>
 		</Unit>

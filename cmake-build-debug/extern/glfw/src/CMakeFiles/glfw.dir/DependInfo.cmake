@@ -29,12 +29,11 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "../extern/glad"
   "../extern/glad/include"
-  "../imgui"
+  "../extern/imgui"
   "../extern/glm"
-  "../Ultrasound"
-  "../DensityMap"
+  "../source/Ultrasound/include"
+  "../source/DensityMap"
   "../extern/glfw/include"
   "../extern/glfw/src"
   "extern/glfw/src"
