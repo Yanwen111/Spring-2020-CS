@@ -72,6 +72,9 @@ private:
                            bool, int, int, int, int, int, int,
                            std::string, int, std::string&, bool&);
 
+    //filepath of data folder
+    std::string filePath;
+
     //GUI vars
 
     // which screen to render: 0 = opening, 1 = load 2 = scan

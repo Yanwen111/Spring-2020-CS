@@ -39,6 +39,12 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
     //allocate 200 chars for the custom command
     screen2CustomCommand.reserve(200);
 
+    //get file path
+    std::string cwd = std::__fs::filesystem::current_path();
+    filePath = cwd.substr(0,cwd.find_last_of("/"))+"/data";
+
+    std::cout<<"FILE PATH: DFJKSLF: "<< filePath<<std::endl;
+
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
@@ -604,10 +610,8 @@ void displaySettings(bool isLoadData,
 
 
 //filterState = 0: no filter, 1 = submarine files, 2 = whitefin files
-std::vector<std::string> getFileDirectories(int filterState = 0){
+std::vector<std::string> getFileDirectories(std::string path, int filterState = 0){
     std::vector<std::string> items;
-    std::string cwd = std::__fs::filesystem::current_path();
-    std::string path = cwd.substr(0,cwd.find_last_of("/"))+"/data";
     for (const auto & entry : std::__fs::filesystem::directory_iterator(path)){
         std::string tmp = entry.path();
         items.push_back(tmp.substr(tmp.find_last_of("/")+1, tmp.size()));
@@ -617,6 +621,7 @@ std::vector<std::string> getFileDirectories(int filterState = 0){
 
 //currState: 0 = no message, 1 = loading, 2 = success, 3 = error
 void loadDataFromFile(
+        std::string filePath,
         std::string &file,
         int& depth, float& gain, float& weight,
         bool& load,
@@ -660,7 +665,7 @@ void loadDataFromFile(
     //Select File Directory
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
 
-    std::vector<std::string> items = getFileDirectories(filterType);
+    std::vector<std::string> items = getFileDirectories(filePath, filterType);
     static std::string current_item;
     if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     if (ImGui::BeginCombo("##fileSelector", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
@@ -1073,7 +1078,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
     if(renderedScreen == 0)
         drawOpenFrame(screen0Load, screen0Scan);
     else if(renderedScreen == 1)
-        loadDataFromFile(screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1Error);
+        loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1Error);
     else if(renderedScreen == 2)
         scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP, screen2IsSub, screen2IsDefault,
                 screen2LxMin, screen2LxMax, screen2LxRes, screen2ServoMin, screen2ServoMax, screen2ServoRes,
@@ -1122,7 +1127,7 @@ void GUI::interactionHandler() {
                 screen1CurrState = 1;
 
                 //loadFile pointer function from main --> will only have 1 load file now with new data type
-                bool noError = readDataMain(*gridPointer, screen1File, dispGain, dispDepth, screen1DataUpdate, screen1Error, probeType);
+                bool noError = readDataMain(*gridPointer, filePath + "/" + screen1File, dispGain, dispDepth, screen1DataUpdate, screen1Error, probeType);
                 gridPointer -> setUpdateCoefficient(screen1DataUpdate);
 
                 if(!noError){
