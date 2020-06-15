@@ -819,6 +819,8 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o
  ../source/Ultrasound/include/remote.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/remote.cpp
+ /usr/local/include/libssh/legacy.h
+ /usr/local/include/libssh/libssh.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o
  ../extern/glm/glm/common.hpp
  ../extern/glm/glm/detail/_fixes.hpp

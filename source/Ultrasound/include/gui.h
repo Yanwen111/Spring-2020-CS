@@ -18,11 +18,13 @@
 class GUI {
 public:
     GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer, void (*setZoom)(int),
-            bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&),
-            bool (*connectToProbe)(std::string, std::string, std::string, std::string,
+            bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&, bool&),
+            bool (*connectToProbe)(DensityMap&, std::string, std::string, std::string, std::string,
                     bool, int, int, int, int, int, int,
-                    std::string, int, std::string&, bool&
-                    )
+                    std::string, int, std::string&, bool&, bool&, std::string&
+                    ),
+            void (*setDepth)(int),
+            void (*setGain)(float)
             );
 
     void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
@@ -67,10 +69,12 @@ public:
 private:
     DensityMap* gridPointer;
     void (*setZoomMain)(int);
-    bool (*readDataMain)(DensityMap&, std::string, float, int, bool&, std::string&, int&);
-    bool (*connectToProbeMain)(std::string, std::string, std::string, std::string,
+    bool (*readDataMain)(DensityMap&, std::string, float, int, bool&, std::string&, int&, bool&);
+    bool (*connectToProbeMain)(DensityMap&, std::string, std::string, std::string, std::string,
                            bool, int, int, int, int, int, int,
-                           std::string, int, std::string&, bool&);
+                           std::string, int, std::string&, bool&, bool&, std::string&);
+    void (*setGainMain)(float);
+    void (*setDepthMain)(int);
 
     //filepath of data folder
     std::string filePath;
@@ -92,9 +96,10 @@ private:
     //**************  Screen 1 (loadFile) vars  **********************************
     //1 = loading, 2 = loaded, 3 = read file error, 4 = no file selected error
     int screen1CurrState = 0;
-    std::string screen1Error;
+    std::string screen1ErrorMessage;
     std::string screen1File;
     bool screen1Load = false;
+    bool screen1Error = false;
     bool screen1DataUpdate = false;
 
     //**************  Screen 2 (scan probe) vars  **********************************
@@ -116,6 +121,11 @@ private:
     bool screen2ScanToFile = false;
     bool screen2SendCustom = false;
 
+    //is true if connection failed
+    bool screen2ErrorSetUp = false;
+    //Error message returned from attempting to connect
+    std::string screen2ErrorMessage = "";
+
     //0 = first, 1 = loading, 2 = success,
     // 3 = error connection,
     // 4 = probeIP error, 5 = probeUsername error, 6 = probePassword error
@@ -131,7 +141,7 @@ private:
     //***********************  Display vars  ******************************************
     //display settings
     int dispDepth = 1500;
-    float dispGain = 0;
+    float dispGain = 1.0;
     float dispWeight = 1;
     float dispBrightness = 0.0f;
     float dispContrast = 1.0f;
@@ -169,8 +179,8 @@ private:
 //
 //    float updateCoefficient;
 //
-    float marker1x, marker1y, marker1z;
-    float marker2x, marker2y, marker2z;
+//    float marker1x, marker1y, marker1z;
+//    float marker2x, marker2y, marker2z;
 //
 //    double velocity;
 //    int numSamples;

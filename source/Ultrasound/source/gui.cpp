@@ -22,11 +22,13 @@ const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::v
 
 GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
         void (*setZoom)(int),
-        bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&),
-         bool (*connectToProbe)(std::string, std::string, std::string, std::string,
+        bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&, bool&),
+        bool (*connectToProbe)(DensityMap&, std::string, std::string, std::string, std::string,
                                 bool, int, int, int, int, int, int,
-                                std::string, int, std::string&, bool&
-         )){
+                                std::string, int, std::string&, bool&, bool&, std::string&),
+        void (*setDepth)(int),
+        void (*setGain)(float)
+        ){
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -35,6 +37,8 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
     readDataMain = readData;
     setZoomMain = setZoom;
     connectToProbeMain = connectToProbe;
+    setDepthMain = setDepth;
+    setGainMain = setGain;
 
     //allocate 200 chars for the custom command
     screen2CustomCommand.reserve(200);
@@ -67,48 +71,6 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
 
     style.FrameRounding = 4;
     style.WindowPadding = ImVec2(15,15);
-
-
-//    // Setup Marker class
-//    marker = Marker();
-//    // position of marker 1
-//    glm::vec3 tmpPos = marker.getMarker1Pos();
-//    marker1x = tmpPos.x;
-//    marker1y = tmpPos.y;
-//    marker1z = tmpPos.z;
-//    // position of marker 2
-//    tmpPos = marker.getMarker2Pos();
-//    marker2x = tmpPos.x;
-//    marker2y = tmpPos.y;
-//    marker2z = tmpPos.z;
-
-//    //position of the three scales
-//    scaleX1 = scaleX2 = 1;
-//    scaleY1 = 0;
-//    scaleY2 = 1;
-//    scaleZ1 = 0;
-//    scaleZ2 = 1;
-//
-//    //the medium selected to set up velocity
-//    mediumActive = 0;
-//
-//    reset();
-//
-//    //Whether the user clicked the load button
-//    newLoad = false;
-//    //If the data thread is loading a new file
-//    loading = false;
-//    // depth of the line data to display (0th cell to the depth cell)
-//    depth = 1500;
-//    // parameter for the time gain control
-//    gain = 1.0f;
-//    // weighting value (to control how DensityMap handles new data in the same cells)
-//    updateCoefficient = 1.0f;
-//    // Enable snapping when moving markers
-//    snap = false;
-//    // The threshold of values to snap to
-//    snapThreshold = 70;
-//
 
     //Set up the scale
     scale = Scale();
@@ -165,8 +127,11 @@ void GUI::cleanUp(){
 
 // Resets parameters to original default values
 void GUI::reset(){
-    dispDepth = 1500;
-    dispGain = 0;
+    if(!isLoadFile){
+        dispDepth = 1500;
+        dispGain = 1.0;
+    }
+
     dispWeight = 1;
     dispBrightness = 0.0f;
     dispContrast = 1.0f;
@@ -742,7 +707,9 @@ void loadDataFromFile(
     else if(currState == 3){
         purpleButton("Load", load);
         ImGui::SameLine();
-        addText("Error Message", orange);
+//        addText("ERROR", orange);
+//        addText("=======================", orange);
+        addText(errorMessage.c_str(), orange);
     }
     else if(currState == 4){
         purpleButton("Load", load);
@@ -760,7 +727,7 @@ void scanFromProbe(
         std::string* customCommand,
         bool& liveScan, bool& scanToFile, bool& sendCustom,
         int& currState,
-        std::string& output
+        std::string& output, std::string& errorMessage
 ){
     ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Scan From Probe");
@@ -980,8 +947,11 @@ void scanFromProbe(
         addText("Connecting to probe...", purple);
     if(currState == 2)
         addText("Successfully connected to probe", blue);
-    if(currState == 3)
+    if(currState == 3){
         addText("ERROR connecting to probe", orange);
+        addText("=========================", orange);
+        addText(std::string("     "+errorMessage).c_str(), orange);
+    }
     if(currState == 4)
         addText("Probe IP cannot be empty", orange);
     if(currState == 5)
@@ -1078,15 +1048,14 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
     if(renderedScreen == 0)
         drawOpenFrame(screen0Load, screen0Scan);
     else if(renderedScreen == 1)
-        loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1Error);
+        loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1ErrorMessage);
     else if(renderedScreen == 2)
         scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP, screen2IsSub, screen2IsDefault,
                 screen2LxMin, screen2LxMax, screen2LxRes, screen2ServoMin, screen2ServoMax, screen2ServoRes,
                 &screen2CustomCommand,
                 screen2LiveScan, screen2ScanToFile, screen2SendCustom,
-                screen2CurrState, screen2Output
+                screen2CurrState, screen2Output, screen2ErrorMessage
                 );
-
     if(isDataLoaded){
         displaySettings(
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
@@ -1095,7 +1064,6 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
                 scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, snap, snapThreshold
         );
     }
-
 }
 
 void GUI::interactionHandler() {
@@ -1110,6 +1078,10 @@ void GUI::interactionHandler() {
         }
     }
     if(renderedScreen == 1){
+        if(screen1Error){
+            screen1CurrState = 3;
+            return;
+        }
         if(screen1Load){
             //first time clicking load
             if(screen1CurrState != 1){
@@ -1123,11 +1095,12 @@ void GUI::interactionHandler() {
                 gridPointer -> clear();
                 screen1DataUpdate = false;
                 isDataLoaded = false;
+                screen1Error = false;
 
                 screen1CurrState = 1;
 
                 //loadFile pointer function from main --> will only have 1 load file now with new data type
-                bool noError = readDataMain(*gridPointer, filePath + "/" + screen1File, dispGain, dispDepth, screen1DataUpdate, screen1Error, probeType);
+                bool noError = readDataMain(*gridPointer, filePath + "/" + screen1File, dispGain, dispDepth, screen1DataUpdate, screen1ErrorMessage, probeType, screen1Error);
                 gridPointer -> setUpdateCoefficient(screen1DataUpdate);
 
                 if(!noError){
@@ -1143,6 +1116,10 @@ void GUI::interactionHandler() {
         }
     }
     if(renderedScreen == 2){
+        if(screen2ErrorSetUp){
+            screen2CurrState = 3;
+            return;
+        }
         try {
             if (screen2LiveScan && screen2CurrState != 1) {
                 //error handling
@@ -1152,14 +1129,16 @@ void GUI::interactionHandler() {
                 screen2CurrState = 1;
                 gridPointer->clear();
                 isDataLoaded = false;
-                bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                screen2ErrorSetUp = false;
+
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
                         screen2ProbePassword.c_str(),
                         screen2CompIP.c_str(),
                         screen2IsSub, screen2LxMin, screen2LxMax,
                         screen2LxRes,
                         screen2ServoMin, screen2ServoMax,
                         screen2ServoRes,
-                        "", 0, screen2Output, screen2Connected);
+                        "", 0, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
                 if (!noError) screen2CurrState = 3;
 
                 probeType = screen2IsSub ? 0 : 1;
@@ -1172,14 +1151,15 @@ void GUI::interactionHandler() {
                 screen2CurrState = 1;
                 gridPointer->clear();
                 isDataLoaded = false;
-                bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                screen2ErrorSetUp = false;
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
                         screen2ProbePassword.c_str(),
                         screen2CompIP.c_str(),
                         screen2IsSub, screen2LxMin, screen2LxMax,
                         screen2LxRes,
                         screen2ServoMin, screen2ServoMax,
                         screen2ServoRes,
-                        "", 1, screen2Output, screen2Connected);
+                        "", 1, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
                 if (!noError) screen2CurrState = 3;
 
                 probeType = screen2IsSub ? 0 : 1;
@@ -1192,11 +1172,12 @@ void GUI::interactionHandler() {
                 screen2CurrState = 1;
                 gridPointer->clear();
                 isDataLoaded = false;
-                bool noError = connectToProbeMain(screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                screen2ErrorSetUp = false;
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
                         screen2ProbePassword.c_str(), screen2CompIP.c_str(),
                         screen2IsSub, 0, 0, 0,
                         0, 0, 0,
-                        screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected);
+                        screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
                 if (!noError) screen2CurrState = 3;
 
                 probeType = screen2IsSub ? 0 : 1;
@@ -1219,6 +1200,12 @@ void GUI::interactionHandler() {
             reset();
             dispReset = false;
         }
+
+        if(!isLoadFile){
+            setGainMain(dispGain);
+            setDepthMain(dispDepth);
+        }
+
         gridPointer -> setBrightness(dispBrightness);
         gridPointer -> setThreshold(dispCutoff);
         gridPointer -> setContrast(dispContrast);

@@ -818,6 +818,8 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o: ../source/Ultras
 
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: ../source/Ultrasound/include/remote.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: ../source/Ultrasound/source/remote.cpp
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: /usr/local/include/libssh/legacy.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o: /usr/local/include/libssh/libssh.h
 
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o: ../extern/glm/glm/common.hpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o: ../extern/glm/glm/detail/_fixes.hpp

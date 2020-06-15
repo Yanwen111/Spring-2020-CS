@@ -65,32 +65,24 @@ const bool ROTATE_GRID = true;
 std::thread dataThread;
 
 //Load File function pointer
-bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& error, int& probeType){
+bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& errorMessage, int& probeType, bool& error){
 
     char* c = new char[file.size() + 1];
     strcpy(c, file.c_str());
     std::cout<<"READDATA: "<<c<<std::endl;
 
-    try
-    {
-        dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate));
-    }
-    catch(...)
-    {
-        error = "Failed to open file. ERROR";
-        return false;
-    }
+    dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
     dataThread.detach();
     probeType = 1; // 1 for white fin, 0 for submarine
     std::cout<<"END READ DATA"<<std::endl;
     return true;
 }
 
-bool connectToProbe(std::string probeIP, std::string username, std::string password, std::string compIP,
+bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
         bool isSubmarine,
         int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
         std::string customCommand,
-        int connectionType, std::string& output, bool& connected
+        int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
         ) {
     //connect in another thread, same thing as readData
 
@@ -148,8 +140,17 @@ bool connectToProbe(std::string probeIP, std::string username, std::string passw
         std::cout<<"COMMAND: "<<customCommand<<std::endl;
     }
 
-    output = "Successfully Sent Command!";
-    connected = true;
+    try{
+        dataThread = std::thread(connectToProbe, std::ref(grid), probeIP, username, password, compIP, isSubmarine,
+                                 lxRangeMin, lxRangeMax, lxRes, servoRangeMin, servoRangeMax, servoRes, customCommand, connectionType,
+                                 std::ref(output), std::ref(connected), std::ref(error), std::ref(errorMessage));
+        dataThread.detach();
+    } catch(...){
+        std::cout<<"EXCEPTION: "<<std::endl;
+    }
+
+//    output = "Successfully Sent Command!";
+//    connected = true;
     return true; //success!
 }
 
@@ -225,7 +226,7 @@ int main() {
 //    void (*foo)(int);
 //    foo = &my_int_func;
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbe);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
