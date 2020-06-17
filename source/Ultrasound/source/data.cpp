@@ -38,15 +38,15 @@ short buffer[2500];
 double intensity;
 unsigned char information_byte = 0xE1;
 
-//hayun added this lol
-int MSG_NOSIGNAL = 0;
+#ifdef __APPLE__
+    #define MSG_NOSIGNAL 0
+#endif
 
 int DEPTH = 2500;
 float GAIN = 1.0;
 int samples = -1; /* -1 stands for no data */
 
 std::mutex time_mutex;
-
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
 {

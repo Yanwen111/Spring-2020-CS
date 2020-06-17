@@ -11,6 +11,7 @@
 #include "marker.h"
 #include "scale.h"
 #include "probe.h"
+#include <boost/filesystem.hpp>
 
 /**
  * GUI class handles all the GUI features on the screen and interactions with them
@@ -77,7 +78,7 @@ private:
     void (*setDepthMain)(int);
 
     //filepath of data folder
-    std::string filePath;
+    boost::filesystem::path filePath;
 
     //GUI vars
 

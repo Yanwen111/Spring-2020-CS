@@ -98,7 +98,7 @@ static const glm::vec3 NUMBER_COLOR = glm::vec3(0.9, 0.5, 0.5);
 
 Scale::Scale(){
     // Add the 2x2x2 cube centered at origin
-    cubeIndex = Helper::read_stl("data/models/cube_2_2.stl", cubevertices, cubenormals);
+    cubeIndex = Helper::read_stl("config_file/models/cube_2_2.stl", cubevertices, cubenormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &scaleVBO);
@@ -135,7 +135,7 @@ Scale::Scale(){
     //Set up Numbers
     for(int x = 0; x < 10; x++){
         std::cout<<"data/"+numberFiles[x]+".stl"<<std::endl;
-        numberIndex.push_back(Helper::read_stl("data/models/"+numberFiles[x]+".stl", numberVertices.at(x), numberNormals.at(x)));
+        numberIndex.push_back(Helper::read_stl("config_file/models/"+numberFiles[x]+".stl", numberVertices.at(x), numberNormals.at(x)));
 
         //Set up OpenGL buffers
         glGenBuffers(1, &numberVBO[x]);

@@ -17,6 +17,18 @@
 //Build shared libraries
 BUILD_SHARED_LIBS:BOOL=OFF
 
+Boost_DATE_TIME_LIBRARY_RELEASE:STRING=/usr/local/lib/libboost_date_time-mt.dylib
+
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=/usr/local/lib/cmake/Boost-1.72.0
+
+Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/usr/local/lib/libboost_filesystem-mt.dylib
+
+//Path to a file.
+Boost_INCLUDE_DIR:PATH=/usr/local/include
+
+Boost_IOSTREAMS_LIBRARY_RELEASE:STRING=/usr/local/lib/libboost_iostreams-mt.dylib
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar
 
@@ -284,6 +296,18 @@ DENSITYMAP_BINARY_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraPro
 //Value Computed by CMake
 DENSITYMAP_SOURCE_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap
 
+//Path to a file.
+FREETYPE_INCLUDE_DIR_freetype2:PATH=/usr/local/include/freetype2
+
+//Path to a file.
+FREETYPE_INCLUDE_DIR_ft2build:PATH=/Library/Frameworks/Mono.framework/Headers
+
+//Path to a library.
+FREETYPE_LIBRARY_DEBUG:FILEPATH=FREETYPE_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+FREETYPE_LIBRARY_RELEASE:FILEPATH=/usr/local/lib/libfreetype.dylib
+
 //Value Computed by CMake
 GLFW_BINARY_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/glfw
 
@@ -338,6 +362,18 @@ Ultrasound_AIO_BINARY_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultr
 //Value Computed by CMake
 Ultrasound_AIO_SOURCE_DIR:STATIC=/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS
 
+//The directory containing a CMake configuration file for boost_date_time.
+boost_date_time_DIR:PATH=/usr/local/lib/cmake/boost_date_time-1.72.0
+
+//The directory containing a CMake configuration file for boost_filesystem.
+boost_filesystem_DIR:PATH=/usr/local/lib/cmake/boost_filesystem-1.72.0
+
+//The directory containing a CMake configuration file for boost_headers.
+boost_headers_DIR:PATH=/usr/local/lib/cmake/boost_headers-1.72.0
+
+//The directory containing a CMake configuration file for boost_iostreams.
+boost_iostreams_DIR:PATH=/usr/local/lib/cmake/boost_iostreams-1.72.0
+
 //Dependencies for the target
 glfw_LIB_DEPENDS:STATIC=general;-framework Cocoa;general;-framework IOKit;general;-framework CoreFoundation;
 
@@ -349,6 +385,8 @@ libssh_DIR:PATH=/usr/local/lib/cmake/libssh
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
@@ -520,10 +558,22 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Boost
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/local/lib/cmake/Boost-1.72.0/BoostConfig.cmake][cfound components:  date_time filesystem iostreams ][v1.72.0(1.56)]
+//Details about finding Freetype
+FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/usr/local/lib/libfreetype.dylib][/Library/Frameworks/Mono.framework/Headers;/usr/local/include/freetype2][v2.10.1()]
 //Details about finding OpenGL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenGL.framework][/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenGL.framework][c ][v()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
+FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build
+FREETYPE_INCLUDE_DIR_ft2build-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_DEBUG
+FREETYPE_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_RELEASE
+FREETYPE_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_INCLUDE_DIR
 OPENGL_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_gl_LIBRARY
@@ -534,4 +584,12 @@ OPENGL_glu_LIBRARY-ADVANCED:INTERNAL=1
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
+//ADVANCED property for variable: boost_date_time_DIR
+boost_date_time_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_filesystem_DIR
+boost_filesystem_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_headers_DIR
+boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_iostreams_DIR
+boost_iostreams_DIR-ADVANCED:INTERNAL=1
 

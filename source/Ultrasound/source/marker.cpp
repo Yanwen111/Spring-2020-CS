@@ -62,7 +62,7 @@ Marker::Marker(){
     markerShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 
     // Add the marker
-    markerIndex = Helper::read_stl("data/models/marker.stl", markervertices, markernormals);
+    markerIndex = Helper::read_stl("config_file/models/marker.stl", markervertices, markernormals);
 
     //Set up OpenGL buffers
     glGenBuffers(1, &markerVBO);

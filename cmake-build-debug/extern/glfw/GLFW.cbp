@@ -5,7 +5,7 @@
 		<Option title="GLFW"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/glfw"/>
@@ -195,6 +195,75 @@
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/BoostDetectToolset-1.72.0.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/Boost-1.72.0/BoostConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/Boost-1.72.0/BoostConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_headers-1.72.0/boost_headers-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_headers-1.72.0/boost_headers-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/boost_date_time-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/boost_date_time-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/libboost_date_time-variant-mt-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/libboost_date_time-variant-mt-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/libboost_date_time-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_date_time-1.72.0/libboost_date_time-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/boost_filesystem-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/boost_filesystem-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/libboost_filesystem-variant-mt-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/libboost_filesystem-variant-mt-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/libboost_filesystem-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_filesystem-1.72.0/libboost_filesystem-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/boost_iostreams-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/boost_iostreams-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/libboost_iostreams-variant-mt-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/libboost_iostreams-variant-mt-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/libboost_iostreams-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/boost_iostreams-1.72.0/libboost_iostreams-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\"/>
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/libssh/libssh-config-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\"/>

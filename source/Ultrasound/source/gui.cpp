@@ -5,6 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "gui.h"
 #include "rotation.h"
+//#include <ft2build.h>
+//#include FT_FREETYPE_H
 
 const ImVec4 blue = ImVec4(.196f,.40f,.663f, 100.0f);
 const ImVec4 purple = ImVec4(.486f,.184f,.678f, 100.0f);
@@ -13,7 +15,6 @@ const ImVec4 orange = ImVec4(1.0f,.706f,.231f, 100.0f);
 const int INPUT_TEXT_READ_ONLY = 16384;
 const int INPUT_TEXT_PASSWORD = 32768;
 const int INPUT_TEXT_CHARS_DECIMAL = 1;
-
 
 const float GUI_WIDTH = 550;
 const float GUI_HEIGHT = 700;
@@ -43,11 +44,8 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
     //allocate 200 chars for the custom command
     screen2CustomCommand.reserve(200);
 
-    //get file path
-    std::string cwd = std::__fs::filesystem::current_path();
-    filePath = cwd.substr(0,cwd.find_last_of("/"))+"/data";
-
-    std::cout<<"FILE PATH: DFJKSLF: "<< filePath<<std::endl;
+    filePath = boost::filesystem::current_path();
+    std::cout << "########### Current path is : " << filePath <<" ##########"<< std::endl;
 
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -575,18 +573,25 @@ void displaySettings(bool isLoadData,
 
 
 //filterState = 0: no filter, 1 = submarine files, 2 = whitefin files
-std::vector<std::string> getFileDirectories(std::string path, int filterState = 0){
+std::vector<std::string> getFileDirectories(boost::filesystem::path pathIn, int filterState = 0){
+    using namespace boost::filesystem;
+
     std::vector<std::string> items;
-    for (const auto & entry : std::__fs::filesystem::directory_iterator(path)){
-        std::string tmp = entry.path();
-        items.push_back(tmp.substr(tmp.find_last_of("/")+1, tmp.size()));
+    for (directory_iterator itr(pathIn); itr!=directory_iterator(); ++itr)
+    {
+        items.push_back((itr->path().filename()).string());
     }
+
+//    for (const auto & entry : std::filesystem::directory_iterator(path)){
+//        std::string tmp = entry.path();
+//        items.push_back(tmp.substr(tmp.find_last_of("/")+1, tmp.size()));
+//    }
     return items;
 }
 
 //currState: 0 = no message, 1 = loading, 2 = success, 3 = error
 void loadDataFromFile(
-        std::string filePath,
+        boost::filesystem::path filePath,
         std::string &file,
         int& depth, float& gain, float& weight,
         bool& load,
@@ -630,7 +635,7 @@ void loadDataFromFile(
     //Select File Directory
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
 
-    std::vector<std::string> items = getFileDirectories(filePath, filterType);
+    std::vector<std::string> items = getFileDirectories(filePath / boost::filesystem::path("data"), filterType);
     static std::string current_item;
     if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
     if (ImGui::BeginCombo("##fileSelector", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
@@ -1099,8 +1104,10 @@ void GUI::interactionHandler() {
 
                 screen1CurrState = 1;
 
+                std::string fileName = (filePath / boost::filesystem::path("data/"+screen1File)).string();
                 //loadFile pointer function from main --> will only have 1 load file now with new data type
-                bool noError = readDataMain(*gridPointer, filePath + "/" + screen1File, dispGain, dispDepth, screen1DataUpdate, screen1ErrorMessage, probeType, screen1Error);
+                bool noError = readDataMain(*gridPointer, fileName,
+                        dispGain, dispDepth, screen1DataUpdate, screen1ErrorMessage, probeType, screen1Error);
                 gridPointer -> setUpdateCoefficient(screen1DataUpdate);
 
                 if(!noError){
@@ -1265,94 +1272,6 @@ bool GUI::passErrorCheckingScreen2(){
 
     return true;
 }
-
-//void GUI::setNumLinesDrawn(int num){
-//    if(num == -1)
-//        numLines = 0;
-//    else
-//        numLines = num;
-//}
-//
-//void GUI::setNumSamples(int num){
-//    numSamples = num;
-//}
-//
-//void GUI::setVoxels(int size){
-//    voxels = size;
-//}
-//
-//float GUI::getBrightness(){
-//    return brightness;
-//}
-//
-//float GUI::getGain(){
-//    return gain;
-//}
-//
-//float GUI::getUpdateCoefficient(){
-//    return updateCoefficient;
-//}
-//
-//void GUI::setUpdateCoefficient(float value){
-//    updateCoefficient = value;
-//}
-//
-//int GUI::getDepth(){
-//    return depth;
-//}
-//
-//std::string GUI::getFile(){
-//    std::string s(fileName);
-//    return ("data/" + s + ".txt");
-//}
-//
-//void GUI::doneLoading(){
-//    loading = false;
-//}
-//
-//int GUI::getThreshold() {
-//    return threshold;
-//}
-//
-//void GUI::setBrightness(float value) {
-//    brightness = value;
-//}
-//
-//void GUI::setGain(float value) {
-//    gain = value;
-//}
-//
-//void GUI::setThreshold(int value) {
-//    threshold = value;
-//}
-//
-//void GUI::setContrast(float value){
-//    contrast = value;
-//}
-//
-//float GUI::getContrast(){
-//    return contrast;
-//}
-//
-//void GUI::setFileSize(double size){
-//    fileSize = size;
-//}
-//
-//void GUI::setTime(float currTime){
-//    time = currTime;
-//}
-//
-//void GUI::setQuaternion(glm::vec4 quatIn) {
-//    quat = quatIn;
-//}
-//
-//void GUI::setEulerAngles(glm::vec3 eulerIn) {
-//    euler = eulerIn;
-//}
-//
-//int GUI::getZoom(){
-//    return zoom;
-//}
 
 /**
  * Returns whether the mouse ray intersects any specific GUI object on the screen.
