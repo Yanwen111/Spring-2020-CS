@@ -257,7 +257,7 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float r
 
     modelWorld = cubeRotation;
 
-    RenderText("This is sample text", 883.402344, 556, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+//    RenderText("This is sample text", 883.402344, 556, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
     render();
 }
@@ -539,8 +539,10 @@ void displaySettings(bool isLoadData,
         }
         items.emplace_back("+ Add Marker Pair");
 
-        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, current_marker_id == -1 ? ImVec4(0,0,0, 1.00f) : ImVec4(currColor.x, currColor.y, currColor.z, 1.00f));
+//        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
+        glm::vec3 tmpColor = current_marker_id == -1 ? glm::vec3(0,0,0) : markerList[current_marker_id].getColor();
+        ImVec4 currColor = ImVec4(tmpColor.x, tmpColor.y, tmpColor.z, 1.00f);
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, currColor);
         if (ImGui::BeginCombo("##markerPair",
                 current_marker_id == -1 ? "" : (char*)("Marker Pair " + std::to_string(markerList[current_marker_id].getNumber())).c_str())) // The second parameter is the label previewed before opening the combo.
         {
@@ -1202,9 +1204,9 @@ void GUI::drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float
 
     if(isDataLoaded && !isProbeLoaded){
         if(probeType == 0)
-            probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
+            probe.loadNewProbe("config_file/models/PROBE_CENTERED.stl");
         else
-            probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
+            probe.loadNewProbe("config_file/models/WHITE_FIN_CENTERED.stl");
         isProbeLoaded = true;
     }
     if(!isDataLoaded){
