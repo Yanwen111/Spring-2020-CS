@@ -484,46 +484,16 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
     rayDirection = glm::normalize(rayDirection);
 
     if(guiObjectPressed){
-        myGUIpointer->moveMarker(rayOriginWorld, rayDirection);
+        myGUIpointer->moveMarker(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
     }
     else {
         //check if mouse is on object
-        mouseOnGui = myGUIpointer->mouseOnObjects(rayOriginWorld, rayDirection);
+        mouseOnGui = myGUIpointer->mouseOnObjects(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
     }
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-
-//        //Check if the mouse is on any GUI objects (like markers)
-//        double xpos, ypos;
-//        //getting cursor position
-//        glfwGetCursorPos(window, &xpos, &ypos);
-//
-//        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-//        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-//        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-//        cameraToWorld[0] = rightH;
-//        cameraToWorld[1] = upH;
-//        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-//        cameraToWorld[3] = glm::vec4(cam.position, 1);
-//
-//        //Generate Ray
-//        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
-//        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
-//        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
-//        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-//        glm::vec4 rayOriginWorld, rayPWorld;
-//        rayOriginWorld = cameraToWorld * rayOrigin;
-//        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-//        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-//        rayDirection = glm::normalize(rayDirection);
-
-//        guiObjectPressed = myGUIpointer->mouseClickedObjects(rayOriginWorld, rayDirection);
-//        if(guiObjectPressed != -1){
-//            xposMarker = xpos;
-//            yposMarker = ypos;
-//        }
         if(mouseOnGui)
             guiObjectPressed = 1;
         else

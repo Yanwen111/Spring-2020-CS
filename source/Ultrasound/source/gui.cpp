@@ -5,8 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "gui.h"
 #include "rotation.h"
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 const ImVec4 blue = ImVec4(.196f,.40f,.663f, 100.0f);
 const ImVec4 purple = ImVec4(.486f,.184f,.678f, 100.0f);
@@ -18,6 +18,8 @@ const int INPUT_TEXT_CHARS_DECIMAL = 1;
 
 const float GUI_WIDTH = 550;
 const float GUI_HEIGHT = 700;
+
+const int FONT_SIZE = 18;
 
 const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::vec3(1.0f, 0.8f,0.0f), glm::vec3(0.0f, 1.0f, 0.8f)};
 
@@ -46,6 +48,9 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
 
     filePath = boost::filesystem::current_path();
     std::cout << "########### Current path is : " << filePath <<" ##########"<< std::endl;
+
+    // Setup FreeType Fonts
+    setUpFont();
 
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -85,6 +90,157 @@ GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
     dispVel = 1102;
 }
 
+void GUI::setUpFont(){
+    FT_Library  ft;
+    if (FT_Init_FreeType(&ft))
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+    FT_Face face;
+    std::string fontPath = filePath.string() + "/config_file/fonts/open-sans/OpenSans-Regular.ttf";
+    if (FT_New_Face(ft, fontPath.c_str(), 0, &face))
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
+    FT_Set_Pixel_Sizes(face, 0, FONT_SIZE);
+
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+
+    // Load first 128 characters of the ASCII character set
+    for (unsigned char c = 0; c < 128; c++)
+    {
+        // load character glyph
+        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+        {
+            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+            continue;
+        }
+        // generate texture
+        unsigned int texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RED,
+                face->glyph->bitmap.width,
+                face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                face->glyph->bitmap.buffer
+        );
+        // set texture options
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // now store character for later use
+        Character character = {
+                texture,
+                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                static_cast<unsigned int>(face->glyph->advance.x)
+        };
+        Characters.insert(std::pair<char, Character>(c, character));
+    }
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
+
+    // configure VAO/VBO for texture quads
+    // -----------------------------------
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    //setup Shader for text
+    std::string vmarker =
+            "#version 330 core\n"
+            "layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>\n"
+            "out vec2 TexCoords;\n"
+            "\n"
+            "uniform mat4 projection;\n"
+            "\n"
+            "void main()\n"
+            "{\n"
+            "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
+            "    TexCoords = vertex.zw;\n"
+            "}";
+
+    std::string fmarker =
+            "#version 330 core\n"
+            "in vec2 TexCoords;\n"
+            "out vec4 color;\n"
+            "\n"
+            "uniform sampler2D text;\n"
+            "uniform vec3 textColor;\n"
+            "\n"
+            "void main()\n"
+            "{    \n"
+            "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
+            "    color = vec4(textColor, 1.0) * sampled;\n"
+            "}";
+
+    textShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
+}
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
+// render line of text
+// -------------------
+void GUI::RenderText(std::string text, float x, float y, float scaleIn, glm::vec3 color)
+{
+    // activate corresponding render state
+    textShader.use();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+    textShader.setMat4("projection", projection);
+//    glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
+    textShader.setVec3("textColor", color.x, color.y, color.z);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(VAO);
+
+    // iterate through all characters
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++)
+    {
+        Character ch = Characters[*c];
+
+        float xpos = x + ch.Bearing.x * scaleIn;
+        float ypos = y - (ch.Size.y - ch.Bearing.y) * scaleIn;
+
+        float w = ch.Size.x * scaleIn;
+        float h = ch.Size.y * scaleIn;
+        // update VBO for each character
+        float vertices[6][4] = {
+                { xpos,     ypos + h,   0.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 1.0f },
+
+                { xpos,     ypos + h,   0.0f, 0.0f },
+                { xpos + w, ypos,       1.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 0.0f }
+        };
+        // render glyph texture over quad
+        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+        // update content of VBO memory
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // render quad
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+        x += (ch.Advance >> 6) * scaleIn; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+    }
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 //Draws the GUI on the screen and processes different user interactions to update values
 void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
     setUp();
@@ -100,6 +256,8 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float r
     drawProbe(projection, view, rotationX, rotationY);
 
     modelWorld = cubeRotation;
+
+    RenderText("This is sample text", 883.402344, 556, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
     render();
 }
@@ -148,6 +306,11 @@ void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     for(auto & marker : markers) {
         if(!marker.getHidden())
             marker.draw(projection, view, model);
+    }
+
+    if(intersectedMarker != nullptr && showMarkerDistance) {
+        RenderText("Marker " + std::to_string(intersectedMarker->getNumber()), markerXPos + FONT_SIZE, markerYPos, 1.0, intersectedMarker->getColor());
+        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth))+" cm", markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
     }
 }
 
@@ -362,6 +525,7 @@ void displaySettings(bool isLoadData,
         ImGui::NewLine();
     }
 
+    static int id = 0;
     if(ImGui::CollapsingHeader("Marker Options")){
         ImGui::NewLine(); ImGui::Indent();
         addText("Select Marker Pair"); ImGui::SameLine();
@@ -370,26 +534,27 @@ void displaySettings(bool isLoadData,
 
         static int current_marker_id = -1;
         std::vector<std::string> items;
-        for(int n = 0; n < markerList.size(); n++){
-            items.push_back("Marker Pair " + std::to_string(n));
+        for(auto & marker : markerList){
+            items.push_back("Marker Pair " + std::to_string(marker.getNumber()));
         }
         items.emplace_back("+ Add Marker Pair");
 
         glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
         ImGui::PushStyleColor(ImGuiCol_FrameBg, current_marker_id == -1 ? ImVec4(0,0,0, 1.00f) : ImVec4(currColor.x, currColor.y, currColor.z, 1.00f));
         if (ImGui::BeginCombo("##markerPair",
-                current_marker_id == -1 ? "" : (char*)("Marker Pair " + std::to_string(current_marker_id)).c_str())) // The second parameter is the label previewed before opening the combo.
+                current_marker_id == -1 ? "" : (char*)("Marker Pair " + std::to_string(markerList[current_marker_id].getNumber())).c_str())) // The second parameter is the label previewed before opening the combo.
         {
+            fprintf(stdout, "MARKER HERE!!!\n");
             for (int n = 0; n < items.size(); n++)
             {
-                glm::vec3 itemColor = markerColors[n % markerColors.size()];
+                glm::vec3 itemColor = (n==items.size()-1 ? glm::vec3(0,0,0) : markerList[n].getColor());
                 ImGui::PushStyleColor(ImGuiCol_Text, n == items.size() -1 ? ImVec4(1.0f, 1, 1, 1.00f) : ImVec4(itemColor.x, itemColor.y, itemColor.z, 1.00f));
                 bool is_selected = (current_marker_id == n); // You can store your selection however you want, outside or inside your objects
                 if (ImGui::Selectable((char*)items[n].c_str(), is_selected)){
                     if(n == items.size() - 1){
                         //If the user adds a new marker
                         current_marker_id = items.size() - 1;
-                        markerList.emplace_back(markerColors[current_marker_id % markerColors.size()]);
+                        markerList.emplace_back(markerColors[current_marker_id % markerColors.size()], ++id);
                     } else {
                         current_marker_id = n;
                     }
@@ -1307,7 +1472,7 @@ int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
     return 1;
 }
 
-bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection){
+bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen){
     intersectedMarker = nullptr;
 
     float minT = -1;
@@ -1326,13 +1491,19 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection){
         }
     }
 
-    if(minT == -1)
+    if(minT == -1){
+        showMarkerDistance = false;
         return false;
+    }
 
-    std::cout<<"Mouse INTERSECT!"<<std::endl;
-
-    if(intersectedMarker != nullptr)
+    if(intersectedMarker != nullptr){
         intersectedMarker->setIntersected(intersectedMarkerNum);
+
+        showMarkerDistance = true;
+
+        markerXPos = xPosScreen;
+        markerYPos = yPosScreen;
+    }
 
     return true;
 }
@@ -1466,7 +1637,7 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
  * @param rayOrigin origin of the ray
  * @param rayDirection direction of the ray
  */
-void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection){
+void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection, float xPosScreen, float yPosScreen){
     glm::vec3 markerPos;
     if(intersectedMarkerNum == 1)
         markerPos = intersectedMarker->getMarker1Pos();
@@ -1480,7 +1651,7 @@ void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     //Find the intersection point on the plane
     glm::vec3 P = rayOrigin + t*rayDirection;
 
-//    //Find the snapping point on the plane
+    //Find the snapping point on the plane
     if(snap)
         P = getSnapPoint(rayOrigin, P);
 
@@ -1497,75 +1668,15 @@ void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection){
     if(P.z > 1) P.z = 1;
     if(P.z < 0) P.z = 0;
 
-//    marker1x = P.x;
-//    marker1y = P.y;
-//    marker1z = P.z;
+    // current marker position to render distance text later
+    markerXPos = xPosScreen;
+    markerYPos = yPosScreen;
 
     if(intersectedMarkerNum == 1)
         intersectedMarker->setPositionMarker1(P);
     else
         intersectedMarker->setPositionMarker2(P);
 
-
-//    if(numMarker == 1){
-        //transform to world coordinates
-//        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
-//        glm::vec4 normal = glm::vec4(0,0,1,0);
-//        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
-//
-//        //Find the intersection point on the plane
-//        glm::vec3 P = rayOrigin + t*rayDirection;
-//
-//        //Find the snapping point on the plane
-//        if(snap)
-//            P = getSnapPoint(rayOrigin, P);
-//
-//        //Transform back to marker coordinates
-//        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-//        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
-//
-//        P = (P + glm::vec3(5, 5, 5)) / 10.0;
-//
-//        if(P.x > 1) P.x = 1;
-//        if(P.x < 0) P.x = 0;
-//        if(P.y > 1) P.y = 1;
-//        if(P.y < 0) P.y = 0;
-//        if(P.z > 1) P.z = 1;
-//        if(P.z < 0) P.z = 0;
-//
-//        marker1x = P.x;
-//        marker1y = P.y;
-//        marker1z = P.z;
-//    }
-//    if(numMarker == 2){
-//        glm::vec3 v0 = modelWorld*(glm::vec4(marker2x, marker2y, marker2z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
-//        glm::vec4 normal = glm::vec4(0,0,1,0);
-//        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
-//
-//        //Find the intersection point on the plane
-//        glm::vec3 P = rayOrigin + t*rayDirection;
-//
-//        //Find the snapping point on the plane
-//        if(snap)
-//            P = getSnapPoint(rayOrigin, P);
-//
-//        //Transform back to marker coordinates
-//        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-//        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
-//
-//        P = (P + glm::vec3(5, 5, 5)) / 10.0;
-//
-//        if(P.x > 1) P.x = 1;
-//        if(P.x < 0) P.x = 0;
-//        if(P.y > 1) P.y = 1;
-//        if(P.y < 0) P.y = 0;
-//        if(P.z > 1) P.z = 1;
-//        if(P.z < 0) P.z = 0;
-//
-//        marker2x = P.x;
-//        marker2y = P.y;
-//        marker2z = P.z;
-//    }
 }
 
 /**

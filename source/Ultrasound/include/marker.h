@@ -9,7 +9,7 @@
 class Marker {
 public:
     Marker();
-    Marker(glm::vec3 color);
+    Marker(glm::vec3 color, int myNum);
     void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     float getDistance(float freq, float vel, int depth);
     void setPositionMarker1(glm::vec3 pos);
@@ -25,6 +25,9 @@ public:
     void setHidden(bool val);
     bool getHidden();
 
+    glm::vec3 getColor();
+    int getNumber();
+
 private:
     //locations of the two markers
     glm::vec3 marker1;
@@ -32,6 +35,9 @@ private:
 
     //marker color
     glm::vec3 color;
+
+    //marker number
+    int num;
 
     //Rotation of the world
     glm::mat4 modelWorld;

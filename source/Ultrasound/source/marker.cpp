@@ -103,10 +103,20 @@ Marker::Marker(){
 //    intersected1 = false;
 
     color = glm::vec3(1.0f, 0.0f, 0.8f); //default color
+    num = -1; //default ID
 }
 
-Marker::Marker(glm::vec3 startColor) : Marker() {
+Marker::Marker(glm::vec3 startColor, int myNum) : Marker() {
     color = startColor;
+    num = myNum;
+}
+
+glm::vec3 Marker::getColor(){
+    return color;
+}
+
+int Marker::getNumber() {
+    return num;
 }
 
 void Marker::setHidden(bool val) {

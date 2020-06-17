@@ -33,6 +33,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../source/Ultrasound/../../extern/glad"
   "../source/Ultrasound/../../extern/glad/include"
   "../source/Ultrasound/../../extern/imgui"
+  "/Library/Frameworks/Mono.framework/Headers"
+  "/usr/local/include/freetype2"
   "../source/Ultrasound/../../extern/glm"
   "../source/Ultrasound/../../source/DensityMap"
   "../extern/glfw/include"

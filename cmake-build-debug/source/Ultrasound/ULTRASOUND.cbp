@@ -36,6 +36,8 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/Library/Frameworks/Mono.framework/Headers"/>
+					<Add directory="/usr/local/include/freetype2"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
@@ -72,6 +74,8 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/Library/Frameworks/Mono.framework/Headers"/>
+					<Add directory="/usr/local/include/freetype2"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>

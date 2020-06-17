@@ -58,9 +58,9 @@ public:
 
     //returns int for which object is clicked
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
-    void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
-    bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
 //    bool loadNew();
 //    int getProbe();
@@ -162,44 +162,10 @@ private:
     float scaleZX = 0;
     float scaleZY = 1;
 
-
-//    bool loading;
-//    int depth;
-//    float brightness;
-//    float gain;
-//    int threshold;
-//    float contrast;
-//    double time;
-//    int numLines;
-//    int zoom;
-//    bool setMarker;
-//
-//    //whether or not to enable snapping when moving markers
+    //whether or not to enable snapping when moving markers
     bool snap = false;
     int snapThreshold = 130;
-//
-//    float updateCoefficient;
-//
-//    float marker1x, marker1y, marker1z;
-//    float marker2x, marker2y, marker2z;
-//
-//    double velocity;
-//    int numSamples;
-//
-//    char fileName[100] = {0};
-//    int probeType;
-//
-//    bool newLoad;
-//
-//    int voxels;
-//    double fileSize;
-//    double frequency;
-//
-//    glm::vec4 quat;
-//    glm::vec3 euler;
-//
-//    Marker marker;
-//
+
     std::vector<Marker> markers;
 
     //marker pair that mouse is on
@@ -214,15 +180,30 @@ private:
 
     bool isProbeLoaded = false;
     int probeType = 0; // 0 for submarine, 1 for white fin
-//    //locations of where the scales are located
-//    float scaleX1, scaleX2, scaleY1, scaleY2, scaleZ1, scaleZ2;
-//
-//    int mediumActive;
-//    char currVelocity[10] = { 0 };
-//
+
     glm::mat4 modelWorld;
 
+    //****************************  Render 2D Text Vars ************************************
+    //Characters map needed for FreeType
+    struct Character {
+        unsigned int TextureID;  // ID handle of the glyph texture
+        glm::ivec2   Size;       // Size of glyph
+        glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
+        unsigned int Advance;    // Offset to advance to next glyph
+    };
+    std::map<char, Character> Characters;
+    unsigned int VAO, VBO;
+    void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);
+    Shader textShader;
+
+    //whether to display distance next to Marker
+    bool showMarkerDistance;
+    //marker positions in terms of screen coordinates
+    float markerXPos;
+    float markerYPos;
+
     static void setUp();
+    void setUpFont();
     void drawWidgets(glm::mat4 projection, glm::mat4 view);
     void drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     void drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
