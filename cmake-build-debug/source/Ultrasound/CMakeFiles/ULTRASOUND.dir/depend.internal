@@ -343,9 +343,12 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o
  ../source/Ultrasound/include/gui.h
  ../source/Ultrasound/include/helper.h
  ../source/Ultrasound/include/marker.h
+ ../source/Ultrasound/include/probe.h
  ../source/Ultrasound/include/rotation.h
  ../source/Ultrasound/include/scale.h
  /home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/source/gui.cpp
+ /usr/include/freetype2/freetype/config/ftheader.h
+ /usr/include/freetype2/ft2build.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o
  ../extern/glfw/include/GLFW/glfw3.h
  ../source/Ultrasound/include/helper.h

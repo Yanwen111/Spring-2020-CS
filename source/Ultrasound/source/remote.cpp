@@ -198,7 +198,7 @@ void Socket::listAllFiles() {
     }
 }
 
-void Socket::customCommand(char* command) {
+void Socket::customCommand(char* command, int ms) {
     int rc;
     char buffer[1024];
     unsigned int nbytes, nwritten;
@@ -223,7 +223,7 @@ void Socket::customCommand(char* command) {
     while (nbytes > 0)
     {
         fwrite(buffer, 1, nbytes, stdout);
-        nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 1000);
+        nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, ms);
         usleep(5000L);
     }
     //sleep(1);
@@ -232,12 +232,7 @@ void Socket::customCommand(char* command) {
 }
 
 void Socket::multiCommands() {
-    customCommand("cd IOT_project/sshtest");
-    customCommand("ls");
-    customCommand("make clean");
-    customCommand("ls");
-    customCommand("make all");
-    customCommand("./test");
+    customCommand("cd IOT_project/sshtest", 500);
     //customCommand("./test");
 }
 
@@ -282,7 +277,8 @@ int Socket::connect_session(ssh_session session, char *hostname, char *username,
 
     if (session == NULL) {
         fprintf(stderr, "Error creating new ssh session");
-        exit(-1);
+//        exit(-1);
+        throw(std::runtime_error("Error creating new ssh session"));
     }
 
     // set options
@@ -292,18 +288,25 @@ int Socket::connect_session(ssh_session session, char *hostname, char *username,
     // connect to server
     rc = ssh_connect(session);
     if (rc != SSH_OK) {
-        fprintf(stderr, "Error connecting to host: %s\n", ssh_get_error(session));
+//        fprintf(stderr, "Error connecting to host: %s\n", ssh_get_error(session));
+//        ssh_free(session);
+//        return -1;
+        std::string errorMessage = std::string("Error connecting to host: ") + ssh_get_error(session);
         ssh_free(session);
-        exit(-1);
+        fprintf(stderr, "%s", errorMessage.c_str());
+        throw(std::runtime_error(errorMessage));
     }
 
     // authenticate using password
     rc = ssh_userauth_password(session, NULL, password);
     if (rc != SSH_AUTH_SUCCESS) {
-        fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
+//        fprintf(stderr, "Error authenticating with password: %s\n", ssh_get_error(session));
+        std::string errorMessage = std::string("Error authenticating with password: ") + ssh_get_error(session);
         ssh_disconnect(session);
         ssh_free(session);
-        exit(-1);
+        fprintf(stderr, "%s", errorMessage.c_str());
+        throw(std::runtime_error(errorMessage));
+//        exit(-1);
     }
 
     return rc;
@@ -312,17 +315,22 @@ int Socket::connect_session(ssh_session session, char *hostname, char *username,
 int Socket::connect_channel (ssh_channel channel, ssh_session session) {
     int rc;
     if (channel == NULL) {
-        fprintf(stderr, "Error creating channel: %s\n", ssh_get_error(channel));
+        std::string errorMessage = std::string("Error creating channel: ") + ssh_get_error(channel);
+//        fprintf(stderr, "Error creating channel: %s\n", ssh_get_error(channel));
         ssh_channel_free(channel);
-        exit(-1);
+        fprintf(stderr, "%s", errorMessage.c_str());
+        throw(std::runtime_error(errorMessage));
+//        exit(-1);
     }
 
     // connect shell channel
     rc = ssh_channel_open_session(channel);
     if (rc != SSH_OK) {
-        fprintf(stderr, "Error opening session in channel: %s\n", ssh_get_error(session));
+        //        fprintf(stderr, "Error opening session in channel: %s\n", ssh_get_error(session));
+        std::string errorMessage = std::string("Error opening session in channel: ") + ssh_get_error(session);
         ssh_channel_free(channel);
-        exit(-1);
+        fprintf(stderr, "%s", errorMessage.c_str());
+        throw(std::runtime_error(errorMessage));
     }
     return rc;
 }

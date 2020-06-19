@@ -34,7 +34,7 @@ public:
     int linkStart();
     void changeFolder(char* folder_name); /* IOT_Project */
     void listAllFiles();
-    void customCommand(char* command);
+    void customCommand(char* command, int ms);
     void multiCommands();
     int interactiveShell();
     void linkTerminated();
@@ -47,4 +47,3 @@ private:
     int kbhit();/* Under Linux, it determines whether a key has been pressed. Under Windows, it is a standard function */
 
 };
-

@@ -5,83 +5,260 @@
 #include "imgui_impl_glfw.h"
 #include "gui.h"
 #include "rotation.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
-GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer){
+const ImVec4 blue = ImVec4(.196f,.40f,.663f, 100.0f);
+const ImVec4 purple = ImVec4(.486f,.184f,.678f, 100.0f);
+const ImVec4 orange = ImVec4(1.0f,.706f,.231f, 100.0f);
+
+const int INPUT_TEXT_READ_ONLY = 16384;
+const int INPUT_TEXT_PASSWORD = 32768;
+const int INPUT_TEXT_CHARS_DECIMAL = 1;
+
+const float GUI_WIDTH = 550;
+const float GUI_HEIGHT = 700;
+
+const int FONT_SIZE = 18;
+
+const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::vec3(1.0f, 0.8f,0.0f), glm::vec3(0.0f, 1.0f, 0.8f)};
+
+GUI::GUI(GLFWwindow *window, const char* glsl_version, DensityMap* pointer,
+        void (*setZoom)(int),
+        bool (*readData)(DensityMap&, std::string, float, int, bool&, std::string&, int&, bool&),
+        bool (*connectToProbe)(DensityMap&, std::string, std::string, std::string, std::string,
+                                bool, int, int, int, int, int, int,
+                                std::string, int, std::string&, bool&, bool&, std::string&),
+        void (*setDepth)(int),
+        void (*setGain)(float)
+        ){
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
 
+    readDataMain = readData;
+    setZoomMain = setZoom;
+    connectToProbeMain = connectToProbe;
+    setDepthMain = setDepth;
+    setGainMain = setGain;
+
+    //allocate 200 chars for the custom command
+    screen2CustomCommand.reserve(200);
+
+    filePath = boost::filesystem::current_path();
+    std::cout << "########### Current path is : " << filePath <<" ##########"<< std::endl;
+
+    // Setup FreeType Fonts
+    setUpFont();
+
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsClassic();
+    //Setup ImGui Style
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
+    style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.196f, 0.4f, 0.663f, 1.00f);
+    style.Colors[ImGuiCol_TitleBg] = ImVec4(0.1558f,.3178f,.5265f, 1.00f);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.1558f,.3178f,.5265f, 1.00f);
+    style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.1558f,.3178f,.5265f, 1.00f);
 
-    // Setup Marker class
-    marker = Marker();
-    // position of marker 1
-    glm::vec3 tmpPos = marker.getMarker1Pos();
-    marker1x = tmpPos.x;
-    marker1y = tmpPos.y;
-    marker1z = tmpPos.z;
-    // position of marker 2
-    tmpPos = marker.getMarker2Pos();
-    marker2x = tmpPos.x;
-    marker2y = tmpPos.y;
-    marker2z = tmpPos.z;
+    //Slider Colors
+    style.Colors[ImGuiCol_SliderGrab]            = ImVec4(.027f,.18f,.38f, 1.00f);
+    style.Colors[ImGuiCol_SliderGrabActive]      = ImVec4(.027f,.18f,.38f, 1.00f);
+    style.Colors[ImGuiCol_FrameBg]               = ImVec4(.831f,.882f,.949f, 1.00f);
+    style.Colors[ImGuiCol_FrameBgHovered]        = ImVec4(.357f,.529f,.753f, 1.00f);
+    style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(.643f,.584f,.835f, 1.00f);
 
-    //position of the three scales
-    scaleX1 = scaleX2 = 1;
-    scaleY1 = 0;
-    scaleY2 = 1;
-    scaleZ1 = 0;
-    scaleZ2 = 1;
-
-    //the medium selected to set up velocity
-    mediumActive = 0;
-
-    reset();
-
-    //Whether the user clicked the load button
-    newLoad = false;
-    //If the data thread is loading a new file
-    loading = false;
-    // depth of the line data to display (0th cell to the depth cell)
-    depth = 1500;
-    // parameter for the time gain control
-    gain = 1.0f;
-    // weighting value (to control how DensityMap handles new data in the same cells)
-    updateCoefficient = 1.0f;
-    // Enable snapping when moving markers
-    snap = false;
-    // The threshold of values to snap to
-    snapThreshold = 70;
+    style.FrameRounding = 4;
+    style.WindowPadding = ImVec2(15,15);
 
     //Set up the scale
     scale = Scale();
 
+    //Set up the probe
+    probe = Probe();
+
     //Pointer to the DensityMap grid object
     gridPointer = pointer;
+
+    //set all parameter values
+    reset();
+
+    dispVel = 1102;
+}
+
+void GUI::setUpFont(){
+    FT_Library  ft;
+    if (FT_Init_FreeType(&ft))
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+
+    FT_Face face;
+    std::string fontPath = filePath.string() + "/config_file/fonts/open-sans/OpenSans-Regular.ttf";
+    if (FT_New_Face(ft, fontPath.c_str(), 0, &face))
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+
+    FT_Set_Pixel_Sizes(face, 0, FONT_SIZE);
+
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+
+    // Load first 128 characters of the ASCII character set
+    for (unsigned char c = 0; c < 128; c++)
+    {
+        // load character glyph
+        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+        {
+            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+            continue;
+        }
+        // generate texture
+        unsigned int texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RED,
+                face->glyph->bitmap.width,
+                face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                face->glyph->bitmap.buffer
+        );
+        // set texture options
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // now store character for later use
+        Character character = {
+                texture,
+                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                static_cast<unsigned int>(face->glyph->advance.x)
+        };
+        Characters.insert(std::pair<char, Character>(c, character));
+    }
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
+
+    // configure VAO/VBO for texture quads
+    // -----------------------------------
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    //setup Shader for text
+    std::string vmarker =
+            "#version 330 core\n"
+            "layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>\n"
+            "out vec2 TexCoords;\n"
+            "\n"
+            "uniform mat4 projection;\n"
+            "\n"
+            "void main()\n"
+            "{\n"
+            "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
+            "    TexCoords = vertex.zw;\n"
+            "}";
+
+    std::string fmarker =
+            "#version 330 core\n"
+            "in vec2 TexCoords;\n"
+            "out vec4 color;\n"
+            "\n"
+            "uniform sampler2D text;\n"
+            "uniform vec3 textColor;\n"
+            "\n"
+            "void main()\n"
+            "{    \n"
+            "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
+            "    color = vec4(textColor, 1.0) * sampled;\n"
+            "}";
+
+    textShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
+}
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
+// render line of text
+// -------------------
+void GUI::RenderText(std::string text, float x, float y, float scaleIn, glm::vec3 color)
+{
+    // activate corresponding render state
+    textShader.use();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+    textShader.setMat4("projection", projection);
+//    glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
+    textShader.setVec3("textColor", color.x, color.y, color.z);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(VAO);
+
+    // iterate through all characters
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++)
+    {
+        Character ch = Characters[*c];
+
+        float xpos = x + ch.Bearing.x * scaleIn;
+        float ypos = y - (ch.Size.y - ch.Bearing.y) * scaleIn;
+
+        float w = ch.Size.x * scaleIn;
+        float h = ch.Size.y * scaleIn;
+        // update VBO for each character
+        float vertices[6][4] = {
+                { xpos,     ypos + h,   0.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 1.0f },
+
+                { xpos,     ypos + h,   0.0f, 0.0f },
+                { xpos + w, ypos,       1.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 0.0f }
+        };
+        // render glyph texture over quad
+        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+        // update content of VBO memory
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // render quad
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+        x += (ch.Advance >> 6) * scaleIn; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+    }
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 //Draws the GUI on the screen and processes different user interactions to update values
-void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
+void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY){
     setUp();
-    isReset = false;
-    modelWorld = model;
-    drawWidgets(projection, view, model);
+    drawWidgets(projection, view);
+    interactionHandler();
 
-    //set up velocity
-    if(mediumActive == 0) velocity = 1102;
-    if(mediumActive == 1) velocity = 1538;
-    if(mediumActive == 2) velocity = atof(currVelocity);
+    glm::mat4 cubeRotation = glm::mat4(1.0f);
+    cubeRotation = glm::rotate(cubeRotation, rotationY, glm::vec3(0, 1, 0));
+    cubeRotation = glm::rotate(cubeRotation, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
+    drawScale(projection, view, cubeRotation);
+    drawMarkers(projection, view, cubeRotation);
 
-    if(setMarker){
-        drawMarkers(projection, view, model);
-    }
-    drawScale(projection, view, model);
+    drawProbe(projection, view, rotationX, rotationY);
+
+    modelWorld = cubeRotation;
+
+//    RenderText("This is sample text", 883.402344, 556, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+
     render();
 }
 
@@ -106,192 +283,227 @@ void GUI::cleanUp(){
 
 // Resets parameters to original default values
 void GUI::reset(){
-    brightness = 0.0f;
-    gain = 0.0f;
-    zoom = 70;
-    contrast = 1.0f;
-    threshold = 1;
-    isReset = true;
-    setMarker = false;
-    velocity = 1102;
-    frequency = 15.6;
-    snap = false;
+    if(!isLoadFile){
+        dispDepth = 1500;
+        dispGain = 1.0;
+    }
+
+    dispWeight = 1;
+    dispBrightness = 0.0f;
+    dispContrast = 1.0f;
+    dispCutoff = 1;
+    dispZoom = 70;
 }
 
 //Draw the scales
 void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-    scale.setMeasurements(frequency, velocity, numSamples);
-    scale.draw(projection, view, model, glm::vec2(scaleX1, scaleX2), glm::vec2(scaleY1, scaleY2), glm::vec2(scaleZ1, scaleZ2));
+    scale.setMeasurements(dispFreq, dispVel, dispDepth);
+    scale.draw(projection, view, model, glm::vec2(scaleXY, scaleXZ), glm::vec2(scaleYX, scaleYZ), glm::vec2(scaleZX, scaleZY));
 }
 
 //Draw the markers
 void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-    marker.setPositionMarker1(glm::vec3(marker1x,marker1y,marker1z));
-    marker.setPositionMarker2(glm::vec3(marker2x,marker2y,marker2z));
-    marker.draw(projection, view, model);
+    for(auto & marker : markers) {
+        if(!marker.getHidden())
+            marker.draw(projection, view, model);
+    }
+
+    if(intersectedMarker != nullptr && showMarkerDistance) {
+        RenderText("Marker " + std::to_string(intersectedMarker->getNumber()), markerXPos + FONT_SIZE, markerYPos, 1.0, intersectedMarker->getColor());
+        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth))+" cm", markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
+    }
 }
 
-//Draws the ImGui widgets on the screen
-void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-    // render your IMGUI
-    ImGui::Begin("GUI");
+void addText(const char* text, ImVec4 color=ImVec4(0,0,0,1.0f), float size=1.0f){
+    ImGui::SetWindowFontScale(size);
+    ImGui::TextColored(color, text);
+    ImGui::SetWindowFontScale(1.0f);
+}
 
-    //Load new file
-    ImGui::Text("Load New File");
-    ImGui::Indent();
+void createToolTip(const char* text){
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(.937f,0.902f,0.961f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+    if (ImGui::IsItemActive() || ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(350.0f);
+        ImGui::TextUnformatted(text);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+    ImGui::PopStyleColor(2);
+}
 
-        ImGui::Text("File name: data/");
-        ImGui::SameLine();
-        ImGui::PushItemWidth(300);
-        ImGui::InputText(".txt", fileName, IM_ARRAYSIZE(fileName));
-        ImGui::PopItemWidth();
-
-        ImGui::Text("Select Probe Type");
-        ImGui::Indent();
-        ImGui::RadioButton("Submarine", &probeType, 0);
-        ImGui::RadioButton("White Fin", &probeType, 1);
-        ImGui::Unindent();
-
-        ImGui::PushItemWidth(300);
-        ImGui::SliderInt("Depth", &depth, 1, 2500);
-        ImGui::SliderFloat("Gain", &gain, 0, 5);
-        ImGui::SliderFloat("Update Weight", &updateCoefficient, 0, 1);
-        ImGui::PopItemWidth();
-
-        ImGui::PushID(1);
-        if(loading) {
-            ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(207/360.0f, 0.4f, .4f));
-            ImGui::Button("Load");
-            ImGui::PopStyleColor(3);
-            ImGui::SameLine();
-            ImGui::Text("Loading...");
-            newLoad = false;
-        }
-        else{
-            ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(207/360.0f, 0.6f, .6f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(207/360.0f, 0.8f, .8f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(207/360.0f, 1.0f, 1.0f));
-            if(ImGui::Button("Load"))
-            {
-                newLoad = true;
-                loading = true;
-            }
-            else{
-                newLoad = false;
-            }
-            ImGui::PopStyleColor(3);
-        }
-        ImGui::PopID();
-    ImGui::Unindent();
-
-    ImGui::NewLine();
-
-    // Reset Button
+void purpleButton(const char* text, bool& pressed, float width=100, float height=50){
     ImGui::PushID(1);
-    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1/7.0f, 0.6f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1/7.0f, 0.7f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1/7.0f, 0.8f, 0.8f));
-    if (ImGui::Button("Reset Settings"))
-        reset();
-    ImGui::PopStyleColor(3);
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.486f, .184f, .678f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.647f, 0.439f, 0.78f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.243f, 0.02f, 0.388f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+    pressed = ImGui::Button(text, ImVec2(width, height));
+    ImGui::PopStyleColor(4);
     ImGui::PopID();
+}
 
+void purpleButtonDisabled(const char* text, bool& pressed, float width=100, float height=50){
+    ImGui::PushID(1);
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.243f, 0.02f, 0.388f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.243f, 0.02f, 0.388f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.243f, 0.02f, 0.388f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+    pressed = ImGui::Button(text, ImVec2(width, height));
+    ImGui::PopStyleColor(4);
+    ImGui::PopID();
+}
+
+void yellowButton(const char* text, bool& pressed){
+    ImGui::PushID(1);
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, .988f, .231f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f,	0.996f,	0.663f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(.804f, .796f, 0.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+    pressed = ImGui::Button(text);
+    ImGui::PopStyleColor(4);
+    ImGui::PopID();
+}
+
+void yellowButtonClicked(const char* text, bool& pressed){
+    ImGui::PushID(1);
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.804f, .796f, 0.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(.804f, .796f, 0.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(.804f, .796f, 0.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+    pressed = ImGui::Button(text);
+    ImGui::PopStyleColor(4);
+    ImGui::PopID();
+}
+
+void drawOpenFrame(bool& pressedLoad, bool& pressedScan){
+    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT / 2.0));
+//    ImGui::SetNextWindowPos(ImVec2(500,300));
+
+    ImGui::Begin("Ultrasonos");
+    float startx = ImGui::GetWindowSize().x * 0.5f;
+    ImGui::NextColumn();
     ImGui::NewLine();
-
-    ImGui::SliderFloat("Brightness", &brightness, -1.0f, 1.0f);
-    ImGui::SliderFloat("Contrast", &contrast, 0.1f, 10.0f); //Goes to infinity, not including 0
-    ImGui::SliderInt("Threshold Cutoff", &threshold, 0, 255);
-    ImGui::SliderInt("Zoom field of view", &zoom, 80, 10);
-
     ImGui::NewLine();
-    ImGui::Checkbox("Enable Snapping", &snap);
-    ImGui::Indent();
-    ImGui::PushItemWidth(300);
-    ImGui::SliderInt("Snap Threshold", &snapThreshold, 0, 255);
-    ImGui::PopItemWidth();
-    ImGui::Unindent();
-
-    ImGui::Checkbox("Set Marker", &setMarker);
-    if(setMarker) {
-        ImGui::Text("Distance between markers: ");
-        ImGui::SameLine();
-        ImGui::TextColored(ImColor(255, 255, 50, 255), "%f cm", marker.getDistance(frequency, velocity, numSamples));
-
-        ImGui::Text("Marker 1 Movement");
-        ImGui::PushItemWidth(80);
-        ImGui::SliderFloat("X1", &marker1x, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Y1", &marker1y, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Z1", &marker1z, 0.0f, 1.0f);
-        ImGui::PopItemWidth();
-
-        ImGui::Text("Marker 2 Movement");
-        ImGui::PushItemWidth(80);
-        ImGui::SliderFloat("X2", &marker2x, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Y2", &marker2y, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Z2", &marker2z, 0.0f, 1.0f);
-        ImGui::PopItemWidth();
-    }
-
     ImGui::NewLine();
-    ImGui::Text("Scale shown in cm");
-    if (ImGui::CollapsingHeader("Scale Options")) {
-        ImGui::Text("Scale X Location");
-        ImGui::Indent();
-        ImGui::PushItemWidth(80);
-        ImGui::SliderFloat("X scale: Y", &scaleX1, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("X scale: Z", &scaleX2, 0.0f, 1.0f);
-        ImGui::PopItemWidth();
-
-        ImGui::Unindent();
-        ImGui::Text("Scale Y Location");
-        ImGui::Indent();
-        ImGui::PushItemWidth(80);
-        ImGui::SliderFloat("Y scale: X", &scaleY1, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Y scale: Z", &scaleY2, 0.0f, 1.0f);
-        ImGui::PopItemWidth();
-
-        ImGui::Unindent();
-        ImGui::Text("Scale Z Location");
-        ImGui::Indent();
-        ImGui::PushItemWidth(80);
-        ImGui::SliderFloat("Z scale: X", &scaleZ1, 0.0f, 1.0f);
-        ImGui::SameLine();
-        ImGui::SliderFloat("Z scale: Y", &scaleZ2, 0.0f, 1.0f);
-        ImGui::PopItemWidth();
-    }
+    ImGui::NewLine();
+    ImGui::Indent(startx - 110);
+    addText("Ultrasonos", ImColor(0,0,0, 255), 3);
+    ImGui::Unindent(startx - 110);
+    ImGui::NewLine();
+    ImGui::Indent(startx - 170);
+    addText("Click on one of the two options below to begin");
+    ImGui::Unindent(startx - 170);
+    ImGui::NewLine();
+    ImGui::NewLine();
+    ImGui::Indent(ImGui::GetWindowSize().x * 0.5f - 120);
+    purpleButton("Load File", pressedLoad);
+    ImGui::SameLine();
+    ImGui::Indent(120);
+    purpleButton("Scan", pressedScan);
     ImGui::End();
+}
 
-    ImGui::Begin("Statistics");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+char currVelocity[10] = { 0 };
+void displaySettings(bool isLoadData,
+                     //display
+                     int& depth, float& gain, float& weight,
+                     float& brightness, float& contrast, int& cutoff, int& zoom,
+                     bool& resetParametersPressed,
+                     //speed of sound
+                     int& mediumActive,
+                     float velocity, float freq, std::string& inputVel,
 
-    int hr = time / 3600;
-    int min = (time - 3600 * hr) / 60.0;
-    int sec = (time - 3600 * hr - 60 * min);
-    int milli = (time - 3600*hr - 60*min - sec)*1000;
-    ImGui::Text("Time: %d:%d:%d:%d", hr, min, sec, milli);
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-//    ImGui::Text("File size: %f", fileSize);
-    ImGui::NewLine();
+                     //scale
+                     float& scaleXY, float& scaleXZ, float& scaleYX, float& scaleYZ, float& scaleZX, float& scaleZY,
 
-    ImGui::Text("Number of lines read in file: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d", numLines);
-    ImGui::Text("# Voxels: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d x %d x %d", voxels, voxels, voxels);
-    ImGui::Text("Number of samples per line: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 255, 50, 255), "%d", numSamples);
-    ImGui::NewLine();
+                     //marker
+                     std::vector<Marker>& markerList,
 
-    if (ImGui::CollapsingHeader("Select Speed of Sound in Medium: ")) {
+                     //snap
+                     bool& enableSnap, int& snapThresholdIn
+        ) {
+    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+    ImGui::Begin("Display Settings");
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+    if(ImGui::CollapsingHeader("Display Parameters")){
+        ImGui::NewLine();
+        if (!isLoadData) {
+            addText("Set Display Parameters");
+            ImGui::Indent();
+            addText("Depth");
+            ImGui::Indent();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderInt("##depth", &depth, 1, 2500);
+            createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
+            ImGui::PopItemWidth();
+            ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+            ImGui::Indent();
+            addText("Gain");
+            ImGui::Indent();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderFloat("##gain", &gain, 0, 5);
+            createToolTip("Time gain compensation value.\n"
+                          "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
+            ImGui::PopItemWidth();
+            ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+            ImGui::Indent();
+            addText("Weight");
+            ImGui::Indent();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderFloat("##weight", &weight, 0, 1);
+            createToolTip("Weight to handle data in the same cell.\n\n"
+                          "cell value = previous + new * weight");
+            ImGui::PopItemWidth();
+            ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+        }
+        ImGui::Indent();
+        addText("Brightness");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderFloat("##brightness", &brightness, -1, 1);
+        createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+        ImGui::Indent();
+        addText("Contrast");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderFloat("##contrast", &contrast, 0.1f, 10);
+        createToolTip("Time gain compensation value.\n"
+                      "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+        ImGui::Indent();
+        addText("Threshold Cutoff");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderInt("##threshold", &cutoff, 0,255);
+        createToolTip("Weight to handle data in the same cell.\n\n"
+                      "cell value = previous + new * weight");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+        ImGui::Indent();
+        addText("Zoom field of view");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderInt("##zoom", &zoom,  80, 10);
+        createToolTip("Weight to handle data in the same cell.\n\n"
+                      "cell value = previous + new * weight");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+        purpleButton("Reset Parameters", resetParametersPressed, 130, 25);
+        ImGui::NewLine();
+    }
+    if(ImGui::CollapsingHeader("Select Speed of Sound in Medium")){
+        ImGui::NewLine();
         ImGui::Indent();
         ImGui::RadioButton("Silicone Gel", &mediumActive, 0);
         ImGui::RadioButton("Soft Tissue", &mediumActive, 1);
@@ -299,174 +511,933 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
         ImGui::SameLine();
         ImGui::PushItemWidth(80);
         ImGui::InputText("m/s", currVelocity, IM_ARRAYSIZE(currVelocity));
+
+        inputVel = currVelocity;
+
         ImGui::PopItemWidth();
         ImGui::Unindent();
         ImGui::NewLine();
+
+        addText("Velocity through medium: "); ImGui::SameLine();
+        addText((std::to_string(velocity) + " m/s").c_str(), purple);
+        addText("Frequency:               "); ImGui::SameLine();
+        addText((std::to_string(freq) + " MHz").c_str(), purple);
+        ImGui::NewLine();
     }
 
-    ImGui::Text("Velocity used for calculation: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 255, 50, 255), "%f m/s", velocity);
-    ImGui::Text("Frequency: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImColor(255, 255, 50, 255), "%f MHz", frequency);
+    static int id = 0;
+    if(ImGui::CollapsingHeader("Marker Options")){
+        ImGui::NewLine(); ImGui::Indent();
+        addText("Select Marker Pair"); ImGui::SameLine();
+        //Select marker pair
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+
+        static int current_marker_id = -1;
+        std::vector<std::string> items;
+        for(auto & marker : markerList){
+            items.push_back("Marker Pair " + std::to_string(marker.getNumber()));
+        }
+        items.emplace_back("+ Add Marker Pair");
+
+//        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
+        glm::vec3 tmpColor = current_marker_id == -1 ? glm::vec3(0,0,0) : markerList[current_marker_id].getColor();
+        ImVec4 currColor = ImVec4(tmpColor.x, tmpColor.y, tmpColor.z, 1.00f);
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, currColor);
+        if (ImGui::BeginCombo("##markerPair",
+                current_marker_id == -1 ? "" : (char*)("Marker Pair " + std::to_string(markerList[current_marker_id].getNumber())).c_str())) // The second parameter is the label previewed before opening the combo.
+        {
+            fprintf(stdout, "MARKER HERE!!!\n");
+            for (int n = 0; n < items.size(); n++)
+            {
+                glm::vec3 itemColor = (n==items.size()-1 ? glm::vec3(0,0,0) : markerList[n].getColor());
+                ImGui::PushStyleColor(ImGuiCol_Text, n == items.size() -1 ? ImVec4(1.0f, 1, 1, 1.00f) : ImVec4(itemColor.x, itemColor.y, itemColor.z, 1.00f));
+                bool is_selected = (current_marker_id == n); // You can store your selection however you want, outside or inside your objects
+                if (ImGui::Selectable((char*)items[n].c_str(), is_selected)){
+                    if(n == items.size() - 1){
+                        //If the user adds a new marker
+                        current_marker_id = items.size() - 1;
+                        markerList.emplace_back(markerColors[current_marker_id % markerColors.size()], ++id);
+                    } else {
+                        current_marker_id = n;
+                    }
+                }
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+                ImGui::PopStyleColor();
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::PopStyleColor(2);
+
+        bool enableSnapTmp = false;
+        if(enableSnap){
+            yellowButton("Disable Snap", enableSnapTmp); ImGui::SameLine();
+
+            addText("          Snap Threshold"); ImGui::SameLine();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderInt("##snapThreshold", &snapThresholdIn, 0, 255);
+            ImGui::PopItemWidth();
+
+            if(enableSnapTmp)
+                enableSnap = false;
+        }
+        else{
+            yellowButton("Enable Snap", enableSnapTmp);
+            if(enableSnapTmp)
+                enableSnap = true;
+        }
+        ImGui::NewLine();
+
+
+        //Load the marker options
+        if(current_marker_id != -1 && current_marker_id != markerList.size()){
+            addText("Distance between markers: "); ImGui::SameLine();
+            addText(std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)).c_str(), purple);
+
+            //get marker positions
+            Marker currMarker = markerList[current_marker_id];
+            glm::vec3 marker1Pos = currMarker.getMarker1Pos();
+            float marker1X = marker1Pos.x;
+            float marker1Y = marker1Pos.y;
+            float marker1Z = marker1Pos.z;
+
+            glm::vec3 marker2Pos = currMarker.getMarker2Pos();
+            float marker2X = marker2Pos.x;
+            float marker2Y = marker2Pos.y;
+            float marker2Z = marker2Pos.z;
+
+            ImGui::NewLine(); ImGui::Indent();
+            addText("Click and drag markers to move, or use the sliders below", blue); ImGui::NewLine();
+
+            ImGui::Indent();
+            addText("Marker 1 Position"); ImGui::Indent();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker1X", &marker1X, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("X     ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker1Y", &marker1Y, 0, 1);
+            ImGui::SameLine();
+            addText("Y     ");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##marker1Z", &marker1Z, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("Z     ");
+            ImGui::Unindent(); ImGui::Unindent();ImGui::Unindent();
+
+            ImGui::NewLine(); ImGui::Indent();
+            ImGui::Indent();
+            addText("Marker 2 Position"); ImGui::Indent();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker2X", &marker2X, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("X     ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::SliderFloat("##marker2Y", &marker2Y, 0, 1);
+            ImGui::SameLine();
+            addText("Y     ");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##marker2Z", &marker2Z, 0, 1);
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("Z     ");
+            ImGui::Unindent(); ImGui::Unindent();
+
+            //show/hide markers
+            ImGui::NewLine();
+            bool isShown = false;
+            if(currMarker.getHidden()){
+                yellowButton("  Show  ", isShown);
+
+                if(isShown)
+                    markerList[current_marker_id].setHidden(false);
+            }
+            else{
+                yellowButton("  Hide  ", isShown);
+
+                if(isShown)
+                    markerList[current_marker_id].setHidden(true);
+            }
+
+            ImGui::NewLine();
+            bool remove = false;
+            purpleButton("Remove Markers", remove, 120, 30);
+            ImGui::NewLine();
+
+            //update marker positions
+            markerList[current_marker_id].setPositionMarker1(glm::vec3(marker1X, marker1Y, marker1Z));
+            markerList[current_marker_id].setPositionMarker2(glm::vec3(marker2X, marker2Y, marker2Z));
+
+            //remove marker
+            if(remove){
+                markerList.erase(markerList.begin() + current_marker_id);
+                current_marker_id = -1;
+            }
+            ImGui::Unindent();
+        }
+        ImGui::Unindent();
+    }
+
+    if(ImGui::CollapsingHeader("Scale Options")){
+        ImGui::NewLine();
+        addText("Scale shown in cm", blue);
+
+        ImGui::Indent();
+        addText("Scale X Location"); ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleXY", &scaleXY, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("Y     ");
+        ImGui::SameLine();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleXZ", &scaleXZ, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("Z");
+        ImGui::Unindent(); ImGui::Unindent();
+
+        ImGui::Indent();
+        addText("Scale X Location"); ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleYX", &scaleYX, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("X     ");
+        ImGui::SameLine();
+
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleYZ", &scaleYZ, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("Z");
+        ImGui::Unindent(); ImGui::Unindent();
+
+        ImGui::Indent();
+        addText("Scale X Location"); ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleZX", &scaleZX, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("X     ");
+        ImGui::SameLine();
+        ImGui::PushItemWidth(80);
+        ImGui::SliderFloat("##scaleZY", &scaleZY, 0, 1);
+        ImGui::PopItemWidth();
+        ImGui::SameLine();
+        addText("Y");
+        ImGui::Unindent(); ImGui::Unindent();
+
+    }
+    ImGui::PopStyleColor();
+    ImGui::End();
+}
+
+
+//filterState = 0: no filter, 1 = submarine files, 2 = whitefin files
+std::vector<std::string> getFileDirectories(boost::filesystem::path pathIn, int filterState = 0){
+    using namespace boost::filesystem;
+
+    std::vector<std::string> items;
+    for (directory_iterator itr(pathIn); itr!=directory_iterator(); ++itr)
+    {
+        items.push_back((itr->path().filename()).string());
+    }
+
+//    for (const auto & entry : std::filesystem::directory_iterator(path)){
+//        std::string tmp = entry.path();
+//        items.push_back(tmp.substr(tmp.find_last_of("/")+1, tmp.size()));
+//    }
+    return items;
+}
+
+//currState: 0 = no message, 1 = loading, 2 = success, 3 = error
+void loadDataFromFile(
+        boost::filesystem::path filePath,
+        std::string &file,
+        int& depth, float& gain, float& weight,
+        bool& load,
+        int currState, std::string errorMessage
+        ){ // loadDataFromFile(file, depth, gain, weight, error)
+    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+    ImGui::Begin("Load Data from File");
+
+    addText("Load Data from File", ImColor(0,0,0,255));
+    ImGui::Indent();
+    addText("Select File");
+    ImGui::Indent();
+
+    addText("Filter by Probe Type: "); ImGui::SameLine();
+    bool submarineFilter = false;
+    bool whiteFinFilter = false;
+    static int filterType = 0;
+
+    if(filterType == 0){
+        yellowButton("Submarine", submarineFilter); ImGui::SameLine();
+        yellowButton("White Fin", whiteFinFilter);
+
+        if(submarineFilter) filterType = 1;
+        if(whiteFinFilter) filterType = 2;
+    }
+    else if(filterType == 1){
+        yellowButtonClicked("Submarine", submarineFilter); ImGui::SameLine();
+        yellowButton("White Fin", whiteFinFilter);
+
+        if(submarineFilter) filterType = 0;
+        if(whiteFinFilter) filterType = 2;
+    }
+    else if(filterType == 2){
+        yellowButton("Submarine", submarineFilter); ImGui::SameLine();
+        yellowButtonClicked("White Fin", whiteFinFilter);
+
+        if(submarineFilter) filterType = 1;
+        if(whiteFinFilter) filterType = 0;
+    }
+
+    //Select File Directory
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+
+    std::vector<std::string> items = getFileDirectories(filePath / boost::filesystem::path("data"), filterType);
+    static std::string current_item;
+    if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    if (ImGui::BeginCombo("##fileSelector", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
+    {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1, 1, 1.00f));
+        for (auto & item : items)
+        {
+            const char* currItem = (char*)item.c_str();
+            bool is_selected = (current_item == currItem); // You can store your selection however you want, outside or inside your objects
+            if (ImGui::Selectable(currItem, is_selected))
+                current_item = currItem;
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+        }
+        ImGui::PopStyleColor();
+        ImGui::EndCombo();
+    }
+    if(currState == 4) ImGui::PopStyleColor();
+    if (!current_item.empty())
+        file.assign(current_item);
+
+    ImGui::Unindent(); ImGui::Unindent(); ImGui::NewLine();
+
+    addText("Set Display Parameters");
+    ImGui::Indent();
+    addText("Depth");
+    ImGui::Indent();
+    ImGui::PushItemWidth(-1);
+    ImGui::SliderInt("##depth", &depth, 1, 2500);
+    createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
+    ImGui::PopItemWidth();
+    ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+    ImGui::Indent();
+    addText("Gain");
+    ImGui::Indent();
+    ImGui::PushItemWidth(-1);
+    ImGui::SliderFloat("##gain", &gain, 0, 5);
+    createToolTip("Time gain compensation value.\n"
+                  "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
+    ImGui::PopItemWidth();
+    ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+    ImGui::Indent();
+    addText("Weight");
+    ImGui::Indent();
+    ImGui::PushItemWidth(-1);
+    ImGui::SliderFloat("##weight", &weight, 0, 1);
+    createToolTip("Weight to handle data in the same cell.\n\n"
+                  "cell value = previous + new * weight");
+    ImGui::PopItemWidth();
+    ImGui::Unindent();ImGui::Unindent();ImGui::NewLine();
+
+    ImGui::PopStyleColor();
+
+    ImGui::NewLine();ImGui::NewLine();
+
+    if(currState == 0){
+        purpleButton("Load", load);
+    }
+    else if(currState == 1){
+        //loading
+        purpleButtonDisabled("Load", load);
+        ImGui::SameLine();
+        addText("Loading...", purple);
+        //disable loadButton...
+    }
+    else if(currState == 2){
+        //success!
+        purpleButton("Load", load);
+        ImGui::SameLine();
+        addText((file + " sucessfully loaded").c_str(), blue);
+    }
+    else if(currState == 3){
+        purpleButton("Load", load);
+        ImGui::SameLine();
+//        addText("ERROR", orange);
+//        addText("=======================", orange);
+        addText(errorMessage.c_str(), orange);
+    }
+    else if(currState == 4){
+        purpleButton("Load", load);
+        ImGui::SameLine();
+        addText("Select a file to load", orange);
+    }
+
+    ImGui::End();
+}
+void scanFromProbe(
+        std::string* probeIP, std::string* probeUsername, std::string* probePassword, std::string* compIP,
+        bool& isSubmarine, bool& isDefault,
+        float& lxRangeMin, float& lxRangeMax, int& lxRes,
+        float& servoRangeMin, float& servoRangeMax, int& servoRes,
+        std::string* customCommand,
+        bool& liveScan, bool& scanToFile, bool& sendCustom,
+        int& currState,
+        std::string& output, std::string& errorMessage
+){
+    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+    ImGui::Begin("Scan From Probe");
+
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+
+    addText("Enter addresses for the probe and computer to establish a connection.", blue);
+    ImGui::NewLine();
+    addText("Probe"); ImGui::Indent();
+
+    addText("IP Address: ");ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+    if(currState == 4) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    ImGui::InputText("##ipAddressProbe", (char*)probeIP->c_str(), probeIP->capacity()+1,
+                     (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+    if(currState == 4) ImGui::PopStyleColor();
+    ImGui::PopItemWidth();
+    createToolTip("Probe IP Address Finding Instructions");
+
+    addText("username:   "); ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+    if(currState == 5) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    ImGui::InputText("##username", (char*)probeUsername->c_str(), probeUsername->capacity()+1,
+                     (currState == 1) ? INPUT_TEXT_READ_ONLY : 0);
+    if(currState == 5) ImGui::PopStyleColor();
+    ImGui::PopItemWidth();
+    createToolTip("Default is set to 'root'");
+
+    addText("password:   ");ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+    if(currState == 6) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    ImGui::InputText("##password", (char*)probePassword->c_str(), probePassword->capacity()+1,
+                     (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_PASSWORD);
+    if(currState == 6) ImGui::PopStyleColor();
+    ImGui::PopItemWidth();
+    createToolTip("Default is set to 'root'");
+
+    ImGui::Unindent();
+    ImGui::NewLine();
+    addText("Computer"); ImGui::Indent();
+
+    addText("IP Address: ");ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+    if(currState == 7) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+    ImGui::InputText("##ipAddressComp", (char*)compIP->c_str(), compIP->capacity()+1,
+                     (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+    if(currState == 7) ImGui::PopStyleColor();
+    ImGui::PopItemWidth();
+    createToolTip("Run the following commands on your terminal to find the IP address based on your operating system.\n\n"
+                  "Windows:   ipconfig | findstr IPv4\n"
+                  "Mac/Linux: ifconfig | grep inet");
+    ImGui::Unindent();
+
+    ImGui::NewLine();
+    ImGui::NewLine();
+    addText("Select Probe Type: "); ImGui::SameLine();
+
+    bool submarine = false;
+    bool whiteFin = false;
+    if(currState != 1 && isSubmarine){
+        yellowButtonClicked("Submarine", submarine); ImGui::SameLine();
+        yellowButton("White Fin", whiteFin);
+
+        if(whiteFin)
+            isSubmarine = false;
+    }
+    else if(currState != 1) {
+        yellowButton("Submarine", submarine); ImGui::SameLine();
+        yellowButtonClicked("White Fin", whiteFin);
+
+        if(submarine)
+            isSubmarine = true;
+    }
+
     ImGui::NewLine();
 
+    bool defaultCon = false;
+    bool advancedCon = true;
+    if(currState != 1 && isDefault){
+        yellowButtonClicked("   Default Connection   ", defaultCon); ImGui::SameLine();
+        yellowButton("   Advanced Connection   ", advancedCon);
 
-    if (ImGui::CollapsingHeader("Probe Statistics")) {
-        ImGui::Text("Quaternion values (xyzw):");
-        ImGui::Indent();
-        ImGui::Text("%f %f %f %f", quat.x, quat.y, quat.z, quat.w);
-        ImGui::Unindent();
-        ImGui::Text("Euler Angle values:");
-        ImGui::Indent();
-        ImGui::TextColored(ImColor(255, 255, 0, 255), "Roll,");
-        ImGui::SameLine(0, 40);
-        ImGui::TextColored(ImColor(0, 255, 255, 255), "Pitch,");
-        ImGui::SameLine(0, 30);
-        ImGui::TextColored(ImColor(255, 0, 255, 255), "Yaw");
-
-        ImGui::TextColored(ImColor(255, 255, 0, 255), "%f", euler.x);
-        ImGui::SameLine();
-        ImGui::TextColored(ImColor(0, 255, 255, 255), "%f", euler.y);
-        ImGui::SameLine();
-        ImGui::TextColored(ImColor(255, 0, 255, 255), "%f", euler.z);
+        if(advancedCon)
+            isDefault = false;
     }
-    //Create reference frame
-    ImVec2 cursor_pos = ImGui::GetCursorScreenPos();
-    float cx = 60.0f;
-    float cy = 80.0f;
-    ImVec2 origin = ImVec2(cursor_pos.x + cx, cursor_pos.y + cy);
+    else if(currState != 1) {
+        yellowButton("   Default Connection   ", defaultCon); ImGui::SameLine();
+        yellowButtonClicked("   Advanced Connection   ", advancedCon);
 
-    glm::vec4 roll = 50.f*glm::vec4(1,0,0,1);
-    glm::vec4 pitch = 50.f*glm::vec4(0,0,1,1);
-    glm::vec4 yaw = 50.f*glm::vec4(0,-1,0,1);
+        if(defaultCon)
+            isDefault = true;
+    }
+    ImGui::NewLine();
+    ImGui::PopStyleColor();
 
-    roll = view * model * roll;
-    pitch = view * model * pitch;
-    yaw = view * model * yaw;
+    static std::string lxRangeMinInput = std::to_string(lxRangeMin);
+    static std::string lxRangeMaxInput = std::to_string(lxRangeMax);
+    static std::string lxResInput = std::to_string(lxRes);
+    static std::string servoRangeMinInput = std::to_string(servoRangeMin);
+    static std::string servoRangeMaxInput = std::to_string(servoRangeMax);
+    static std::string servoResInput = std::to_string(servoRes);
+    if(isDefault) {
+        //White Fin Option
+        if (!isSubmarine) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+            ImGui::PushTextWrapPos(GUI_WIDTH - 10);
+            addText("Use default connection to make scans with the probe with the following parameter settings.", blue);
+            ImGui::PopTextWrapPos();
+            ImGui::NewLine();
+            addText("Probe Scan Settings");
 
-    auto* draw_list = ImGui::GetWindowDrawList();
+            ImGui::Indent();
+            addText("Lx-16");
 
-    draw_list->AddLine(origin, ImVec2(origin.x + roll.x, origin.y - roll.y), ImColor(255, 255, 0, 255));
-    draw_list->AddLine(origin, ImVec2(origin.x + pitch.x, origin.y - pitch.y), ImColor(0, 255, 255, 255));
-    draw_list->AddLine(origin, ImVec2(origin.x + yaw.x,origin.y - yaw.y), ImColor(255, 0, 255, 255));
+            ImGui::Indent();
+            addText("Range:      ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 8 || currState == 10) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxMin", (char*)lxRangeMinInput.c_str(), lxRangeMinInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 8 || currState == 10) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("to");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 9 || currState == 10) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxMax", (char*)lxRangeMaxInput.c_str(), lxRangeMaxInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 9 || currState == 10) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("degrees");
 
-    //Circles to mark end of positive coordinates
-    draw_list->AddCircleFilled(ImVec2(origin.x + roll.x, origin.y - roll.y), 5,ImColor(255, 255, 0, 255) );
-    draw_list->AddCircleFilled(ImVec2(origin.x + pitch.x, origin.y - pitch.y), 5, ImColor(0, 255, 255, 255));
-    draw_list->AddCircleFilled(ImVec2(origin.x + yaw.x,origin.y - yaw.y), 5, ImColor(255, 0, 255, 255));
+            addText("Resolution: ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 11) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##lxRes", (char*)lxResInput.c_str(), lxResInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 11) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("steps");
 
-    //Circles for negative coordinates
-    draw_list->AddCircleFilled(ImVec2(origin.x - roll.x, origin.y + roll.y), 5,ImColor(255, 255, 0, 100) );
-    draw_list->AddCircleFilled(ImVec2(origin.x - pitch.x, origin.y + pitch.y), 5, ImColor(0, 255, 255, 100));
-    draw_list->AddCircleFilled(ImVec2(origin.x - yaw.x,origin.y + yaw.y), 5, ImColor(255, 0, 255, 100));
+            //Servo
+            ImGui::Unindent();
+            addText("Servo");
 
-    //Add text for roll, pitch, yaw
-    if(origin.x < roll.x)
-        draw_list->AddText(ImVec2(origin.x + 0.7f*roll.x, origin.y - 1.3f*roll.y), ImColor(255, 255, 0, 255), "Roll");
-    else
-        draw_list->AddText(ImVec2(origin.x + 1.3f*roll.x, origin.y - 1.3f*roll.y), ImColor(255, 255, 0, 255), "Roll");
-    if(origin.x < pitch.x)
-        draw_list->AddText(ImVec2(origin.x + 0.7f*pitch.x, origin.y - 1.3f*pitch.y), ImColor(0, 255, 255, 255), "Pitch");
-    else
-        draw_list->AddText(ImVec2(origin.x + 1.3f*pitch.x, origin.y - 1.3f*pitch.y), ImColor(0, 255, 255, 255), "Pitch");
-    if(origin.x < yaw.x)
-        draw_list->AddText(ImVec2(origin.x + 0.7f*yaw.x,origin.y - 1.3f*yaw.y), ImColor(255, 0, 255, 255), "Yaw");
-    else
-        draw_list->AddText(ImVec2(origin.x + 1.3f*yaw.x,origin.y - 1.3f*yaw.y), ImColor(255, 0, 255, 255), "Yaw");
+            ImGui::Indent();
+            addText("Range:      ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 12 || currState == 14) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoMin", (char*)servoRangeMinInput.c_str(), servoRangeMinInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 12 || currState == 14) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("to");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 13 || currState == 14) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoMax", (char*)servoRangeMaxInput.c_str(), servoRangeMaxInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 13 || currState == 14) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("degrees");
+
+            addText("Resolution: ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            if(currState == 15) ImGui::PushStyleColor(ImGuiCol_FrameBg, orange);
+            ImGui::InputText("##servoRes", (char*)servoResInput.c_str(), servoResInput.capacity()+1,
+                             (currState == 1) ? INPUT_TEXT_READ_ONLY : INPUT_TEXT_CHARS_DECIMAL);
+            if(currState == 15) ImGui::PopStyleColor();
+            ImGui::PopItemWidth();
+            ImGui::SameLine();
+            addText("steps");
+
+            ImGui::Unindent();
+            ImGui::Unindent();
+            ImGui::PopStyleColor();
+        }
+
+        ImGui::NewLine();
+        ImGui::PushTextWrapPos(GUI_WIDTH - 10);
+        addText("Use the Live Scan option to  enter live mode and visualize scans. Use Scan to File option to scan and save into a .dat file.",
+                purple);
+        ImGui::PopTextWrapPos();
+
+        ImGui::NewLine();
+        purpleButton("Live Scan", liveScan);
+        ImGui::SameLine();
+        purpleButton("Scan to File", scanToFile);
+
+    }
+    else {
+        addText("Enter the command to send to the probe below", blue);
+        addText("*Only use if you're certain you know what you're doing.", orange);
+        ImGui::NewLine();
+        addText("Custom Command: ");
+
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+        ImGui::InputTextMultiline("##custom", (char*)customCommand->c_str(), customCommand->capacity()+1);
+        ImGui::PopStyleColor();
+
+        ImGui::NewLine();
+        purpleButton("Live Scan", sendCustom);
+    }
+
+    //add user messages
+    ImGui::NewLine();
+    if(currState == 1)
+        addText("Connecting to probe...", purple);
+    if(currState == 2)
+        addText("Successfully connected to probe", blue);
+    if(currState == 3){
+        addText("ERROR connecting to probe", orange);
+        addText("=========================", orange);
+        addText(std::string("     "+errorMessage).c_str(), orange);
+    }
+    if(currState == 4)
+        addText("Probe IP cannot be empty", orange);
+    if(currState == 5)
+        addText("Probe username cannot be empty", orange);
+    if(currState == 6)
+        addText("Probe password cannot be empty", orange);
+    if(currState == 7)
+        addText("Computer IP cannot be empty", orange);
+    if(currState == 8)
+        addText("Lx-16 min range should be a number greater than or equal to -180", orange);
+    if(currState == 9)
+        addText("Lx-16 max range should be a number less than or equal to 180", orange);
+    if(currState == 10)
+        addText("Lx-16 max range should be greater than the min value", orange);
+    if(currState == 11)
+        addText("Lx-16 resolution should be between 1 - 200", orange);
+    if(currState == 12)
+        addText("Servo min range should be a number greater than or equal to -30", orange);
+    if(currState == 13)
+        addText("Servo max range should be a number less than or equal to 30", orange);
+    if(currState == 14)
+        addText("Servo max range should be greater than the min value", orange);
+    if(currState == 15)
+        addText("Servo resolution should be between 1 - 200", orange);
+
+    ImGui::NewLine();
+
+    //connection output
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.00f));
+
+    if(currState == 2)
+        ImGui::SetNextTreeNodeOpen(true);
+
+    if (ImGui::CollapsingHeader("Connection Output")) {
+        ImGui::PopStyleColor();
+        addText("Probe output: ");
+        ImGui::Indent();
+        addText(output.c_str());
+    } else{
+        ImGui::PopStyleColor();
+    }
+
+//  if user clicks a send button, then get the input values
+    if(!isSubmarine && (liveScan || scanToFile)){
+
+        //update lx-16 values. If conversion fails, set value to one out of range
+        try{
+            lxRangeMin = std::stof(lxRangeMinInput);
+        } catch(...) {lxRangeMin = -1000;}
+
+        try {
+            lxRangeMax = std::stof(lxRangeMaxInput);
+        } catch(...) {lxRangeMax = 1000;}
+        try {
+            lxRes = std::stoi(lxResInput);
+        } catch(...) {currState = 0;}
+
+        //update servo values
+        try{
+            servoRangeMin = std::stof(servoRangeMinInput);
+        } catch(...) {currState = -1000;}
+        try{
+            servoRangeMax = std::stof(servoRangeMaxInput);
+        } catch(...) {currState = 1000;}
+        try{
+            servoRes = std::stoi(servoResInput);
+        } catch(...) {currState = 0;}
+    }
 
     ImGui::End();
 }
 
-void GUI::setNumLinesDrawn(int num){
-    if(num == -1)
-        numLines = 0;
-    else
-        numLines = num;
+void GUI::drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY) {
+    if(isProbeLoaded){
+        //draw the probe
+        probe.draw(projection, view, rotationX, rotationY);
+    }
+
+    if(isDataLoaded && !isProbeLoaded){
+        if(probeType == 0)
+            probe.loadNewProbe("config_file/models/PROBE_CENTERED.stl");
+        else
+            probe.loadNewProbe("config_file/models/WHITE_FIN_CENTERED.stl");
+        isProbeLoaded = true;
+    }
+    if(!isDataLoaded){
+        isProbeLoaded = false;
+    }
 }
 
-void GUI::setNumSamples(int num){
-    numSamples = num;
+//Draws the ImGui widgets on the screen
+void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view){
+    // render your IMGUI
+    if(renderedScreen == 0)
+        drawOpenFrame(screen0Load, screen0Scan);
+    else if(renderedScreen == 1)
+        loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState, screen1ErrorMessage);
+    else if(renderedScreen == 2)
+        scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP, screen2IsSub, screen2IsDefault,
+                screen2LxMin, screen2LxMax, screen2LxRes, screen2ServoMin, screen2ServoMax, screen2ServoRes,
+                &screen2CustomCommand,
+                screen2LiveScan, screen2ScanToFile, screen2SendCustom,
+                screen2CurrState, screen2Output, screen2ErrorMessage
+                );
+    if(isDataLoaded){
+        displaySettings(
+                isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
+                dispReset,
+                mediumActive, dispVel, dispFreq, inputVel,
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, snap, snapThreshold
+        );
+    }
 }
 
-void GUI::setVoxels(int size){
-    voxels = size;
+void GUI::interactionHandler() {
+    if(renderedScreen == 0){
+        if(screen0Load == 1){
+            renderedScreen = 1;
+            isLoadFile = true;
+        }
+        else if(screen0Scan == 1){
+            renderedScreen = 2;
+            isLoadFile = false;
+        }
+    }
+    if(renderedScreen == 1){
+        if(screen1Error){
+            screen1CurrState = 3;
+            return;
+        }
+        if(screen1Load){
+            //first time clicking load
+            if(screen1CurrState != 1){
+                //check to make sure file is selected
+                if(screen1File.empty()){
+                    screen1CurrState = 4;
+                    return;
+                }
+
+                //reload file
+                gridPointer -> clear();
+                screen1DataUpdate = false;
+                isDataLoaded = false;
+                screen1Error = false;
+
+                screen1CurrState = 1;
+
+                std::string fileName = (filePath / boost::filesystem::path("data/"+screen1File)).string();
+                //loadFile pointer function from main --> will only have 1 load file now with new data type
+                bool noError = readDataMain(*gridPointer, fileName,
+                        dispGain, dispDepth, screen1DataUpdate, screen1ErrorMessage, probeType, screen1Error);
+                gridPointer -> setUpdateCoefficient(screen1DataUpdate);
+
+                if(!noError){
+                    screen1CurrState = 3;
+                }
+            }
+        }
+        else{
+            if(screen1DataUpdate) {
+                screen1CurrState = 2;
+                isDataLoaded = true;
+            }
+        }
+    }
+    if(renderedScreen == 2){
+        if(screen2ErrorSetUp){
+            screen2CurrState = 3;
+            return;
+        }
+        try {
+            if (screen2LiveScan && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
+                screen2Connected = false;
+                screen2CurrState = 1;
+                gridPointer->clear();
+                isDataLoaded = false;
+                screen2ErrorSetUp = false;
+
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                        screen2ProbePassword.c_str(),
+                        screen2CompIP.c_str(),
+                        screen2IsSub, screen2LxMin, screen2LxMax,
+                        screen2LxRes,
+                        screen2ServoMin, screen2ServoMax,
+                        screen2ServoRes,
+                        "", 0, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
+                if (!noError) screen2CurrState = 3;
+
+                probeType = screen2IsSub ? 0 : 1;
+            }
+            if (screen2ScanToFile && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
+                screen2Connected = false;
+                screen2CurrState = 1;
+                gridPointer->clear();
+                isDataLoaded = false;
+                screen2ErrorSetUp = false;
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                        screen2ProbePassword.c_str(),
+                        screen2CompIP.c_str(),
+                        screen2IsSub, screen2LxMin, screen2LxMax,
+                        screen2LxRes,
+                        screen2ServoMin, screen2ServoMax,
+                        screen2ServoRes,
+                        "", 1, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
+                if (!noError) screen2CurrState = 3;
+
+                probeType = screen2IsSub ? 0 : 1;
+            }
+            if (screen2SendCustom && screen2CurrState != 1) {
+                //error handling
+                if(!passErrorCheckingScreen2()) return;
+
+                screen2Connected = false;
+                screen2CurrState = 1;
+                gridPointer->clear();
+                isDataLoaded = false;
+                screen2ErrorSetUp = false;
+                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
+                        screen2ProbePassword.c_str(), screen2CompIP.c_str(),
+                        screen2IsSub, 0, 0, 0,
+                        0, 0, 0,
+                        screen2CustomCommand.c_str(), 2, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
+                if (!noError) screen2CurrState = 3;
+
+                probeType = screen2IsSub ? 0 : 1;
+            }
+        }
+        catch (...) {
+            //connection error
+            screen2CurrState = 3;
+        }
+
+        if(screen2Connected){
+            screen2CurrState = 2;
+            isDataLoaded = true;
+        }
+    }
+
+    if(isDataLoaded) {
+        //display parameters
+        if(dispReset){
+            reset();
+            dispReset = false;
+        }
+
+        if(!isLoadFile){
+            setGainMain(dispGain);
+            setDepthMain(dispDepth);
+        }
+
+        gridPointer -> setBrightness(dispBrightness);
+        gridPointer -> setThreshold(dispCutoff);
+        gridPointer -> setContrast(dispContrast);
+
+        setZoomMain(dispZoom);
+
+        //set speed of sound
+        if(mediumActive == 0) dispVel = 1102;
+        if(mediumActive == 1) dispVel = 1538;
+        if(mediumActive == 2) dispVel = atof(inputVel.c_str());
+    }
 }
 
-float GUI::getBrightness(){
-    return brightness;
-}
+bool GUI::passErrorCheckingScreen2(){
+    if(strcmp(screen2ProbeIP.c_str(),"") == 0) {screen2CurrState = 4; return false;}
+    if(strcmp(screen2ProbeUsername.c_str(),"") == 0) {screen2CurrState = 5; return false;}
+    if(strcmp(screen2ProbePassword.c_str(),"") == 0) {screen2CurrState = 6; return false;}
+    if(strcmp(screen2CompIP.c_str(),"") == 0) {screen2CurrState = 7; return false;}
 
-float GUI::getGain(){
-    return gain;
-}
+    //if the user is running white fin in default mode, then check values
+    if(screen2IsDefault && !screen2IsSub) {
+        //lx values
+        if (screen2LxMin < -180) {
+            screen2CurrState = 8;
+            return false;
+        }
+        if (screen2LxMax > 180) {
+            screen2CurrState = 9;
+            return false;
+        }
+        if (screen2LxMin > screen2LxMax) {
+            screen2CurrState = 10;
+            return false;
+        }
+        if (screen2LxRes > 200 || screen2LxRes < 1) {
+            screen2CurrState = 11;
+            return false;
+        }
+        //servo values
+        if (screen2ServoMin < -30) {
+            screen2CurrState = 12;
+            return false;
+        }
+        if (screen2ServoMax > 30) {
+            screen2CurrState = 13;
+            return false;
+        }
+        if (screen2ServoMin > screen2ServoMax) {
+            screen2CurrState = 14;
+            return false;
+        }
+        if (screen2ServoRes > 200 || screen2ServoRes < 1) {
+            screen2CurrState = 15;
+            return false;
+        }
+    }
 
-float GUI::getUpdateCoefficient(){
-    return updateCoefficient;
-}
-
-void GUI::setUpdateCoefficient(float value){
-    updateCoefficient = value;
-}
-
-int GUI::getDepth(){
-    return depth;
-}
-
-std::string GUI::getFile(){
-    std::string s(fileName);
-    return ("data/" + s + ".dat");
-    //return "data/cl_1.txt";
-   // return "data/S821.dat";
-}
-
-void GUI::doneLoading(){
-    loading = false;
-}
-
-int GUI::getThreshold() {
-    return threshold;
-}
-
-void GUI::setBrightness(float value) {
-    brightness = value;
-}
-
-void GUI::setGain(float value) {
-    gain = value;
-}
-
-void GUI::setThreshold(int value) {
-    threshold = value;
-}
-
-void GUI::setContrast(float value){
-    contrast = value;
-}
-
-float GUI::getContrast(){
-    return contrast;
-}
-
-void GUI::setFileSize(double size){
-    fileSize = size;
-}
-
-void GUI::setTime(float currTime){
-    time = currTime;
-}
-
-void GUI::setQuaternion(glm::vec4 quatIn) {
-    quat = quatIn;
-}
-
-void GUI::setEulerAngles(glm::vec3 eulerIn) {
-    euler = eulerIn;
-}
-
-int GUI::getZoom(){
-    return zoom;
+    return true;
 }
 
 /**
@@ -476,11 +1447,67 @@ int GUI::getZoom(){
  * @return which marker is intersected. -1 otherwise
  */
 int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
-    //check if markers are on screen
-    if(setMarker)
-        return marker.checkMouseOnMarker(rayOrigin, rayDirection);
 
-    return -1;
+    float minT = -1;
+    for(auto& marker: markers){
+        float tmpT = -1;
+        int tmpMarker = -1;
+
+        tmpMarker = marker.checkMouseOnMarker(rayOrigin, rayDirection, tmpT);
+        if(tmpMarker != -1){
+            if(minT == -1 || (tmpT < minT && tmpT != -1)){
+                intersectedMarker = &marker;
+                intersectedMarkerNum = tmpMarker;
+                minT = tmpT;
+            }
+        }
+    }
+
+    if(minT == -1)
+        return -1;
+
+    std::cout<<"Mouse INTERSECT!"<<std::endl;
+
+    if(intersectedMarker != nullptr)
+        intersectedMarker->setIntersected(true);
+
+    return 1;
+}
+
+bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen){
+    intersectedMarker = nullptr;
+
+    float minT = -1;
+    for(auto& marker: markers){
+        float tmpT = -1;
+        int tmpMarker = -1;
+        marker.setIntersected(-1);
+
+        tmpMarker = marker.checkMouseOnMarker(rayOrigin, rayDirection, tmpT);
+        if(tmpMarker != -1){
+            if(minT == -1 || (tmpT < minT && tmpT != -1)){
+                intersectedMarker = &marker;
+                intersectedMarkerNum = tmpMarker;
+                minT = tmpT;
+            }
+        }
+    }
+
+    if(minT == -1){
+        showMarkerDistance = false;
+        return false;
+    }
+
+    if(intersectedMarker != nullptr){
+        intersectedMarker->setIntersected(intersectedMarkerNum);
+
+        showMarkerDistance = true;
+
+        markerXPos = xPosScreen;
+        markerYPos = yPosScreen;
+    }
+
+    return true;
 }
 
 /**
@@ -609,70 +1636,49 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
 
 /**
  * Move the specified marker to the cursor position.
- * @param numMarker Which marker the cursor is on
  * @param rayOrigin origin of the ray
  * @param rayDirection direction of the ray
  */
-void GUI::moveMarker(int numMarker,  glm::vec3 rayOrigin,  glm::vec3 rayDirection){
-    if(numMarker == 1){
-        //transform to world coordinates
-        glm::vec3 v0 = modelWorld*(glm::vec4(marker1x, marker1y, marker1z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
-        glm::vec4 normal = glm::vec4(0,0,1,0);
-        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+void GUI::moveMarker(glm::vec3 rayOrigin,  glm::vec3 rayDirection, float xPosScreen, float yPosScreen){
+    glm::vec3 markerPos;
+    if(intersectedMarkerNum == 1)
+        markerPos = intersectedMarker->getMarker1Pos();
+    else
+        markerPos = intersectedMarker->getMarker2Pos();
 
-        //Find the intersection point on the plane
-        glm::vec3 P = rayOrigin + t*rayDirection;
+    glm::vec3 v0 = modelWorld*(glm::vec4(markerPos.x, markerPos.y, markerPos.z, 1)*10.0 - glm::vec4(5, 5, 5, 1));
+    glm::vec4 normal = glm::vec4(0,0,1,0);
+    double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
 
-        //Find the snapping point on the plane
-        if(snap)
-            P = getSnapPoint(rayOrigin, P);
+    //Find the intersection point on the plane
+    glm::vec3 P = rayOrigin + t*rayDirection;
 
-        //Transform back to marker coordinates
-        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
+    //Find the snapping point on the plane
+    if(snap)
+        P = getSnapPoint(rayOrigin, P);
 
-        P = (P + glm::vec3(5, 5, 5)) / 10.0;
+    //Transform back to marker coordinates
+    glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
+    P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
 
-        if(P.x > 1) P.x = 1;
-        if(P.x < 0) P.x = 0;
-        if(P.y > 1) P.y = 1;
-        if(P.y < 0) P.y = 0;
-        if(P.z > 1) P.z = 1;
-        if(P.z < 0) P.z = 0;
+    P = (P + glm::vec3(5, 5, 5)) / 10.0;
 
-        marker1x = P.x;
-        marker1y = P.y;
-        marker1z = P.z;
-    }
-    if(numMarker == 2){
-        glm::vec3 v0 = modelWorld*(glm::vec4(marker2x, marker2y, marker2z, 1)*10.0 - glm::vec4(5, 5, 5, 1)); //transform to world coordinates
-        glm::vec4 normal = glm::vec4(0,0,1,0);
-        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+    if(P.x > 1) P.x = 1;
+    if(P.x < 0) P.x = 0;
+    if(P.y > 1) P.y = 1;
+    if(P.y < 0) P.y = 0;
+    if(P.z > 1) P.z = 1;
+    if(P.z < 0) P.z = 0;
 
-        //Find the intersection point on the plane
-        glm::vec3 P = rayOrigin + t*rayDirection;
+    // current marker position to render distance text later
+    markerXPos = xPosScreen;
+    markerYPos = yPosScreen;
 
-        //Find the snapping point on the plane
-        if(snap)
-            P = getSnapPoint(rayOrigin, P);
+    if(intersectedMarkerNum == 1)
+        intersectedMarker->setPositionMarker1(P);
+    else
+        intersectedMarker->setPositionMarker2(P);
 
-        //Transform back to marker coordinates
-        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0,0,0,1));
-        P = glm::transpose(rotation)*glm::vec4(P.x, P.y, P.z, 1);
-
-        P = (P + glm::vec3(5, 5, 5)) / 10.0;
-
-        if(P.x > 1) P.x = 1;
-        if(P.x < 0) P.x = 0;
-        if(P.y > 1) P.y = 1;
-        if(P.y < 0) P.y = 0;
-        if(P.z > 1) P.z = 1;
-        if(P.z < 0) P.z = 0;
-
-        marker2x = P.x;
-        marker2y = P.y;
-        marker2z = P.z;
-    }
 }
 
 /**
@@ -693,9 +1699,9 @@ double GUI::rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOr
     return -1;
 }
 
-bool GUI::loadNew(){
-    return newLoad;
-}
-int GUI::getProbe(){
-    return probeType;
-}
+//bool GUI::loadNew(){
+//    return newLoad;
+//}
+//int GUI::getProbe(){
+//    return probeType;
+//}

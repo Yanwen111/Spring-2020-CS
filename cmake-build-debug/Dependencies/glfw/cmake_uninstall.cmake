@@ -1,22 +1,22 @@
 
-if (NOT EXISTS "D:/Documents/CML/Summer2020/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"D:/Documents/CML/Summer2020/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt\"")
+if (NOT EXISTS "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt\"")
 endif()
 
-file(READ "D:/Documents/CML/Summer2020/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt" files)
+file(READ "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/Dependencies/glfw/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})
   message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
   if (EXISTS "$ENV{DESTDIR}${file}")
-    exec_program("D:/Software/CLion/CLion 2019.3.1/bin/cmake/win/bin/cmake.exe" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    exec_program("/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)
       MESSAGE(FATAL_ERROR "Problem when removing \"$ENV{DESTDIR}${file}\"")
     endif()
   elseif (IS_SYMLINK "$ENV{DESTDIR}${file}")
-    EXEC_PROGRAM("D:/Software/CLion/CLion 2019.3.1/bin/cmake/win/bin/cmake.exe" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
+    EXEC_PROGRAM("/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake" ARGS "-E remove \"$ENV{DESTDIR}${file}\""
                  OUTPUT_VARIABLE rm_out
                  RETURN_VALUE rm_retval)
     if (NOT "${rm_retval}" STREQUAL 0)

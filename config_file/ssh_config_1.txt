@@ -1,3 +1,0 @@
-IP address: 70.19.40.127
-User name: root
-Password: root

@@ -342,9 +342,12 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/DensityM
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/gui.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/helper.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/marker.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/probe.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/rotation.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/include/scale.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: ../source/Ultrasound/source/gui.cpp
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: /usr/include/freetype2/freetype/config/ftheader.h
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o: /usr/include/freetype2/ft2build.h
 
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o: ../extern/glfw/include/GLFW/glfw3.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o: ../source/Ultrasound/include/helper.h

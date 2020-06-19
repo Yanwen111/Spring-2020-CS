@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <exception>
 
 #include "data.h"
 #include "rotation.h" /* for test of fake data */
@@ -37,12 +38,15 @@ short buffer[2500];
 double intensity;
 unsigned char information_byte = 0xE1;
 
+#ifdef __APPLE__
+    #define MSG_NOSIGNAL 0
+#endif
+
 int DEPTH = 2500;
 float GAIN = 1.0;
 int samples = -1; /* -1 stands for no data */
 
 std::mutex time_mutex;
-
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -142,7 +146,7 @@ void fakeDemo(DensityMap& grid, bool& dataUpdate)
     dataUpdate = true;
 }
 
-void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate, bool& error, std::string& errorMessage)
 {
     std::vector<unsigned char> file_bytes;
     std::vector<int> marker_locations;
@@ -151,27 +155,32 @@ void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int le
     //file_bytes = readFile(fileName);
     try {
         file_bytes = readFile(fileName);
-    } catch(const char* msg){
-        std::cerr << msg << std::endl;
-    }
-    /* find all marker locations */
-    marker_locations = find_marker(file_bytes);
-    /* convert file bytes to data struct */
-    line_data = file_to_pixel_V07(file_bytes, marker_locations);
-    printf("find the screen_data\n");
 
-    for  (auto l: line_data)
-    {
-        glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
-        glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
-        for (int i = 0; i < l.vals.size(); ++i)
+        /* find all marker locations */
+        marker_locations = find_marker(file_bytes);
+        /* convert file bytes to data struct */
+        line_data = file_to_pixel_V07(file_bytes, marker_locations);
+        printf("find the screen_data\n");
+
+        for  (auto l: line_data)
         {
-            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+            glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
+            glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
+            for (int i = 0; i < l.vals.size(); ++i)
+            {
+                l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+            }
+            grid.writeLine(ps, pe, l.vals);
         }
-        grid.writeLine(ps, pe, l.vals);
-    }
 
-    dataUpdate = true;
+        dataUpdate = true;
+    } catch(std::exception& e){
+//        errorMessage = e.what();
+        fprintf(stderr, e.what());
+        error = true;
+        errorMessage = e.what();
+//        return false;fdas
+    }
 }
 
 std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations)
@@ -543,7 +552,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         for (int j = 0; j < buffer_length; ++j){
             for (int k = 0; k < (int)sizeof(adc_temp); ++k){
                 adc_temp[k] = _file_bytes.at(marker_index + sizeof(marker) + sizeof(version_number_char) + sizeof(time_stamp_char)
-                        + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + sizeof(quaternion_char) + j * 2 + k);
+                                             + sizeof(probe_type_char) + sizeof(encoder_char) + sizeof(lx16_char) + sizeof(quaternion_char) + j * 2 + k);
                 adc_char[2*j+k] = adc_temp[k];
             }
             std::memcpy(&adc, adc_temp, sizeof(adc));
@@ -561,16 +570,16 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char), encoder_char, sizeof(encoder_char));
         memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char), lx16_char, sizeof(lx16_char));
         memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)
-        +sizeof(lx16_char), quaternion_char, sizeof(quaternion_char));
+               +sizeof(lx16_char), quaternion_char, sizeof(quaternion_char));
         memcpy(crc_input_V08+sizeof(version_number_char)+sizeof(time_stamp_char)+sizeof(probe_type_char)+sizeof(encoder_char)
-        +sizeof(lx16_char)+sizeof(quaternion_char), adc_char, sizeof(adc_char));
+               +sizeof(lx16_char)+sizeof(quaternion_char), adc_char, sizeof(adc_char));
         crc_result = crc32c(0, crc_input_V08, sizeof(crc_input_V08));
         crc_result = changed_endian_4Bytes(crc_result);
         memcpy(crc_result_char, (unsigned char *)&crc_result, sizeof (crc_result));
 
         /* if two crc matches */
         if (compare_crc(crc_char, crc_result_char, sizeof(crc_char))){
-        //if(1){  // uncommented this for store all the data
+            //if(1){  // uncommented this for store all the data
             scan_data_struct temp_struct;
             temp_struct.version = version_number_char;
             temp_struct.time_stamp = time_stamp;
@@ -955,16 +964,13 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     //addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
     addrSrv.sin_addr.s_addr = inet_addr("192.168.1.39");
-    //addrSrv.sin_addr.s_addr = inet_addr("98.15.72.232");
-
 
     sockaddr_in addrClt;
     addrClt.sin_family = AF_INET;
     addrClt.sin_port = htons(8000);
     //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     //addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
-    addrClt.sin_addr.s_addr = inet_addr("71.127.254.212");
-    //addrClt.sin_addr.s_addr = inet_addr("192.168.1.39");
+    addrClt.sin_addr.s_addr = inet_addr("192.168.1.42");
 
     //bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
     bind(sockSrv, (sockaddr*)&addrSrv, sizeof(sockaddr));
@@ -997,9 +1003,6 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 //            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
             //recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
             recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
-            for(int i = 0; i < 20; ++i) {
-                printf("%02X ", recvBuf[i]);
-            }
             buffer_cnt++;
 
             if (recvBuf[0] == 'O')
@@ -1103,69 +1106,74 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
                     bool isSubmarine,
                     int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
                     std::string customCommand,
-                    int connectionType, std::string& output, bool& connected
+                    int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
 ) {
-    /* connect to Red Pitaya */
-    Socket soc("Linux");
+    try{
+        /* connect to Red Pitaya */
+        Socket soc("Linux");
 
-    soc.setRPName(const_cast<char*>(probeIP.c_str()));
-    soc.setRPName(const_cast<char*>(username.c_str()));
-    soc.setRPPassword(const_cast<char*>(password.c_str()));
-    soc.saveConfig();
-    soc.linkStart();
+        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
+        soc.setRPName(const_cast<char*>(username.c_str()));
+        soc.setRPPassword(const_cast<char*>(password.c_str()));
+        soc.saveConfig();
+        soc.linkStart();
 
-    if (connectionType == 3) /* custom command */
-    {
-        soc.customCommand(const_cast<char*>(customCommand.c_str()));
-        //soc.interactiveShell();
-        connected = true;
-        return connected;
-    }
+        if (connectionType == 3) /* custom command */
+        {
+            soc.customCommand(const_cast<char*>(customCommand.c_str()), 1000);
+            //soc.interactiveShell();
+            connected = true;
+            return connected;
+        }
 
-    /* start the live rendering server on the computer */
-    bool transmit_end = false;
-    std::thread live_thread;
-    live_thread = std::thread(live_rendering, std::ref(grid), isSubmarine, probeIP, compIP, std::ref(transmit_end));
-    live_thread.detach();
+        /* start the live rendering server on the computer */
+        bool transmit_end = false;
+        std::thread live_thread;
+        live_thread = std::thread(live_rendering, std::ref(grid), isSubmarine, probeIP, compIP, std::ref(transmit_end));
+        live_thread.detach();
 
-    /* pass some parameters */
-    soc.customCommand("cd");
-    soc.customCommand("make all");
-    std::string command0 = "./test";
-    for (int i = 0; i < 6; ++i)
-    {
-        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
-        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
-        if (lxRes) command0 += " " + std::to_string(lxRes);
-        if (servoRangeMin) command0 += " " + std::to_string(servoRangeMin);
-        if (servoRangeMax) command0 += " " + std::to_string(servoRangeMax);
-        if (servoRes) command0 += " " + std::to_string(servoRes);
-    }
-    soc.customCommand(const_cast<char*>(command0.c_str()));
+        /* pass some parameters */
+        soc.customCommand("sh ./whitefin/tx.sh", 1000);
+        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000);
+        soc.customCommand("cd whitefin", 500);
+        soc.customCommand("make clean", 500);
+        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000);
+//        std::string command0 = "./test";
+//        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
+//        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
+//        if (lxRes) command0 += " " + std::to_string(lxRes);
+//        if (servoRangeMin) command0 += " " + std::to_string(servoRangeMin);
+//        if (servoRangeMax) command0 += " " + std::to_string(servoRangeMax);
+//        if (servoRes) command0 += " " + std::to_string(servoRes);
+//        soc.customCommand(const_cast<char*>(command0.c_str()));
 
-    printf(">>> Live rendering starts! <<<\n");
-    while(!transmit_end); /* waiting for live rendering */
-    if (connectionType == 0) /* sending live scan */
-    {
-        if (soc.remove_cachefile() == -1) printf("Remove cachefile failed!\n");
-    }
-    else if (connectionType == 1) /* save to file */
-    {
-        std::string newname;
-        if (isSubmarine)
-            newname += "submarine ";
-        else
-            newname += "whitefin ";
+        printf(">>> Live rendering starts! <<<\n");
+        while(!transmit_end); /* waiting for live rendering */
+        if (connectionType == 0) /* sending live scan */
+        {
+            if (soc.remove_cachefile() == -1) printf("Remove cachefile failed!\n");
+        }
+        else if (connectionType == 1) /* save to file */
+        {
+            std::string newname;
+            if (isSubmarine)
+                newname += "submarine ";
+            else
+                newname += "whitefin ";
 
-        time_t now = time(0);
-        tm *ltm = localtime(&now);
-        newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
-                + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
-        if (soc.save_datafile(const_cast<char*>(newname.c_str())) == -1) printf("save and rename the data file failed!\n");
+            time_t now = time(0);
+            tm *ltm = localtime(&now);
+            newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
+                      + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
+            if (soc.save_datafile(const_cast<char*>(newname.c_str())) == -1) printf("save and rename the data file failed!\n");
+        }
+    } catch(std::exception& e){
+        errorMessage = e.what();
+        error = true;
+        return false;
     }
 
     return true;
-
 }
 
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end)
@@ -1192,7 +1200,7 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     sockaddr_in addrSrv;
     addrSrv.sin_family = AF_INET;
     addrSrv.sin_port = htons(8888);
-    addrSrv.sin_addr.s_addr = inet_addr(compIP.c_str());
+    addrSrv.sin_addr.s_addr = INADDR_ANY;
 
     sockaddr_in addrClt;
     addrClt.sin_family = AF_INET;
@@ -1316,8 +1324,9 @@ std::vector<unsigned char> readFile(const char* directory)
     printf("===> %s <===\n", directory);
     std::ifstream inFile(directory, std::ios::in | std::ios::binary);
     if (!inFile){
-        //printf("Failed to open file.\n");
-        throw "Failed to open file!\n";
+        printf("Failed to open file.\n");
+//        throw "Failed to open file!\n";
+        throw(std::runtime_error("Failed to open file!"));
         std::vector<unsigned char> fail_out;
         return fail_out;
     }

@@ -80,7 +80,7 @@ void realDemo(DensityMap& grid, bool& dataUpdate);
 void fakeDemo(DensityMap& grid, bool& dataUpdate);
 
 void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
-void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
+void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate, bool& error, std::string& errorMessage);
 void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate);
 std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
 std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file_bytes, std::vector<int> _marker_locations);
@@ -104,7 +104,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
                     bool isSubmarine,
                     int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
                     std::string customCommand,
-                    int connectionType, std::string& output, bool& connected
+                    int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
 );
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 

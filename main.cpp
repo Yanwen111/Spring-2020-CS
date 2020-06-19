@@ -13,13 +13,13 @@
 
 #include "camera.h"
 #include "data.h"
-#include "probe.h"
+//#include "probe.h"
 #include "gui.h"
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1000
-#define SCR_HEIGHT 800
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
@@ -32,9 +32,9 @@ void sphereDemo(DensityMap& grid);
 void fanDemo(DensityMap& grid);
 
 // Used for multi-threads
-void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle);
+void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string windowTitle);
 
-bool dataUpdate = false;
+//bool dataUpdate = false;
 
 // Used in the mouse movement callbacks
 double lastMouseX;
@@ -46,15 +46,15 @@ float rotationY;
 
 bool mousePressed;
 int guiObjectPressed;
+bool mouseOnGui;
 double xposMarker, yposMarker;
 
 // Creating a Camera object
 Camera cam;
-Probe probe;
+//Probe probe;
 GUI* myGUIpointer;
-Socket soc((char*)"Linux");
 
-int depth = 2500;
+//int depth = 2500;
 
 glm::mat4 projection;
 glm::mat4 view;
@@ -64,57 +64,102 @@ const bool ROTATE_GRID = true;
 
 std::thread dataThread;
 
+//Load File function pointer
+bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& errorMessage, int& probeType, bool& error){
 
-void test0616();
+    char* c = new char[file.size() + 1];
+    strcpy(c, file.c_str());
+    std::cout<<"READDATA: "<<c<<std::endl;
 
-void test0616()
-{
-    printf(">>>>>> remote start!! <<<<<<\n");
-    soc.setRPIP((char*)"71.127.254.212");
-    soc.setRPName((char*)"root");
-    soc.setRPPassword((char*)"root");
+    dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
+    dataThread.detach();
+    probeType = 1; // 1 for white fin, 0 for submarine
+    std::cout<<"END READ DATA"<<std::endl;
+    return true;
+}
 
-    printf("The basic information we need for remote control are:\n"
-       "Computer IP: %s\n"
-       "Red Pitaya IP: %s\n"
-       "Red Pitaya user: %s\n"
-       "Red Pitaya Password: %s\n"
-       "#############\n#############\n\n\n",
-       soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
-    soc.linkStart();
-    soc.interactiveShell();
-//    soc.multiCommands();
-    soc.linkTerminated();
+bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
+        bool isSubmarine,
+        int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+        std::string customCommand,
+        int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
+        ) {
+    //connect in another thread, same thing as readData
+
+    if(connectionType == 0){
+        std::cout<<"======== Sending Live Scan =========="<<std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+
+        if(!isSubmarine){
+            std::cout<<"Lx-16: "<<std::endl;
+            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
+            std::cout<<"     Res: "<<lxRes<<std::endl;
+
+
+            std::cout<<"Servo: "<<std::endl;
+            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
+            std::cout<<"     Res: "<<servoRes<<std::endl;
+        }
+    }
+    if(connectionType == 1){
+        std::cout<<"======== Scan to File =========="<<std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+
+        if(!isSubmarine){
+            std::cout<<"Lx-16: "<<std::endl;
+            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
+            std::cout<<"     Res: "<<lxRes<<std::endl;
+
+
+            std::cout<<"Servo: "<<std::endl;
+            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
+            std::cout<<"     Res: "<<servoRes<<std::endl;
+        }
+    }
+    if(connectionType == 2) {
+        std::cout << "======== Sending Custom Command ==========" << std::endl;
+        if(isSubmarine)
+            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
+        else
+            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
+
+        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
+        std::cout<<"Comp IP: "<<compIP<<std::endl;
+        std::cout<<"COMMAND: "<<customCommand<<std::endl;
+    }
+
+    try{
+        dataThread = std::thread(connectToProbe, std::ref(grid), probeIP, username, password, compIP, isSubmarine,
+                                 lxRangeMin, lxRangeMax, lxRes, servoRangeMin, servoRangeMax, servoRes, customCommand, connectionType,
+                                 std::ref(output), std::ref(connected), std::ref(error), std::ref(errorMessage));
+        dataThread.detach();
+    } catch(...){
+        std::cout<<"EXCEPTION: "<<std::endl;
+    }
+
+//    output = "Successfully Sent Command!";
+//    connected = true;
+    return true; //success!
+}
+
+//set camera zoom
+void setZoom(int zoomVal){
+    cam.fov = zoomVal;
 }
 
 int main() {
-
-//    std::thread test0thread;
-//    test0thread = std::thread(test0616);
-//    test0thread.detach();
-    /* test remote codes */
-//    soc.getComputerIP();
-    soc.setRPIP((char*)"192.168.1.42");
-    soc.setRPName((char*)"pi");
-    soc.setRPPassword((char*)"raspberryroot");
-//    soc.loadConfig(0);
-    printf("The basic information we need for remote control are:\n"
-           "Computer IP: %s\n"
-           "Red Pitaya IP: %s\n"
-           "Red Pitaya user: %s\n"
-           "Red Pitaya Password: %s\n"
-           "#############\n#############\n\n\n",
-           soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
-//    soc.saveConfig();
-    soc.linkStart();
-    soc.interactiveShell();
-//    soc.listAllFiles();
-//    soc.multiCommands();
-//    soc.changeFolder((char*)"IOT_project");
-//    soc.listAllFiles();
-    soc.linkTerminated();
-
-    return 0; /* Only test the libssh part */
 
     // Window title
     std::string windowTitle = "Density Map";
@@ -175,18 +220,20 @@ int main() {
     firstMouse = true;
 
     // Creating the density map
-    int dim = 100;
+    int dim = 101;
     DensityMap grid(dim);
 
+//    void (*foo)(int);
+//    foo = &my_int_func;
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
     grid.setThreshold(1);
 
     // Main event loop
-    renderLoop(window, probe, grid, myGUI, windowTitle);
+    renderLoop(window, grid, myGUI, windowTitle);
 
     myGUI.cleanUp();
 
@@ -194,13 +241,13 @@ int main() {
     glfwTerminate();
 }
 
-void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, std::string windowTitle){
+void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string windowTitle){
 
     // Variables for measuring FPS
     int numFrames = 0;
     double lastFPSUpdate = 0;
 
-    int currProbe = -1;
+//    int currProbe = -1;
 
     //The render loop to draw until the user closes the window
     while (!glfwWindowShouldClose(window)) {
@@ -230,88 +277,86 @@ void renderLoop(GLFWwindow* window, Probe& probe, DensityMap& grid, GUI& myGUI, 
         }
 
         //Checks if the user clicked the load button on the GUI
-        if (myGUI.loadNew()) {
-            //Creates the probe to load
-            int newProbe = myGUI.getProbe();
-            //probe is submarine
-            if (newProbe == 0) {
-                probe.loadNewProbe("config_file/models/PROBE_CENTERED.stl");
-            }
-            //probe is whiteFin
-            if (newProbe == 1) {
-                probe.loadNewProbe("config_file/models/WHITE_FIN_CENTERED.stl");
-            }
-            currProbe = newProbe;
+//        if (myGUI.loadNew()) {
+//            //Creates the probe to load
+//            int newProbe = myGUI.getProbe();
+//            //probe is submarine
+//            if (newProbe == 0) {
+//                probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
+//            }
+//            //probe is whiteFin
+//            if (newProbe == 1) {
+//                probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
+//            }
+//            currProbe = newProbe;
+//
+//            //stays false until the data processing thread is done processing the data
+//            dataUpdate = false;
+//            grid.clear();
+//
+//            //read new file
+//            if (newProbe == 0) {
+//                //gets the file name, time gain value, depth,
+//                std::string file = myGUI.getFile();
+//                char *c = const_cast<char *>(file.c_str());
+//                float GAIN = myGUI.getGain(); /* 0 means no gain */
+//                depth = myGUI.getDepth();
+//                float updateCoefficient = myGUI.getUpdateCoefficient();
+//
+//                grid.setUpdateCoefficient(updateCoefficient);
+//                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+//                dataThread.detach();
+//            }
+//            if (newProbe == 1) {
+//                std::string file = myGUI.getFile();
+//                char *c = &file[0];
+//                float GAIN = myGUI.getGain(); /* 0 means no gain */
+//                depth = myGUI.getDepth();
+//                float updateCoefficient = myGUI.getUpdateCoefficient();
+//                grid.setUpdateCoefficient(updateCoefficient);
+//                dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
+//                dataThread.detach();
+//            }
+//            //Figure out how to rotate probe?
+//            //Add in error checking on GUI side later
+//        }
 
-            //stays false until the data processing thread is done processing the data
-            dataUpdate = false;
-            grid.clear();
-
-            //read new file
-            if (newProbe == 0) {
-                //gets the file name, time gain value, depth,
-                std::string file = myGUI.getFile();
-                char *c = const_cast<char *>(file.c_str());
-                float GAIN = myGUI.getGain(); /* 0 means no gain */
-                depth = myGUI.getDepth();
-                float updateCoefficient = myGUI.getUpdateCoefficient();
-
-                grid.setUpdateCoefficient(updateCoefficient);
-                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                //dataThread = std::thread(readDataTest, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                dataThread.detach();
-            }
-            if (newProbe == 1) {
-                std::string file = myGUI.getFile();
-                char *c = &file[0];
-                float GAIN = myGUI.getGain(); /* 0 means no gain */
-                depth = myGUI.getDepth();
-                float updateCoefficient = myGUI.getUpdateCoefficient();
-                grid.setUpdateCoefficient(updateCoefficient);
-                //dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-                dataThread = std::thread(realDemo4, std::ref(grid), std::ref(dataUpdate));
-                dataThread.detach();
-            }
-            //Figure out how to rotate probe?
-            //Add in error checking on GUI side later
-        }
-
-        if(currProbe != -1) {
-            // Draw the probe
-            probe.draw(projection, view, rotationX, rotationY);
-        }
+//        if(currProbe != -1) {
+//            // Draw the probe
+//            probe.draw(projection, view, rotationX, rotationY);
+//        }
 
         //Set up GUI paramters
-        myGUI.setNumLinesDrawn(getSamples());
-        myGUI.setNumSamples(depth);
-        myGUI.setVoxels(grid.getDim());
-        myGUI.setFileSize(0);
-        myGUI.setBrightness(grid.getBrightness());
-        myGUI.setThreshold(grid.getThreshold());
-        myGUI.setContrast(grid.getContrast());
+//        myGUI.setNumLinesDrawn(getSamples());
+//        myGUI.setNumSamples(depth);
+//        myGUI.setVoxels(grid.getDim());
+//        myGUI.setFileSize(0);
+//        myGUI.setBrightness(grid.getBrightness());
+//        myGUI.setThreshold(grid.getThreshold());
+//        myGUI.setContrast(grid.getContrast());
 
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
 
         // Draw the GUI and set parameters
-        myGUI.drawGUI(projection, view, model);
-        myGUI.setTime(glfwGetTime());
-        myGUI.setQuaternion(probe.getQuaternions());
-        myGUI.setEulerAngles(probe.getEulerAngles());
-        if (myGUI.isReset) {
-            rotationX = 0;
-            rotationY = 0;
-        }
-        if(dataUpdate){
-            std::cout<<"Done Loading File"<<std::endl;
-            myGUI.doneLoading();
-            probe.openIMUFile("data/real_imu.txt");
-            dataUpdate = false;
-        }
-        cam.fov = myGUI.getZoom();
-        grid.setBrightness(myGUI.getBrightness());
-        grid.setThreshold(myGUI.getThreshold());
-        grid.setContrast(myGUI.getContrast());
+        myGUI.drawGUI(projection, view, rotationX, rotationY);
+//        myGUI.setTime(glfwGetTime());
+//        myGUI.setQuaternion(probe.getQuaternions());
+//        myGUI.setEulerAngles(probe.getEulerAngles());
+//        if (myGUI.isReset) {
+//            rotationX = 0;
+//            rotationY = 0;
+//        }
+//        if(dataUpdate){
+//            std::cout<<"Done Loading File"<<std::endl;
+//            myGUI.doneLoading();
+//            probe.openIMUFile("data/real_imu.txt");
+//            dataUpdate = false;
+//        }
+//        cam.fov = myGUI.getZoom();
+//        grid.setBrightness(myGUI.getBrightness());
+//        grid.setThreshold(myGUI.getThreshold());
+//        grid.setContrast(myGUI.getContrast());
 
 
         // Used to make camera move speed consistent
@@ -418,69 +463,45 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
             rotationX = -1.5;
         }
     }
+    //get matrices needed to calculate ray and detect intersections
+    glm::mat4 cameraToWorld = glm::mat4(1.0f);
+    glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+    glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+    cameraToWorld[0] = rightH;
+    cameraToWorld[1] = upH;
+    cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+    cameraToWorld[3] = glm::vec4(cam.position, 1);
 
-    if(guiObjectPressed != -1) {
-        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-        cameraToWorld[0] = rightH;
-        cameraToWorld[1] = upH;
-        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-        cameraToWorld[3] = glm::vec4(cam.position, 1);
+    //Generate Ray
+    float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
+    float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
+    float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
+    glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
+    glm::vec4 rayOriginWorld, rayPWorld;
+    rayOriginWorld = cameraToWorld * rayOrigin;
+    rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
+    glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
+    rayDirection = glm::normalize(rayDirection);
 
-        //Generate Ray
-        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
-        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
-        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
-        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-        glm::vec4 rayOriginWorld, rayPWorld;
-        rayOriginWorld = cameraToWorld * rayOrigin;
-        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-        rayDirection = glm::normalize(rayDirection);
-
-        myGUIpointer->moveMarker(guiObjectPressed, rayOriginWorld, rayDirection);
+    if(guiObjectPressed){
+        myGUIpointer->moveMarker(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
+    }
+    else {
+        //check if mouse is on object
+        mouseOnGui = myGUIpointer->mouseOnObjects(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
     }
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-
-        //Check if the mouse is on any GUI objects (like markers)
-        double xpos, ypos;
-        //getting cursor position
-        glfwGetCursorPos(window, &xpos, &ypos);
-
-        glm::mat4 cameraToWorld = glm::mat4(1.0f);
-        glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-        glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-        cameraToWorld[0] = rightH;
-        cameraToWorld[1] = upH;
-        cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-        cameraToWorld[3] = glm::vec4(cam.position, 1);
-
-        //Generate Ray
-        float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
-        float Px = (2 * ((xpos + 0.5) / SCR_WIDTH) - 1) * tan(cam.fov / 2 * M_PI / 180) * imageAspectRatio;
-        float Py = (1 - 2 * ((ypos + 0.5) / SCR_HEIGHT)) * tan(cam.fov / 2 * M_PI / 180);
-        glm::vec4 rayOrigin = glm::vec4(0,0,0,1);
-        glm::vec4 rayOriginWorld, rayPWorld;
-        rayOriginWorld = cameraToWorld * rayOrigin;
-        rayPWorld = cameraToWorld * glm::vec4(Px, Py, -1, 1);
-        glm::vec3 rayDirection = rayPWorld - rayOriginWorld;
-        rayDirection = glm::normalize(rayDirection);
-
-        guiObjectPressed = myGUIpointer->mouseClickedObjects(rayOriginWorld, rayDirection);
-        if(guiObjectPressed != -1){
-            xposMarker = xpos;
-            yposMarker = ypos;
-        }
+        if(mouseOnGui)
+            guiObjectPressed = 1;
         else
             mousePressed = true;
     }
 
     if (!ImGui::GetIO().WantCaptureMouse && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        guiObjectPressed = -1;
         mousePressed = false;
+        guiObjectPressed = 0;
     }
 }
