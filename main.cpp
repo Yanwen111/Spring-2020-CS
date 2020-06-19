@@ -64,31 +64,57 @@ const bool ROTATE_GRID = true;
 
 std::thread dataThread;
 
+
+void test0616();
+
+void test0616()
+{
+    printf(">>>>>> remote start!! <<<<<<\n");
+    soc.setRPIP((char*)"71.127.254.212");
+    soc.setRPName((char*)"root");
+    soc.setRPPassword((char*)"root");
+
+    printf("The basic information we need for remote control are:\n"
+       "Computer IP: %s\n"
+       "Red Pitaya IP: %s\n"
+       "Red Pitaya user: %s\n"
+       "Red Pitaya Password: %s\n"
+       "#############\n#############\n\n\n",
+       soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
+    soc.linkStart();
+    soc.interactiveShell();
+//    soc.multiCommands();
+    soc.linkTerminated();
+}
+
 int main() {
 
-//    /* test remote codes */
+//    std::thread test0thread;
+//    test0thread = std::thread(test0616);
+//    test0thread.detach();
+    /* test remote codes */
 //    soc.getComputerIP();
-////    soc.setRPIP((char*)"192.168.1.42");
-////    soc.setRPName((char*)"pi");
-////    soc.setRPPassword((char*)"raspberry");
+    soc.setRPIP((char*)"192.168.1.42");
+    soc.setRPName((char*)"pi");
+    soc.setRPPassword((char*)"raspberryroot");
 //    soc.loadConfig(0);
-//    printf("The basic information we need for remote control are:\n"
-//           "Computer IP: %s\n"
-//           "Red Pitaya IP: %s\n"
-//           "Red Pitaya user: %s\n"
-//           "Red Pitaya Password: %s\n"
-//           "#############\n#############\n\n\n",
-//           soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
-////    soc.saveConfig();
-//    soc.linkStart();
-////    soc.interactiveShell();
-////    soc.listAllFiles();
+    printf("The basic information we need for remote control are:\n"
+           "Computer IP: %s\n"
+           "Red Pitaya IP: %s\n"
+           "Red Pitaya user: %s\n"
+           "Red Pitaya Password: %s\n"
+           "#############\n#############\n\n\n",
+           soc.computer_IP, soc.RP_IP, soc.RP_name, soc.RP_password);
+//    soc.saveConfig();
+    soc.linkStart();
+    soc.interactiveShell();
+//    soc.listAllFiles();
 //    soc.multiCommands();
-////    soc.changeFolder((char*)"IOT_project");
-////    soc.listAllFiles();
-//    soc.linkTerminated();
-//
-//    return 0; /* Only test the libssh part */
+//    soc.changeFolder((char*)"IOT_project");
+//    soc.listAllFiles();
+    soc.linkTerminated();
+
+    return 0; /* Only test the libssh part */
 
     // Window title
     std::string windowTitle = "Density Map";

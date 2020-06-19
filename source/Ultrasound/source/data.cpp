@@ -955,13 +955,16 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     //addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
     addrSrv.sin_addr.s_addr = inet_addr("192.168.1.39");
+    //addrSrv.sin_addr.s_addr = inet_addr("98.15.72.232");
+
 
     sockaddr_in addrClt;
     addrClt.sin_family = AF_INET;
     addrClt.sin_port = htons(8000);
     //addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     //addrSrv.sin_addr.s_addr = htonl(INADDR_ANY);
-    addrClt.sin_addr.s_addr = inet_addr("192.168.1.42");
+    addrClt.sin_addr.s_addr = inet_addr("71.127.254.212");
+    //addrClt.sin_addr.s_addr = inet_addr("192.168.1.39");
 
     //bind(sockSrv, (SOCKADDR*)&addrSrv, sizeof(SOCKADDR));
     bind(sockSrv, (sockaddr*)&addrSrv, sizeof(sockaddr));
@@ -994,6 +997,9 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 //            recv(sockConn, recvBuf, sizeof(recvBuf), 0);
             //recvfrom(sockSrv, recvBuf, sizeof(recvBuf), 0, (SOCKADDR*)&addrClient, &length);
             recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            for(int i = 0; i < 20; ++i) {
+                printf("%02X ", recvBuf[i]);
+            }
             buffer_cnt++;
 
             if (recvBuf[0] == 'O')
