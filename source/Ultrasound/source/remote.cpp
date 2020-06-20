@@ -198,7 +198,7 @@ void Socket::listAllFiles() {
     }
 }
 
-void Socket::customCommand(char* command, int ms) {
+void Socket::customCommand(char* command, int ms, std::string &output) {
     int rc;
     char buffer[1024];
     unsigned int nbytes, nwritten;
@@ -218,12 +218,23 @@ void Socket::customCommand(char* command, int ms) {
     usleep(50000L); /* 50 ms*/
     nwritten = ssh_channel_write(shell_channel, command1, sizeof(command1));
     usleep(50000L);
+    memset(buffer, 0, sizeof(buffer));
+    output.clear();
     nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 500);
+    output = buffer;
+    output.erase(std::remove(output.begin(), output.end(), '^'), output.end());
+    output.erase(std::remove(output.begin(), output.end(), '@'), output.end());
     usleep(50000L);
     while (nbytes > 0)
     {
-        fwrite(buffer, 1, nbytes, stdout);
+        //fwrite(buffer, 1, nbytes, stdout);
+        printf("%s\n", output.c_str());
+        memset(buffer, 0, sizeof(buffer));
+        output.clear();
         nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, ms);
+        output = buffer;
+        output.erase(std::remove(output.begin(), output.end(), '^'), output.end());
+        output.erase(std::remove(output.begin(), output.end(), '@'), output.end());
         usleep(5000L);
     }
     //sleep(1);
@@ -232,8 +243,9 @@ void Socket::customCommand(char* command, int ms) {
 }
 
 void Socket::multiCommands() {
-    customCommand("cd IOT_project/sshtest", 500);
+    //customCommand("cd IOT_project/sshtest", 500);
     //customCommand("./test");
+    return;
 }
 
 void Socket::linkTerminated() {

@@ -160,7 +160,6 @@ void setZoom(int zoomVal){
 }
 
 int main() {
-
     // Window title
     std::string windowTitle = "Density Map";
     // Initializing the OpenGL context

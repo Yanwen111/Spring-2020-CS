@@ -7,6 +7,7 @@
 #include <cstring>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 
 class Socket {
@@ -34,7 +35,7 @@ public:
     int linkStart();
     void changeFolder(char* folder_name); /* IOT_Project */
     void listAllFiles();
-    void customCommand(char* command, int ms);
+    void customCommand(char* command, int ms, std::string &output);
     void multiCommands();
     int interactiveShell();
     void linkTerminated();

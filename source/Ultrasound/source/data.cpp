@@ -1120,7 +1120,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 
         if (connectionType == 3) /* custom command */
         {
-            soc.customCommand(const_cast<char*>(customCommand.c_str()), 1000);
+            soc.customCommand(const_cast<char*>(customCommand.c_str()), 1000, output);
             //soc.interactiveShell();
             connected = true;
             return connected;
@@ -1133,11 +1133,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-        soc.customCommand("sh ./whitefin/tx.sh", 1000);
-        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000);
-        soc.customCommand("cd whitefin", 500);
-        soc.customCommand("make clean", 500);
-        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000);
+        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+        soc.customCommand("cd whitefin", 500, output);
+        soc.customCommand("make clean", 500, output);
+        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
 //        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
