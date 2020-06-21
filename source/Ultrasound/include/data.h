@@ -96,7 +96,7 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
-void UDP_timer(int& time_milisecond);
+void UDP_timer(int& time_milisecond, long& total_time);
 void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data);
 
 /* ALL-IN-ONE for GUI */

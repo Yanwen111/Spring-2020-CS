@@ -79,9 +79,9 @@ void Socket::loadConfig(int number) {
 
 int Socket::remove_cachefile() {
     if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
-        return system("rm data/tempr.dat");
+        return system("rm data/tempr*.dat");
     else if (strcmp(OS_name, "Windows") == 0)
-        return system("del data/tempr.dat");
+        return system("del data/tempr*.dat");
 }
 
 int Socket::save_datafile(char* newfilename) {

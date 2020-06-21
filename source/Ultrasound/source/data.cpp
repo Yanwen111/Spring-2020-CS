@@ -981,8 +981,9 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     std::vector<unsigned char> sub_file_bytes;
 
     int time_milisecond = 0;
+    long total_time = 0;
     std::thread timer_thread;
-    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond), std::ref(total_time));
     timer_thread.detach();
     int update_rate = 200; /* ms */
 
@@ -1075,13 +1076,14 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 //    WSACleanup();
 }
 
-void UDP_timer(int& time_milisecond)
+void UDP_timer(int& time_milisecond, long& total_time)
 {
     int step = 10;
     while(1)
     {
         time_mutex.lock();
         time_milisecond += step;
+        total_time += step;
         time_mutex.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(step));
     }
@@ -1138,7 +1140,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         soc.customCommand("cd whitefin", 500, output);
         soc.customCommand("make clean", 500, output);
         soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
-//        std::string command0 = "./test";
+        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
 //        if (lxRes) command0 += " " + std::to_string(lxRes);
@@ -1214,14 +1216,23 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     int buffer_cnt = 0, loop_cnt = 0;
     std::vector<unsigned char> sub_file_bytes;
 
+
+    long total_time = 0;
+    long time_bar_step = 5 * 60 * 1000;
+    long time_bar = time_bar_step; /* ms */
+    int total_line_cnt = 0;
+    long line_bar_step = 5000;
+    long line_bar = line_bar_step;
+
     int time_milisecond = 0;
     std::thread timer_thread;
-    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond), std::ref(total_time));
     timer_thread.detach();
     int update_rate = 200; /* ms */
 
     //write bytes data to a file
-    std::ofstream fileout("data/tempr.dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
+    int file_cnt = 0;
+    std::ofstream fileout("data/tempr" + std::to_string(file_cnt) + ".dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
     setDepth(1500);
     setGain(1.0);
 
@@ -1232,6 +1243,17 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
 
             recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
             buffer_cnt++;
+            total_line_cnt++;
+
+            /* seperate the file according to number of lines or the time */
+            if (total_line_cnt >= line_bar || total_time >= time_bar)
+            {
+                line_bar += line_bar_step;
+                time_bar += time_bar_step;
+                fileout.close();
+                file_cnt++;
+                fileout.open("data/tempr" + std::to_string(file_cnt) + ".dat", std::ios::trunc|std::ios::out);
+            }
 
             if (recvBuf[0] == 'O')
             {
