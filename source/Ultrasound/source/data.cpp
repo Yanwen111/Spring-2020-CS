@@ -1114,11 +1114,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         /* connect to Red Pitaya */
         Socket soc("Linux");
 
-        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
-        soc.setRPName(const_cast<char*>(username.c_str()));
-        soc.setRPPassword(const_cast<char*>(password.c_str()));
-        soc.saveConfig();
-        soc.linkStart();
+//        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
+//        soc.setRPName(const_cast<char*>(username.c_str()));
+//        soc.setRPPassword(const_cast<char*>(password.c_str()));
+//        soc.saveConfig();
+//        soc.linkStart();
 
         if (connectionType == 3) /* custom command */
         {
@@ -1135,12 +1135,12 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
-        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
-        soc.customCommand("cd whitefin", 500, output);
-        soc.customCommand("make clean", 500, output);
-        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
-        std::string command0 = "./test";
+//        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+//        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+//        soc.customCommand("cd whitefin", 500, output);
+//        soc.customCommand("make clean", 500, output);
+//        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
+//        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
 //        if (lxRes) command0 += " " + std::to_string(lxRes);
@@ -1150,12 +1150,14 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 //        soc.customCommand(const_cast<char*>(command0.c_str()));
 
         printf(">>> Live rendering starts! <<<\n");
-        while(!transmit_end); /* waiting for live rendering */
+        while(!transmit_end) /* waiting for live rendering */
+            usleep(1000);
+        printf("===== now decide which mode to choose =====\n");
         if (connectionType == 0) /* sending live scan */
         {
             if (soc.remove_cachefile() == -1) printf("Remove cachefile failed!\n");
         }
-        else if (connectionType == 1) /* save to file */
+        else if (connectionType == 1) /* scan to file */
         {
             std::string newname;
             if (isSubmarine)
@@ -1262,6 +1264,7 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
                     printf(">>>>> Transmitting over! <<<<<\n");
                     buffer_cnt = buffer_size;
                     in_transmit = false;
+                    transmit_end = true;
                 }
             } else{
                 for (auto r: recvBuf) {

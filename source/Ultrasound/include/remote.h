@@ -9,6 +9,10 @@
 #include <fstream>
 #include <algorithm>
 
+#include <vector>
+#include <sstream>
+#include <ctime>
+
 
 class Socket {
 public:

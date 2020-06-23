@@ -85,7 +85,39 @@ int Socket::remove_cachefile() {
 }
 
 int Socket::save_datafile(char* newfilename) {
-    return rename("data/tempr.dat", newfilename);
+    std::string src_name = "file_list_23.txt";
+    std::string command;
+    if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
+        command = "ls data > data/" + src_name;
+    else if (strcmp(OS_name, "Windows") == 0)
+        command = "dir \\data > \\data\\" + src_name;
+    system(command.c_str());
+
+    std::vector<std::string> file_list;
+    std::string line, word;
+    std::ifstream filein((std::string("data/") + src_name).c_str());
+    int cnt = 0;
+    while (std::getline(filein, line))
+    {
+        if(line.find("tempr") != std::string::npos)
+        {
+            std::istringstream stream(line);
+            while (stream >> word)
+            {
+                if (word.find("tempr") != std::string::npos)
+                {
+                    std::string newName = std::string("data/") + newfilename + std::string("_") + std::to_string(cnt);
+                    std::string oldName = std::string("data/") + word;
+                    rename(oldName.c_str(), newName.c_str());
+                    cnt++;
+                }
+            }
+        }
+    }
+    system((std::string("rm data/") + src_name).c_str());
+    return 0;
+
+    //return rename("data/tempr.dat", newfilename);
 }
 
 int Socket::linkStart() {
