@@ -91,7 +91,11 @@ int Socket::save_datafile(char* newfilename) {
         command = "ls data > data/" + src_name;
     else if (strcmp(OS_name, "Windows") == 0)
         command = "dir \\data > \\data\\" + src_name;
-    system(command.c_str());
+    if (system(command.c_str()) == -1)
+    {
+        printf("Create file names list file failed!\n");
+        return -1;
+    };
 
     std::vector<std::string> file_list;
     std::string line, word;
@@ -108,13 +112,26 @@ int Socket::save_datafile(char* newfilename) {
                 {
                     std::string newName = std::string("data/") + newfilename + std::string("_") + std::to_string(cnt);
                     std::string oldName = std::string("data/") + word;
-                    rename(oldName.c_str(), newName.c_str());
+                    if (rename(oldName.c_str(), newName.c_str()) == -1)
+                    {
+                        printf("rename file %s failed!\n", oldName.c_str());
+                        return -1;
+                    }
                     cnt++;
                 }
             }
         }
     }
-    system((std::string("rm data/") + src_name).c_str());
+
+    if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
+        command = "rm data/" + src_name;
+    else if (strcmp(OS_name, "Windows") == 0)
+        command = "del data\\" + src_name;
+    if (system(command.c_str()) == -1)
+    {
+        printf("Remove file names list file failed!\n");
+        return -1;
+    }
     return 0;
 
     //return rename("data/tempr.dat", newfilename);
