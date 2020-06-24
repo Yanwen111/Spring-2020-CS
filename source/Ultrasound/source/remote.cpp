@@ -79,13 +79,15 @@ void Socket::loadConfig(int number) {
 
 int Socket::remove_cachefile() {
     if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
-        return system("rm data/tempr.dat");
+        return system("rm data/tempr*.dat");
     else if (strcmp(OS_name, "Windows") == 0)
-        return system("del data/tempr.dat");
+        return system("del data/tempr*.dat");
 }
 
 int Socket::save_datafile(char* newfilename) {
-    return rename("data/tempr.dat", newfilename);
+    if(rename("data/tempr.dat", newfilename) == -1)
+        throw(std::runtime_error("Error saving and renaming data file"));
+    return 1;
 }
 
 int Socket::linkStart() {
@@ -198,7 +200,7 @@ void Socket::listAllFiles() {
     }
 }
 
-void Socket::customCommand(char* command) {
+void Socket::customCommand(char* command, int ms, std::string &output) {
     int rc;
     char buffer[1024];
     unsigned int nbytes, nwritten;
@@ -218,12 +220,23 @@ void Socket::customCommand(char* command) {
     usleep(50000L); /* 50 ms*/
     nwritten = ssh_channel_write(shell_channel, command1, sizeof(command1));
     usleep(50000L);
+    memset(buffer, 0, sizeof(buffer));
+    output.clear();
     nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 500);
+    output = buffer;
+    output.erase(std::remove(output.begin(), output.end(), '^'), output.end());
+    output.erase(std::remove(output.begin(), output.end(), '@'), output.end());
     usleep(50000L);
     while (nbytes > 0)
     {
-        fwrite(buffer, 1, nbytes, stdout);
-        nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, 1000);
+        //fwrite(buffer, 1, nbytes, stdout);
+        printf("%s\n", output.c_str());
+        memset(buffer, 0, sizeof(buffer));
+        output.clear();
+        nbytes = ssh_channel_read_timeout(shell_channel, buffer, sizeof(buffer), 0, ms);
+        output = buffer;
+        output.erase(std::remove(output.begin(), output.end(), '^'), output.end());
+        output.erase(std::remove(output.begin(), output.end(), '@'), output.end());
         usleep(5000L);
     }
     //sleep(1);
@@ -232,13 +245,9 @@ void Socket::customCommand(char* command) {
 }
 
 void Socket::multiCommands() {
-    customCommand("cd IOT_project/sshtest");
-    customCommand("ls");
-    customCommand("make clean");
-    customCommand("ls");
-    customCommand("make all");
-    customCommand("./test");
+    //customCommand("cd IOT_project/sshtest", 500);
     //customCommand("./test");
+    return;
 }
 
 void Socket::linkTerminated() {

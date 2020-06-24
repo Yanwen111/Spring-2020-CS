@@ -25,11 +25,12 @@ public:
                     std::string, int, std::string&, bool&, bool&, std::string&
                     ),
             void (*setDepth)(int),
-            void (*setGain)(float)
+            void (*setGain)(float),
+            bool (*saveFile)(bool, bool&, std::string&, bool)
             );
 
     void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
-    static void cleanUp();
+    void cleanUp();
 
 //    int getZoom();
 //
@@ -68,6 +69,8 @@ public:
 //    void doneLoading();
 
 private:
+    void loadConfig();
+
     DensityMap* gridPointer;
     void (*setZoomMain)(int);
     bool (*readDataMain)(DensityMap&, std::string, float, int, bool&, std::string&, int&, bool&);
@@ -76,6 +79,7 @@ private:
                            std::string, int, std::string&, bool&, bool&, std::string&);
     void (*setGainMain)(float);
     void (*setDepthMain)(int);
+    bool (*saveFileMain)(bool, bool&, std::string&, bool);
 
     //filepath of data folder
     boost::filesystem::path filePath;
@@ -124,6 +128,10 @@ private:
 
     //is true if connection failed
     bool screen2ErrorSetUp = false;
+    //is true if saving file failed
+    bool screen2ErrorSaveFile = false;
+    //0 = user didn't click save file, 1 = success! -1 = failed to save file
+    int screen2SaveFileState = 0;
     //Error message returned from attempting to connect
     std::string screen2ErrorMessage = "";
 

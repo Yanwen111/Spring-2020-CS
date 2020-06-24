@@ -140,18 +140,31 @@ bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string usern
         std::cout<<"COMMAND: "<<customCommand<<std::endl;
     }
 
-    try{
-        dataThread = std::thread(connectToProbe, std::ref(grid), probeIP, username, password, compIP, isSubmarine,
-                                 lxRangeMin, lxRangeMax, lxRes, servoRangeMin, servoRangeMax, servoRes, customCommand, connectionType,
-                                 std::ref(output), std::ref(connected), std::ref(error), std::ref(errorMessage));
-        dataThread.detach();
-    } catch(...){
-        std::cout<<"EXCEPTION: "<<std::endl;
-    }
+//    try{
+//        dataThread = std::thread(connectToProbe, std::ref(grid), probeIP, username, password, compIP, isSubmarine,
+//                                 lxRangeMin, lxRangeMax, lxRes, servoRangeMin, servoRangeMax, servoRes, customCommand, connectionType,
+//                                 std::ref(output), std::ref(connected), std::ref(error), std::ref(errorMessage));
+//        dataThread.detach();
+//    } catch(...){
+//        std::cout<<"EXCEPTION: "<<std::endl;
+//    }
 
-//    output = "Successfully Sent Command!";
-//    connected = true;
+    output = "Successfully Sent Command!";
+    connected = true;
     return true; //success!
+}
+
+void saveFileHelper(bool isSubmarine, bool& error, std::string& errorMessage, bool deleteFile) {
+    if(deleteFile)
+        remove_tempr_files(error, errorMessage);
+    else
+        rename_tempr_files(isSubmarine, error, errorMessage);
+}
+
+bool saveFile(bool isSubmarine, bool& error, std::string& errorMessage, bool deleteFile) {
+    dataThread = std::thread(saveFileHelper, isSubmarine, std::ref(error), std::ref(errorMessage), deleteFile);
+    dataThread.detach();
+    return true;
 }
 
 //set camera zoom
@@ -226,7 +239,7 @@ int main() {
 //    void (*foo)(int);
 //    foo = &my_int_func;
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map

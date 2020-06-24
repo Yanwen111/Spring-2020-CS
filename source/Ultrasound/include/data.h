@@ -96,7 +96,7 @@ void realDemo3(DensityMap& grid, bool& dataUpdate);
 
 /* real-time based on UDP */
 void realDemo4(DensityMap& grid, bool& dataUpdate);
-void UDP_timer(int& time_milisecond);
+void UDP_timer(int& time_milisecond, long& total_time);
 void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data);
 
 /* ALL-IN-ONE for GUI */
@@ -107,6 +107,8 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
                     int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
 );
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
+bool remove_tempr_files(bool& error, std::string& errorMessage);
+bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage);
 
 int getDepth();
 void setDepth(int dep);

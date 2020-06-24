@@ -39,7 +39,7 @@ double intensity;
 unsigned char information_byte = 0xE1;
 
 #ifdef __APPLE__
-    #define MSG_NOSIGNAL 0
+#define MSG_NOSIGNAL 0
 #endif
 
 int DEPTH = 2500;
@@ -981,8 +981,9 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
     std::vector<unsigned char> sub_file_bytes;
 
     int time_milisecond = 0;
+    long total_time = 0;
     std::thread timer_thread;
-    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond), std::ref(total_time));
     timer_thread.detach();
     int update_rate = 200; /* ms */
 
@@ -1075,13 +1076,14 @@ void realDemo4(DensityMap& grid, bool& dataUpdate)
 //    WSACleanup();
 }
 
-void UDP_timer(int& time_milisecond)
+void UDP_timer(int& time_milisecond, long& total_time)
 {
     int step = 10;
     while(1)
     {
         time_mutex.lock();
         time_milisecond += step;
+        total_time += step;
         time_mutex.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(step));
     }
@@ -1112,7 +1114,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         /* connect to Red Pitaya */
         Socket soc("Linux");
 
-        soc.setRPName(const_cast<char*>(probeIP.c_str()));
+        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
         soc.setRPName(const_cast<char*>(username.c_str()));
         soc.setRPPassword(const_cast<char*>(password.c_str()));
         soc.saveConfig();
@@ -1120,7 +1122,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 
         if (connectionType == 3) /* custom command */
         {
-            soc.customCommand(const_cast<char*>(customCommand.c_str()));
+            soc.customCommand(const_cast<char*>(customCommand.c_str()), 1000, output);
             //soc.interactiveShell();
             connected = true;
             return connected;
@@ -1133,27 +1135,29 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-        soc.customCommand("cd");
-        soc.customCommand("make all");
-        std::string command0 = "./test";
-        for (int i = 0; i < 6; ++i)
-        {
-            if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
-            if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
-            if (lxRes) command0 += " " + std::to_string(lxRes);
-            if (servoRangeMin) command0 += " " + std::to_string(servoRangeMin);
-            if (servoRangeMax) command0 += " " + std::to_string(servoRangeMax);
-            if (servoRes) command0 += " " + std::to_string(servoRes);
-        }
-        soc.customCommand(const_cast<char*>(command0.c_str()));
+        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+        soc.customCommand("cd whitefin", 500, output);
+        soc.customCommand("make clean", 500, output);
+        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
+//        std::string command0 = "./test";
+//        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
+//        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
+//        if (lxRes) command0 += " " + std::to_string(lxRes);
+//        if (servoRangeMin) command0 += " " + std::to_string(servoRangeMin);
+//        if (servoRangeMax) command0 += " " + std::to_string(servoRangeMax);
+//        if (servoRes) command0 += " " + std::to_string(servoRes);
+//        soc.customCommand(const_cast<char*>(command0.c_str()));
 
         printf(">>> Live rendering starts! <<<\n");
-        while(!transmit_end); /* waiting for live rendering */
+        while(!transmit_end) /* waiting for live rendering */
+            usleep(1000);
+        printf("===== now decide which mode to choose =====\n");
         if (connectionType == 0) /* sending live scan */
         {
             if (soc.remove_cachefile() == -1) printf("Remove cachefile failed!\n");
         }
-        else if (connectionType == 1) /* save to file */
+        else if (connectionType == 1) /* scan to file */
         {
             std::string newname;
             if (isSubmarine)
@@ -1200,7 +1204,7 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     sockaddr_in addrSrv;
     addrSrv.sin_family = AF_INET;
     addrSrv.sin_port = htons(8888);
-    addrSrv.sin_addr.s_addr = inet_addr(compIP.c_str());
+    addrSrv.sin_addr.s_addr = INADDR_ANY;
 
     sockaddr_in addrClt;
     addrClt.sin_family = AF_INET;
@@ -1214,14 +1218,23 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     int buffer_cnt = 0, loop_cnt = 0;
     std::vector<unsigned char> sub_file_bytes;
 
+
+    long total_time = 0;
+    long time_bar_step = 5 * 60 * 1000;
+    long time_bar = time_bar_step; /* ms */
+    int total_line_cnt = 0;
+    long line_bar_step = 5000;
+    long line_bar = line_bar_step;
+
     int time_milisecond = 0;
     std::thread timer_thread;
-    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond));
+    timer_thread = std::thread(UDP_timer, std::ref(time_milisecond), std::ref(total_time));
     timer_thread.detach();
     int update_rate = 200; /* ms */
 
     //write bytes data to a file
-    std::ofstream fileout("data/tempr.dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
+    int file_cnt = 0;
+    std::ofstream fileout("data/tempr" + std::to_string(file_cnt) + ".dat", std::ios::trunc|std::ios::out); /* WARNING: remember to delete this large file before git commit */
     setDepth(1500);
     setGain(1.0);
 
@@ -1232,6 +1245,17 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
 
             recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
             buffer_cnt++;
+            total_line_cnt++;
+
+            /* seperate the file according to number of lines or the time */
+            if (total_line_cnt >= line_bar || total_time >= time_bar)
+            {
+                line_bar += line_bar_step;
+                time_bar += time_bar_step;
+                fileout.close();
+                file_cnt++;
+                fileout.open("data/tempr" + std::to_string(file_cnt) + ".dat", std::ios::trunc|std::ios::out);
+            }
 
             if (recvBuf[0] == 'O')
             {
@@ -1240,6 +1264,7 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
                     printf(">>>>> Transmitting over! <<<<<\n");
                     buffer_cnt = buffer_size;
                     in_transmit = false;
+                    transmit_end = true;
                 }
             } else{
                 for (auto r: recvBuf) {
@@ -1282,6 +1307,106 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     close(sockSrv);
     transmit_end = true;
 }
+
+bool remove_tempr_files(bool& error, std::string& errorMessage)
+{
+    try {
+        if (system("rm data/tempr*.dat") != 0){
+            errorMessage = "Fail to remove temperate files!";
+            error = true;
+            return false;
+        }
+    }
+    catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return false;
+    }
+
+    printf("temp files have been successfully removed!\n");
+    return true;
+    //system("del data/tempr*.dat");
+}
+
+bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage)
+{
+    std::string newname;
+    if (isSubmarine)
+        newname += "submarine ";
+    else
+        newname += "whitefin ";
+
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
+              + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
+
+    std::string src_name = "file_list_23.txt";
+    std::string command = "ls data > data/" + src_name; /* save the file names in current folders into a txt file */
+//        command = "dir \\data > \\data\\" + src_name;
+
+    try {
+        if (system(command.c_str()) != 0){
+            errorMessage = "Create file names list file failed!";
+            error = true;
+            return false;
+        }
+//            throw std::runtime_error("Create file names list file failed!");
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return false;
+    }
+
+    std::vector<std::string> file_list;
+    std::string line, word;
+    std::ifstream filein((std::string("data/") + src_name).c_str());
+    int cnt = 0;
+    while (std::getline(filein, line))
+    {
+        if(line.find("tempr") != std::string::npos)
+        {
+            std::istringstream stream(line);
+            while (stream >> word)
+            {
+                if (word.find("tempr") != std::string::npos)
+                {
+                    std::string newName = std::string("data/") + newname + std::string("_") + std::to_string(cnt);
+                    std::string oldName = std::string("data/") + word;
+                    try {
+                        if (rename(oldName.c_str(), newName.c_str()) != 0) {
+                            printf("rename file %s failed!\n", oldName.c_str());
+                            errorMessage = "Error occured when renaming the temp files.";
+                            error = true;
+                            return false;
+                        }
+                    } catch (char* str) {
+                        errorMessage = str;
+                        error = true;
+                        return false;
+                    }
+                    cnt++;
+                }
+            }
+        }
+    }
+
+    printf("Already rename all the temp files!\n");
+    command = "rm data/" + src_name; /* delete the txt file with all file names */
+    try {
+        if (system(command.c_str()) != 0){
+            errorMessage = "Remove file names list file failed!";
+            error = true;
+            return false;
+        }
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return false;
+    }
+    return true;
+}
+
 
 //
 //void gainControl(DensityMap& grid, float Gain, bool& dataUpstate)
