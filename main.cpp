@@ -71,7 +71,8 @@ bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& d
     strcpy(c, file.c_str());
     std::cout<<"READDATA: "<<c<<std::endl;
 
-    dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
+    //dataThread = std::thread(readDataWhitefin, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
+    dataThread = std::thread(readDataTest, std::ref(grid), c, gain, depth, std::ref(dataUpdate));
     dataThread.detach();
     probeType = 1; // 1 for white fin, 0 for submarine
     std::cout<<"END READ DATA"<<std::endl;
