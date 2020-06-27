@@ -46,6 +46,10 @@ int DEPTH = 2500;
 float GAIN = 1.0;
 int samples = -1; /* -1 stands for no data */
 
+int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
+int V07_TOTAL_LENGTH = 4+1+2+2+0+2*2500;
+int V08_TOTAL_LENGTH = 1+4+1+2+2+16+2*2500;
+
 std::mutex time_mutex;
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
@@ -606,15 +610,18 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     //printf("the version of this data is %d \n", scan_data[0].version);
 
+    double a0, amax = -1, amin = 370;
     for (int i = 0; i < (int)scan_data.size(); ++i)
     {
-//        double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
-//        double ax = 9*Cos(angle - 222 );
-//        double ay = 9*Sin(angle - 222 );
-//        double piezo = atan2(ay+21, ax) * 180.0 / M_PI - 180.0;
-
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
-        float piezo = 270-angle;
+//        if (i == 0) a0 = angle;
+//        int atemp = angle - a0;
+//        if (atemp > 180) atemp -= 360;
+//        else if (atemp < -180) atemp += 360;
+//        amax = amax > atemp? amax:atemp;
+//        amin = amin < atemp? amin : atemp;
+        //float piezo = 270-angle;
+        float piezo = angle - 352.882812 - 90;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
         /* find min and max */
@@ -642,6 +649,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
+    printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
     return line_data;
 }
 
@@ -1114,11 +1122,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         /* connect to Red Pitaya */
         Socket soc("Linux");
 
-        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
-        soc.setRPName(const_cast<char*>(username.c_str()));
-        soc.setRPPassword(const_cast<char*>(password.c_str()));
-        soc.saveConfig();
-        soc.linkStart();
+//        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
+//        soc.setRPName(const_cast<char*>(username.c_str()));
+//        soc.setRPPassword(const_cast<char*>(password.c_str()));
+//        soc.saveConfig();
+//        soc.linkStart();
 
         if (connectionType == 3) /* custom command */
         {
@@ -1135,11 +1143,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
-        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
-        soc.customCommand("cd whitefin", 500, output);
-        soc.customCommand("make clean", 500, output);
-        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
+//        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+//        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+//        soc.customCommand("cd whitefin", 500, output);
+//        soc.customCommand("make clean", 500, output);
+//        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
 //        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
@@ -1167,8 +1175,18 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 
             time_t now = time(0);
             tm *ltm = localtime(&now);
-            newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
-                      + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
+            std::string monthname = std::to_string(ltm->tm_mon + 1);
+            std::string dayname = std::to_string(ltm->tm_mday);
+            std::string hourname = std::to_string(ltm->tm_hour);
+            std::string minutename = std::to_string(ltm->tm_min);
+            std::string secondname = std::to_string(ltm->tm_sec);
+            if (ltm->tm_mon < 10) monthname = "0" + monthname;
+            if (ltm->tm_mday < 10) dayname = "0" + dayname;
+            if (ltm->tm_hour < 10) hourname = "0" + hourname;
+            if (ltm->tm_min < 10) minutename = "0" + minutename;
+            if (ltm->tm_sec < 10) secondname = "0" + secondname;
+            newname = newname + std::to_string(ltm->tm_year - 100) + monthname+ dayname
+                      + "_" + hourname + minutename + secondname;
             if (soc.save_datafile(const_cast<char*>(newname.c_str())) == -1) printf("save and rename the data file failed!\n");
         }
     } catch(std::exception& e){
@@ -1335,8 +1353,18 @@ bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
-    newname = newname + std::to_string(ltm->tm_year) + std::to_string(ltm->tm_mon) + std::to_string(ltm->tm_mday)
-              + "_" + std::to_string(ltm->tm_hour) + std::to_string(ltm->tm_min) + std::to_string(ltm->tm_sec);
+    std::string monthname = std::to_string(ltm->tm_mon + 1);
+    std::string dayname = std::to_string(ltm->tm_mday);
+    std::string hourname = std::to_string(ltm->tm_hour);
+    std::string minutename = std::to_string(ltm->tm_min);
+    std::string secondname = std::to_string(ltm->tm_sec);
+    if (ltm->tm_mon < 10) monthname = "0" + monthname;
+    if (ltm->tm_mday < 10) dayname = "0" + dayname;
+    if (ltm->tm_hour < 10) hourname = "0" + hourname;
+    if (ltm->tm_min < 10) minutename = "0" + minutename;
+    if (ltm->tm_sec < 10) secondname = "0" + secondname;
+    newname = newname + std::to_string(ltm->tm_year - 100) + monthname+ dayname
+              + "_" + hourname + minutename + secondname;
 
     std::string src_name = "file_list_23.txt";
     std::string command = "ls data > data/" + src_name; /* save the file names in current folders into a txt file */
@@ -1450,7 +1478,6 @@ std::vector<unsigned char> readFile(const char* directory)
             (std::istreambuf_iterator<char>()));
     for(int i = 0; i < 20; ++i){
         printf("%02X ", file_bytes.at(i));
-        if (i % 2500 == 0) printf("\n");
     }
     printf("\n");
     return file_bytes;
