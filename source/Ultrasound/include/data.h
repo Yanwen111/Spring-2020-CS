@@ -58,6 +58,8 @@ struct line_data_struct{
     glm::vec3 p1; //start point. on default (dim/2, dim, dim/2) (top middle)
     glm::vec3 p2; //end point. need calculation.
     std::vector<unsigned char> vals; //Intensities
+    float rotation_angle = 0;
+    float vertical_angle = 0;
 };
 
 

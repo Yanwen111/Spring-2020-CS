@@ -44,6 +44,10 @@ unsigned char information_byte = 0xE1;
 
 int DEPTH = 2500;
 float GAIN = 1.0;
+float ROTATION = 0.0;
+float* GAIN_PTR = &GAIN;
+int * DEPTH_PTR = &DEPTH;
+float* ROTATION_PTR = &ROTATION;
 int samples = -1; /* -1 stands for no data */
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
@@ -51,6 +55,7 @@ int V07_TOTAL_LENGTH = 4+1+2+2+0+2*2500;
 int V08_TOTAL_LENGTH = 1+4+1+2+2+16+2*2500;
 
 std::mutex time_mutex;
+std::mutex rotate_mutex;
 
 void fakeDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -646,6 +651,8 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        dataline.vertical_angle = 90.0 + piezo; /* The angle with y- */
+        dataline.rotation_angle = angle_16;
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -1108,6 +1115,9 @@ void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
         {
             l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(GAIN*(i/DEPTH))), 255));
         }
+        rotate_mutex.lock();
+        *ROTATION_PTR = l.rotation_angle;
+        rotate_mutex.unlock();
         grid.writeLine(ps, pe, l.vals);
     }
 }
