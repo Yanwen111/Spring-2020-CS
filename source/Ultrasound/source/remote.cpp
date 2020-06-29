@@ -85,9 +85,56 @@ int Socket::remove_cachefile() {
 }
 
 int Socket::save_datafile(char* newfilename) {
-    if(rename("data/tempr.dat", newfilename) == -1)
-        throw(std::runtime_error("Error saving and renaming data file"));
-    return 1;
+    std::string src_name = "file_list_23.txt";
+    std::string command;
+    if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
+        command = "ls data > data/" + src_name;
+    else if (strcmp(OS_name, "Windows") == 0)
+        command = "dir \\data > \\data\\" + src_name;
+    if (system(command.c_str()) == -1)
+    {
+        printf("Create file names list file failed!\n");
+        return -1;
+    };
+
+    std::vector<std::string> file_list;
+    std::string line, word;
+    std::ifstream filein((std::string("data/") + src_name).c_str());
+    int cnt = 0;
+    while (std::getline(filein, line))
+    {
+        if(line.find("tempr") != std::string::npos)
+        {
+            std::istringstream stream(line);
+            while (stream >> word)
+            {
+                if (word.find("tempr") != std::string::npos)
+                {
+                    std::string newName = std::string("data/") + newfilename + std::string("_") + std::to_string(cnt);
+                    std::string oldName = std::string("data/") + word;
+                    if (rename(oldName.c_str(), newName.c_str()) == -1)
+                    {
+                        printf("rename file %s failed!\n", oldName.c_str());
+                        return -1;
+                    }
+                    cnt++;
+                }
+            }
+        }
+    }
+
+    if (strcmp(OS_name, "Linux") == 0 || strcmp(OS_name, "MacOS") == 0) // change the equation!
+        command = "rm data/" + src_name;
+    else if (strcmp(OS_name, "Windows") == 0)
+        command = "del data\\" + src_name;
+    if (system(command.c_str()) == -1)
+    {
+        printf("Remove file names list file failed!\n");
+        return -1;
+    }
+    return 0;
+
+    //return rename("data/tempr.dat", newfilename);
 }
 
 int Socket::linkStart() {
