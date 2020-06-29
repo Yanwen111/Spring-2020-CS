@@ -32,41 +32,15 @@ public:
     void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
     void cleanUp();
 
-//    int getZoom();
-//
-//    void setNumLinesDrawn(int num);
-//    void setNumSamples(int num);
-//    void setTime(float time);
-//    void setQuaternion(glm::vec4 quatIn);
-//    void setEulerAngles(glm::vec3 eulerIn);
-//    void setVoxels(int size);
-//    void setFileSize(double size);
-//    bool isReset;
-//
-//    float getBrightness();
-//    float getGain();
-//    int getThreshold();
-//    float getContrast();
-//    std::string getFile();
-//    int getDepth();
-//    float getUpdateCoefficient();
-//
-//    void setBrightness(float value);
-//    void setGain(float value);
-//    void setThreshold(int value);
-//    void setContrast(float value);
-//    void setUpdateCoefficient(float value);
-
     //returns int for which object is clicked
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
     void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
     bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
-//    bool loadNew();
-//    int getProbe();
-//
-//    void doneLoading();
+    //if the glfw window is resized
+    void setWidth(int inWidth);
+    void setHeight(int inHeight);
 
 private:
     void loadConfig();
@@ -80,6 +54,10 @@ private:
     void (*setGainMain)(float);
     void (*setDepthMain)(int);
     bool (*saveFileMain)(bool, bool&, std::string&, bool);
+
+    //screen width and height
+    int width;
+    int height;
 
     //filepath of data folder
     boost::filesystem::path filePath;

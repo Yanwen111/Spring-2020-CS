@@ -16,9 +16,6 @@ const int INPUT_TEXT_READ_ONLY = 16384;
 const int INPUT_TEXT_PASSWORD = 32768;
 const int INPUT_TEXT_CHARS_DECIMAL = 1;
 
-const float GUI_WIDTH = 550;
-const float GUI_HEIGHT = 700;
-
 const int FONT_SIZE = 18;
 
 const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::vec3(1.0f, 0.8f, 0.0f),
@@ -34,6 +31,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
          void (*setGain)(float),
          bool (*saveFile)(bool, bool&, std::string&, bool)
 ) {
+    glfwGetWindowSize(window, &width, &height);
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -219,15 +218,12 @@ void GUI::setUpFont() {
     textShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 }
 
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1080
-
 // render line of text
 // -------------------
 void GUI::RenderText(std::string text, float x, float y, float scaleIn, glm::vec3 color) {
     // activate corresponding render state
     textShader.use();
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height));
     textShader.setMat4("projection", projection);
 //    glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
     textShader.setVec3("textColor", color.x, color.y, color.z);
@@ -416,9 +412,9 @@ void yellowButtonClicked(const char *text, bool &pressed) {
     ImGui::PopID();
 }
 
-void drawOpenFrame(bool &pressedLoad, bool &pressedScan) {
-    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT / 2.0));
-//    ImGui::SetNextWindowPos(ImVec2(500,300));
+void drawOpenFrame(bool &pressedLoad, bool &pressedScan, int width, int height) {
+    ImGui::SetNextWindowSize(ImVec2(500,350));
+    ImGui::SetNextWindowPos(ImVec2(width/2 - 250, height/2 - 175));
 
     ImGui::Begin("Ultrasonos");
     float startx = ImGui::GetWindowSize().x * 0.5f;
@@ -464,7 +460,7 @@ void displaySettings(bool isLoadData,
         //snap
                      bool &enableSnap, int &snapThresholdIn
 ) {
-    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+//    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
     if (ImGui::CollapsingHeader("Display Parameters")) {
@@ -852,7 +848,7 @@ void loadDataFromFile(
         bool &load,
         int currState, std::string errorMessage
 ) { // loadDataFromFile(file, depth, gain, weight, error)
-    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+//    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Load Data from File");
 
     addText("Load Data from File", ImColor(0, 0, 0, 255));
@@ -999,7 +995,7 @@ void scanFromProbe(
         int &currState,
         std::string &output, std::string &errorMessage, int errorSaveFile
 ) {
-    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
+//    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Scan From Probe");
 
     static std::string lxRangeMinInput = std::to_string(lxRangeMin);
@@ -1161,7 +1157,7 @@ void scanFromProbe(
             //White Fin Option
             if (!isSubmarine) {
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
-                ImGui::PushTextWrapPos(GUI_WIDTH - 10);
+                ImGui::PushTextWrapPos(ImGui::GetWindowWidth() - 10);
                 addText("Use default connection to make scans with the probe with the following parameter settings.",
                         blue);
                 ImGui::PopTextWrapPos();
@@ -1245,7 +1241,7 @@ void scanFromProbe(
             }
 
             ImGui::NewLine();
-            ImGui::PushTextWrapPos(GUI_WIDTH - 10);
+            ImGui::PushTextWrapPos(ImGui::GetWindowWidth() - 10);
             addText("Use the Live Scan option to  enter live mode and visualize scans. Use Scan to File option to scan and save into a .dat file.",
                     purple);
             ImGui::PopTextWrapPos();
@@ -1386,7 +1382,7 @@ void GUI::drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float
 void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
     // render your IMGUI
     if (renderedScreen == 0)
-        drawOpenFrame(screen0Load, screen0Scan);
+        drawOpenFrame(screen0Load, screen0Scan, width, height);
     else if (renderedScreen == 1)
         loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState,
                          screen1ErrorMessage);
@@ -1888,9 +1884,10 @@ double GUI::rayPlaneIntersect(glm::vec3 normal, glm::vec3 point, glm::vec3 rayOr
     return -1;
 }
 
-//bool GUI::loadNew(){
-//    return newLoad;
-//}
-//int GUI::getProbe(){
-//    return probeType;
-//}
+void GUI::setWidth(int inWidth) {
+    width = inWidth;
+}
+
+void GUI::setHeight(int inHeight) {
+    height = inHeight;
+}

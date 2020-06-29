@@ -18,14 +18,16 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1080
+static int SCR_WIDTH = 1280;
+static int SCR_HEIGHT = 960;
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
 void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void processKeyboardInput(GLFWwindow* window);
+
+void windowSizeCallback(GLFWwindow* window, int width, int height);
 
 // Demo functions to show what the volume map looks like
 void sphereDemo(DensityMap& grid);
@@ -220,6 +222,8 @@ int main() {
         // and make it invisible
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
+
+    glfwSetWindowSizeCallback(window, windowSizeCallback);
 
     // Load the OpenGL functions from the graphics card
     if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
@@ -436,4 +440,14 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
         mousePressed = false;
         guiObjectPressed = 0;
     }
+}
+
+void windowSizeCallback(GLFWwindow* window, int width, int height){
+    SCR_HEIGHT = height;
+    SCR_WIDTH = width;
+    glViewport(0,0,width, height);
+
+    myGUIpointer->setHeight(height);
+    myGUIpointer->setWidth(width);
+//    std::cout<<"SCREEN SIZE CHANGED!!!"<<std::endl;
 }
