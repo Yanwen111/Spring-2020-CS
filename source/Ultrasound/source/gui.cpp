@@ -319,10 +319,10 @@ void GUI::cleanUp() {
 
 // Resets parameters to original default values
 void GUI::reset() {
-    if (!isLoadFile) {
-        dispDepth = 1500;
-        dispGain = 1.0;
-    }
+//    if (!isLoadFile) {
+//        dispDepth = 1500;
+//        dispGain = 1.0;
+//    }
 
     dispWeight = 1;
     dispBrightness = 0.0f;
@@ -469,43 +469,43 @@ void displaySettings(bool isLoadData,
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
     if (ImGui::CollapsingHeader("Display Parameters")) {
         ImGui::NewLine();
-        if (!isLoadData) {
-            addText("Set Display Parameters");
-            ImGui::Indent();
-            addText("Depth");
-            ImGui::Indent();
-            ImGui::PushItemWidth(-1);
-            ImGui::SliderInt("##depth", &depth, 1, 2500);
-            createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
-            ImGui::PopItemWidth();
-            ImGui::Unindent();
-            ImGui::Unindent();
-            ImGui::NewLine();
-
-            ImGui::Indent();
-            addText("Gain");
-            ImGui::Indent();
-            ImGui::PushItemWidth(-1);
-            ImGui::SliderFloat("##gain", &gain, 0, 5);
-            createToolTip("Time gain compensation value.\n"
-                          "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
-            ImGui::PopItemWidth();
-            ImGui::Unindent();
-            ImGui::Unindent();
-            ImGui::NewLine();
-
-            ImGui::Indent();
-            addText("Weight");
-            ImGui::Indent();
-            ImGui::PushItemWidth(-1);
-            ImGui::SliderFloat("##weight", &weight, 0, 1);
-            createToolTip("Weight to handle data in the same cell.\n\n"
-                          "cell value = previous + new * weight");
-            ImGui::PopItemWidth();
-            ImGui::Unindent();
-            ImGui::Unindent();
-            ImGui::NewLine();
-        }
+//        if (!isLoadData) {
+//            addText("Set Display Parameters");
+//            ImGui::Indent();
+//            addText("Depth");
+//            ImGui::Indent();
+//            ImGui::PushItemWidth(-1);
+//            ImGui::SliderInt("##depth", &depth, 1, 2500);
+//            createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
+//            ImGui::PopItemWidth();
+//            ImGui::Unindent();
+//            ImGui::Unindent();
+//            ImGui::NewLine();
+//
+//            ImGui::Indent();
+//            addText("Gain");
+//            ImGui::Indent();
+//            ImGui::PushItemWidth(-1);
+//            ImGui::SliderFloat("##gain", &gain, 0, 5);
+//            createToolTip("Time gain compensation value.\n"
+//                          "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
+//            ImGui::PopItemWidth();
+//            ImGui::Unindent();
+//            ImGui::Unindent();
+//            ImGui::NewLine();
+//
+//            ImGui::Indent();
+//            addText("Weight");
+//            ImGui::Indent();
+//            ImGui::PushItemWidth(-1);
+//            ImGui::SliderFloat("##weight", &weight, 0, 1);
+//            createToolTip("Weight to handle data in the same cell.\n\n"
+//                          "cell value = previous + new * weight");
+//            ImGui::PopItemWidth();
+//            ImGui::Unindent();
+//            ImGui::Unindent();
+//            ImGui::NewLine();
+//        }
         ImGui::Indent();
         addText("Brightness");
         ImGui::Indent();
@@ -990,6 +990,7 @@ void loadDataFromFile(
 
 void scanFromProbe(
         std::string *probeIP, std::string *probeUsername, std::string *probePassword, std::string *compIP,
+        int& depth, float& gain, float& weight,
         bool &isSubmarine, bool &isDefault,
         float &lxRangeMin, float &lxRangeMax, int &lxRes,
         float &servoRangeMin, float &servoRangeMax, int &servoRes,
@@ -1097,6 +1098,42 @@ void scanFromProbe(
             if (submarine)
                 isSubmarine = true;
         }
+
+        ImGui::NewLine();
+
+        addText("Set Display Parameters");
+        ImGui::Indent();
+        addText("Depth");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderInt("##depth", &depth, 1, 2500);
+        createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();
+        ImGui::Unindent();
+
+        ImGui::Indent();
+        addText("Gain");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderFloat("##gain", &gain, 0, 5);
+        createToolTip("Time gain compensation value.\n"
+                      "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();
+        ImGui::Unindent();
+
+        ImGui::Indent();
+        addText("Weight");
+        ImGui::Indent();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderFloat("##weight", &weight, 0, 1);
+        createToolTip("Weight to handle data in the same cell.\n\n"
+                      "cell value = previous + new * weight");
+        ImGui::PopItemWidth();
+        ImGui::Unindent();
+        ImGui::Unindent();
+        ImGui::NewLine();
 
         ImGui::NewLine();
 
@@ -1354,7 +1391,9 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
         loadDataFromFile(filePath, screen1File, dispDepth, dispGain, dispWeight, screen1Load, screen1CurrState,
                          screen1ErrorMessage);
     else if (renderedScreen == 2)
-        scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP, screen2IsSub,
+        scanFromProbe(&screen2ProbeIP, &screen2ProbeUsername, &screen2ProbePassword, &screen2CompIP,
+                dispDepth, dispGain, dispWeight,
+                screen2IsSub,
                       screen2IsDefault,
                       screen2LxMin, screen2LxMax, screen2LxRes, screen2ServoMin, screen2ServoMax, screen2ServoRes,
                       &screen2CustomCommand,
@@ -1408,7 +1447,7 @@ void GUI::interactionHandler() {
                 bool noError = readDataMain(*gridPointer, fileName,
                                             dispGain, dispDepth, screen1DataUpdate, screen1ErrorMessage, probeType,
                                             screen1Error);
-                gridPointer->setUpdateCoefficient(screen1DataUpdate);
+                gridPointer->setUpdateCoefficient(dispWeight);
 
                 if (!noError) {
                     screen1CurrState = 3;
@@ -1442,6 +1481,11 @@ void GUI::interactionHandler() {
                 screen2ErrorSetUp = false;
                 screen2LiveScan = false;
 
+                //set the gain and depth in data before connecting to probe
+                setGainMain(dispGain);
+                setDepthMain(dispDepth);
+                gridPointer->setUpdateCoefficient(dispWeight);
+
                 bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
                                                   screen2ProbePassword.c_str(),
                                                   screen2CompIP.c_str(),
@@ -1455,27 +1499,6 @@ void GUI::interactionHandler() {
 
                 probeType = screen2IsSub ? 0 : 1;
             }
-//            if (screen2ScanToFile && screen2CurrState != 1) {
-//                //error handling
-//                if(!passErrorCheckingScreen2()) return;
-//
-//                screen2Connected = false;
-//                screen2CurrState = 1;
-//                gridPointer->clear();
-//                isDataLoaded = false;
-//                screen2ErrorSetUp = false;
-//                bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
-//                        screen2ProbePassword.c_str(),
-//                        screen2CompIP.c_str(),
-//                        screen2IsSub, screen2LxMin, screen2LxMax,
-//                        screen2LxRes,
-//                        screen2ServoMin, screen2ServoMax,
-//                        screen2ServoRes,
-//                        "", 1, screen2Output, screen2Connected, screen2ErrorSetUp, screen2ErrorMessage);
-//                if (!noError) screen2CurrState = 3;
-//
-//                probeType = screen2IsSub ? 0 : 1;
-//            }
             if (screen2SendCustom && screen2CurrState != 1) {
                 //error handling
                 if (!passErrorCheckingScreen2()) return;
@@ -1486,6 +1509,11 @@ void GUI::interactionHandler() {
                 isDataLoaded = false;
                 screen2ErrorSetUp = false;
                 screen2SendCustom = false;
+
+                //set the gain and depth in data before connecting to probe
+                setGainMain(dispGain);
+                setDepthMain(dispDepth);
+                gridPointer->setUpdateCoefficient(dispWeight);
 
                 bool noError = connectToProbeMain(*gridPointer, screen2ProbeIP.c_str(), screen2ProbeUsername.c_str(),
                                                   screen2ProbePassword.c_str(), screen2CompIP.c_str(),
@@ -1523,10 +1551,10 @@ void GUI::interactionHandler() {
             dispReset = false;
         }
 
-        if (!isLoadFile) {
-            setGainMain(dispGain);
-            setDepthMain(dispDepth);
-        }
+//        if (!isLoadFile) {
+//            setGainMain(dispGain);
+//            setDepthMain(dispDepth);
+//        }
 
         gridPointer->setBrightness(dispBrightness);
         gridPointer->setThreshold(dispCutoff);

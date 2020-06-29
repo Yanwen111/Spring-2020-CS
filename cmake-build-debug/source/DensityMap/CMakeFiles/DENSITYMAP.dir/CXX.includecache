@@ -750,18 +750,6 @@ detail/type_vec4.hpp
 detail/func_vector_relational.hpp
 ../extern/glm/glm/detail/func_vector_relational.hpp
 
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/camera.cpp
-camera.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/camera.h
-
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/camera.h
-glm/glm.hpp
--
-glm/gtc/matrix_transform.hpp
--
-iostream
--
-
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/densityMap.cpp
 densityMap.h
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/densityMap.h
@@ -781,10 +769,6 @@ queue
 -
 mutex
 -
-
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/shader.cpp
-shader.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/shader.h
 
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/shader.h
 glad/glad.h
