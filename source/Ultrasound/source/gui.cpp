@@ -117,7 +117,7 @@ void GUI::loadConfig() {
         screen2ProbePassword = temp;
         screen2ProbePassword = screen2ProbePassword.substr(10).c_str();
     }
-    
+
     filein.close();
     printf("Config file No.%d has been loaded!\n", number);
 }

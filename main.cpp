@@ -18,8 +18,8 @@
 
 #define PI 3.141592653589
 
-static int SCR_WIDTH = 1280;
-static int SCR_HEIGHT = 960;
+static int SCR_WIDTH = 800;
+static int SCR_HEIGHT = 600;
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
