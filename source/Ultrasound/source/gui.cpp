@@ -102,20 +102,22 @@ void GUI::loadConfig() {
 
     std::ifstream filein(config_name);
 
-    char* temp = new char[30];
+    if(filein) {
+        char *temp = new char[30];
 
-    filein.getline(temp, 100);
-    screen2ProbeIP = temp;
-    screen2ProbeIP = screen2ProbeIP.substr(12).c_str();
+        filein.getline(temp, 100);
+        screen2ProbeIP = temp;
+        screen2ProbeIP = screen2ProbeIP.substr(12).c_str();
 
-    filein.getline(temp, 100);
-    screen2ProbeUsername = temp;
-    screen2ProbeUsername = screen2ProbeUsername.substr(11).c_str();
+        filein.getline(temp, 100);
+        screen2ProbeUsername = temp;
+        screen2ProbeUsername = screen2ProbeUsername.substr(11).c_str();
 
-    filein.getline(temp, 100);
-    screen2ProbePassword = temp;
-    screen2ProbePassword = screen2ProbePassword.substr(10).c_str();
-
+        filein.getline(temp, 100);
+        screen2ProbePassword = temp;
+        screen2ProbePassword = screen2ProbePassword.substr(10).c_str();
+    }
+    
     filein.close();
     printf("Config file No.%d has been loaded!\n", number);
 }
