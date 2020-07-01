@@ -621,12 +621,13 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     //printf("the version of this data is %d \n", scan_data[0].version);
 
-    double a0, amax = -1, amin = 370;
     printf("The total number of lines are %d\n", (int)scan_data.size());
     float encoder_os = encoder_offset(scan_data, 400);
-    printf("The value of encoder offset is %f\n", encoder_os);
+    //printf("The value of encoder offset is %f\n", encoder_os);
     for (int i = 0; i < (int)scan_data.size(); ++i)
+    //for (int i = 600; i < 800; ++i)
     {
+        if (i % 400 < 200) continue;
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
 //        if (i == 0) a0 = angle;
 //        int atemp = angle - a0;
@@ -666,9 +667,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         dataline.vertical_angle = 90.0 + piezo; /* The angle with y- */
         dataline.rotation_angle = angle_16;
         line_data.push_back(dataline);
-        adc_max = 0; adc_min = 0;
     }
-    printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
     return line_data;
 }
 
@@ -1761,9 +1760,11 @@ float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
     {
         float angle = scan_data.at(i).encoder * 360.0 / 4096.0;
         if (i == 0) a0 = angle;
-        int atemp = angle - a0;
+        float atemp = angle - a0;
         if (atemp > 180) atemp -= 360;
         else if (atemp < -180) atemp += 360;
+        if (atemp > 180 || atemp < -180)
+            continue;
         amax = amax>atemp? amax:atemp;
         amin = amin<atemp? amin:atemp;
     }
