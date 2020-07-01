@@ -112,6 +112,7 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 bool remove_tempr_files(bool& error, std::string& errorMessage);
 bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage);
+float encoder_offset(std::vector<scan_data_struct> scan_data, int count);
 
 /* Signal processing */
 void Highpass_Filter(short* origin_buffer, int length);

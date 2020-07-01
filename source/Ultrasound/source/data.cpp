@@ -623,6 +623,8 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     double a0, amax = -1, amin = 370;
     printf("The total number of lines are %d\n", (int)scan_data.size());
+    float encoder_os = encoder_offset(scan_data, 400);
+    printf("The value of encoder offset is %f\n", encoder_os);
     for (int i = 0; i < (int)scan_data.size(); ++i)
     {
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
@@ -633,7 +635,8 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 //        amax = amax > atemp? amax:atemp;
 //        amin = amin < atemp? amin : atemp;
         //float piezo = 270-angle;
-        float piezo = angle - 352.882812 - 90;
+        //float piezo = angle - 352.882812 - 90;
+        float piezo = angle - encoder_os;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
         /* filter */
@@ -1749,6 +1752,23 @@ void Highpass_Filter(short* origin_buffer, int length)
 
     for (int i = 0; i < length; ++i)
         origin_buffer[i] = result[i];
+}
+
+float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
+{
+    float a0, amax = -1, amin = 370;
+    for (int i = 0; i < count; ++i)
+    {
+        float angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+        if (i == 0) a0 = angle;
+        int atemp = angle - a0;
+        if (atemp > 180) atemp -= 360;
+        else if (atemp < -180) atemp += 360;
+        amax = amax>atemp? amax:atemp;
+        amin = amin<atemp? amin:atemp;
+    }
+    printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
+    return (amax + amin + 1) / 2.0 + a0 + 90;
 }
 
 int getDepth()
