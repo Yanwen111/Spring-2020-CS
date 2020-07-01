@@ -220,7 +220,7 @@ int main() {
     firstMouse = true;
 
     // Creating the density map
-    int dim = 101;
+    int dim = 100;
     DensityMap grid(dim);
 
 //    void (*foo)(int);

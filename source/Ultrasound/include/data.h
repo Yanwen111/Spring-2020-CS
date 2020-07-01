@@ -60,6 +60,7 @@ struct line_data_struct{
     std::vector<unsigned char> vals; //Intensities
     float rotation_angle = 0;
     float vertical_angle = 0;
+    glm::vec4 quat = {0, 0, 0, 1.0};  // x, y, z, w
 };
 
 
@@ -111,6 +112,9 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 bool remove_tempr_files(bool& error, std::string& errorMessage);
 bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage);
+
+/* Signal processing */
+void Highpass_Filter(short* origin_buffer, int length);
 
 int getDepth();
 void setDepth(int dep);

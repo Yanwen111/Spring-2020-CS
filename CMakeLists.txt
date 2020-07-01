@@ -29,6 +29,8 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)
 ###################### libssh ######################
 find_package(libssh REQUIRED)
 
+#find_package(ZLIB REQUIRED)
+
 add_compile_options(-O3)
 
 target_link_libraries(Ultrasound_AIO PRIVATE glfw ULTRASOUND DENSITYMAP IMGUI ssh)

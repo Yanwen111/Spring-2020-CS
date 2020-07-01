@@ -45,9 +45,11 @@ unsigned char information_byte = 0xE1;
 int DEPTH = 2500;
 float GAIN = 1.0;
 float ROTATION = 0.0;
+glm::vec4 ROTATION_QUA = {0.0, 0.0, 0.0, 1.0};
 float* GAIN_PTR = &GAIN;
 int * DEPTH_PTR = &DEPTH;
 float* ROTATION_PTR = &ROTATION;
+glm::vec4* ROTATION_QUA_PTR = &ROTATION_QUA;
 int samples = -1; /* -1 stands for no data */
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
@@ -179,6 +181,7 @@ void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int le
             {
                 l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
             }
+            *ROTATION_QUA_PTR = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
             grid.writeLine(ps, pe, l.vals);
         }
 
@@ -316,6 +319,7 @@ std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file
         rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        dataline.rotation_angle = angle_16;
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -348,6 +352,7 @@ void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int l
         {
             l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
         }
+        *ROTATION_QUA_PTR = l.quat;
         grid.writeLine(ps, pe, l.vals);
     }
 
@@ -471,6 +476,7 @@ std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file
                                                         scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3]);
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
+        dataline.quat = {scan_data.at(i).quaternion[1], scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3], scan_data.at(i).quaternion[0]};
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -616,6 +622,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
     //printf("the version of this data is %d \n", scan_data[0].version);
 
     double a0, amax = -1, amin = 370;
+    printf("The total number of lines are %d\n", (int)scan_data.size());
     for (int i = 0; i < (int)scan_data.size(); ++i)
     {
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
@@ -629,6 +636,8 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         float piezo = angle - 352.882812 - 90;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
+        /* filter */
+        //Highpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
@@ -1117,6 +1126,7 @@ void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
         }
         rotate_mutex.lock();
         *ROTATION_PTR = l.rotation_angle;
+        ROTATION_QUA = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
         rotate_mutex.unlock();
         grid.writeLine(ps, pe, l.vals);
     }
@@ -1132,11 +1142,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         /* connect to Red Pitaya */
         Socket soc("Linux");
 
-//        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
-//        soc.setRPName(const_cast<char*>(username.c_str()));
-//        soc.setRPPassword(const_cast<char*>(password.c_str()));
-//        soc.saveConfig();
-//        soc.linkStart();
+        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
+        soc.setRPName(const_cast<char*>(username.c_str()));
+        soc.setRPPassword(const_cast<char*>(password.c_str()));
+        soc.saveConfig();
+        soc.linkStart();
 
         if (connectionType == 3) /* custom command */
         {
@@ -1153,11 +1163,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-//        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
-//        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
-//        soc.customCommand("cd whitefin", 500, output);
-//        soc.customCommand("make clean", 500, output);
-//        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
+        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+        soc.customCommand("cd whitefin", 500, output);
+        soc.customCommand("make clean", 500, output);
+        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
 //        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
@@ -1712,6 +1722,33 @@ float ReverseFloat( const float inFloat ){
     returnFloat[3] = floatToConvert[0];
 
     return retVal;
+}
+
+void Highpass_Filter(short* origin_buffer, int length)
+{
+    short result[length];
+    int NZEROS = 2;
+    int NPOLES = 2;
+    int HF_GAIN = 1.089203062e+00;
+
+    float xv[NZEROS+1], yv[NPOLES+1];
+    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+        xv[i] = 0.0;
+    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+        yv[i] = 0.0;
+
+    for (int i = 0; i < length; ++i)
+    {
+        xv[0] = xv[1]; xv[1] = xv[2];
+        xv[2] = float(origin_buffer[i]) / HF_GAIN;
+        yv[0] = yv[1]; yv[1] = yv[2];
+        yv[2] = (xv[0] + xv[2]) - 2 * xv[1]
+                + ( -0.8429233931 * yv[0]) + (  1.8294864066 * yv[1]);
+        result[i] = short(yv[2]);
+    }
+
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = result[i];
 }
 
 int getDepth()
