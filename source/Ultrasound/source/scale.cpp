@@ -134,7 +134,6 @@ Scale::Scale(){
 
     //Set up Numbers
     for(int x = 0; x < 10; x++){
-        std::cout<<"data/"+numberFiles[x]+".stl"<<std::endl;
         numberIndex.push_back(Helper::read_stl("config_file/models/"+numberFiles[x]+".stl", numberVertices.at(x), numberNormals.at(x)));
 
         //Set up OpenGL buffers

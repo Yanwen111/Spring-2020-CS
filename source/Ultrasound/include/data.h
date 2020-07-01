@@ -122,5 +122,6 @@ void setDepth(int dep);
 void setGain(float g);
 float getGain();
 int getSamples();
+float* getRotationPtr();
 
 #endif //ULTRASOUND_OPENGL_MAIN_H

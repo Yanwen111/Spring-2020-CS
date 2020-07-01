@@ -39,7 +39,7 @@ double intensity;
 unsigned char information_byte = 0xE1;
 
 #ifdef __APPLE__
-    #define MSG_NOSIGNAL 0
+#define MSG_NOSIGNAL 0
 #endif
 
 int DEPTH = 2500;
@@ -319,7 +319,6 @@ std::vector<line_data_struct> file_to_pixel_V07(std::vector<unsigned char> _file
         rot = glm::rotate(rot, glm::radians(angle_16) , glm::vec3(0, 1, 0)); /* inverse later to compare */
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
-        dataline.rotation_angle = angle_16;
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -476,7 +475,6 @@ std::vector<line_data_struct> file_to_pixel_V06(std::vector<unsigned char> _file
                                                         scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3]);
         dataline.p1 = rot * glm::vec4(dataline.p1,1);
         dataline.p2 = rot * glm::vec4(dataline.p2,1);
-        dataline.quat = {scan_data.at(i).quaternion[1], scan_data.at(i).quaternion[2], scan_data.at(i).quaternion[3], scan_data.at(i).quaternion[0]};
         line_data.push_back(dataline);
         adc_max = 0; adc_min = 0;
     }
@@ -621,20 +619,12 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     //printf("the version of this data is %d \n", scan_data[0].version);
 
-    printf("The total number of lines are %d\n", (int)scan_data.size());
     float encoder_os = encoder_offset(scan_data, 400);
     //printf("The value of encoder offset is %f\n", encoder_os);
+
     for (int i = 0; i < (int)scan_data.size(); ++i)
-    //for (int i = 600; i < 800; ++i)
     {
-        if (i % 400 < 200) continue;
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
-//        if (i == 0) a0 = angle;
-//        int atemp = angle - a0;
-//        if (atemp > 180) atemp -= 360;
-//        else if (atemp < -180) atemp += 360;
-//        amax = amax > atemp? amax:atemp;
-//        amin = amin < atemp? amin : atemp;
         //float piezo = 270-angle;
         //float piezo = angle - 352.882812 - 90;
         float piezo = angle - encoder_os;
@@ -1128,7 +1118,7 @@ void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
         }
         rotate_mutex.lock();
         *ROTATION_PTR = l.rotation_angle;
-        ROTATION_QUA = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
+        *ROTATION_QUA_PTR = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
         rotate_mutex.unlock();
         grid.writeLine(ps, pe, l.vals);
     }
@@ -1144,11 +1134,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         /* connect to Red Pitaya */
         Socket soc("Linux");
 
-        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
-        soc.setRPName(const_cast<char*>(username.c_str()));
-        soc.setRPPassword(const_cast<char*>(password.c_str()));
-        soc.saveConfig();
-        soc.linkStart();
+//        soc.setRPIP(const_cast<char*>(probeIP.c_str()));
+//        soc.setRPName(const_cast<char*>(username.c_str()));
+//        soc.setRPPassword(const_cast<char*>(password.c_str()));
+//        soc.saveConfig();
+//        soc.linkStart();
 
         if (connectionType == 3) /* custom command */
         {
@@ -1165,11 +1155,11 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         live_thread.detach();
 
         /* pass some parameters */
-        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
-        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
-        soc.customCommand("cd whitefin", 500, output);
-        soc.customCommand("make clean", 500, output);
-        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
+//        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
+//        soc.customCommand("cat /opt/redpitaya/fpga/fpga_0.94.bit > /dev/xdevcfg", 2000, output);
+//        soc.customCommand("cd whitefin", 500, output);
+//        soc.customCommand("make clean", 500, output);
+//        soc.customCommand("make all && LD_LIBRARY_PATH=/opt/redpitaya/lib ./adc", 1000000, output);
 //        std::string command0 = "./test";
 //        if (lxRangeMin) command0 += " " + std::to_string(lxRangeMin);
 //        if (lxRangeMax) command0 += + " " + std::to_string(lxRangeMax);
@@ -1731,7 +1721,7 @@ void Highpass_Filter(short* origin_buffer, int length)
     short result[length];
     int NZEROS = 2;
     int NPOLES = 2;
-    int HF_GAIN = 1.089203062e+00;
+    int HF_GAIN = 1.089203062e+00; // for 300kHz
 
     float xv[NZEROS+1], yv[NPOLES+1];
     for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
@@ -1795,4 +1785,8 @@ void setGain(float g)
 int getSamples()
 {
     return samples;
+}
+
+float* getRotationPtr() {
+    return ROTATION_PTR;
 }

@@ -18,14 +18,16 @@
 
 #define PI 3.141592653589
 
-#define SCR_WIDTH 1920
-#define SCR_HEIGHT 1080
+static int SCR_WIDTH = 800;
+static int SCR_HEIGHT = 600;
 
 // Keyboard and mouse input functions
 void cursorPosMovementCallback(GLFWwindow* window, double xpos, double ypos);
 void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void processKeyboardInput(GLFWwindow* window);
+
+void windowSizeCallback(GLFWwindow* window, int width, int height);
 
 // Demo functions to show what the volume map looks like
 void sphereDemo(DensityMap& grid);
@@ -155,12 +157,26 @@ bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string usern
     return true; //success!
 }
 
+void saveFileHelper(bool isSubmarine, bool& error, std::string& errorMessage, bool deleteFile) {
+    if(deleteFile)
+        remove_tempr_files(error, errorMessage);
+    else
+        rename_tempr_files(isSubmarine, error, errorMessage);
+}
+
+bool saveFile(bool isSubmarine, bool& error, std::string& errorMessage, bool deleteFile) {
+    dataThread = std::thread(saveFileHelper, isSubmarine, std::ref(error), std::ref(errorMessage), deleteFile);
+    dataThread.detach();
+    return true;
+}
+
 //set camera zoom
 void setZoom(int zoomVal){
     cam.fov = zoomVal;
 }
 
 int main() {
+
     // Window title
     std::string windowTitle = "Density Map";
     // Initializing the OpenGL context
@@ -194,6 +210,12 @@ int main() {
     // Setting callbacks
     glfwMakeContextCurrent(window);
 
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
     if (ROTATE_GRID) {
         glfwSetCursorPosCallback(window, cursorPosRotationCallback);
         glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -208,6 +230,8 @@ int main() {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
+    glfwSetWindowSizeCallback(window, windowSizeCallback);
+
     // Load the OpenGL functions from the graphics card
     if (!gladLoadGLLoader(GLADloadproc(glfwGetProcAddress))) {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -220,13 +244,11 @@ int main() {
     firstMouse = true;
 
     // Creating the density map
-    int dim = 100;
+    int dim = 101;
     DensityMap grid(dim);
 
-//    void (*foo)(int);
-//    foo = &my_int_func;
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
@@ -246,8 +268,6 @@ void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string wi
     // Variables for measuring FPS
     int numFrames = 0;
     double lastFPSUpdate = 0;
-
-//    int currProbe = -1;
 
     //The render loop to draw until the user closes the window
     while (!glfwWindowShouldClose(window)) {
@@ -276,88 +296,11 @@ void renderLoop(GLFWwindow* window, DensityMap& grid, GUI& myGUI, std::string wi
             model = glm::rotate(model, rotationX, glm::rotate(glm::vec3(1, 0, 0), rotationY, glm::vec3(0, -1, 0)));
         }
 
-        //Checks if the user clicked the load button on the GUI
-//        if (myGUI.loadNew()) {
-//            //Creates the probe to load
-//            int newProbe = myGUI.getProbe();
-//            //probe is submarine
-//            if (newProbe == 0) {
-//                probe.loadNewProbe("data/models/PROBE_CENTERED.stl");
-//            }
-//            //probe is whiteFin
-//            if (newProbe == 1) {
-//                probe.loadNewProbe("data/models/WHITE_FIN_CENTERED.stl");
-//            }
-//            currProbe = newProbe;
-//
-//            //stays false until the data processing thread is done processing the data
-//            dataUpdate = false;
-//            grid.clear();
-//
-//            //read new file
-//            if (newProbe == 0) {
-//                //gets the file name, time gain value, depth,
-//                std::string file = myGUI.getFile();
-//                char *c = const_cast<char *>(file.c_str());
-//                float GAIN = myGUI.getGain(); /* 0 means no gain */
-//                depth = myGUI.getDepth();
-//                float updateCoefficient = myGUI.getUpdateCoefficient();
-//
-//                grid.setUpdateCoefficient(updateCoefficient);
-//                dataThread = std::thread(readDataSubmarine, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-//                dataThread.detach();
-//            }
-//            if (newProbe == 1) {
-//                std::string file = myGUI.getFile();
-//                char *c = &file[0];
-//                float GAIN = myGUI.getGain(); /* 0 means no gain */
-//                depth = myGUI.getDepth();
-//                float updateCoefficient = myGUI.getUpdateCoefficient();
-//                grid.setUpdateCoefficient(updateCoefficient);
-//                dataThread = std::thread(readDataWhitefin, std::ref(grid), c, GAIN, depth, std::ref(dataUpdate));
-//                dataThread.detach();
-//            }
-//            //Figure out how to rotate probe?
-//            //Add in error checking on GUI side later
-//        }
-
-//        if(currProbe != -1) {
-//            // Draw the probe
-//            probe.draw(projection, view, rotationX, rotationY);
-//        }
-
-        //Set up GUI paramters
-//        myGUI.setNumLinesDrawn(getSamples());
-//        myGUI.setNumSamples(depth);
-//        myGUI.setVoxels(grid.getDim());
-//        myGUI.setFileSize(0);
-//        myGUI.setBrightness(grid.getBrightness());
-//        myGUI.setThreshold(grid.getThreshold());
-//        myGUI.setContrast(grid.getContrast());
-
         // Draw the density map and the surrounding cube
         grid.draw(projection, view, model);
 
         // Draw the GUI and set parameters
         myGUI.drawGUI(projection, view, rotationX, rotationY);
-//        myGUI.setTime(glfwGetTime());
-//        myGUI.setQuaternion(probe.getQuaternions());
-//        myGUI.setEulerAngles(probe.getEulerAngles());
-//        if (myGUI.isReset) {
-//            rotationX = 0;
-//            rotationY = 0;
-//        }
-//        if(dataUpdate){
-//            std::cout<<"Done Loading File"<<std::endl;
-//            myGUI.doneLoading();
-//            probe.openIMUFile("data/real_imu.txt");
-//            dataUpdate = false;
-//        }
-//        cam.fov = myGUI.getZoom();
-//        grid.setBrightness(myGUI.getBrightness());
-//        grid.setThreshold(myGUI.getThreshold());
-//        grid.setContrast(myGUI.getContrast());
-
 
         // Used to make camera move speed consistent
         cam.prevPos = cam.position;
@@ -504,4 +447,14 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
         mousePressed = false;
         guiObjectPressed = 0;
     }
+}
+
+void windowSizeCallback(GLFWwindow* window, int width, int height){
+    SCR_HEIGHT = height;
+    SCR_WIDTH = width;
+    glViewport(0,0,width, height);
+
+    myGUIpointer->setHeight(height);
+    myGUIpointer->setWidth(width);
+//    std::cout<<"SCREEN SIZE CHANGED!!!"<<std::endl;
 }
