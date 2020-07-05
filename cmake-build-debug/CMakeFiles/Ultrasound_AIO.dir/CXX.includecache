@@ -1899,6 +1899,8 @@ sys/socket.h
 -
 arpa/inet.h
 -
+zlib.h
+-
 densityMap.h
 ../source/Ultrasound/include/densityMap.h
 rotation.h

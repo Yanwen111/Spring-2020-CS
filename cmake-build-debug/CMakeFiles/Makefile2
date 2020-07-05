@@ -173,10 +173,10 @@ source/Ultrasound/clean: source/Ultrasound/CMakeFiles/ULTRASOUND.dir/clean
 # Target rules for target CMakeFiles/Ultrasound_AIO.dir
 
 # All Build rule for target.
+CMakeFiles/Ultrasound_AIO.dir/all: source/Ultrasound/CMakeFiles/ULTRASOUND.dir/all
 CMakeFiles/Ultrasound_AIO.dir/all: source/DensityMap/CMakeFiles/DENSITYMAP.dir/all
 CMakeFiles/Ultrasound_AIO.dir/all: extern/imgui/CMakeFiles/IMGUI.dir/all
 CMakeFiles/Ultrasound_AIO.dir/all: extern/glfw/src/CMakeFiles/glfw.dir/all
-CMakeFiles/Ultrasound_AIO.dir/all: source/Ultrasound/CMakeFiles/ULTRASOUND.dir/all
 	$(MAKE) -f CMakeFiles/Ultrasound_AIO.dir/build.make CMakeFiles/Ultrasound_AIO.dir/depend
 	$(MAKE) -f CMakeFiles/Ultrasound_AIO.dir/build.make CMakeFiles/Ultrasound_AIO.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/CMakeFiles" --progress-num=21,22,23 "Built target Ultrasound_AIO"

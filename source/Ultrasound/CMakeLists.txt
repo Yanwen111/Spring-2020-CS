@@ -26,8 +26,10 @@ file(GLOB CPP_FILES source/*.cpp)
 ###################### libssh ######################
 find_package(libssh REQUIRED)
 
+find_package(ZLIB REQUIRED)
+
 add_compile_options(-O3)
 
 add_library(${PROJECT_NAME} STATIC ${CPP_FILES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw DENSITYMAP ssh Boost::date_time Boost::filesystem Boost::iostreams ${FREETYPE_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw DENSITYMAP ssh z Boost::date_time Boost::filesystem Boost::iostreams ${FREETYPE_LIBRARIES})

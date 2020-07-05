@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+//for compression
+#include <zlib.h>
 
 #include "densityMap.h"
 #include "rotation.h"

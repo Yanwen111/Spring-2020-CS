@@ -494,8 +494,11 @@ void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, b
     line_data = file_to_pixel_V08(file_bytes, marker_locations);
     printf("find the screen_data\n");
 
+    int cnt = 0;
     for  (auto l: line_data)
     {
+        cnt++;
+        //if (cnt % 200 == 0) usleep(300000);
         glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         for (int i = 0; i < l.vals.size(); ++i)
@@ -621,9 +624,12 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     float encoder_os = encoder_offset(scan_data, 400);
     //printf("The value of encoder offset is %f\n", encoder_os);
+    //printf("The number of total lines is %d\n", (int)scan_data.size());
 
     for (int i = 0; i < (int)scan_data.size(); ++i)
+    //for (int i = 400; i < 800; ++i)
     {
+        //if (scan_data.at(i).encoder > )
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
         //float piezo = 270-angle;
         //float piezo = angle - 352.882812 - 90;
@@ -633,6 +639,8 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         /* filter */
         //Highpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
+//        for (int j = 0; j < 2500; ++j)
+//            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]);
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
@@ -1268,14 +1276,22 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     setDepth(1500);
     setGain(1.0);
 
+    // zlib compression
+    Byte compr[6000], uncompr[6000];
+    uLong comprLen = 6000, uncomprLen = 6000;
+
     while(in_transmit) {
         if (time_milisecond < update_rate || sub_file_bytes.empty())
         {
             memset(recvBuf, 0, sizeof(recvBuf));
 
-            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            //recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            recvfrom(sockSrv, compr, sizeof(compr), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
             buffer_cnt++;
             total_line_cnt++;
+            uncompress(uncompr, &uncomprLen, compr, comprLen);
+            for (int k = 0; k < recv_buffer_size; ++k)
+                recvBuf[k] = static_cast<char>(uncompr[k]);
 
             /* seperate the file according to number of lines or the time */
             if (total_line_cnt >= line_bar || total_time >= time_bar)
@@ -1721,7 +1737,7 @@ void Highpass_Filter(short* origin_buffer, int length)
     short result[length];
     int NZEROS = 2;
     int NPOLES = 2;
-    int HF_GAIN = 1.089203062e+00; // for 300kHz
+    int HF_GAIN = 2.536300864e+03; // for 300kHz
 
     float xv[NZEROS+1], yv[NPOLES+1];
     for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
@@ -1734,8 +1750,8 @@ void Highpass_Filter(short* origin_buffer, int length)
         xv[0] = xv[1]; xv[1] = xv[2];
         xv[2] = float(origin_buffer[i]) / HF_GAIN;
         yv[0] = yv[1]; yv[1] = yv[2];
-        yv[2] = (xv[0] + xv[2]) - 2 * xv[1]
-                + ( -0.8429233931 * yv[0]) + (  1.8294864066 * yv[1]);
+        yv[2] = (xv[0] + xv[2]) + 2 * xv[1]
+                + ( -0.9446318218 * yv[0]) + (  1.9430547219 * yv[1]);
         result[i] = short(yv[2]);
     }
 
@@ -1745,19 +1761,27 @@ void Highpass_Filter(short* origin_buffer, int length)
 
 float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
 {
-    float a0, amax = -1, amin = 370;
+    float a0, amax, amin;
+    int offset = 200;
+    std::vector<float> atemps;
+    float gap1, gap2;
     for (int i = 0; i < count; ++i)
     {
-        float angle = scan_data.at(i).encoder * 360.0 / 4096.0;
+        float angle = scan_data.at(i + offset).encoder * 360.0 / 4096.0;
         if (i == 0) a0 = angle;
         float atemp = angle - a0;
         if (atemp > 180) atemp -= 360;
         else if (atemp < -180) atemp += 360;
         if (atemp > 180 || atemp < -180)
             continue;
-        amax = amax>atemp? amax:atemp;
-        amin = amin<atemp? amin:atemp;
+//        amax = amax>atemp? amax:atemp;
+//        amin = amin<atemp? amin:atemp;
+        atemps.push_back(atemp);
+        if (i > 0) printf("%f\n", atemps.at(atemps.size()-1) - atemps.at(atemps.size()-2));
     }
+    amax = *std::max_element(atemps.begin(), atemps.end());
+    amin = *std::min_element(atemps.begin(), atemps.end());
+
     printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
     return (amax + amin + 1) / 2.0 + a0 + 90;
 }

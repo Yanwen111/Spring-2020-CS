@@ -6,31 +6,3 @@
 
 #IncludeRegexTransform: 
 
-../extern/glad/include/KHR/khrplatform.h
-stdint.h
--
-inttypes.h
--
-stdint.h
--
-
-../extern/glad/include/glad/glad.h
-../../../glad/include/KHR/khrplatform.h
-../extern/glad/include/KHR/khrplatform.h
-
-/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/src/glad.c
-stdio.h
--
-stdlib.h
--
-string.h
--
-glad/glad.h
--
-windows.h
--
-winapifamily.h
--
-dlfcn.h
--
-
