@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/remote.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/rotation.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o"
   "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/scale.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/scale.cpp.o"
+  "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/text.cpp" "/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/text.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

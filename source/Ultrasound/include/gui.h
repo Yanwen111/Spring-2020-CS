@@ -11,6 +11,7 @@
 #include "marker.h"
 #include "scale.h"
 #include "probe.h"
+#include "text.h"
 #include <boost/filesystem.hpp>
 
 /**
@@ -26,7 +27,8 @@ public:
                     ),
             void (*setDepth)(int),
             void (*setGain)(float),
-            bool (*saveFile)(bool, bool&, std::string&, bool)
+            bool (*saveFile)(bool, bool&, std::string&, bool),
+            glm::mat4 cameraToWorld_in
             );
 
     void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
@@ -34,7 +36,10 @@ public:
 
     //returns int for which object is clicked
     int mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+
+    void moveObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
     void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
+    void moveText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
     bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
@@ -58,6 +63,8 @@ private:
     //screen width and height
     int width;
     int height;
+
+    glm::mat4 cameraToWorld;
 
     //filepath of data folder
     boost::filesystem::path filePath;
@@ -153,6 +160,9 @@ private:
     int snapThreshold = 130;
 
     std::vector<Marker> markers;
+    std::vector<Text> myTexts;
+    void drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
+//    Text myText;
 
     //marker pair that mouse is on
     int intersectedMarkerIndex = -1;
@@ -160,6 +170,7 @@ private:
     int intersectedMarkerNum;
 
     Marker* intersectedMarker = nullptr;
+    Text* intersectedText = nullptr;
 
     Scale scale;
     Probe probe;

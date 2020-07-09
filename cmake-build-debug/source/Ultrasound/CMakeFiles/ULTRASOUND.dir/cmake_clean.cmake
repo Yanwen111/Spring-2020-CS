@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o"
   "CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o"
   "CMakeFiles/ULTRASOUND.dir/source/scale.cpp.o"
+  "CMakeFiles/ULTRASOUND.dir/source/text.cpp.o"
   "libULTRASOUND.a"
   "libULTRASOUND.pdb"
 )

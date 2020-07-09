@@ -387,6 +387,33 @@ source/scale.cpp.s:
 	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/scale.cpp.s
 .PHONY : source/scale.cpp.s
 
+source/text.o: source/text.cpp.o
+
+.PHONY : source/text.o
+
+# target to build an object file
+source/text.cpp.o:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/text.cpp.o
+.PHONY : source/text.cpp.o
+
+source/text.i: source/text.cpp.i
+
+.PHONY : source/text.i
+
+# target to preprocess a source file
+source/text.cpp.i:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/text.cpp.i
+.PHONY : source/text.cpp.i
+
+source/text.s: source/text.cpp.s
+
+.PHONY : source/text.s
+
+# target to generate assembly for a file
+source/text.cpp.s:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/text.cpp.s
+.PHONY : source/text.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -424,6 +451,9 @@ help:
 	@echo "... source/scale.o"
 	@echo "... source/scale.i"
 	@echo "... source/scale.s"
+	@echo "... source/text.o"
+	@echo "... source/text.i"
+	@echo "... source/text.s"
 .PHONY : help
 
 

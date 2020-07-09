@@ -118,6 +118,9 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/scale.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/text.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

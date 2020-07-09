@@ -245,6 +245,7 @@ CMakeFiles/Ultrasound_AIO.dir/main.cpp.o
  ../source/Ultrasound/include/remote.h
  ../source/Ultrasound/include/rotation.h
  ../source/Ultrasound/include/scale.h
+ ../source/Ultrasound/include/text.h
  /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/main.cpp
  /usr/local/include/boost/assert.hpp
  /usr/local/include/boost/cerrno.hpp

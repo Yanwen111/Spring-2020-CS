@@ -61,6 +61,7 @@ GUI* myGUIpointer;
 glm::mat4 projection;
 glm::mat4 view;
 glm::mat4 model;
+glm::mat4 cameraToWorld;
 
 const bool ROTATE_GRID = true;
 
@@ -246,8 +247,17 @@ int main() {
     int dim = 101;
     DensityMap grid(dim);
 
+    //get matrices needed to calculate ray and detect intersections
+    cameraToWorld = glm::mat4(1.0f);
+    glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
+    glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
+    cameraToWorld[0] = rightH;
+    cameraToWorld[1] = upH;
+    cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
+    cameraToWorld[3] = glm::vec4(cam.position, 1);
+
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile, cameraToWorld);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
@@ -405,14 +415,6 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
             rotationX = -1.5;
         }
     }
-    //get matrices needed to calculate ray and detect intersections
-    glm::mat4 cameraToWorld = glm::mat4(1.0f);
-    glm::vec4 rightH = glm::vec4(glm::normalize(cam.right),1);
-    glm::vec4 upH = glm::vec4(glm::normalize(cam.worldUp), 1);
-    cameraToWorld[0] = rightH;
-    cameraToWorld[1] = upH;
-    cameraToWorld[2] = glm::vec4(glm::normalize(glm::cross(cam.right, cam.worldUp)), 1);
-    cameraToWorld[3] = glm::vec4(cam.position, 1);
 
     //Generate Ray
     float imageAspectRatio = (SCR_WIDTH+0.0f) / (SCR_HEIGHT+0.0f); // assuming width > height
@@ -426,7 +428,8 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
     rayDirection = glm::normalize(rayDirection);
 
     if(guiObjectPressed){
-        myGUIpointer->moveMarker(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
+//        fprintf(stdout, "GUI OBJ PREINTED");
+        myGUIpointer->moveObject(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
     }
     else {
         //check if mouse is on object

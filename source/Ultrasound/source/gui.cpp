@@ -29,7 +29,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
                                 std::string, int, std::string &, bool &, bool &, std::string &),
          void (*setDepth)(int),
          void (*setGain)(float),
-         bool (*saveFile)(bool, bool&, std::string&, bool)
+         bool (*saveFile)(bool, bool&, std::string&, bool),
+         glm::mat4 cameraToWorld_in
 ) {
     glfwGetWindowSize(window, &width, &height);
 
@@ -44,6 +45,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
     setDepthMain = setDepth;
     setGainMain = setGain;
     saveFileMain = saveFile;
+
+    cameraToWorld = cameraToWorld_in;
 
     //allocate 200 chars for the custom command
     screen2CustomCommand.reserve(200);
@@ -82,6 +85,9 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
 
     //Set up the probe
     probe = Probe();
+
+//    myTexts.push_back( Text("TEST TEXT HI\nTHIS IS LINE ONE\nTHIS IS LINE TWO", width, height));
+//    myTexts.push_back( Text("THIS IS ANOTHER TEXT", width, height));
 
     //Pointer to the DensityMap grid object
     gridPointer = pointer;
@@ -283,6 +289,8 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float r
     drawScale(projection, view, cubeRotation);
     drawMarkers(projection, view, cubeRotation);
 
+    drawTexts(projection, view, cubeRotation);
+
     drawProbe(projection, view, rotationX, rotationY);
 
     modelWorld = cubeRotation;
@@ -349,6 +357,24 @@ void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
         RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth)) + " cm",
                    markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
     }
+}
+
+//Draw the Texts
+void GUI::drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
+//    int tmp = 0;
+    for (auto &txt : myTexts) {
+//        if (!marker.getHidden())
+            txt.draw(projection, view, model);
+//            std::cout<<"================TEXT DRAWN "<<tmp<<std::endl;
+//            tmp ++;
+    }
+
+//    if (intersectedMarker != nullptr && showMarkerDistance) {
+//        RenderText("Marker " + std::to_string(intersectedMarker->getNumber()), markerXPos + FONT_SIZE, markerYPos, 1.0,
+//                   intersectedMarker->getColor());
+//        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth)) + " cm",
+//                   markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
+//    }
 }
 
 void addText(const char *text, ImVec4 color = ImVec4(0, 0, 0, 1.0f), float size = 1.0f) {
@@ -459,51 +485,20 @@ void displaySettings(bool isLoadData,
         //marker
                      std::vector<Marker> &markerList,
 
+        //text
+                    std::vector<Text> &textList,
+
         //snap
-                     bool &enableSnap, int &snapThresholdIn
+                     bool &enableSnap, int &snapThresholdIn,
+
+        //scr width and height
+                    int scr_width, int scr_height
 ) {
 //    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
     if (ImGui::CollapsingHeader("Display Parameters")) {
         ImGui::NewLine();
-//        if (!isLoadData) {
-//            addText("Set Display Parameters");
-//            ImGui::Indent();
-//            addText("Depth");
-//            ImGui::Indent();
-//            ImGui::PushItemWidth(-1);
-//            ImGui::SliderInt("##depth", &depth, 1, 2500);
-//            createToolTip("Depth of each scan line to display. (By default the probe collects 2500 values per scan)");
-//            ImGui::PopItemWidth();
-//            ImGui::Unindent();
-//            ImGui::Unindent();
-//            ImGui::NewLine();
-//
-//            ImGui::Indent();
-//            addText("Gain");
-//            ImGui::Indent();
-//            ImGui::PushItemWidth(-1);
-//            ImGui::SliderFloat("##gain", &gain, 0, 5);
-//            createToolTip("Time gain compensation value.\n"
-//                          "To overcome ultrasound attenuation by increasing signal gain as time passes from emitted wave.");
-//            ImGui::PopItemWidth();
-//            ImGui::Unindent();
-//            ImGui::Unindent();
-//            ImGui::NewLine();
-//
-//            ImGui::Indent();
-//            addText("Weight");
-//            ImGui::Indent();
-//            ImGui::PushItemWidth(-1);
-//            ImGui::SliderFloat("##weight", &weight, 0, 1);
-//            createToolTip("Weight to handle data in the same cell.\n\n"
-//                          "cell value = previous + new * weight");
-//            ImGui::PopItemWidth();
-//            ImGui::Unindent();
-//            ImGui::Unindent();
-//            ImGui::NewLine();
-//        }
         ImGui::Indent();
         addText("Brightness");
         ImGui::Indent();
@@ -819,6 +814,260 @@ void displaySettings(bool isLoadData,
             yellowButton("  Leave Annotate Mode  ", isAnnotating);
             if (isAnnotating)
                 fprintf(stdout, "HI");
+        }
+
+        {
+            addText("Enter text to add to screen: ");
+            static bool is3D = true;
+            bool clicked;
+            if (is3D) {
+                yellowButton("3D Text", clicked);
+
+                if (clicked) is3D = false;
+            } else {
+                yellowButtonClicked("3D Text", clicked);
+
+                if (clicked) is3D = true;
+            }
+
+            static std::string textInput;
+            static int buf_size = textInput.capacity();
+
+            if(strlen(textInput.c_str()) >= textInput.capacity()-1){
+                std::cout<<"MAX SIZE REACHED!!"<<std::endl;
+                textInput.reserve(textInput.capacity()*2);
+                buf_size = textInput.capacity();
+            }
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+            ImGui::InputTextMultiline("##custom", (char *) textInput.c_str(), buf_size);
+            ImGui::PopStyleColor();
+
+            bool isAddText = false;
+            purpleButton("Add Text", isAddText);
+
+            if(isAddText) {
+                textList.emplace_back(textInput.c_str(), scr_width, scr_height, is3D);
+                std::cout<<"=======ADDED TEXT!"<<textInput<<std::endl;
+            }
+
+            int id = 0;
+            for(auto& txt: textList) {
+
+                glm::vec3 pos = txt.getPos();
+                float x = pos.x;
+                float y = pos.y;
+                float z = pos.z;
+
+                if(!txt.getIs3D()){
+                    x = txt.getRasterX();
+                    y = txt.getRasterY();
+                }
+
+                addText("Current Text", purple);
+                ImGui::Indent();
+                addText(txt.getText().c_str());
+                ImGui::Indent();
+                addText("Text Position");
+
+                ImGui::Indent();
+
+                if(txt.getIs3D()) {
+                    ImGui::PushItemWidth(80);
+                    ImGui::SliderFloat((std::string("##textX")+std::to_string(id)).c_str(), &x, -10, 10);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    addText("X     ");
+                    ImGui::SameLine();
+                    ImGui::PushItemWidth(80);
+                    ImGui::SliderFloat((std::string("##textY")+std::to_string(id)).c_str(), &y, -10, 10);
+                    ImGui::SameLine();
+                    addText("Y     ");
+                    ImGui::SameLine();
+                    ImGui::SliderFloat((std::string("##textZ") + std::to_string(id)).c_str(), &z, -10, 10);
+                    ImGui::PopItemWidth();
+                    ImGui::SameLine();
+                    addText("Z     ");
+                }
+                ImGui::Unindent();
+                ImGui::Unindent();
+                ImGui::Unindent();
+
+                //update marker positions
+                if(txt.getIs3D())
+                    txt.setPos(glm::vec3(x, y, z));
+                id++;
+            }
+
+//            ImGui::NewLine();
+//            ImGui::Indent();
+//            addText("Select Text");
+//            ImGui::SameLine();
+//            //Select marker pair
+//            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
+//
+//            static int current_text_id = -1;
+//            std::vector<std::string> items;
+//            for (auto &marker : markerList) {
+//                items.push_back("Marker Pair " + std::to_string(marker.getNumber()));
+//            }
+//            items.emplace_back("+ Add Marker Pair");
+//
+//    //        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
+//            glm::vec3 tmpColor = current_marker_id == -1 ? glm::vec3(0, 0, 0) : markerList[current_marker_id].getColor();
+//            ImVec4 currColor = ImVec4(tmpColor.x, tmpColor.y, tmpColor.z, 1.00f);
+//            ImGui::PushStyleColor(ImGuiCol_FrameBg, currColor);
+//            if (ImGui::BeginCombo("##markerPair",
+//                                  current_marker_id == -1 ? "" : (char *) ("Marker Pair " + std::to_string(
+//                                          markerList[current_marker_id].getNumber())).c_str())) // The second parameter is the label previewed before opening the combo.
+//            {
+//                fprintf(stdout, "MARKER HERE!!!\n");
+//                for (int n = 0; n < items.size(); n++) {
+//                    glm::vec3 itemColor = (n == items.size() - 1 ? glm::vec3(0, 0, 0) : markerList[n].getColor());
+//                    ImGui::PushStyleColor(ImGuiCol_Text,
+//                                          n == items.size() - 1 ? ImVec4(1.0f, 1, 1, 1.00f) : ImVec4(itemColor.x,
+//                                                                                                     itemColor.y,
+//                                                                                                     itemColor.z, 1.00f));
+//                    bool is_selected = (current_marker_id ==
+//                                        n); // You can store your selection however you want, outside or inside your objects
+//                    if (ImGui::Selectable((char *) items[n].c_str(), is_selected)) {
+//                        if (n == items.size() - 1) {
+//                            //If the user adds a new marker
+//                            current_marker_id = items.size() - 1;
+//                            markerList.emplace_back(markerColors[current_marker_id % markerColors.size()], ++id);
+//                        } else {
+//                            current_marker_id = n;
+//                        }
+//                    }
+//                    if (is_selected)
+//                        ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+//                    ImGui::PopStyleColor();
+//                }
+//                ImGui::EndCombo();
+//            }
+//            ImGui::PopStyleColor(2);
+//
+//            bool enableSnapTmp = false;
+//            if (enableSnap) {
+//                yellowButton("Disable Snap", enableSnapTmp);
+//                ImGui::SameLine();
+//
+//                addText("          Snap Threshold");
+//                ImGui::SameLine();
+//                ImGui::PushItemWidth(-1);
+//                ImGui::SliderInt("##snapThreshold", &snapThresholdIn, 0, 255);
+//                ImGui::PopItemWidth();
+//
+//                if (enableSnapTmp)
+//                    enableSnap = false;
+//            } else {
+//                yellowButton("Enable Snap", enableSnapTmp);
+//                if (enableSnapTmp)
+//                    enableSnap = true;
+//            }
+//            ImGui::NewLine();
+//
+//
+//            //Load the marker options
+//            if (current_marker_id != -1 && current_marker_id != markerList.size()) {
+//                addText("Distance between markers: ");
+//                ImGui::SameLine();
+//                addText(std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)).c_str(), purple);
+//
+//                //get marker positions
+//                Marker currMarker = markerList[current_marker_id];
+//                glm::vec3 marker1Pos = currMarker.getMarker1Pos();
+//                float marker1X = marker1Pos.x;
+//                float marker1Y = marker1Pos.y;
+//                float marker1Z = marker1Pos.z;
+//
+//                glm::vec3 marker2Pos = currMarker.getMarker2Pos();
+//                float marker2X = marker2Pos.x;
+//                float marker2Y = marker2Pos.y;
+//                float marker2Z = marker2Pos.z;
+//
+//                ImGui::NewLine();
+//                ImGui::Indent();
+//                addText("Click and drag markers to move, or use the sliders below", blue);
+//                ImGui::NewLine();
+//
+//                ImGui::Indent();
+//                addText("Marker 1 Position");
+//                ImGui::Indent();
+//                ImGui::PushItemWidth(80);
+//                ImGui::SliderFloat("##marker1X", &marker1X, 0, 1);
+//                ImGui::PopItemWidth();
+//                ImGui::SameLine();
+//                addText("X     ");
+//                ImGui::SameLine();
+//                ImGui::PushItemWidth(80);
+//                ImGui::SliderFloat("##marker1Y", &marker1Y, 0, 1);
+//                ImGui::SameLine();
+//                addText("Y     ");
+//                ImGui::SameLine();
+//                ImGui::SliderFloat("##marker1Z", &marker1Z, 0, 1);
+//                ImGui::PopItemWidth();
+//                ImGui::SameLine();
+//                addText("Z     ");
+//                ImGui::Unindent();
+//                ImGui::Unindent();
+//                ImGui::Unindent();
+//
+//                ImGui::NewLine();
+//                ImGui::Indent();
+//                ImGui::Indent();
+//                addText("Marker 2 Position");
+//                ImGui::Indent();
+//                ImGui::PushItemWidth(80);
+//                ImGui::SliderFloat("##marker2X", &marker2X, 0, 1);
+//                ImGui::PopItemWidth();
+//                ImGui::SameLine();
+//                addText("X     ");
+//                ImGui::SameLine();
+//                ImGui::PushItemWidth(80);
+//                ImGui::SliderFloat("##marker2Y", &marker2Y, 0, 1);
+//                ImGui::SameLine();
+//                addText("Y     ");
+//                ImGui::SameLine();
+//                ImGui::SliderFloat("##marker2Z", &marker2Z, 0, 1);
+//                ImGui::PopItemWidth();
+//                ImGui::SameLine();
+//                addText("Z     ");
+//                ImGui::Unindent();
+//                ImGui::Unindent();
+//
+//                //show/hide markers
+//                ImGui::NewLine();
+//                bool isShown = false;
+//                if (currMarker.getHidden()) {
+//                    yellowButton("  Show  ", isShown);
+//
+//                    if (isShown)
+//                        markerList[current_marker_id].setHidden(false);
+//                } else {
+//                    yellowButton("  Hide  ", isShown);
+//
+//                    if (isShown)
+//                        markerList[current_marker_id].setHidden(true);
+//                }
+//
+//                ImGui::NewLine();
+//                bool remove = false;
+//                purpleButton("Remove Markers", remove, 120, 30);
+//                ImGui::NewLine();
+//
+//                //update marker positions
+//                markerList[current_marker_id].setPositionMarker1(glm::vec3(marker1X, marker1Y, marker1Z));
+//                markerList[current_marker_id].setPositionMarker2(glm::vec3(marker2X, marker2Y, marker2Z));
+//
+//                //remove marker
+//                if (remove) {
+//                    markerList.erase(markerList.begin() + current_marker_id);
+//                    current_marker_id = -1;
+//                }
+//                ImGui::Unindent();
+//            }
+//            ImGui::Unindent();
         }
     }
     ImGui::PopStyleColor();
@@ -1403,7 +1652,8 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, snap, snapThreshold
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, myTexts, snap, snapThreshold,
+                width, height
         );
     }
 }
@@ -1626,43 +1876,10 @@ bool GUI::passErrorCheckingScreen2() {
     return true;
 }
 
-/**
- * Returns whether the mouse ray intersects any specific GUI object on the screen.
- * @param rayOrigin The origin of the ray created by the mouse. Most likely the camera location
- * @param rayDirection The direction of the ray
- * @return which marker is intersected. -1 otherwise
- */
-int GUI::mouseClickedObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection) {
-
-    float minT = -1;
-    for (auto &marker: markers) {
-        float tmpT = -1;
-        int tmpMarker = -1;
-
-        tmpMarker = marker.checkMouseOnMarker(rayOrigin, rayDirection, tmpT);
-        if (tmpMarker != -1) {
-            if (minT == -1 || (tmpT < minT && tmpT != -1)) {
-                intersectedMarker = &marker;
-                intersectedMarkerNum = tmpMarker;
-                minT = tmpT;
-            }
-        }
-    }
-
-    if (minT == -1)
-        return -1;
-
-    std::cout << "Mouse INTERSECT!" << std::endl;
-
-    if (intersectedMarker != nullptr)
-        intersectedMarker->setIntersected(true);
-
-    return 1;
-}
-
 bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen) {
     intersectedMarker = nullptr;
 
+    //check for marker intersections
     float minT = -1;
     for (auto &marker: markers) {
         float tmpT = -1;
@@ -1679,6 +1896,25 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
         }
     }
 
+    intersectedText = nullptr;
+    for (auto &text: myTexts) {
+        float tmpT = -1;
+
+        text.setIntersected(false);
+
+        if (text.checkMouseOnText(rayOrigin, rayDirection, tmpT, xPosScreen, yPosScreen) != -1) {
+//            fprintf(stdout, "INTESECTEING\n");
+            if (minT == -1 || (tmpT < minT && tmpT != -1)) {
+                intersectedText = &text;
+                minT = tmpT;
+            }
+        }
+    }
+
+    if (intersectedText != nullptr) {
+        intersectedMarker = nullptr;
+    }
+
     if (minT == -1) {
         showMarkerDistance = false;
         return false;
@@ -1691,6 +1927,11 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
 
         markerXPos = xPosScreen;
         markerYPos = yPosScreen;
+    } else if (intersectedText != nullptr) {
+        intersectedText->setIntersected(true);
+
+//        objectXPos = xPosScreen;
+//        objectYPos = yPosScreen;
     }
 
     return true;
@@ -1819,6 +2060,37 @@ glm::vec3 GUI::getSnapPointGrid(glm::vec3 p1, glm::vec3 p2, int numVals) {
 
     //if none meets criteria, return null point
     return glm::vec3(-1, -1, -1);
+}
+
+
+void GUI::moveObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen) {
+    if(intersectedMarker != nullptr) {
+        moveMarker(rayOrigin, rayDirection, xPosScreen, yPosScreen);
+    }
+    else if(intersectedText != nullptr) {
+        moveText(rayOrigin, rayDirection, xPosScreen, yPosScreen);
+    }
+}
+
+void GUI::moveText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen) {
+    if(intersectedText->getIs3D()){
+        glm::vec3 textPos = intersectedText->getPos();
+
+        glm::vec3 v0 = modelWorld * (glm::vec4(textPos.x, textPos.y, textPos.z, 1));
+        glm::vec4 normal = glm::vec4(0, 0, 1, 0);
+        double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+
+        //Find the intersection point on the plane
+        glm::vec3 P = rayOrigin + t * rayDirection;
+
+        //Transform back to marker coordinates
+        glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0, 0, 0, 1));
+        P = glm::transpose(rotation) * glm::vec4(P.x, P.y, P.z, 1);
+
+        intersectedText->setPos(P);
+    } else {
+        intersectedText->setPos(glm::vec3(xPosScreen, yPosScreen, 1));
+    }
 }
 
 /**
