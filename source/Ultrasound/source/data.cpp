@@ -538,6 +538,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
         encoder = changed_endian_2Bytes(encoder);
+        if (encoder > 4096) continue;
 
         /* lx16 (rotation angle) */
         for (int j = 0; j < (int) sizeof(lx16_char); ++j){
@@ -637,10 +638,14 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
         /* filter */
-        //Highpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
+        Highpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
 //        for (int j = 0; j < 2500; ++j)
-//            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]);
+//        {
+//            if (j < 350)
+//               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
+//            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]-1300);
+//        }
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
@@ -668,7 +673,6 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
     }
     return line_data;
 }
-
 
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -1734,10 +1738,11 @@ float ReverseFloat( const float inFloat ){
 
 void Highpass_Filter(short* origin_buffer, int length)
 {
+    // This is just an IIR. Butterworth Banpass 4M~4.5M
     short result[length];
-    int NZEROS = 2;
-    int NPOLES = 2;
-    int HF_GAIN = 2.536300864e+03; // for 300kHz
+    int NZEROS = 8;
+    int NPOLES = 8;
+    int HF_GAIN = 1.249203248e+04;
 
     float xv[NZEROS+1], yv[NPOLES+1];
     for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
@@ -1747,12 +1752,17 @@ void Highpass_Filter(short* origin_buffer, int length)
 
     for (int i = 0; i < length; ++i)
     {
-        xv[0] = xv[1]; xv[1] = xv[2];
-        xv[2] = float(origin_buffer[i]) / HF_GAIN;
-        yv[0] = yv[1]; yv[1] = yv[2];
-        yv[2] = (xv[0] + xv[2]) + 2 * xv[1]
-                + ( -0.9446318218 * yv[0]) + (  1.9430547219 * yv[1]);
-        result[i] = short(yv[2]);
+        for (int j = 0; j < NZEROS; ++j)
+            xv[j] = xv[j+1];
+        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+        for (int j = 0; j < NPOLES; ++j)
+            yv[j] = yv[j+1];
+        yv[NPOLES] = (xv[0] + xv[8]) - 4 * (xv[2] + xv[6]) + 6 * xv[4]
+                + ( -0.5902033455 * yv[0]) + (-0.7106029681 * yv[1]);
+                + ( -2.9924472796 * yv[2]) + (-2.4831995188 * yv[3]);
+                + ( -5.2924244441 * yv[4]) + (-2.8325451150 * yv[5]);
+                + ( -3.8925544168 * yv[6]) + (-1.0554873129 * yv[7]);
+        result[i] = short(yv[NPOLES]);
     }
 
     for (int i = 0; i < length; ++i)
@@ -1768,6 +1778,7 @@ float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
     for (int i = 0; i < count; ++i)
     {
         float angle = scan_data.at(i + offset).encoder * 360.0 / 4096.0;
+        //printf("%d\n", scan_data.at(i + offset).encoder);
         if (i == 0) a0 = angle;
         float atemp = angle - a0;
         if (atemp > 180) atemp -= 360;
@@ -1777,7 +1788,7 @@ float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
 //        amax = amax>atemp? amax:atemp;
 //        amin = amin<atemp? amin:atemp;
         atemps.push_back(atemp);
-        if (i > 0) printf("%f\n", atemps.at(atemps.size()-1) - atemps.at(atemps.size()-2));
+        //if (i > 0) printf("%f\n", atemps.at(atemps.size()-1) - atemps.at(atemps.size()-2));
     }
     amax = *std::max_element(atemps.begin(), atemps.end());
     amin = *std::min_element(atemps.begin(), atemps.end());
