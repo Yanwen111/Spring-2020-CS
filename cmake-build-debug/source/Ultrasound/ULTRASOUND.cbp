@@ -106,6 +106,9 @@
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/marker.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/measureObject.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/probe.cpp">
 			<Option target="ULTRASOUND"/>
 		</Unit>

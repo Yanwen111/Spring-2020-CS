@@ -21,6 +21,8 @@ const int FONT_SIZE = 18;
 const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::vec3(1.0f, 0.8f, 0.0f),
                                              glm::vec3(0.0f, 1.0f, 0.8f)};
 
+bool isDrawingBox = false;
+
 GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
          void (*setZoom)(int),
          bool (*readData)(DensityMap &, std::string, float, int, bool &, std::string &, int &, bool &),
@@ -99,6 +101,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
     loadConfig();
 
     dispVel = 1102;
+
+    myObj = MeasureObject();
 }
 
 void GUI::loadConfig() {
@@ -293,6 +297,8 @@ void GUI::drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float r
 
     drawProbe(projection, view, rotationX, rotationY);
 
+    drawObj(projection, view, cubeRotation);
+
     modelWorld = cubeRotation;
 
 //    RenderText("This is sample text", 883.402344, 556, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
@@ -342,6 +348,11 @@ void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
     scale.setMeasurements(dispFreq, dispVel, dispDepth);
     scale.draw(projection, view, model, glm::vec2(scaleXY, scaleXZ), glm::vec2(scaleYX, scaleYZ),
                glm::vec2(scaleZX, scaleZY));
+}
+
+//Draw the measure object
+void GUI::drawObj(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
+    myObj.draw(projection, view, model);
 }
 
 //Draw the markers
@@ -490,6 +501,9 @@ void displaySettings(bool isLoadData,
 
         //snap
                      bool &enableSnap, int &snapThresholdIn,
+
+        //obj
+                    MeasureObject &myObj,
 
         //scr width and height
                     int scr_width, int scr_height
@@ -831,7 +845,9 @@ void displaySettings(bool isLoadData,
             }
 
             static std::string textInput;
+            textInput.reserve(100);
             static int buf_size = textInput.capacity();
+//            std::cout<<buf_size<<std::endl;
 
             if(strlen(textInput.c_str()) >= textInput.capacity()-1){
                 std::cout<<"MAX SIZE REACHED!!"<<std::endl;
@@ -898,177 +914,32 @@ void displaySettings(bool isLoadData,
                     txt.setPos(glm::vec3(x, y, z));
                 id++;
             }
-
-//            ImGui::NewLine();
-//            ImGui::Indent();
-//            addText("Select Text");
-//            ImGui::SameLine();
-//            //Select marker pair
-//            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
-//
-//            static int current_text_id = -1;
-//            std::vector<std::string> items;
-//            for (auto &marker : markerList) {
-//                items.push_back("Marker Pair " + std::to_string(marker.getNumber()));
-//            }
-//            items.emplace_back("+ Add Marker Pair");
-//
-//    //        glm::vec3 currColor = markerColors[current_marker_id % markerColors.size()];
-//            glm::vec3 tmpColor = current_marker_id == -1 ? glm::vec3(0, 0, 0) : markerList[current_marker_id].getColor();
-//            ImVec4 currColor = ImVec4(tmpColor.x, tmpColor.y, tmpColor.z, 1.00f);
-//            ImGui::PushStyleColor(ImGuiCol_FrameBg, currColor);
-//            if (ImGui::BeginCombo("##markerPair",
-//                                  current_marker_id == -1 ? "" : (char *) ("Marker Pair " + std::to_string(
-//                                          markerList[current_marker_id].getNumber())).c_str())) // The second parameter is the label previewed before opening the combo.
-//            {
-//                fprintf(stdout, "MARKER HERE!!!\n");
-//                for (int n = 0; n < items.size(); n++) {
-//                    glm::vec3 itemColor = (n == items.size() - 1 ? glm::vec3(0, 0, 0) : markerList[n].getColor());
-//                    ImGui::PushStyleColor(ImGuiCol_Text,
-//                                          n == items.size() - 1 ? ImVec4(1.0f, 1, 1, 1.00f) : ImVec4(itemColor.x,
-//                                                                                                     itemColor.y,
-//                                                                                                     itemColor.z, 1.00f));
-//                    bool is_selected = (current_marker_id ==
-//                                        n); // You can store your selection however you want, outside or inside your objects
-//                    if (ImGui::Selectable((char *) items[n].c_str(), is_selected)) {
-//                        if (n == items.size() - 1) {
-//                            //If the user adds a new marker
-//                            current_marker_id = items.size() - 1;
-//                            markerList.emplace_back(markerColors[current_marker_id % markerColors.size()], ++id);
-//                        } else {
-//                            current_marker_id = n;
-//                        }
-//                    }
-//                    if (is_selected)
-//                        ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
-//                    ImGui::PopStyleColor();
-//                }
-//                ImGui::EndCombo();
-//            }
-//            ImGui::PopStyleColor(2);
-//
-//            bool enableSnapTmp = false;
-//            if (enableSnap) {
-//                yellowButton("Disable Snap", enableSnapTmp);
-//                ImGui::SameLine();
-//
-//                addText("          Snap Threshold");
-//                ImGui::SameLine();
-//                ImGui::PushItemWidth(-1);
-//                ImGui::SliderInt("##snapThreshold", &snapThresholdIn, 0, 255);
-//                ImGui::PopItemWidth();
-//
-//                if (enableSnapTmp)
-//                    enableSnap = false;
-//            } else {
-//                yellowButton("Enable Snap", enableSnapTmp);
-//                if (enableSnapTmp)
-//                    enableSnap = true;
-//            }
-//            ImGui::NewLine();
-//
-//
-//            //Load the marker options
-//            if (current_marker_id != -1 && current_marker_id != markerList.size()) {
-//                addText("Distance between markers: ");
-//                ImGui::SameLine();
-//                addText(std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)).c_str(), purple);
-//
-//                //get marker positions
-//                Marker currMarker = markerList[current_marker_id];
-//                glm::vec3 marker1Pos = currMarker.getMarker1Pos();
-//                float marker1X = marker1Pos.x;
-//                float marker1Y = marker1Pos.y;
-//                float marker1Z = marker1Pos.z;
-//
-//                glm::vec3 marker2Pos = currMarker.getMarker2Pos();
-//                float marker2X = marker2Pos.x;
-//                float marker2Y = marker2Pos.y;
-//                float marker2Z = marker2Pos.z;
-//
-//                ImGui::NewLine();
-//                ImGui::Indent();
-//                addText("Click and drag markers to move, or use the sliders below", blue);
-//                ImGui::NewLine();
-//
-//                ImGui::Indent();
-//                addText("Marker 1 Position");
-//                ImGui::Indent();
-//                ImGui::PushItemWidth(80);
-//                ImGui::SliderFloat("##marker1X", &marker1X, 0, 1);
-//                ImGui::PopItemWidth();
-//                ImGui::SameLine();
-//                addText("X     ");
-//                ImGui::SameLine();
-//                ImGui::PushItemWidth(80);
-//                ImGui::SliderFloat("##marker1Y", &marker1Y, 0, 1);
-//                ImGui::SameLine();
-//                addText("Y     ");
-//                ImGui::SameLine();
-//                ImGui::SliderFloat("##marker1Z", &marker1Z, 0, 1);
-//                ImGui::PopItemWidth();
-//                ImGui::SameLine();
-//                addText("Z     ");
-//                ImGui::Unindent();
-//                ImGui::Unindent();
-//                ImGui::Unindent();
-//
-//                ImGui::NewLine();
-//                ImGui::Indent();
-//                ImGui::Indent();
-//                addText("Marker 2 Position");
-//                ImGui::Indent();
-//                ImGui::PushItemWidth(80);
-//                ImGui::SliderFloat("##marker2X", &marker2X, 0, 1);
-//                ImGui::PopItemWidth();
-//                ImGui::SameLine();
-//                addText("X     ");
-//                ImGui::SameLine();
-//                ImGui::PushItemWidth(80);
-//                ImGui::SliderFloat("##marker2Y", &marker2Y, 0, 1);
-//                ImGui::SameLine();
-//                addText("Y     ");
-//                ImGui::SameLine();
-//                ImGui::SliderFloat("##marker2Z", &marker2Z, 0, 1);
-//                ImGui::PopItemWidth();
-//                ImGui::SameLine();
-//                addText("Z     ");
-//                ImGui::Unindent();
-//                ImGui::Unindent();
-//
-//                //show/hide markers
-//                ImGui::NewLine();
-//                bool isShown = false;
-//                if (currMarker.getHidden()) {
-//                    yellowButton("  Show  ", isShown);
-//
-//                    if (isShown)
-//                        markerList[current_marker_id].setHidden(false);
-//                } else {
-//                    yellowButton("  Hide  ", isShown);
-//
-//                    if (isShown)
-//                        markerList[current_marker_id].setHidden(true);
-//                }
-//
-//                ImGui::NewLine();
-//                bool remove = false;
-//                purpleButton("Remove Markers", remove, 120, 30);
-//                ImGui::NewLine();
-//
-//                //update marker positions
-//                markerList[current_marker_id].setPositionMarker1(glm::vec3(marker1X, marker1Y, marker1Z));
-//                markerList[current_marker_id].setPositionMarker2(glm::vec3(marker2X, marker2Y, marker2Z));
-//
-//                //remove marker
-//                if (remove) {
-//                    markerList.erase(markerList.begin() + current_marker_id);
-//                    current_marker_id = -1;
-//                }
-//                ImGui::Unindent();
-//            }
-//            ImGui::Unindent();
         }
+    }
+    if (ImGui::CollapsingHeader("Measure Sphere")) {
+        static bool selectingArea = false;
+        float size = myObj.getSize();
+        if(!isDrawingBox) {
+            yellowButton("Select Area", selectingArea);
+
+            if(selectingArea)
+                isDrawingBox = true;
+        }
+        else {
+            yellowButtonClicked("Select Area", selectingArea);
+
+            if(selectingArea)
+                isDrawingBox = false;
+        }
+
+        addText("Box Size: ");
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-1);
+        ImGui::SliderFloat("##selectBoxSize", &size, 0.1, 5);
+        ImGui::PopItemWidth();
+
+        myObj.setSize(size);
+
     }
     ImGui::PopStyleColor();
     ImGui::End();
@@ -1652,7 +1523,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, myTexts, snap, snapThreshold,
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, myTexts, snap, snapThreshold, myObj,
                 width, height
         );
     }
@@ -1896,6 +1767,7 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
         }
     }
 
+    //check for text intersections
     intersectedText = nullptr;
     for (auto &text: myTexts) {
         float tmpT = -1;
@@ -1903,11 +1775,21 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
         text.setIntersected(false);
 
         if (text.checkMouseOnText(rayOrigin, rayDirection, tmpT, xPosScreen, yPosScreen) != -1) {
-//            fprintf(stdout, "INTESECTEING\n");
             if (minT == -1 || (tmpT < minT && tmpT != -1)) {
                 intersectedText = &text;
                 minT = tmpT;
             }
+        }
+    }
+
+    float tmpT = -1;
+    myObj.setIntersected(false);
+    if(myObj.checkMouseOnCube(rayOrigin, rayDirection, tmpT) != -1) {
+        if(minT == -1 || (tmpT < minT && tmpT != -1)) {
+            intersectedText = nullptr;
+            intersectedMarker = nullptr;
+            myObj.setIntersected(true);
+            minT = tmpT;
         }
     }
 
@@ -1929,9 +1811,6 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
         markerYPos = yPosScreen;
     } else if (intersectedText != nullptr) {
         intersectedText->setIntersected(true);
-
-//        objectXPos = xPosScreen;
-//        objectYPos = yPosScreen;
     }
 
     return true;
@@ -2070,6 +1949,9 @@ void GUI::moveObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScre
     else if(intersectedText != nullptr) {
         moveText(rayOrigin, rayDirection, xPosScreen, yPosScreen);
     }
+    else if(myObj.getIntersected()) {
+        moveMeasureObject(rayOrigin, rayDirection, xPosScreen, yPosScreen);
+    }
 }
 
 void GUI::moveText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen) {
@@ -2138,6 +2020,33 @@ void GUI::moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScre
     else
         intersectedMarker->setPositionMarker2(P);
 
+}
+
+void GUI::moveMeasureObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen){
+    glm::vec3 objPos = myObj.getPos();
+
+    glm::vec3 v0 = modelWorld * (glm::vec4(objPos.x, objPos.y, objPos.z, 1));
+    glm::vec4 normal = glm::vec4(0, 0, 1, 0);
+    double t = rayPlaneIntersect(normal, v0, rayOrigin, rayDirection);
+
+    //Find the intersection point on the plane
+    glm::vec3 P = rayOrigin + t * rayDirection;
+
+    //Transform back to marker coordinates
+    glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0, 0, 0, 1));
+    P = glm::transpose(rotation) * glm::vec4(P.x, P.y, P.z, 1);
+
+    float upperBound = 5.0f - myObj.getSize();
+    float lowerBound = -1 * upperBound;
+
+    if (P.x > upperBound) P.x = upperBound;
+    if (P.x < lowerBound) P.x = lowerBound;
+    if (P.y > upperBound) P.y = upperBound;
+    if (P.y < lowerBound) P.y = lowerBound;
+    if (P.z > upperBound) P.z = upperBound;
+    if (P.z < lowerBound) P.z = lowerBound;
+
+    myObj.setPos(P);
 }
 
 /**

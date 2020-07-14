@@ -279,6 +279,33 @@ source/marker.cpp.s:
 	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/marker.cpp.s
 .PHONY : source/marker.cpp.s
 
+source/measureObject.o: source/measureObject.cpp.o
+
+.PHONY : source/measureObject.o
+
+# target to build an object file
+source/measureObject.cpp.o:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o
+.PHONY : source/measureObject.cpp.o
+
+source/measureObject.i: source/measureObject.cpp.i
+
+.PHONY : source/measureObject.i
+
+# target to preprocess a source file
+source/measureObject.cpp.i:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.i
+.PHONY : source/measureObject.cpp.i
+
+source/measureObject.s: source/measureObject.cpp.s
+
+.PHONY : source/measureObject.s
+
+# target to generate assembly for a file
+source/measureObject.cpp.s:
+	cd /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug && $(MAKE) -f source/Ultrasound/CMakeFiles/ULTRASOUND.dir/build.make source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.s
+.PHONY : source/measureObject.cpp.s
+
 source/probe.o: source/probe.cpp.o
 
 .PHONY : source/probe.o
@@ -439,6 +466,9 @@ help:
 	@echo "... source/marker.o"
 	@echo "... source/marker.i"
 	@echo "... source/marker.s"
+	@echo "... source/measureObject.o"
+	@echo "... source/measureObject.i"
+	@echo "... source/measureObject.s"
 	@echo "... source/probe.o"
 	@echo "... source/probe.i"
 	@echo "... source/probe.s"

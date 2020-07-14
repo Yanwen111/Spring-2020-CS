@@ -1873,6 +1873,8 @@ probe.h
 ../source/Ultrasound/include/probe.h
 text.h
 ../source/Ultrasound/include/text.h
+measureObject.h
+../source/Ultrasound/include/measureObject.h
 boost/filesystem.hpp
 -
 
@@ -1896,6 +1898,18 @@ glad/glad.h
 fstream
 -
 iostream
+-
+shader.h
+../source/Ultrasound/include/shader.h
+helper.h
+../source/Ultrasound/include/helper.h
+
+../source/Ultrasound/include/measureObject.h
+glm/glm.hpp
+-
+glm/ext.hpp
+-
+glad/glad.h
 -
 shader.h
 ../source/Ultrasound/include/shader.h
@@ -1983,14 +1997,6 @@ rotation.h
 /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/rotation.h
 ft2build.h
 -
-
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/text.cpp
-boost/filesystem/operations.hpp
--
-ft2build.h
--
-text.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/text.h
 
 /usr/local/include/boost/assert.hpp
 boost/config.hpp

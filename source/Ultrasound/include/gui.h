@@ -12,6 +12,7 @@
 #include "scale.h"
 #include "probe.h"
 #include "text.h"
+#include "measureObject.h"
 #include <boost/filesystem.hpp>
 
 /**
@@ -40,6 +41,7 @@ public:
     void moveObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
     void moveMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
     void moveText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
+    void moveMeasureObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
     bool mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen, float yPosScreen);
 
@@ -162,7 +164,8 @@ private:
     std::vector<Marker> markers;
     std::vector<Text> myTexts;
     void drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
-//    Text myText;
+
+    MeasureObject myObj;
 
     //marker pair that mouse is on
     int intersectedMarkerIndex = -1;
@@ -204,6 +207,7 @@ private:
     void drawWidgets(glm::mat4 projection, glm::mat4 view);
     void drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     void drawProbe(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
+    void drawObj(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     static void render();
     void interactionHandler();
     void reset();

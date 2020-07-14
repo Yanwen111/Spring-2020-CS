@@ -69,7 +69,7 @@ std::thread dataThread;
 
 //Load File function pointer
 bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& errorMessage, int& probeType, bool& error){
-
+//    dataUpdate = true;
     char* c = new char[file.size() + 1];
     strcpy(c, file.c_str());
     std::cout<<"READDATA: "<<c<<std::endl;

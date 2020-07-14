@@ -240,6 +240,7 @@ CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/data.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/gui.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/helper.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/marker.h
+CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/measureObject.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/probe.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/remote.h
 CMakeFiles/Ultrasound_AIO.dir/main.cpp.o: ../source/Ultrasound/include/rotation.h
