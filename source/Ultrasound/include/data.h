@@ -118,6 +118,8 @@ float encoder_offset(std::vector<scan_data_struct> scan_data, int count);
 
 /* Signal processing */
 void Highpass_Filter(short* origin_buffer, int length);
+void Bandpass_Filter(short* origin_buffer, int length);
+void Bandstop_Filter(short* origin_buffer, int length);
 
 int getDepth();
 void setDepth(int dep);

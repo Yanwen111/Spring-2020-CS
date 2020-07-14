@@ -638,14 +638,16 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
         /* filter */
-        Highpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
+        //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
+        Bandstop_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
-//        for (int j = 0; j < 2500; ++j)
-//        {
-//            if (j < 350)
+        for (int j = 0; j < 2500; ++j)
+        {
+//            if (j < 300)
 //               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
-//            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]-1300);
-//        }
+            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 1350);
+        }
+        adc_max = 0; adc_min = 2500;
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
@@ -1736,13 +1738,13 @@ float ReverseFloat( const float inFloat ){
     return retVal;
 }
 
-void Highpass_Filter(short* origin_buffer, int length)
+void Bandpass_Filter(short* origin_buffer, int length)
 {
-    // This is just an IIR. Butterworth Banpass 4M~4.5M
+    // This is just an IIR. Butterworth Bandpass 4M~4.5M
     short result[length];
-    int NZEROS = 8;
-    int NPOLES = 8;
-    int HF_GAIN = 1.249203248e+04;
+    int NZEROS = 4;
+    int NPOLES = 4;
+    int HF_GAIN = 1.129615389e+02;
 
     float xv[NZEROS+1], yv[NPOLES+1];
     for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
@@ -1757,11 +1759,40 @@ void Highpass_Filter(short* origin_buffer, int length)
         xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
         for (int j = 0; j < NPOLES; ++j)
             yv[j] = yv[j+1];
-        yv[NPOLES] = (xv[0] + xv[8]) - 4 * (xv[2] + xv[6]) + 6 * xv[4]
-                + ( -0.5902033455 * yv[0]) + (-0.7106029681 * yv[1]);
-                + ( -2.9924472796 * yv[2]) + (-2.4831995188 * yv[3]);
-                + ( -5.2924244441 * yv[4]) + (-2.8325451150 * yv[5]);
-                + ( -3.8925544168 * yv[6]) + (-1.0554873129 * yv[7]);
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 2 * xv[2]
+                + ( -0.7521734241 * yv[0]) + (-0.4548779427 * yv[1])
+                + ( -1.7859422572 * yv[2]) + (-0.5248729714 * yv[3]);
+        result[i] = short(yv[NPOLES]);
+    }
+
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = result[i];
+}
+
+void Bandstop_Filter(short* origin_buffer, int length)
+{
+    // This is just an IIR. Butterworth Bandstop 2.6~3.7 M
+    short result[length];
+    int NZEROS = 4;
+    int NPOLES = 4;
+    int HF_GAIN = 1.369230733e+00;
+
+    float xv[NZEROS+1], yv[NPOLES+1];
+    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+        xv[i] = 0.0;
+    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+        yv[i] = 0.0;
+
+    for (int i = 0; i < length; ++i)
+    {
+        for (int j = 0; j < NZEROS; ++j)
+            xv[j] = xv[j+1];
+        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+        for (int j = 0; j < NPOLES; ++j)
+            yv[j] = yv[j+1];
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 1.2198196667 * (xv[1] + xv[3]) + 2.3719900048 * xv[2]
+                     + ( -0.5347646244 * yv[0]) + (0.7490037400 * yv[1])
+                     + ( -1.6582618675 * yv[2]) + (1.0327553705 * yv[3]);
         result[i] = short(yv[NPOLES]);
     }
 
