@@ -1228,6 +1228,7 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o
  ../extern/glm/glm/vec3.hpp
  ../extern/glm/glm/vec4.hpp
  ../extern/glm/glm/vector_relational.hpp
+ ../source/DensityMap/densityMap.h
  ../source/DensityMap/shader.h
  ../source/Ultrasound/include/helper.h
  ../source/Ultrasound/include/measureObject.h

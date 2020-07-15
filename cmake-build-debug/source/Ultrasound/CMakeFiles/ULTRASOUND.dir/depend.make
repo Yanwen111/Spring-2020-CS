@@ -1227,6 +1227,7 @@ source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../exter
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../extern/glm/glm/vec3.hpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../extern/glm/glm/vec4.hpp
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../extern/glm/glm/vector_relational.hpp
+source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../source/DensityMap/densityMap.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../source/DensityMap/shader.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../source/Ultrasound/include/helper.h
 source/Ultrasound/CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o: ../source/Ultrasound/include/measureObject.h

@@ -22,6 +22,7 @@ const std::vector<glm::vec3> markerColors = {glm::vec3(1.0f, 0.0f, 0.8f), glm::v
                                              glm::vec3(0.0f, 1.0f, 0.8f)};
 
 bool isDrawingBox = false;
+bool drawObjectMode = false;
 
 GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
          void (*setZoom)(int),
@@ -102,7 +103,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
 
     dispVel = 1102;
 
-    myObj = MeasureObject();
+//    myObj = MeasureObject(gridPointer);
+    myObj = MeasureObject(gridPointer);
 }
 
 void GUI::loadConfig() {
@@ -352,7 +354,8 @@ void GUI::drawScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
 
 //Draw the measure object
 void GUI::drawObj(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
-    myObj.draw(projection, view, model);
+    if(drawObjectMode)
+        myObj.draw(projection, view, model);
 }
 
 //Draw the markers
@@ -372,20 +375,10 @@ void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
 
 //Draw the Texts
 void GUI::drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
-//    int tmp = 0;
     for (auto &txt : myTexts) {
-//        if (!marker.getHidden())
             txt.draw(projection, view, model);
-//            std::cout<<"================TEXT DRAWN "<<tmp<<std::endl;
-//            tmp ++;
     }
 
-//    if (intersectedMarker != nullptr && showMarkerDistance) {
-//        RenderText("Marker " + std::to_string(intersectedMarker->getNumber()), markerXPos + FONT_SIZE, markerYPos, 1.0,
-//                   intersectedMarker->getColor());
-//        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth)) + " cm",
-//                   markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
-//    }
 }
 
 void addText(const char *text, ImVec4 color = ImVec4(0, 0, 0, 1.0f), float size = 1.0f) {
@@ -917,29 +910,59 @@ void displaySettings(bool isLoadData,
         }
     }
     if (ImGui::CollapsingHeader("Measure Sphere")) {
-        static bool selectingArea = false;
-        float size = myObj.getSize();
-        if(!isDrawingBox) {
-            yellowButton("Select Area", selectingArea);
+        drawObjectMode = true;
 
-            if(selectingArea)
+        static bool selectingArea = false;
+//        float size = myObj.getSize();
+        if(!isDrawingBox) {
+            yellowButton("Fit Sphere", selectingArea);
+
+
+            addText("Box Size: ");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(-1);
+            ImGui::SliderFloat("##selectBoxSize", myObj.getSize(), 0.1, 5);
+            ImGui::PopItemWidth();
+
+            if(selectingArea) {
                 isDrawingBox = true;
+                myObj.calculate();
+            }
         }
         else {
             yellowButtonClicked("Select Area", selectingArea);
 
-            if(selectingArea)
+            ImGui::NewLine();
+            addText("Center: ");
+            ImGui::Indent();
+            glm::vec3 objPos = myObj.getPos();
+            addText(std::to_string(objPos.x).c_str());
+            ImGui::SameLine();
+            addText(std::to_string(objPos.y).c_str());
+            ImGui::SameLine();
+            addText(std::to_string(objPos.z).c_str());
+            ImGui::Unindent();
+            addText("Radius: ");
+            ImGui::Indent();
+            addText(std::to_string(*myObj.getSize()).c_str());
+            ImGui::Unindent();
+            addText("Threshold Value: ");
+            ImGui::Indent();
+            addText(std::to_string(myObj.getThreshold()).c_str());
+            ImGui::Unindent();
+//            addText("Fit Quality (R^2 value): ");
+//            ImGui::Indent();
+//            addText(std::to_string(myObj.getRsqVal()).c_str());
+//            ImGui::Unindent();
+
+            if(selectingArea) {
                 isDrawingBox = false;
+                myObj.selectArea();
+            }
         }
 
-        addText("Box Size: ");
-        ImGui::SameLine();
-        ImGui::PushItemWidth(-1);
-        ImGui::SliderFloat("##selectBoxSize", &size, 0.1, 5);
-        ImGui::PopItemWidth();
-
-        myObj.setSize(size);
-
+    } else {
+        drawObjectMode = false;
     }
     ImGui::PopStyleColor();
     ImGui::End();
@@ -2036,7 +2059,7 @@ void GUI::moveMeasureObject(glm::vec3 rayOrigin, glm::vec3 rayDirection, float x
     glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0, 0, 0, 1));
     P = glm::transpose(rotation) * glm::vec4(P.x, P.y, P.z, 1);
 
-    float upperBound = 5.0f - myObj.getSize();
+    float upperBound = 5.0f - *myObj.getSize();
     float lowerBound = -1 * upperBound;
 
     if (P.x > upperBound) P.x = upperBound;
