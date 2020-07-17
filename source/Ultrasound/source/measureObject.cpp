@@ -186,6 +186,10 @@ void translateCube(glm::mat4& model_marker, glm::mat4 modelRot, glm::vec3 positi
     model_marker = glm::translate(glm::mat4(1.0f), trans) * model_marker;
 }
 
+float MeasureObject::getRadius(float freq, float vel, int depth) {
+    return mySize / 10.0f * (1/freq)*vel*depth/2.0f / 10000.0f;
+}
+
 //calculate the best fit sphere
 void MeasureObject::calculate() {
 

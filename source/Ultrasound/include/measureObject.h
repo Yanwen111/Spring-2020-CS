@@ -28,6 +28,9 @@ public:
     void calculate();
     void selectArea();
 
+    //gets the radius in terms of actual object, not the grid space.
+    float getRadius(float freq, float vel, int depth);
+
 private:
 //    struct PointCalc
 //    {

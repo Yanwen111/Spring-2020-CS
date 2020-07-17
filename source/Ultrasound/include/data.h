@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+//for compression
+#include <zlib.h>
 
 #include "densityMap.h"
 #include "rotation.h"
@@ -60,6 +62,7 @@ struct line_data_struct{
     std::vector<unsigned char> vals; //Intensities
     float rotation_angle = 0;
     float vertical_angle = 0;
+    glm::vec4 quat = {0, 0, 0, 1.0};  // x, y, z, w
 };
 
 
@@ -111,6 +114,12 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
 void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std::string compIP, bool& transmit_end);
 bool remove_tempr_files(bool& error, std::string& errorMessage);
 bool rename_tempr_files(bool isSubmarine, bool& error, std::string& errorMessage);
+float encoder_offset(std::vector<scan_data_struct> scan_data, int count);
+
+/* Signal processing */
+void Highpass_Filter(short* origin_buffer, int length);
+void Bandpass_Filter(short* origin_buffer, int length);
+void Bandstop_Filter(short* origin_buffer, int length);
 
 int getDepth();
 void setDepth(int dep);

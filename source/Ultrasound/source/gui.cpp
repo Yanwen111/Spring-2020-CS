@@ -944,7 +944,7 @@ void displaySettings(bool isLoadData,
             ImGui::Unindent();
             addText("Radius: ");
             ImGui::Indent();
-            addText(std::to_string(*myObj.getSize()).c_str());
+            addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " cm").c_str());
             ImGui::Unindent();
             addText("Threshold Value: ");
             ImGui::Indent();
