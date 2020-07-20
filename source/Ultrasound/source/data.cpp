@@ -45,9 +45,11 @@ unsigned char information_byte = 0xE1;
 int DEPTH = 2500;
 float GAIN = 1.0;
 float ROTATION = 0.0;
+glm::vec4 ROTATION_QUA = {0.0, 0.0, 0.0, 1.0};
 float* GAIN_PTR = &GAIN;
 int * DEPTH_PTR = &DEPTH;
 float* ROTATION_PTR = &ROTATION;
+glm::vec4* ROTATION_QUA_PTR = &ROTATION_QUA;
 int samples = -1; /* -1 stands for no data */
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
@@ -179,6 +181,7 @@ void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int le
             {
                 l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
             }
+            *ROTATION_QUA_PTR = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
             grid.writeLine(ps, pe, l.vals);
         }
 
@@ -348,6 +351,7 @@ void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int l
         {
             l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
         }
+        *ROTATION_QUA_PTR = l.quat;
         grid.writeLine(ps, pe, l.vals);
     }
 
@@ -490,8 +494,11 @@ void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, b
     line_data = file_to_pixel_V08(file_bytes, marker_locations);
     printf("find the screen_data\n");
 
+    int cnt = 0;
     for  (auto l: line_data)
     {
+        cnt++;
+        //if (cnt % 200 == 0) usleep(300000);
         glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         for (int i = 0; i < l.vals.size(); ++i)
@@ -531,6 +538,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         }
         std::memcpy(&encoder, encoder_char, sizeof(encoder));
         encoder = changed_endian_2Bytes(encoder);
+        if (encoder > 4096) continue;
 
         /* lx16 (rotation angle) */
         for (int j = 0; j < (int) sizeof(lx16_char); ++j){
@@ -615,21 +623,31 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 
     //printf("the version of this data is %d \n", scan_data[0].version);
 
-    double a0, amax = -1, amin = 370;
+    float encoder_os = encoder_offset(scan_data, 400);
+    //printf("The value of encoder offset is %f\n", encoder_os);
+    //printf("The number of total lines is %d\n", (int)scan_data.size());
+
     for (int i = 0; i < (int)scan_data.size(); ++i)
+        //for (int i = 400; i < 800; ++i)
     {
+        //if (scan_data.at(i).encoder > )
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
-//        if (i == 0) a0 = angle;
-//        int atemp = angle - a0;
-//        if (atemp > 180) atemp -= 360;
-//        else if (atemp < -180) atemp += 360;
-//        amax = amax > atemp? amax:atemp;
-//        amin = amin < atemp? amin : atemp;
         //float piezo = 270-angle;
-        float piezo = angle - 352.882812 - 90;
+        //float piezo = angle - 352.882812 - 90;
+        float piezo = angle - encoder_os - 5;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
+        /* filter */
+        //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
+//        Bandstop_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
+        for (int j = 0; j < 2500; ++j)
+        {
+            if (j < 500)
+               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
+            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 1350);
+        }
+        adc_max = 0; adc_min = 2500;
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
@@ -654,12 +672,9 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         dataline.vertical_angle = 90.0 + piezo; /* The angle with y- */
         dataline.rotation_angle = angle_16;
         line_data.push_back(dataline);
-        adc_max = 0; adc_min = 0;
     }
-    printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
     return line_data;
 }
-
 
 void realDemo(DensityMap& grid, bool& dataUpdate)
 {
@@ -1117,6 +1132,7 @@ void render_lines(DensityMap& grid, std::vector<line_data_struct> line_data)
         }
         rotate_mutex.lock();
         *ROTATION_PTR = l.rotation_angle;
+        *ROTATION_QUA_PTR = Rotation::convertToQuaterion(0, l.rotation_angle, 0);
         rotate_mutex.unlock();
         grid.writeLine(ps, pe, l.vals);
     }
@@ -1266,14 +1282,22 @@ void live_rendering(DensityMap& grid, bool isSubmarine, std::string probeIP, std
     setDepth(1500);
     setGain(1.0);
 
+    // zlib compression
+    Byte compr[6000], uncompr[6000];
+    uLong comprLen = 6000, uncomprLen = 6000;
+
     while(in_transmit) {
         if (time_milisecond < update_rate || sub_file_bytes.empty())
         {
             memset(recvBuf, 0, sizeof(recvBuf));
 
-            recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            //recvfrom(sockSrv, recvBuf, sizeof(recvBuf), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
+            recvfrom(sockSrv, compr, sizeof(compr), MSG_NOSIGNAL, (sockaddr *) &addrSrv, (socklen_t *) &length);
             buffer_cnt++;
             total_line_cnt++;
+//            uncompress(uncompr, &uncomprLen, compr, comprLen);
+            for (int k = 0; k < recv_buffer_size; ++k)
+                recvBuf[k] = static_cast<char>(uncompr[k]);
 
             /* seperate the file according to number of lines or the time */
             if (total_line_cnt >= line_bar || total_time >= time_bar)
@@ -1712,6 +1736,96 @@ float ReverseFloat( const float inFloat ){
     returnFloat[3] = floatToConvert[0];
 
     return retVal;
+}
+
+void Bandpass_Filter(short* origin_buffer, int length)
+{
+    // This is just an IIR. Butterworth Bandpass 4M~4.5M
+    short result[length];
+    int NZEROS = 4;
+    int NPOLES = 4;
+    int HF_GAIN = 1.129615389e+02;
+
+    float xv[NZEROS+1], yv[NPOLES+1];
+    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+        xv[i] = 0.0;
+    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+        yv[i] = 0.0;
+
+    for (int i = 0; i < length; ++i)
+    {
+        for (int j = 0; j < NZEROS; ++j)
+            xv[j] = xv[j+1];
+        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+        for (int j = 0; j < NPOLES; ++j)
+            yv[j] = yv[j+1];
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 2 * xv[2]
+                     + ( -0.7521734241 * yv[0]) + (-0.4548779427 * yv[1])
+                     + ( -1.7859422572 * yv[2]) + (-0.5248729714 * yv[3]);
+        result[i] = short(yv[NPOLES]);
+    }
+
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = result[i];
+}
+
+void Bandstop_Filter(short* origin_buffer, int length)
+{
+    // This is just an IIR. Butterworth Bandstop 2.6~3.7 M
+    short result[length];
+    int NZEROS = 4;
+    int NPOLES = 4;
+    int HF_GAIN = 1.369230733e+00;
+
+    float xv[NZEROS+1], yv[NPOLES+1];
+    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+        xv[i] = 0.0;
+    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+        yv[i] = 0.0;
+
+    for (int i = 0; i < length; ++i)
+    {
+        for (int j = 0; j < NZEROS; ++j)
+            xv[j] = xv[j+1];
+        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+        for (int j = 0; j < NPOLES; ++j)
+            yv[j] = yv[j+1];
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 1.2198196667 * (xv[1] + xv[3]) + 2.3719900048 * xv[2]
+                     + ( -0.5347646244 * yv[0]) + (0.7490037400 * yv[1])
+                     + ( -1.6582618675 * yv[2]) + (1.0327553705 * yv[3]);
+        result[i] = short(yv[NPOLES]);
+    }
+
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = result[i];
+}
+
+float encoder_offset(std::vector<scan_data_struct> scan_data, int count)
+{
+    float a0, amax, amin;
+    int offset = 200;
+    std::vector<float> atemps;
+    float gap1, gap2;
+    for (int i = 0; i < count; ++i)
+    {
+        float angle = scan_data.at(i + offset).encoder * 360.0 / 4096.0;
+        //printf("%d\n", scan_data.at(i + offset).encoder);
+        if (i == 0) a0 = angle;
+        float atemp = angle - a0;
+        if (atemp > 180) atemp -= 360;
+        else if (atemp < -180) atemp += 360;
+        if (atemp > 180 || atemp < -180)
+            continue;
+//        amax = amax>atemp? amax:atemp;
+//        amin = amin<atemp? amin:atemp;
+        atemps.push_back(atemp);
+        //if (i > 0) printf("%f\n", atemps.at(atemps.size()-1) - atemps.at(atemps.size()-2));
+    }
+    amax = *std::max_element(atemps.begin(), atemps.end());
+    amin = *std::min_element(atemps.begin(), atemps.end());
+
+    printf(">>>>%f === %f, %f <<<< \n",a0, amin, amax);
+    return (amax + amin + 1) / 2.0 + a0 + 90;
 }
 
 int getDepth()

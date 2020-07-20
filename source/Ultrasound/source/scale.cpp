@@ -202,6 +202,58 @@ void Scale::translate(glm::mat4& model_marker, glm::mat4 modelRot, glm::vec3 pos
     model_marker = glm::translate(glm::mat4(1.0f), trans) * model_marker;
 }
 
+void Scale::showGrid(bool value) {
+    gridShown = value;
+}
+
+bool Scale::isGridShown() {
+    return gridShown;
+}
+
+void Scale::drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
+
+    float gridSize = 0.015;
+    glm::vec3 GRID_COLOR = glm::vec3(0.5f, 0.5f, 0.5f);
+    //vertical (y-axis lines)
+    for(int x = 1; x < linesPlacement.size(); x+=2) {
+        for(int y = 1; y < linesPlacement.size(); y+=2) {
+            //Draw the grid lines
+            glm::mat4 model_grid      = glm::mat4(1.0f);
+            scaleObj(model_grid, gridSize, 5, gridSize);
+
+            rotate(model_grid, model);
+            translate(model_grid, model, glm::vec3(linesPlacement.at(x)-5, 0, 5-linesPlacement.at(y)));
+            drawCubeShader(projection, view, model_grid, GRID_COLOR);
+        }
+    }
+    //x-axis lines
+    for(int x = 1; x < linesPlacement.size(); x+=2) {
+        for(int y = 1; y < linesPlacement.size(); y+=2) {
+            //Draw the grid lines
+            glm::mat4 model_grid      = glm::mat4(1.0f);
+            scaleObj(model_grid,  5, gridSize,gridSize);
+
+            rotate(model_grid, model);
+            translate(model_grid, model, glm::vec3(0,5-linesPlacement.at(x), 5-linesPlacement.at(y)));
+            drawCubeShader(projection, view, model_grid, GRID_COLOR);
+        }
+    }
+
+    //z-axis lines
+    for(int x = 1; x < linesPlacement.size(); x+=2) {
+        for(int y = 1; y < linesPlacement.size(); y+=2) {
+            //Draw the grid lines
+            glm::mat4 model_grid      = glm::mat4(1.0f);
+            scaleObj(model_grid, gridSize, gridSize,5);
+
+            rotate(model_grid, model);
+            translate(model_grid, model, glm::vec3(linesPlacement.at(x)-5,5-linesPlacement.at(y), 0));
+            drawCubeShader(projection, view, model_grid, GRID_COLOR);
+        }
+    }
+
+}
+
 void Scale::drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
         double positionX, double positionZ){
 
@@ -357,6 +409,9 @@ void Scale::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec
     drawXScale(projection, view, model, yPos.x*10-5, yPos.y*10-5);
     drawYScale(projection, view, model, xPos.x*10-5, xPos.y*10-5);
     drawZScale(projection, view, model, zPos.x*10-5, zPos.y*10-5);
+
+    if(gridShown)
+        drawGrid(projection, view, model);
 
     glDisable(GL_DEPTH_TEST);
 }

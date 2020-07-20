@@ -21,6 +21,9 @@ public:
     void draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec2 yPos, glm::vec2 xPos, glm::vec2 zPos);
     void setMeasurements(double freqIn, double velIn, int depthIn);
 
+    void showGrid(bool value);
+    bool isGridShown();
+
 private:
 
     GLfloat *cubevertices = NULL;
@@ -39,12 +42,15 @@ private:
 
     std::vector<float> linesPlacement;
 
+    float gridShown = false;
+
     void drawNumberShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor, int number);
 
     void drawCubeShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor);
     void drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionZ);
     void drawXScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionY, double positionZ);
     void drawZScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionY);
+    void drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale);
 
     void scaleObj(glm::mat4& model_marker, float x, float y, float z);
     void rotate(glm::mat4& model_marker, glm::mat4 modelRot);

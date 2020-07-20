@@ -186,32 +186,34 @@ void translateCube(glm::mat4& model_marker, glm::mat4 modelRot, glm::vec3 positi
     model_marker = glm::translate(glm::mat4(1.0f), trans) * model_marker;
 }
 
+//returns radius in mm
 float MeasureObject::getRadius(float freq, float vel, int depth) {
-    return mySize / 10.0f * (1/freq)*vel*depth/2.0f / 10000.0f;
+    return mySize * (1/freq)*vel*depth/2.0f / 10000.0f;
 }
 
 //calculate the best fit sphere
 void MeasureObject::calculate() {
 
-//    struct PointCalc P = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//    prepareData(P);
-//    std::cout<<"Prepared Data: "<<P.npoints<<" " <<P.Xsum<<" "<<P.Ysum<<" "<<P.Zsum<<std::endl;
-//
-//    float A, B, C, Rsq;
-//    std::cout<<"Calculating Least Squares!"<<std::endl;
-//    calculateLeastSquaresSphere(P, A, B, C, Rsq);
-//    std::cout<<"Rad: "<<sqrt(Rsq)<<" X "<<A<<" Y "<<B<<" Z "<<C<<std::endl;
-//
-//    pos = glm::vec3(A, B, C);
-//    mySize = sqrt(Rsq);
+    glm::vec3 center;
+    float radius;
 
-
-    findThreshold();
-    glm::vec3 center = getCenter();
-    float radius = getRadius(center);
+    for(int x = 0; x < 50; x++) {
+        findThreshold();
+        for(int c = 0; c < 10; c++) {
+            center = getCenter();
+            pos = center;
+        }
+        radius = getRadius(center);
+        if(radius <= 0) {
+            mySize = mySize / 1.15;
+            break;
+        }
+        mySize = radius * 1.15;
+    }
 
     pos = center;
-    mySize = radius;
+    if(radius > 0)
+        mySize = radius;
 
     showCube = false;
 }
@@ -248,7 +250,7 @@ void MeasureObject::findThreshold() {
     myThreshold = points[points.size()/2];
 
 //    myThreshold = valSum / float(numPoints);
-    std::cout<<"Threshold: "<<myThreshold<<std::endl;
+//    std::cout<<"Threshold: "<<myThreshold<<std::endl;
 }
 
 //float MeasureObject::getRsqVal() {
@@ -291,7 +293,7 @@ float MeasureObject::getRadius(glm::vec3 center) {
             }
         }
     }
-    std::cout<<"RADIUS: "<<sqrt(sum / valSum)<<std::endl;
+//    std::cout<<"RADIUS: "<<sqrt(sum / valSum)<<std::endl;
     return sqrt(sum / valSum);
 }
 
@@ -328,7 +330,7 @@ glm::vec3 MeasureObject::getCenter() {
     }
 
     center = center / valSum;
-    std::cout<<"CENTER: "<<center.x<<" "<<center.y<<" "<<center.z<<std::endl;
+//    std::cout<<"CENTER: "<<center.x<<" "<<center.y<<" "<<center.z<<std::endl;
     return center;
 }
 

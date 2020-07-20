@@ -221,9 +221,9 @@ void Marker::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
     glDisable(GL_DEPTH_TEST);
 }
 
-// Calculate distance between markers in cm
+// Calculate distance between markers in mm
 float Marker::getDistance(float freq, float vel, int depth){
-    return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0;
+    return length(marker2 - marker1) * (1/freq)*vel*depth/2.0f / 10000.0 * 10.0f;
 }
 
 //int Marker::checkMouseOnMarker(glm::vec3 rayOrigin, glm::vec3 rayDirection){

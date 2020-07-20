@@ -368,7 +368,7 @@ void GUI::drawMarkers(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
     if (intersectedMarker != nullptr && showMarkerDistance) {
         RenderText("Marker " + std::to_string(intersectedMarker->getNumber()), markerXPos + FONT_SIZE, markerYPos, 1.0,
                    intersectedMarker->getColor());
-        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth)) + " cm",
+        RenderText(std::to_string(intersectedMarker->getDistance(dispFreq, dispVel, dispDepth)) + " mm",
                    markerXPos + FONT_SIZE, markerYPos - FONT_SIZE, 1.0, intersectedMarker->getColor());
     }
 }
@@ -485,6 +485,7 @@ void displaySettings(bool isLoadData,
 
         //scale
                      float &scaleXY, float &scaleXZ, float &scaleYX, float &scaleYZ, float &scaleZX, float &scaleZY,
+                     Scale& scale,
 
         //marker
                      std::vector<Marker> &markerList,
@@ -656,7 +657,7 @@ void displaySettings(bool isLoadData,
         if (current_marker_id != -1 && current_marker_id != markerList.size()) {
             addText("Distance between markers: ");
             ImGui::SameLine();
-            addText(std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)).c_str(), purple);
+            addText((std::to_string(markerList[current_marker_id].getDistance(freq, velocity, depth)) + " mm").c_str(), purple);
 
             //get marker positions
             Marker currMarker = markerList[current_marker_id];
@@ -756,6 +757,21 @@ void displaySettings(bool isLoadData,
 
     if (ImGui::CollapsingHeader("Scale Options")) {
         ImGui::NewLine();
+        bool gridShown = false;
+        if(scale.isGridShown()) {
+            yellowButton("Hide Grid", gridShown);
+
+            if(gridShown) {
+                scale.showGrid(false);
+            }
+        } else {
+            yellowButton("Show Grid", gridShown);
+
+            if(gridShown) {
+                scale.showGrid(true);
+            }
+        }
+
         addText("Scale shown in cm", blue);
 
         ImGui::Indent();
@@ -944,7 +960,7 @@ void displaySettings(bool isLoadData,
             ImGui::Unindent();
             addText("Radius: ");
             ImGui::Indent();
-            addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " cm").c_str());
+            addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " mm").c_str());
             ImGui::Unindent();
             addText("Threshold Value: ");
             ImGui::Indent();
@@ -1546,7 +1562,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, markers, myTexts, snap, snapThreshold, myObj,
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, scale, markers, myTexts, snap, snapThreshold, myObj,
                 width, height
         );
     }
