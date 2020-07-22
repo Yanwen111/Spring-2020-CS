@@ -178,8 +178,8 @@ void Scale::setMeasurements(double freqIn, double velIn, int depthIn){
 
     //Insert location of every 1/2 cm to linesPlacement
     linesPlacement.clear();
-    double location = markLength/2.0f;
-    while(location < 10){
+    double location = 0.0f;
+    while(location <= 10){
         linesPlacement.push_back(location);
         location = location + markLength/2.0f;
     }
@@ -211,36 +211,57 @@ bool Scale::isGridShown() {
     return gridShown;
 }
 
+float gridSize = 0.015;
+glm::vec4 GRID_COLOR = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f);
+
+void Scale::drawCross(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec3 loc) {
+    //Draw the vertical lines
+    glm::mat4 model_grid = glm::mat4(1.0f);
+    scaleObj(model_grid, gridSize, 0.2, gridSize);
+    rotate(model_grid, model);
+    translate(model_grid, model, loc);
+    drawCubeShader(projection, view, model_grid, GRID_COLOR);
+
+    //Draw the vertical lines
+    model_grid = glm::mat4(1.0f);
+    scaleObj(model_grid, 0.2, gridSize, gridSize);
+    rotate(model_grid, model);
+    translate(model_grid, model, loc);
+    drawCubeShader(projection, view, model_grid, GRID_COLOR);
+
+    //Draw the vertical lines
+    model_grid = glm::mat4(1.0f);
+    scaleObj(model_grid, gridSize, gridSize,0.2);
+    rotate(model_grid, model);
+    translate(model_grid, model, loc);
+    drawCubeShader(projection, view, model_grid, GRID_COLOR);
+}
+
+void Scale::drawNumber(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec3 loc, int first, int second, float letter_size, glm::vec3 number_color) {
+    //Draw 10's digit
+    if(second > 0){
+        glm::mat4 model_num = glm::mat4(1.0f);
+        scaleObj(model_num, letter_size, letter_size, letter_size);
+        translate(model_num, model, loc - glm::vec3(letter_size/2.0, 0,0));
+        drawNumberShader(projection, view, model_num, number_color, second);
+    }
+    //Draw first digit
+    glm::mat4 model_num = glm::mat4(1.0f);
+    scaleObj(model_num, letter_size, letter_size, letter_size);
+    translate(model_num, model, loc);
+    drawNumberShader(projection, view, model_num, number_color, first);
+}
+
 void Scale::drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
 
-    float gridSize = 0.015;
-    glm::vec4 GRID_COLOR = glm::vec4(0.5f, 0.5f, 0.5f, 0.5f);
-
     //Crossed Version
-    for(int x = 1; x < linesPlacement.size(); x+=2) {
-        for(int y = 1; y < linesPlacement.size(); y+=2) {
-
-            for(int z = 1; z < linesPlacement.size(); z+=2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, 5 - linesPlacement.at(y), 5 - linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, 5 - linesPlacement.at(y), 5 - linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize,0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, 5 - linesPlacement.at(y), 5 - linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+    for(int x = 0; x < linesPlacement.size()/2; x+=2) {
+        for(int y = 0; y < linesPlacement.size(); y+=2) {
+            for(int z = 0; z < linesPlacement.size()/2; z+=2) {
+                drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), 5 - linesPlacement.at(y), -1*linesPlacement.at(z)));
+                drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), 5 - linesPlacement.at(y), linesPlacement.at(z)));
+                drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), 5 - linesPlacement.at(y), linesPlacement.at(z)));
+                drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), 5 - linesPlacement.at(y), -1*linesPlacement.at(z)));
             }
         }
     }
@@ -248,597 +269,129 @@ void Scale::drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
     float letter_size = 0.25;
     glm::vec3 number_color = glm::vec3(1.0,1.0,1.0);
 
-    { //x-axis markers
-        //top back x-axis
-        {
-            int y = 5;
+    //x-axis markers
+    {
+        int y = 5;
+        int z = -5;
+        int first = 0;
+        int second = 0;
+        for (int x = 0; x < linesPlacement.size()/2; x += 2) {
+
+            //top back x-axis
+            drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), y, z));
+            drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), y, z));
+
+            drawNumber(projection, view, model, glm::vec3(linesPlacement.at(x), y+0.25, z-0.25), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(-1*linesPlacement.at(x), y+0.25, z-0.25), first, second, letter_size, number_color);
+
+            //top front x-axis
+            drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), 5, 5));
+            drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), 5, 5));
+
+            drawNumber(projection, view, model, glm::vec3(linesPlacement.at(x), 5+0.25, 5+0.25), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(-1*linesPlacement.at(x), 5+0.25, 5+0.25), first, second, letter_size, number_color);
+
+            //bottom back x-axis
+            drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), -5, -5));
+            drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), -5, -5));
+
+            drawNumber(projection, view, model, glm::vec3(linesPlacement.at(x), -5-0.25, -5-0.25), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(-1*linesPlacement.at(x), -5-0.25, -5-0.25), first, second, letter_size, number_color);
+
+            //bottom front x-axis
+            drawCross(projection, view, model, glm::vec3(linesPlacement.at(x), -5, 5));
+            drawCross(projection, view, model, glm::vec3(-1*linesPlacement.at(x), -5, 5));
+
+            drawNumber(projection, view, model, glm::vec3(linesPlacement.at(x), -5-0.25, 5+0.25), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(-1*linesPlacement.at(x), -5-0.25, 5+0.25), first, second, letter_size, number_color);
+
+            first++;
+            if (first == 10) {
+                first = 0;
+                second += 1;
+            }
+        }
+    }
+    //y-axis markers
+    {
+        int first = 0;
+        int second = 0;
+        for (int y = 0; y < linesPlacement.size(); y += 2) {
+            int x = -5;
             int z = -5;
-            int first = 1;
-            int second = 0;
-            for (int x = 1; x < linesPlacement.size(); x += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            //left back y-axis
+            drawCross(projection, view, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
+            drawNumber(projection, view, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z - 0.25), first, second, letter_size, number_color);
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            //right back y-axis
+            x=5, z=-5;
+            drawCross(projection, view, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
+            drawNumber(projection, view, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z - 0.25), first, second, letter_size, number_color);
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            //right front y-axis
+            x=5, z=5;
+            drawCross(projection, view, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
+            drawNumber(projection, view, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z + 0.25), first, second, letter_size, number_color);
 
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y + 0.25, z - 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y + 0.25, z - 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
+            //left front y-axis
+            x=-5, z=5;
+            drawCross(projection, view, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
+            drawNumber(projection, view, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z + 0.25), first, second, letter_size, number_color);
 
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
+            first++;
+            if (first == 10) {
+                first = 0;
+                second += 1;
             }
         }
+    }
+     //z-axis markers
+    {
+        int first = 0;
+        int second = 0;
+        for (int z = 0; z < linesPlacement.size()/2; z += 2) {
 
-        //top front x-axis
-        {
-            int y = 5;
-            int z = 5;
-            int first = 1;
-            int second = 0;
-            for (int x = 1; x < linesPlacement.size(); x += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y + 0.25, z + 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y + 0.25, z + 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-
-        //bottom back x-axis
-        {
+            //left bottom z-axis
+            int x = -5;
             int y = -5;
-            int z = -5;
-            int first = 1;
-            int second = 0;
-            for (int x = 1; x < linesPlacement.size(); x += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            drawCross(projection, view, model, glm::vec3(x, y, -1*linesPlacement.at(z)));
+            drawCross(projection, view, model, glm::vec3(x, y, linesPlacement.at(z)));
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            drawNumber(projection, view, model, glm::vec3(x-0.25, y-0.25, -1*linesPlacement.at(z)), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(x-0.25, y-0.25, linesPlacement.at(z)), first, second, letter_size, number_color);
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            //left top z-axis
+            x=-5, y=5;
+            drawCross(projection, view, model, glm::vec3(x, y, -1*linesPlacement.at(z)));
+            drawCross(projection, view, model, glm::vec3(x, y, linesPlacement.at(z)));
 
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y - 0.25, z - 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y - 0.25, z - 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
+            drawNumber(projection, view, model, glm::vec3(x-0.25, y+0.25, -1*linesPlacement.at(z)), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(x-0.25, y+0.25, linesPlacement.at(z)), first, second, letter_size, number_color);
 
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
+            //right top z-axis
+            x=5,y=5;
+            drawCross(projection, view, model, glm::vec3(x, y, -1*linesPlacement.at(z)));
+            drawCross(projection, view, model, glm::vec3(x, y, linesPlacement.at(z)));
 
-        //bottom front x-axis
-        {
-            int y = -5;
-            int z = 5;
-            int first = 1;
-            int second = 0;
-            for (int x = 1; x < linesPlacement.size(); x += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            drawNumber(projection, view, model, glm::vec3(x+0.25, y+0.25, -1*linesPlacement.at(z)), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(x+0.25, y+0.25, linesPlacement.at(z)), first, second, letter_size, number_color);
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            //right bottom z-axis
+            x=5,y=-5;
+            drawCross(projection, view, model, glm::vec3(x, y, -1*linesPlacement.at(z)));
+            drawCross(projection, view, model, glm::vec3(x, y, linesPlacement.at(z)));
 
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(linesPlacement.at(x) - 5, y, z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
+            drawNumber(projection, view, model, glm::vec3(x+0.25, y-0.25, -1*linesPlacement.at(z)), first, second, letter_size, number_color);
+            drawNumber(projection, view, model, glm::vec3(x+0.25, y-0.25, linesPlacement.at(z)), first, second, letter_size, number_color);
 
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y - 0.25, z + 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(linesPlacement.at(x) - 5, y - 0.25, z + 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
+            first++;
+            if (first == 10) {
+                first = 0;
+                second += 1;
             }
         }
     }
 
-
-    { //y-axis markers
-        //left back y-axis
-        {
-            int x = -5;
-            int z = -5;
-            int first = 1;
-            int second = 0;
-            for (int y = 1; y < linesPlacement.size(); y += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z - 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z - 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-        //right back y-axis
-        {
-            int x = 5;
-            int z = -5;
-            int first = 1;
-            int second = 0;
-            for (int y = 1; y < linesPlacement.size(); y += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z - 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z - 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-
-        //right front y-axis
-        {
-            int x = 5;
-            int z = 5;
-            int first = 1;
-            int second = 0;
-            for (int y = 1; y < linesPlacement.size(); y += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z + 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x + 0.25, 5 - linesPlacement.at(y), z + 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-
-        //left front y-axis
-        {
-            int x = -5;
-            int z = 5;
-            int first = 1;
-            int second = 0;
-            for (int y = 1; y < linesPlacement.size(); y += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, 5 - linesPlacement.at(y), z));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z + 0.25));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x - 0.25, 5 - linesPlacement.at(y), z + 0.25));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-
-    }
-
-    { //z-axis markers
-        //left bottom z-axis
-        {
-            int x = -5;
-            int y = -5;
-            int first = 1;
-            int second = 0;
-            for (int z = 1; z < linesPlacement.size(); z += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x-0.25, y-0.25, 5-linesPlacement.at(z)));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x-0.25, y-0.25, 5-linesPlacement.at(z)));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-        //left top z-axis
-        {
-            int x = -5;
-            int y = 5;
-            int first = 1;
-            int second = 0;
-            for (int z = 1; z < linesPlacement.size(); z += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x-0.25, y+0.25, 5-linesPlacement.at(z)));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x-0.25, y+0.25, 5-linesPlacement.at(z)));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-        //right top z-axis
-        {
-            int x = 5;
-            int y = 5;
-            int first = 1;
-            int second = 0;
-            for (int z = 1; z < linesPlacement.size(); z += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x+0.25, y+0.25, 5-linesPlacement.at(z)));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x+0.25, y+0.25, 5-linesPlacement.at(z)));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-        //right bottom z-axis
-        {
-            int x = 5;
-            int y = -5;
-            int first = 1;
-            int second = 0;
-            for (int z = 1; z < linesPlacement.size(); z += 2) {
-                //Draw the vertical lines
-                glm::mat4 model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, 0.2, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, 0.2, gridSize, gridSize);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw the vertical lines
-                model_grid = glm::mat4(1.0f);
-                scaleObj(model_grid, gridSize, gridSize, 0.2);
-                rotate(model_grid, model);
-                translate(model_grid, model, glm::vec3(x, y, 5-linesPlacement.at(z)));
-                drawCubeShader(projection, view, model_grid, GRID_COLOR);
-
-                //Draw 10's digit
-                if (second > 0) {
-                    glm::mat4 model_num = glm::mat4(1.0f);
-                    scaleObj(model_num, letter_size, letter_size, letter_size);
-                    translate(model_num, model, glm::vec3(x+0.25, y-0.25, 5-linesPlacement.at(z)));
-                    drawNumberShader(projection, view, model_num, number_color, second);
-                }
-                //Draw first digit
-                glm::mat4 model_num = glm::mat4(1.0f);
-                scaleObj(model_num, letter_size, letter_size, letter_size);
-                translate(model_num, model, glm::vec3(x+0.25, y-0.25, 5-linesPlacement.at(z)));
-                drawNumberShader(projection, view, model_num, number_color, first);
-
-                first++;
-                if (first == 10) {
-                    first = 0;
-                    second += 1;
-                }
-            }
-        }
-    }
 
 }
 
@@ -854,13 +407,13 @@ void Scale::drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
 
     drawCubeShader(projection, view, model_marker, marker_color);
 
-    int first = 1;
+    int first = 0;
     int second = 0;
     for(int x = 0; x < linesPlacement.size(); x++){
         glm::mat4 model_marks      = glm::mat4(1.0f);
         scaleObj(model_marks, 0.15, 0.05, 0.15);
         //1/2 a cm mark then scale to 0.5 size of normal
-        if(x%2 == 0){
+        if(x%2 == 1){
             scaleObj(model_marks, 0.5, 0.5, 0.5);
         }
         rotate(model_marks, model);
@@ -868,22 +421,9 @@ void Scale::drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
         drawCubeShader(projection, view, model_marks, tick_color);
 
         //Skip writing the number if it is 1/2cm mark
-        if(x%2 == 0) continue;
+        if(x%2 == 1) continue;
 
-        //Draw 10's digit
-        if(second > 0){
-            glm::mat4 model_num = glm::mat4(1.0f);
-            scaleObj(model_num, letter_size, letter_size, letter_size);
-//            model_num = model * model_num;
-            translate(model_num, model, glm::vec3(positionX-0.25-letter_size/2.0,  5-linesPlacement.at(x), positionZ+0.25));
-            drawNumberShader(projection, view, model_num, number_color, second);
-        }
-        //Draw first digit
-        glm::mat4 model_num = glm::mat4(1.0f);
-        scaleObj(model_num, letter_size, letter_size, letter_size);
-//        model_num = model * model_num;
-        translate(model_num, model, glm::vec3(positionX-0.25,  5-linesPlacement.at(x), positionZ+0.25));
-        drawNumberShader(projection, view, model_num, number_color, first);
+        drawNumber(projection, view, model, glm::vec3(positionX-0.25,  5-linesPlacement.at(x), positionZ+0.25), first, second, LETTER_SIZE, NUMBER_COLOR);
 
         first++;
         if(first == 10){
@@ -903,36 +443,35 @@ void Scale::drawXScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
 
     drawCubeShader(projection, view, model_marker, MARKER_COLOR);
 
-    int first = 1;
+    int first = 0;
     int second = 0;
-    for(int x = 0; x < linesPlacement.size(); x++){
+    for(int x = 0; x < linesPlacement.size()/2; x++){
+        //right side of zero
         glm::mat4 model_marks      = glm::mat4(1.0f);
         scaleObj(model_marks, 0.05,0.15, 0.15);
         //1/2 a cm mark then scale to 0.5 size of normal
-        if(x%2 == 0){
+        if(x%2 == 1){
             scaleObj(model_marks, 0.5, 0.5, 0.5);
         }
         rotate(model_marks, model);
-        translate(model_marks, model, glm::vec3(linesPlacement.at(x)-5,  positionY, positionZ));
+        translate(model_marks, model, glm::vec3(linesPlacement.at(x),  positionY, positionZ));
+        drawCubeShader(projection, view, model_marks, TICK_COLOR);
+
+        //left side of zero
+        model_marks      = glm::mat4(1.0f);
+        scaleObj(model_marks, 0.05,0.15, 0.15);
+        //1/2 a cm mark then scale to 0.5 size of normal
+        if(x%2 == 1){
+            scaleObj(model_marks, 0.5, 0.5, 0.5);
+        }
+        rotate(model_marks, model);
+        translate(model_marks, model, glm::vec3(-1*linesPlacement.at(x),  positionY, positionZ));
         drawCubeShader(projection, view, model_marks, TICK_COLOR);
 
         //Skip writing the number if it is 1/2cm mark
-        if(x%2 == 0) continue;
-
-        //Draw 10's digit
-        if(second > 0){
-            glm::mat4 model_num = glm::mat4(1.0f);
-            scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
-//            model_num = model * model_num;
-            translate(model_num, model, glm::vec3(linesPlacement.at(x)-5-LETTER_SIZE/2.0,  positionY+0.25, positionZ+0.25));
-            drawNumberShader(projection, view, model_num, NUMBER_COLOR, second);
-        }
-        //Draw first digit
-        glm::mat4 model_num = glm::mat4(1.0f);
-        scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
-//        model_num = model * model_num;
-        translate(model_num, model, glm::vec3(linesPlacement.at(x)-5,  positionY+0.25, positionZ+0.25));
-        drawNumberShader(projection, view, model_num, NUMBER_COLOR, first);
+        if(x%2 == 1) continue;
+        drawNumber(projection, view, model, glm::vec3(linesPlacement.at(x),  positionY+0.25, positionZ+0.25), first, second, LETTER_SIZE, NUMBER_COLOR);
+        drawNumber(projection, view, model, glm::vec3(-1*linesPlacement.at(x),  positionY+0.25, positionZ+0.25), first, second, LETTER_SIZE, NUMBER_COLOR);
 
         first++;
         if(first == 10){
@@ -953,36 +492,37 @@ void Scale::drawZScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model,
 
     drawCubeShader(projection, view, model_marker, MARKER_COLOR);
 
-    int first = 1;
+    int first = 0;
     int second = 0;
-    for(int x = 0; x < linesPlacement.size(); x++){
+    for(int x = 0; x < linesPlacement.size()/2; x++){
+
+        //front section
         glm::mat4 model_marks      = glm::mat4(1.0f);
         scaleObj(model_marks, 0.15, 0.15, 0.05);
         //1/2 a cm mark then scale to 0.5 size of normal
-        if(x%2 == 0){
+        if(x%2 == 1){
             scaleObj(model_marks, 0.5, 0.5, 0.5);
         }
         rotate(model_marks, model);
-        translate(model_marks, model, glm::vec3(positionX,  positionY, 5-linesPlacement.at(x)));
+        translate(model_marks, model, glm::vec3(positionX,  positionY, linesPlacement.at(x)));
+        drawCubeShader(projection, view, model_marks, TICK_COLOR);
+
+        //back section
+        model_marks      = glm::mat4(1.0f);
+        scaleObj(model_marks, 0.15, 0.15, 0.05);
+        //1/2 a cm mark then scale to 0.5 size of normal
+        if(x%2 == 1){
+            scaleObj(model_marks, 0.5, 0.5, 0.5);
+        }
+        rotate(model_marks, model);
+        translate(model_marks, model, glm::vec3(positionX,  positionY, -1*linesPlacement.at(x)));
         drawCubeShader(projection, view, model_marks, TICK_COLOR);
 
         //Skip writing the number if it is 1/2cm mark
-        if(x%2 == 0) continue;
+        if(x%2 == 1) continue;
 
-            //Draw 10's digit
-        if(second > 0){
-            glm::mat4 model_num = glm::mat4(1.0f);
-            scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
-//            model_num = model * model_num;
-            translate(model_num, model, glm::vec3(positionX-0.25-LETTER_SIZE/2.0, positionY+0.25, 5-linesPlacement.at(x)));
-            drawNumberShader(projection, view, model_num, NUMBER_COLOR, second);
-        }
-        //Draw first digit
-        glm::mat4 model_num = glm::mat4(1.0f);
-        scaleObj(model_num, LETTER_SIZE, LETTER_SIZE, LETTER_SIZE);
-//        model_num = model * model_num;
-        translate(model_num, model, glm::vec3(positionX-0.25, positionY+0.25, 5-linesPlacement.at(x)));
-        drawNumberShader(projection, view, model_num, NUMBER_COLOR, first);
+        drawNumber(projection, view, model, glm::vec3(positionX-0.25, positionY+0.25, linesPlacement.at(x)), first, second, LETTER_SIZE, NUMBER_COLOR);
+        drawNumber(projection, view, model, glm::vec3(positionX-0.25, positionY+0.25, -1*linesPlacement.at(x)), first, second, LETTER_SIZE, NUMBER_COLOR);
 
         first++;
         if(first == 10){

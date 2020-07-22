@@ -42,7 +42,7 @@ private:
 
     std::vector<float> linesPlacement;
 
-    float gridShown = false;
+    float gridShown = true;
 
     void drawNumberShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor, int number);
 
@@ -53,6 +53,8 @@ private:
     void drawXScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionY, double positionZ);
     void drawZScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionY);
     void drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale);
+    void drawCross(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec3 loc);
+    void drawNumber(glm::mat4 projection, glm::mat4 view, glm::mat4 model, glm::vec3 loc, int first, int second, float letter_size, glm::vec3 number_color);
 
     void scaleObj(glm::mat4& model_marker, float x, float y, float z);
     void rotate(glm::mat4& model_marker, glm::mat4 modelRot);
