@@ -503,7 +503,7 @@ void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, b
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         for (int i = 0; i < l.vals.size(); ++i)
         {
-            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/2500.0))), 255));
         }
         grid.writeLine(ps, pe, l.vals);
     }
@@ -641,6 +641,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
 //        Bandstop_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         /* find min and max */
+
         for (int j = 0; j < 2500; ++j)
         {
             if (j < 500)

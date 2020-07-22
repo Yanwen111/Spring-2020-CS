@@ -46,8 +46,10 @@ private:
 
     void drawNumberShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor, int number);
 
-    void drawCubeShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor);
-    void drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionZ);
+    void drawCubeShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec4 objColor);
+    void drawYScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionZ,
+                    glm::vec4 marker_color, glm::vec4 tick_color,
+                    glm::vec3 number_color, float letter_size);
     void drawXScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionY, double positionZ);
     void drawZScale(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, double positionX, double positionY);
     void drawGrid(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale);
