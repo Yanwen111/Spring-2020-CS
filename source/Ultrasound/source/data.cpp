@@ -498,12 +498,13 @@ void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, b
     for  (auto l: line_data)
     {
         cnt++;
-        //if (cnt % 200 == 0) usleep(300000);
         glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         for (int i = 0; i < l.vals.size(); ++i)
         {
-            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/len))), 255));
+            l.vals[i] = static_cast<unsigned char>(std::min((static_cast<double>(l.vals[i])*exp(Gain*(i/2500.0))), 255.0));
+            if (cnt == 2 and i == 2000)
+                printf("Gain: %f; value: %d\n", Gain, static_cast<int>(l.vals[i]));
         }
         grid.writeLine(ps, pe, l.vals);
     }
