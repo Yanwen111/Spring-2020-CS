@@ -323,7 +323,7 @@ void GUI::reset() {
 //    }
 
     dispWeight = 0.1;
-    dispBrightness = 0.559f;
+    dispBrightness = 0.25f;
     dispContrast = 1.0f;
     dispCutoff = 1;
     dispZoom = 60;

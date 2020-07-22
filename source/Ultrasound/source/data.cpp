@@ -642,10 +642,14 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         /* filter */
         //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         //Bandstop_Filter_2(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
+        double test_arg[6] = {1, 3, 2, 15600000, 4000000, 4500000};
+        bool error = false;
+        std::string errorMessage = "no prob";
+        Any_Filter(scan_data.at(i).buffer, test_arg, error, errorMessage);
         /* find min and max */
         for (int j = 0; j < 2500; ++j)
         {
-//            if (j < 500)
+//            if (j < 2000)
 //               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
             scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 0);
         }
@@ -1778,8 +1782,92 @@ void Bandpass_Filter(short* origin_buffer, int length)
     double freqWidth = 500000;
     Iir::Butterworth::BandPass<order> f;
     f.setup(sampleRate, centerFreq, freqWidth);
+//    Iir::Butterworth::HighPass<4> f;
+//    f.setup(sampleRate, 4200000);
     for (int i = 0; i < length; ++i)
         origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+}
+
+void Any_Filter(short* origin_buffer, double* argv, bool& error, std::string& errorMessage)
+{
+    /* this is the function for GUI controllable filter */
+    int length = 2500;
+    int order;
+
+    /* filter type 1: 1-BUtterworth 2-Chebyshev I 3-Chebyshev II 4-RBJ */
+    try{
+        if ((int)argv[0] != 1)
+            throw "Only support Butterworth currently!\n";
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return;
+    }
+
+    /* filter type 2: 1-lowpass 2-highpass 3-bandpass 4-bandstop */
+    int filter_type = static_cast<int>(argv[1]);
+
+    /* filter order: should be an integer small than 10 */
+    /* right now cannot be an input value */
+    try{
+        order = static_cast<int>(argv[2]);
+        if (order > 10)
+            throw "The order is too large! (should be smaller than 10)\n";
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return;
+    }
+
+    /* sampling rate */
+    double sampleing_rate = argv[3];
+
+    /* cutoff frequency */
+    double cutoff_frequency, center_frequency, frequency_width;
+    if (argv[1] <= 1) // 0-lowpass, 1-highpass
+        cutoff_frequency = argv[4];
+    else{ // 2-bandpass, 3-bandstop
+        try{
+            center_frequency = (argv[4] + argv[5]) / 2;
+            frequency_width = argv[5] - argv[4];
+            if (center_frequency <= 0 or frequency_width <= 0)
+                throw "Invalied frequency range!\n";
+        } catch (char* str) {
+            errorMessage = str;
+            error = true;
+            return;
+        }
+    }
+
+    /* start the filter */
+    if (filter_type == 1)
+    {
+        Iir::Butterworth::LowPass<4> f;
+        f.setup(sampleing_rate, cutoff_frequency);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 2)
+    {
+        Iir::Butterworth::HighPass<4> f;
+        f.setup(sampleing_rate, cutoff_frequency);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 3)
+    {
+        Iir::Butterworth::BandPass<2> f;
+        f.setup(sampleing_rate, center_frequency, frequency_width);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 4)
+    {
+        Iir::Butterworth::BandStop<2> f;
+        f.setup(sampleing_rate, center_frequency, frequency_width);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
 }
 
 void Highpass_Filter(short* origin_buffer, int length)

@@ -124,7 +124,7 @@ void Highpass_Filter(short* origin_buffer, int length);
 void Bandpass_Filter(short* origin_buffer, int length);
 void Bandstop_Filter(short* origin_buffer, int length);
 void moving_average(short* origin_buffer, int size);
-void Bandstop_Filter_2(short* origin_buffer, int length);
+void Any_Filter(short* origin_buffer, double* argv, bool& error, std::string& errorMessage);
 
 int getDepth();
 void setDepth(int dep);

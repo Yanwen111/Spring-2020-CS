@@ -130,7 +130,7 @@ private:
     int dispDepth = 1100;
     float dispGain = 0.0;
     float dispWeight = 0.1;
-    float dispBrightness = 0.559f;
+    float dispBrightness = 0.25f;
     float dispContrast = 1.0f;
     int dispCutoff = 1;
     int dispZoom = 60;
