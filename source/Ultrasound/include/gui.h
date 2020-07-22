@@ -127,16 +127,16 @@ private:
 
     //***********************  Display vars  ******************************************
     //display settings
-    int dispDepth = 1500;
-    float dispGain = 1.0;
-    float dispWeight = 1;
-    float dispBrightness = 0.0f;
+    int dispDepth = 1100;
+    float dispGain = 0.0;
+    float dispWeight = 0.1;
+    float dispBrightness = 0.559f;
     float dispContrast = 1.0f;
     int dispCutoff = 1;
-    int dispZoom = 70;
+    int dispZoom = 60;
     bool dispReset = false;
     //speed of sound
-    int mediumActive = 0;
+    int mediumActive = 1;
     float dispVel;
     float dispFreq = 15.6;
     std::string inputVel;

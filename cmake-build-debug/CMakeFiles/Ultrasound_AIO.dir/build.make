@@ -98,6 +98,7 @@ Ultrasound_AIO: extern/glfw/src/libglfw3.a
 Ultrasound_AIO: source/Ultrasound/libULTRASOUND.a
 Ultrasound_AIO: source/DensityMap/libDENSITYMAP.a
 Ultrasound_AIO: extern/imgui/libIMGUI.a
+Ultrasound_AIO: extern/iir1/libiir.so.1.7.7
 Ultrasound_AIO: /usr/lib/x86_64-linux-gnu/libssh.so.4.8.5
 Ultrasound_AIO: /usr/lib/x86_64-linux-gnu/libssh.so.4.8.5
 Ultrasound_AIO: /usr/local/lib/libboost_date_time.so.1.73.0

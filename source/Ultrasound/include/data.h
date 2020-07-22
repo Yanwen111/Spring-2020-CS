@@ -32,6 +32,9 @@
 //for compression
 #include <zlib.h>
 
+// for filters
+#include "Iir.h"
+
 #include "densityMap.h"
 #include "rotation.h"
 #include "remote.h"
@@ -120,6 +123,8 @@ float encoder_offset(std::vector<scan_data_struct> scan_data, int count);
 void Highpass_Filter(short* origin_buffer, int length);
 void Bandpass_Filter(short* origin_buffer, int length);
 void Bandstop_Filter(short* origin_buffer, int length);
+void moving_average(short* origin_buffer, int size);
+void Bandstop_Filter_2(short* origin_buffer, int length);
 
 int getDepth();
 void setDepth(int dep);

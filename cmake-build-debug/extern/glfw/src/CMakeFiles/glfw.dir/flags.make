@@ -6,7 +6,7 @@ C_FLAGS = -g -fPIC   -Wall -std=gnu99
 
 C_DEFINES = -D_GLFW_USE_CONFIG_H
 
-C_INCLUDES = -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src" 
+C_INCLUDES = -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/include" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glfw/src" -I"/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/glfw/src" 
 
 # Custom flags: extern/glfw/src/CMakeFiles/glfw.dir/context.c.o_FLAGS = -Wdeclaration-after-statement
 

@@ -14,6 +14,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../extern/glad/include"
   "../extern/imgui"
   "../extern/glm"
+  "../extern/iir1"
   "../source/Ultrasound/include"
   "../source/DensityMap"
   "../extern/glfw/include"
@@ -28,6 +29,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../extern/glad/include"
   "../extern/imgui"
   "../extern/glm"
+  "../extern/iir1"
   "../source/Ultrasound/include"
   "../source/DensityMap"
   "../extern/glfw/include"
@@ -39,6 +41,7 @@ set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/Ultrasound/CMakeFiles/ULTRASOUND.dir/DependInfo.cmake"
   "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/DensityMap/CMakeFiles/DENSITYMAP.dir/DependInfo.cmake"
   "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/imgui/CMakeFiles/IMGUI.dir/DependInfo.cmake"
+  "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/extern/iir1/CMakeFiles/iir.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

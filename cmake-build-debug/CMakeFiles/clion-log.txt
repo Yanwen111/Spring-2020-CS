@@ -1,5 +1,4 @@
 /snap/clion/114/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS"
--- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") 
 -- Using X11 for window creation
 -- Configuring done
 -- Generating done

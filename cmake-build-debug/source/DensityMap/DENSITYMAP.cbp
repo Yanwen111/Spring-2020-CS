@@ -5,7 +5,7 @@
 		<Option title="DENSITYMAP"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\Boost-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\extern\iir1\;CMake Files\extern\iir1\test\;CMake Files\extern\iir1\demo\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\Boost-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\;CMake Files\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
@@ -27,6 +27,7 @@
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
@@ -59,6 +60,7 @@
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
@@ -129,6 +131,18 @@
 		</Unit>
 		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/imgui/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1/iir.pc.in">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\test\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/extern/iir1/demo/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\demo\"/>
 		</Unit>
 		<Unit filename="/home/yanwen/CML_CS/Summer 2020/Spring-2020-CS/../../../../../usr/local/lib/cmake/BoostDetectToolset-1.73.0.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\lib\cmake\"/>

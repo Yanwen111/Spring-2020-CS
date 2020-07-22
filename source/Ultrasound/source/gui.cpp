@@ -322,11 +322,11 @@ void GUI::reset() {
 //        dispGain = 1.0;
 //    }
 
-    dispWeight = 1;
-    dispBrightness = 0.0f;
+    dispWeight = 0.1;
+    dispBrightness = 0.559f;
     dispContrast = 1.0f;
     dispCutoff = 1;
-    dispZoom = 70;
+    dispZoom = 60;
 }
 
 //Draw the scales

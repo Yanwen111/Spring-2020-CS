@@ -9,6 +9,7 @@ find_package(OpenGL REQUIRED)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glad/include)
 include_directories(${PROJECT_SOURCE_DIR}/extern/imgui)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glm)
+include_directories(${PROJECT_SOURCE_DIR}/extern/iir1)
 include_directories(${PROJECT_SOURCE_DIR}/source/Ultrasound/include)
 include_directories(${PROJECT_SOURCE_DIR}/source/DensityMap)
 
@@ -17,6 +18,7 @@ file(GLOB SOURCE_FILES main.cpp ${PROJECT_SOURCE_DIR}/extern/glad/src/glad.c)
 add_subdirectory(source/Ultrasound)
 add_subdirectory(source/DensityMap)
 add_subdirectory(extern/imgui)
+add_subdirectory(extern/iir1)
 
 add_executable(Ultrasound_AIO ${SOURCE_FILES})
 
@@ -31,4 +33,4 @@ find_package(libssh REQUIRED)
 
 add_compile_options(-O3)
 
-target_link_libraries(Ultrasound_AIO PRIVATE glfw ULTRASOUND DENSITYMAP IMGUI ssh)
+target_link_libraries(Ultrasound_AIO PRIVATE glfw ULTRASOUND DENSITYMAP IMGUI iir ssh)
