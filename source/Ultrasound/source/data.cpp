@@ -51,6 +51,7 @@ int * DEPTH_PTR = &DEPTH;
 float* ROTATION_PTR = &ROTATION;
 glm::vec4* ROTATION_QUA_PTR = &ROTATION_QUA;
 int samples = -1; /* -1 stands for no data */
+int MAvg_size = 10; /* the size of the moving average window */
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
 int V07_TOTAL_LENGTH = 4+1+2+2+0+2*2500;
@@ -639,13 +640,18 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         float piezo = angle - encoder_os;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
+
         /* filter */
-        //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
-        //Bandstop_Filter_2(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
         double test_arg[6] = {1, 3, 2, 15600000, 4000000, 4500000};
         bool error = false;
+        bool addfilter = true;
+        bool addmovavg = false;
         std::string errorMessage = "no prob";
-        Any_Filter(scan_data.at(i).buffer, test_arg, error, errorMessage);
+        if (addfilter)
+            Any_Filter(scan_data.at(i).buffer, test_arg, error, errorMessage);
+        if (addmovavg)
+            moving_average(scan_data.at(i).buffer, MAvg_size);
+
         /* find min and max */
         for (int j = 0; j < 2500; ++j)
         {
@@ -653,8 +659,7 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
 //               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
             scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 0);
         }
-        /* moving average */
-        //moving_average(scan_data.at(i).buffer, 10);
+
         adc_max = 0; adc_min = 1000;
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
