@@ -929,11 +929,11 @@ void displaySettings(bool isLoadData,
         drawObjectMode = true;
 
         bool selectingSphere = false;
-        bool selectingCyllinder = false;
+        bool selectingCylinder = false;
 //        float size = myObj.getSize();
         if(!isDrawingBox) {
             yellowButton("Fit Sphere", selectingSphere);
-            yellowButton("Fit Cyllinder", selectingCyllinder);
+            yellowButton("Fit Cylinder", selectingCylinder);
 
 
             addText("Box Size: ");
@@ -945,9 +945,9 @@ void displaySettings(bool isLoadData,
             if(selectingSphere) {
                 isDrawingBox = true;
                 myObj.calculateSphere();
-            } else if (selectingCyllinder) {
+            } else if (selectingCylinder) {
                 isDrawingBox = true;
-                myObj.calculateCyllinder();
+                myObj.calculateCylinder();
             }
         }
         else {
@@ -974,7 +974,7 @@ void displaySettings(bool isLoadData,
                 addText(std::to_string(myObj.getThreshold()).c_str());
                 ImGui::Unindent();
             } else if(myObj.getDisplayObject() == 1) {
-                //cyllinder
+                //cylinder
                 ImGui::NewLine();
                 addText("Center: ");
                 ImGui::Indent();

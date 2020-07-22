@@ -13,7 +13,7 @@ MeasureObject::MeasureObject(DensityMap* gridPointer){
 
     cubeSetUp();
     sphereSetUp();
-    cyllinderSetUp();
+    cylinderSetUp();
 
     myGrid = gridPointer;
 }
@@ -94,7 +94,7 @@ void MeasureObject::cubeSetUp() {
     glEnableVertexAttribArray(1);
 }
 
-void MeasureObject::cyllinderSetUp() {
+void MeasureObject::cylinderSetUp() {
     std::string vmarker =
             "// VERTEX SHADER											  \n"
             "															  \n"
@@ -143,28 +143,28 @@ void MeasureObject::cyllinderSetUp() {
             "   FragColor = vec4(result, 0.7);							 \n"
             "}										                     \n";
 
-    cyllinderShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
+    cylinderShader = Shader(vmarker.c_str(), fmarker.c_str(), false);
 
-    // Add the cyllinder (radius = 1, depth = 2, circles facing y-axis direction)
-    cyllinderIndex = Helper::read_stl("config_file/models/cyllinder-r-1-d-2.stl", cyllindervertices, cyllindernormals);
+    // Add the cylinder (radius = 1, depth = 2, circles facing y-axis direction)
+    cylinderIndex = Helper::read_stl("config_file/models/cylinder-r-1-d-2.stl", cylindervertices, cylindernormals);
 
     //Set up OpenGL buffers
-    glGenBuffers(1, &cyllinderVBO);
-    glGenBuffers(1, &cyllinderNormalsVBO);
-    glGenVertexArrays(1, &cyllinderVAO);
+    glGenBuffers(1, &cylinderVBO);
+    glGenBuffers(1, &cylinderNormalsVBO);
+    glGenVertexArrays(1, &cylinderVAO);
 
-    glBindVertexArray(cyllinderVAO);
+    glBindVertexArray(cylinderVAO);
 
     //position attribute
-    glBindBuffer(GL_ARRAY_BUFFER, cyllinderVBO);
-    glBufferData(GL_ARRAY_BUFFER, cyllinderIndex * sizeof(GLfloat), cyllindervertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, cylinderVBO);
+    glBufferData(GL_ARRAY_BUFFER, cylinderIndex * sizeof(GLfloat), cylindervertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(0);
 
     //normals attribute
-    glBindBuffer(GL_ARRAY_BUFFER, cyllinderNormalsVBO);
-    glBufferData(GL_ARRAY_BUFFER, cyllinderIndex * sizeof(GLfloat), cyllindernormals, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, cylinderNormalsVBO);
+    glBufferData(GL_ARRAY_BUFFER, cylinderIndex * sizeof(GLfloat), cylindernormals, GL_STATIC_DRAW);
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(1);
@@ -268,7 +268,7 @@ float MeasureObject::getRadius(float freq, float vel, int depth) {
     if(displayObject == 0)
         return mySize * (1/freq)*vel*depth/2.0f / 10000.0f;
     else if(displayObject == 1)
-        return myCyllinderRadius * (1/freq)*vel*depth/2.0f / 10000.0f;
+        return myCylinderRadius * (1/freq)*vel*depth/2.0f / 10000.0f;
     else return -1;
 
 }
@@ -306,8 +306,8 @@ void MeasureObject::calculateSphere() {
     showCube = false;
 }
 
-//calculate the best fit cyllinder
-void MeasureObject::calculateCyllinder() {
+//calculate the best fit cylinder
+void MeasureObject::calculateCylinder() {
 
     displayObject = 1;
 //
@@ -325,9 +325,9 @@ void MeasureObject::calculateCyllinder() {
 //        std::cout<<"x: "<<upVector.x<<" Y: "<<upVector.y<<" Z: "<<upVector.z<<std::endl;
         pos = center;
 
-        radius = getRadiusCyllinder(center, upVector);
+        radius = getRadiusCylinder(center, upVector);
 
-        myCyllinderRadius = radius;
+        myCylinderRadius = radius;
 
 //        radius = getRadius(center);
 //        if(radius <= 0) {
@@ -419,7 +419,7 @@ float MeasureObject::getRadius(glm::vec3 center) {
     return sqrt(sum);
 }
 
-float MeasureObject::getRadiusCyllinder(glm::vec3 center, glm::vec3 direction) {
+float MeasureObject::getRadiusCylinder(glm::vec3 center, glm::vec3 direction) {
     int cubeDim = (int)(mySize / 5.0 * myGrid->getDim());
 
     float sum = 0;
@@ -610,20 +610,20 @@ void MeasureObject::drawSphere(glm::mat4 projection, glm::mat4 view, glm::mat4 m
     glDrawArrays(GL_TRIANGLES, 0, sphereIndex/3);
 }
 
-void MeasureObject::drawCyllinder(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
+void MeasureObject::drawCylinder(glm::mat4 projection, glm::mat4 view, glm::mat4 model_marker){
     // Drawing the marker
-    cyllinderShader.use();
-    cyllinderShader.setMat4("projection", projection);
-    cyllinderShader.setMat4("view", view);
-    cyllinderShader.setMat4("model", model_marker);
+    cylinderShader.use();
+    cylinderShader.setMat4("projection", projection);
+    cylinderShader.setMat4("view", view);
+    cylinderShader.setMat4("model", model_marker);
 
-    cyllinderShader.setVec3("lightColor", glm::vec3(0.7f, 0.7f, 0.7f));
-    cyllinderShader.setVec3("objectColor", myColor);
+    cylinderShader.setVec3("lightColor", glm::vec3(0.7f, 0.7f, 0.7f));
+    cylinderShader.setVec3("objectColor", myColor);
 
-    cyllinderShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
+    cylinderShader.setVec3("lightPos", glm::vec3(0.0f, 15.0f, 5.0f));
 
-    glBindVertexArray(cyllinderVAO);
-    glDrawArrays(GL_TRIANGLES, 0, cyllinderIndex/3);
+    glBindVertexArray(cylinderVAO);
+    glDrawArrays(GL_TRIANGLES, 0, cylinderIndex/3);
 }
 
 void MeasureObject::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model_in) {
@@ -647,10 +647,10 @@ void MeasureObject::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model_i
         model = glm::mat4(1.0f);
 
         //scale radius
-        glm::vec3 scale(myCyllinderRadius, mySize, myCyllinderRadius);
+        glm::vec3 scale(myCylinderRadius, mySize, myCylinderRadius);
         model = glm::scale(glm::mat4(1.0f), scale) * model;
 
-        //rotate cyllinder to match new up direction
+        //rotate cylinder to match new up direction
         glm::vec3 origUp = glm::vec3(0,1,0);
         float angle = acos( glm::dot(origUp, upVector));
         glm::vec3 axis = glm::cross(origUp, upVector);
@@ -666,7 +666,7 @@ void MeasureObject::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model_i
 
         rotateCube(model, model_in);
         translateCube(model, model_in, pos);
-        drawCyllinder(projection, view, model);
+        drawCylinder(projection, view, model);
     }
 
     glDisable(GL_DEPTH_TEST);
