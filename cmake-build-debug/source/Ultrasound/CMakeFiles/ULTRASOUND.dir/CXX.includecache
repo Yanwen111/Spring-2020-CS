@@ -1790,6 +1790,22 @@ detail/type_vec4.hpp
 detail/func_vector_relational.hpp
 ../extern/glm/glm/detail/func_vector_relational.hpp
 
+../source/DensityMap/densityMap.h
+glad/glad.h
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+shader.h
+../source/DensityMap/shader.h
+vector
+-
+queue
+-
+mutex
+-
+
 ../source/DensityMap/shader.h
 glad/glad.h
 -
@@ -1814,25 +1830,21 @@ GLFW/glfw3.h
 fstream
 -
 
-../source/Ultrasound/include/scale.h
+../source/Ultrasound/include/measureObject.h
 glm/glm.hpp
 -
 glm/ext.hpp
 -
 glad/glad.h
 -
-fstream
--
-iostream
+densityMap.h
 -
 shader.h
 ../source/Ultrasound/include/shader.h
 helper.h
 ../source/Ultrasound/include/helper.h
-vector
--
 
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/scale.cpp
-scale.h
-/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/scale.h
+/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/measureObject.cpp
+measureObject.h
+/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/source/measureObject.h
 

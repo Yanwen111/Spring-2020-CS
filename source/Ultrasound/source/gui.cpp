@@ -928,10 +928,12 @@ void displaySettings(bool isLoadData,
     if (ImGui::CollapsingHeader("Measure Sphere")) {
         drawObjectMode = true;
 
-        static bool selectingArea = false;
+        bool selectingSphere = false;
+        bool selectingCyllinder = false;
 //        float size = myObj.getSize();
         if(!isDrawingBox) {
-            yellowButton("Fit Sphere", selectingArea);
+            yellowButton("Fit Sphere", selectingSphere);
+            yellowButton("Fit Cyllinder", selectingCyllinder);
 
 
             addText("Box Size: ");
@@ -940,38 +942,65 @@ void displaySettings(bool isLoadData,
             ImGui::SliderFloat("##selectBoxSize", myObj.getSize(), 0.1, 5);
             ImGui::PopItemWidth();
 
-            if(selectingArea) {
+            if(selectingSphere) {
                 isDrawingBox = true;
-                myObj.calculate();
+                myObj.calculateSphere();
+            } else if (selectingCyllinder) {
+                isDrawingBox = true;
+                myObj.calculateCyllinder();
             }
         }
         else {
-            yellowButtonClicked("Select Area", selectingArea);
+            yellowButtonClicked("Select Area", selectingSphere);
 
-            ImGui::NewLine();
-            addText("Center: ");
-            ImGui::Indent();
-            glm::vec3 objPos = myObj.getPos();
-            addText(std::to_string(objPos.x).c_str());
-            ImGui::SameLine();
-            addText(std::to_string(objPos.y).c_str());
-            ImGui::SameLine();
-            addText(std::to_string(objPos.z).c_str());
-            ImGui::Unindent();
-            addText("Radius: ");
-            ImGui::Indent();
-            addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " mm").c_str());
-            ImGui::Unindent();
-            addText("Threshold Value: ");
-            ImGui::Indent();
-            addText(std::to_string(myObj.getThreshold()).c_str());
-            ImGui::Unindent();
-//            addText("Fit Quality (R^2 value): ");
-//            ImGui::Indent();
-//            addText(std::to_string(myObj.getRsqVal()).c_str());
-//            ImGui::Unindent();
+            if(myObj.getDisplayObject() == 0) {
+                //sphere
+                ImGui::NewLine();
+                addText("Center: ");
+                ImGui::Indent();
+                glm::vec3 objPos = myObj.getPosWorld(freq, velocity, depth);
+                addText(std::to_string(objPos.x).c_str());
+                ImGui::SameLine();
+                addText(std::to_string(objPos.y).c_str());
+                ImGui::SameLine();
+                addText(std::to_string(objPos.z).c_str());
+                ImGui::Unindent();
+                addText("Radius: ");
+                ImGui::Indent();
+                addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " mm").c_str());
+                ImGui::Unindent();
+                addText("Threshold Value: ");
+                ImGui::Indent();
+                addText(std::to_string(myObj.getThreshold()).c_str());
+                ImGui::Unindent();
+            } else if(myObj.getDisplayObject() == 1) {
+                //cyllinder
+                ImGui::NewLine();
+                addText("Center: ");
+                ImGui::Indent();
+                glm::vec3 objPos = myObj.getPosWorld(freq, velocity, depth);
+                addText(std::to_string(objPos.x).c_str());
+                ImGui::SameLine();
+                addText(std::to_string(objPos.y).c_str());
+                ImGui::SameLine();
+                addText(std::to_string(objPos.z).c_str());
+                ImGui::Unindent();
+                addText("Radius: ");
+                ImGui::Indent();
+                addText((std::to_string(myObj.getRadius(freq, velocity, depth)) + " mm").c_str());
+                ImGui::Unindent();
+                addText("Direction: ");
+                ImGui::Indent();
+                glm::vec3 dir = myObj.getDirection();
+                addText(("<"+ std::to_string(dir.x) + ", " + std::to_string(dir.y) + ", "+ std::to_string(dir.z)+">").c_str());
+                ImGui::Unindent();
+                addText("Threshold Value: ");
+                ImGui::Indent();
+                addText(std::to_string(myObj.getThreshold()).c_str());
+                ImGui::Unindent();
+            }
 
-            if(selectingArea) {
+            if(selectingSphere) {
                 isDrawingBox = false;
                 myObj.selectArea();
             }

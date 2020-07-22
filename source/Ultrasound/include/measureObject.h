@@ -14,6 +14,8 @@ public:
     float* getSize();
     void setSize(float size);
 
+    glm::vec3 getPosWorld(float freq, float vel, int depth);
+
     glm::vec3 getPos();
     void setPos(glm::vec3 inPos);
 
@@ -25,37 +27,34 @@ public:
 
     int checkMouseOnCube(glm::vec3 rayOrigin, glm::vec3 rayDirection, float& t);
 
-    void calculate();
+    void calculateSphere();
+    void calculateCyllinder();
     void selectArea();
 
     //gets the radius in terms of actual object, not the grid space.
     float getRadius(float freq, float vel, int depth);
 
+    //returns which object mode it's in
+    int getDisplayObject();
+
+    //return direction of cyllinder
+    glm::vec3 getDirection();
+
 private:
-//    struct PointCalc
-//    {
-//        float npoints;
-//        float Xsum, Xsumsq, Xsumcube;
-//        float Ysum, Ysumsq, Ysumcube;
-//        float Zsum, Zsumsq, Zsumcube;
-//        float XYsum, XZsum, YZsum;
-//        float X2Ysum, X2Zsum, Y2Xsum, Y2Zsum, Z2Xsum, Z2Ysum;
-//    };
-
     DensityMap* myGrid;
-
-//    void prepareData(PointCalc& P);
-//    void calculateLeastSquaresSphere(PointCalc P, float& A, float& B, float& C, float& Rsq);
 
     glm::vec3 getCenter();
     float getRadius(glm::vec3 center);
     void findThreshold();
-
-//    float rsqVal;
+    glm::vec3 getDirection(glm::vec3 center);
+    float getRadiusCyllinder(glm::vec3 center, glm::vec3 direction);
 
     //number of iterations to go through to converge
     int N = 10000;
     float Nstop = 0.00001;
+
+    //0 = sphere, 1 = cyllinder
+    int displayObject = 0;
 
     //vertices and normals of the marker in STL file
     GLfloat *cubevertices = NULL;
@@ -65,18 +64,27 @@ private:
     GLfloat *spherevertices = NULL;
     GLfloat *spherenormals = NULL;
 
+    //vertices and normals of the marker in STL file
+    GLfloat *cyllindervertices = NULL;
+    GLfloat *cyllindernormals = NULL;
+
     bool showCube = true;
 
     float myThreshold = 150;
 
     glm::vec3 pos;
     glm::vec3 myColor;
+    //width of box, radius of sphere, height of cyllinder
     float mySize;
+    float myCyllinderRadius;
+    //where the cyllinder is pointing (unit vector)
+    glm::vec3 upVector = glm::vec3(0,1,0);
 
     bool isIntersected = false;
 
     void cubeSetUp();
     void sphereSetUp();
+    void cyllinderSetUp();
 
     Shader cubeShader;
     unsigned int cubeVAO, cubeVBO, cubeNormalsVBO;
@@ -90,7 +98,12 @@ private:
     //number of vertices in the STL file
     int sphereIndex;
     void drawSphere(glm::mat4 projection, glm::mat4 view, glm::mat4 model_cube);
-//    glm::mat4 model_cube;
+
+    Shader cyllinderShader;
+    unsigned int cyllinderVAO, cyllinderVBO, cyllinderNormalsVBO;
+    //number of vertices in the STL file
+    int cyllinderIndex;
+    void drawCyllinder(glm::mat4 projection, glm::mat4 view, glm::mat4 model_cube);
 
     bool rayTriangleIntersect(
             const glm::vec3 &orig, const glm::vec3 &dir,
