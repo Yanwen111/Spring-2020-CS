@@ -125,6 +125,8 @@ void Bandpass_Filter(short* origin_buffer, int length);
 void Bandstop_Filter(short* origin_buffer, int length);
 void moving_average(short* origin_buffer, int size);
 void Any_Filter(short* origin_buffer, double* argv, bool& error, std::string& errorMessage);
+void some_Filters(short* origin_buffer);
+void Apply_filters(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate, std::vector<double> filter_list);
 
 int getDepth();
 void setDepth(int dep);
