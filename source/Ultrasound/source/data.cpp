@@ -51,6 +51,7 @@ int * DEPTH_PTR = &DEPTH;
 float* ROTATION_PTR = &ROTATION;
 glm::vec4* ROTATION_QUA_PTR = &ROTATION_QUA;
 int samples = -1; /* -1 stands for no data */
+int MAvg_size = 10; /* the size of the moving average window */
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
 int V07_TOTAL_LENGTH = 4+1+2+2+0+2*2500;
@@ -498,12 +499,13 @@ void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, b
     for  (auto l: line_data)
     {
         cnt++;
-        //if (cnt % 200 == 0) usleep(300000);
         glm::vec3 ps = {l.p1.x/len + 0.5, l.p1.y/len + 1, l.p1.z/len + 0.5};
         glm::vec3 pe = {l.p2.x/len - l.p1.x/len  + 0.5, l.p2.y/len - l.p1.y/len + 1, l.p2.z/len - l.p1.z/len +0.5};
         for (int i = 0; i < l.vals.size(); ++i)
         {
-            l.vals[i] = static_cast<unsigned char>(std::min(static_cast<int>((l.vals[i])*exp(Gain*(i/2500.0))), 255));
+            l.vals[i] = static_cast<unsigned char>(std::min((static_cast<double>(l.vals[i])*exp(Gain*(i/2500.0))), 255.0));
+            if (cnt == 2 and i == 2000)
+                printf("Gain: %f; value: %d\n", Gain, static_cast<int>(l.vals[i]));
         }
         grid.writeLine(ps, pe, l.vals);
     }
@@ -627,34 +629,44 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
     //printf("The value of encoder offset is %f\n", encoder_os);
     //printf("The number of total lines is %d\n", (int)scan_data.size());
 
+//    printf(">>>>> %d lines <<<<<\n", (int)avg_scan_data.size());
     for (int i = 0; i < (int)scan_data.size(); ++i)
-        //for (int i = 400; i < 800; ++i)
+        //for (int i = 0; i < 400; ++i)
     {
         //if (scan_data.at(i).encoder > )
         double angle = scan_data.at(i).encoder * 360.0 / 4096.0;
         //float piezo = 270-angle;
         //float piezo = angle - 352.882812 - 90;
-        float piezo = angle - encoder_os - 5;
+        float piezo = angle - encoder_os;
         /* angle of the lx16 */
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
-        /* filter */
-        //Bandpass_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
-//        Bandstop_Filter(scan_data.at(i).buffer, sizeof(scan_data.at(i).buffer)/sizeof(short));
-        /* find min and max */
 
+        /* filter */
+        double test_arg[6] = {1, 3, 2, 15600000, 4000000, 4500000};
+        bool error = false;
+        bool addfilter = true;
+        bool addmovavg = false;
+        std::string errorMessage = "no prob";
+        if (addfilter)
+            Any_Filter(scan_data.at(i).buffer, test_arg, error, errorMessage);
+        if (addmovavg)
+            moving_average(scan_data.at(i).buffer, MAvg_size);
+
+        /* find min and max */
         for (int j = 0; j < 2500; ++j)
         {
-            if (j < 500)
-               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
-            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 1350);
+//            if (j < 2000)
+//               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
+            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 0);
         }
-        adc_max = 0; adc_min = 2500;
+
+        adc_max = 0; adc_min = 1000;
         for (int j = 0; j < buffer_length; ++j){
             adc_max = std::max(adc_max, scan_data.at(i).buffer[j]);
             adc_min = std::min(adc_min, scan_data.at(i).buffer[j]);
         }
 
-        int piezoProbe = 101; /*assume v = 1000 m/s */
+        int piezoProbe = 101; /* assume v = 1540 m/s , 5mm*/
 
         line_data_struct dataline;
         dataline.p1 = {piezoProbe*Cos(piezo),piezoProbe*Sin(piezo), 0};
@@ -1742,10 +1754,134 @@ float ReverseFloat( const float inFloat ){
 void Bandpass_Filter(short* origin_buffer, int length)
 {
     // This is just an IIR. Butterworth Bandpass 4M~4.5M
+//    short result[length];
+//    int NZEROS = 4;
+//    int NPOLES = 4;
+//    int HF_GAIN = 1.129615389e+02;
+//
+//    float xv[NZEROS+1], yv[NPOLES+1];
+//    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+//        xv[i] = 0.0;
+//    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+//        yv[i] = 0.0;
+//
+//    for (int i = 0; i < length; ++i)
+//    {
+//        for (int j = 0; j < NZEROS; ++j)
+//            xv[j] = xv[j+1];
+//        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+//        for (int j = 0; j < NPOLES; ++j)
+//            yv[j] = yv[j+1];
+//        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 2 * xv[2]
+//                + ( -0.7521734241 * yv[0]) + (-0.4548779427 * yv[1])
+//                + ( -1.7859422572 * yv[2]) + (-0.5248729714 * yv[3]);
+//        result[i] = short(yv[NPOLES]);
+//    }
+//
+//    for (int i = 0; i < length; ++i)
+//        origin_buffer[i] = result[i];
+
+    const int order = 2;
+    double sampleRate = 15600000;
+    double centerFreq = 4250000;
+    double freqWidth = 500000;
+    Iir::Butterworth::BandPass<order> f;
+    f.setup(sampleRate, centerFreq, freqWidth);
+//    Iir::Butterworth::HighPass<4> f;
+//    f.setup(sampleRate, 4200000);
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+}
+
+void Any_Filter(short* origin_buffer, double* argv, bool& error, std::string& errorMessage)
+{
+    /* this is the function for GUI controllable filter */
+    int length = 2500;
+    int order;
+
+    /* filter type 1: 1-BUtterworth 2-Chebyshev I 3-Chebyshev II 4-RBJ */
+    try{
+        if ((int)argv[0] != 1)
+            throw "Only support Butterworth currently!\n";
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return;
+    }
+
+    /* filter type 2: 1-lowpass 2-highpass 3-bandpass 4-bandstop */
+    int filter_type = static_cast<int>(argv[1]);
+
+    /* filter order: should be an integer small than 10 */
+    /* right now cannot be an input value */
+    try{
+        order = static_cast<int>(argv[2]);
+        if (order > 10)
+            throw "The order is too large! (should be smaller than 10)\n";
+    } catch (char* str) {
+        errorMessage = str;
+        error = true;
+        return;
+    }
+
+    /* sampling rate */
+    double sampleing_rate = argv[3];
+
+    /* cutoff frequency */
+    double cutoff_frequency, center_frequency, frequency_width;
+    if (argv[1] <= 1) // 0-lowpass, 1-highpass
+        cutoff_frequency = argv[4];
+    else{ // 2-bandpass, 3-bandstop
+        try{
+            center_frequency = (argv[4] + argv[5]) / 2;
+            frequency_width = argv[5] - argv[4];
+            if (center_frequency <= 0 or frequency_width <= 0)
+                throw "Invalied frequency range!\n";
+        } catch (char* str) {
+            errorMessage = str;
+            error = true;
+            return;
+        }
+    }
+
+    /* start the filter */
+    if (filter_type == 1)
+    {
+        Iir::Butterworth::LowPass<4> f;
+        f.setup(sampleing_rate, cutoff_frequency);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 2)
+    {
+        Iir::Butterworth::HighPass<4> f;
+        f.setup(sampleing_rate, cutoff_frequency);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 3)
+    {
+        Iir::Butterworth::BandPass<2> f;
+        f.setup(sampleing_rate, center_frequency, frequency_width);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+    else if (filter_type == 4)
+    {
+        Iir::Butterworth::BandStop<2> f;
+        f.setup(sampleing_rate, center_frequency, frequency_width);
+        for (int i = 0; i < length; ++i)
+            origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+    }
+}
+
+void Highpass_Filter(short* origin_buffer, int length)
+{
+    // This is just an IIR. Butterworth Highpass 3 M
     short result[length];
     int NZEROS = 4;
     int NPOLES = 4;
-    int HF_GAIN = 1.129615389e+02;
+    int HF_GAIN = 5.516766076e+00;
 
     float xv[NZEROS+1], yv[NPOLES+1];
     for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
@@ -1760,9 +1896,9 @@ void Bandpass_Filter(short* origin_buffer, int length)
         xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
         for (int j = 0; j < NPOLES; ++j)
             yv[j] = yv[j+1];
-        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 2 * xv[2]
-                     + ( -0.7521734241 * yv[0]) + (-0.4548779427 * yv[1])
-                     + ( -1.7859422572 * yv[2]) + (-0.5248729714 * yv[3]);
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 4 * (xv[1] + xv[3]) + 6 * xv[2]
+                     + ( -0.0345503250 * yv[0]) + (0.2181200309 * yv[1])
+                     + ( -0.7447531203 * yv[2]) + (0.9028263768 * yv[3]);
         result[i] = short(yv[NPOLES]);
     }
 
@@ -1799,6 +1935,59 @@ void Bandstop_Filter(short* origin_buffer, int length)
 
     for (int i = 0; i < length; ++i)
         origin_buffer[i] = result[i];
+}
+
+void Bandstop_Filter_2(short* origin_buffer, int length)
+{
+    // This is just an IIR. Butterworth Bandstop 3.6~3.9 M
+    short result[length];
+    int NZEROS = 4;
+    int NPOLES = 4;
+    int HF_GAIN = 1.089203062e+00;
+
+    float xv[NZEROS+1], yv[NPOLES+1];
+    for (int i = 0; i < sizeof(xv)/sizeof(float); ++i)
+        xv[i] = 0.0;
+    for (int i = 0; i < sizeof(yv)/sizeof(float); ++i)
+        yv[i] = 0.0;
+
+    for (int i = 0; i < length; ++i)
+    {
+        for (int j = 0; j < NZEROS; ++j)
+            xv[j] = xv[j+1];
+        xv[NZEROS] = float(origin_buffer[i]) / HF_GAIN;
+        for (int j = 0; j < NPOLES; ++j)
+            yv[j] = yv[j+1];
+        yv[NPOLES] = (xv[0] + xv[NZEROS]) - 0.2419554242 * (xv[1] + xv[3]) + 2.0146356068 * xv[2]
+                     + ( -0.8429233931 * yv[0]) + (0.2126384835 * yv[1])
+                     + ( -1.8429233931 * yv[2]) + (0.2316412520 * yv[3]);
+        result[i] = short(yv[NPOLES]);
+    }
+
+    for (int i = 0; i < length; ++i)
+        origin_buffer[i] = result[i];
+}
+
+void moving_average(short* origin_buffer, int size)
+{
+    int left = size / 2; int right = size - left;
+    int length = 2500;
+    short result[2500];
+    for (int i = 0; i < length; ++i)
+    {
+        if (i < left || i > length - right)
+            result[i] = origin_buffer[i];
+        else{
+            short tmp = 0;
+            for (int j = 0; j < size; ++j)
+                tmp += origin_buffer[i - left + j];
+            result[i] = tmp / size;
+        }
+    }
+    for (int i = 0 ; i < length; ++i)
+        origin_buffer[i] = result[i];
+
+    printf("Finish the moving average with window size of %d\n", size);
 }
 
 float encoder_offset(std::vector<scan_data_struct> scan_data, int count)

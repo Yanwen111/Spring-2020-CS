@@ -209,6 +209,110 @@ IMGUI/fast:
 .PHONY : IMGUI/fast
 
 #=============================================================================
+# Target rules for targets named iir
+
+# Build rule for target.
+iir: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 iir
+.PHONY : iir
+
+# fast build rule for target.
+iir/fast:
+	$(MAKE) -f extern/iir1/CMakeFiles/iir.dir/build.make extern/iir1/CMakeFiles/iir.dir/build
+.PHONY : iir/fast
+
+#=============================================================================
+# Target rules for targets named iir_static
+
+# Build rule for target.
+iir_static: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 iir_static
+.PHONY : iir_static
+
+# fast build rule for target.
+iir_static/fast:
+	$(MAKE) -f extern/iir1/CMakeFiles/iir_static.dir/build.make extern/iir1/CMakeFiles/iir_static.dir/build
+.PHONY : iir_static/fast
+
+#=============================================================================
+# Target rules for targets named test_chebyshev2
+
+# Build rule for target.
+test_chebyshev2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_chebyshev2
+.PHONY : test_chebyshev2
+
+# fast build rule for target.
+test_chebyshev2/fast:
+	$(MAKE) -f extern/iir1/test/CMakeFiles/test_chebyshev2.dir/build.make extern/iir1/test/CMakeFiles/test_chebyshev2.dir/build
+.PHONY : test_chebyshev2/fast
+
+#=============================================================================
+# Target rules for targets named test_rbj
+
+# Build rule for target.
+test_rbj: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_rbj
+.PHONY : test_rbj
+
+# fast build rule for target.
+test_rbj/fast:
+	$(MAKE) -f extern/iir1/test/CMakeFiles/test_rbj.dir/build.make extern/iir1/test/CMakeFiles/test_rbj.dir/build
+.PHONY : test_rbj/fast
+
+#=============================================================================
+# Target rules for targets named test_chebyshev1
+
+# Build rule for target.
+test_chebyshev1: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_chebyshev1
+.PHONY : test_chebyshev1
+
+# fast build rule for target.
+test_chebyshev1/fast:
+	$(MAKE) -f extern/iir1/test/CMakeFiles/test_chebyshev1.dir/build.make extern/iir1/test/CMakeFiles/test_chebyshev1.dir/build
+.PHONY : test_chebyshev1/fast
+
+#=============================================================================
+# Target rules for targets named test_butterworth
+
+# Build rule for target.
+test_butterworth: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_butterworth
+.PHONY : test_butterworth
+
+# fast build rule for target.
+test_butterworth/fast:
+	$(MAKE) -f extern/iir1/test/CMakeFiles/test_butterworth.dir/build.make extern/iir1/test/CMakeFiles/test_butterworth.dir/build
+.PHONY : test_butterworth/fast
+
+#=============================================================================
+# Target rules for targets named iirdemo
+
+# Build rule for target.
+iirdemo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 iirdemo
+.PHONY : iirdemo
+
+# fast build rule for target.
+iirdemo/fast:
+	$(MAKE) -f extern/iir1/demo/CMakeFiles/iirdemo.dir/build.make extern/iir1/demo/CMakeFiles/iirdemo.dir/build
+.PHONY : iirdemo/fast
+
+#=============================================================================
+# Target rules for targets named ecg50hzfilt
+
+# Build rule for target.
+ecg50hzfilt: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ecg50hzfilt
+.PHONY : ecg50hzfilt
+
+# fast build rule for target.
+ecg50hzfilt/fast:
+	$(MAKE) -f extern/iir1/demo/CMakeFiles/ecg50hzfilt.dir/build.make extern/iir1/demo/CMakeFiles/ecg50hzfilt.dir/build
+.PHONY : ecg50hzfilt/fast
+
+#=============================================================================
 # Target rules for targets named uninstall
 
 # Build rule for target.
@@ -304,6 +408,14 @@ help:
 	@echo "... ULTRASOUND"
 	@echo "... DENSITYMAP"
 	@echo "... IMGUI"
+	@echo "... iir"
+	@echo "... iir_static"
+	@echo "... test_chebyshev2"
+	@echo "... test_rbj"
+	@echo "... test_chebyshev1"
+	@echo "... test_butterworth"
+	@echo "... iirdemo"
+	@echo "... ecg50hzfilt"
 	@echo "... uninstall"
 	@echo "... glfw"
 	@echo "... extern/glad/src/glad.o"

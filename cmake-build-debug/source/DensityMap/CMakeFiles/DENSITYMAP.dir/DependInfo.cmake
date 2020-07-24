@@ -15,6 +15,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../extern/glad/include"
   "../extern/imgui"
   "../extern/glm"
+  "../extern/iir1"
   "../source/Ultrasound/include"
   "../source/DensityMap"
   "../source/DensityMap/../../extern/glad"

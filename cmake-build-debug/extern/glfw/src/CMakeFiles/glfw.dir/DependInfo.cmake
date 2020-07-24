@@ -32,6 +32,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../extern/glad/include"
   "../extern/imgui"
   "../extern/glm"
+  "../extern/iir1"
   "../source/Ultrasound/include"
   "../source/DensityMap"
   "../extern/glfw/include"

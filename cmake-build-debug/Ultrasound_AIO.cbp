@@ -5,7 +5,7 @@
 		<Option title="Ultrasound_AIO"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\extern\iir1\;CMake Files\extern\iir1\test\;CMake Files\extern\iir1\demo\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.72.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\libssh\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug"/>
@@ -87,6 +87,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
@@ -114,6 +115,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
@@ -145,6 +147,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
@@ -183,6 +186,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
@@ -217,6 +221,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
@@ -247,6 +252,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
@@ -277,6 +283,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad"/>
@@ -306,6 +313,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/../../extern/glad"/>
@@ -323,6 +331,462 @@
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir_static">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir_static.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir_static"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir_static/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir_static.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir_static/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev2">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev2"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev2/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev2/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_rbj">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_rbj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_rbj"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_rbj/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_rbj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_rbj/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev1">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev1"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev1/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev1/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_butterworth">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_butterworth" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_butterworth"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_butterworth/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_butterworth" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_butterworth/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iirdemo">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/iirdemo" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 iirdemo"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iirdemo/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/iirdemo" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 iirdemo/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecg50hzfilt">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/ecg50hzfilt" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 ecg50hzfilt"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecg50hzfilt/fast">
+				<Option output="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/ecg50hzfilt" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 ecg50hzfilt/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="uninstall">
@@ -346,6 +810,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
@@ -376,6 +841,7 @@
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glad/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glm"/>
+					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/Ultrasound/include"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/source/DensityMap"/>
 					<Add directory="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/include"/>
@@ -476,6 +942,96 @@
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/glfw/src/window.c">
 			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/ecg50hzfilt.cpp">
+			<Option target="ecg50hzfilt"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/iirdemo.cpp">
+			<Option target="iirdemo"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Biquad.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Biquad.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Butterworth.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Butterworth.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Cascade.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Cascade.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/ChebyshevI.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/ChebyshevI.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/ChebyshevII.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/ChebyshevII.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Custom.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/Custom.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/PoleFilter.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/PoleFilter.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/RBJ.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/RBJ.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/State.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir/State.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/butterworth.cpp">
+			<Option target="test_butterworth"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/chebyshev1.cpp">
+			<Option target="test_chebyshev1"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/chebyshev2.cpp">
+			<Option target="test_chebyshev2"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/rbj.cpp">
+			<Option target="test_rbj"/>
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/imgui.cpp">
 			<Option target="IMGUI"/>
@@ -584,6 +1140,18 @@
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/imgui/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/iir.pc.in">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\test\"/>
+		</Unit>
+		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/extern/iir1/demo/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\demo\"/>
 		</Unit>
 		<Unit filename="/Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/../../../../../../../usr/local/lib/cmake/BoostDetectToolset-1.72.0.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\"/>
