@@ -33,7 +33,8 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
          void (*setDepth)(int),
          void (*setGain)(float),
          bool (*saveFile)(bool, bool&, std::string&, bool),
-         glm::mat4 cameraToWorld_in
+         glm::mat4 cameraToWorld_in,
+         bool (*applyFilters_in)(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::vector<double> filterList)
 ) {
     glfwGetWindowSize(window, &width, &height);
 
@@ -48,6 +49,7 @@ GUI::GUI(GLFWwindow *window, const char *glsl_version, DensityMap *pointer,
     setDepthMain = setDepth;
     setGainMain = setGain;
     saveFileMain = saveFile;
+    applyFiltersMain = applyFilters_in;
 
     cameraToWorld = cameraToWorld_in;
 
@@ -492,6 +494,10 @@ void displaySettings(bool isLoadData,
 
         //text
                     std::vector<Text> &textList,
+        //Filters
+                    std::vector<double> &filterList,
+                     bool &applyFilter,
+                     int &currState,
 
         //snap
                      bool &enableSnap, int &snapThresholdIn,
@@ -502,6 +508,32 @@ void displaySettings(bool isLoadData,
         //scr width and height
                     int scr_width, int scr_height
 ) {
+//
+//    if (currState == 0) {
+//        purpleButton("Load", load);
+//    } else if (currState == 1) {
+//        //loading
+//        purpleButtonDisabled("Load", load);
+//        ImGui::SameLine();
+//        addText("Loading...", purple);
+//        //disable loadButton...
+//    } else if (currState == 2) {
+//        //success!
+//        purpleButton("Load", load);
+//        ImGui::SameLine();
+//        addText((file + " sucessfully loaded").c_str(), blue);
+//    } else if (currState == 3) {
+//        purpleButton("Load", load);
+//        ImGui::SameLine();
+////        addText("ERROR", orange);
+////        addText("=======================", orange);
+//        addText(errorMessage.c_str(), orange);
+//    } else if (currState == 4) {
+//        purpleButton("Load", load);
+//        ImGui::SameLine();
+//        addText("Select a file to load", orange);
+//    }
+
 //    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
@@ -580,6 +612,272 @@ void displaySettings(bool isLoadData,
         ImGui::SameLine();
         addText((std::to_string(freq) + " MHz").c_str(), purple);
         ImGui::NewLine();
+    }
+
+    if (ImGui::CollapsingHeader("Add Filters")) {
+        ImGui::NewLine();
+        ImGui::Indent();
+        addText("Select Filter");
+        ImGui::SameLine();
+        //Select filter
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.00f));
+
+        const char* items[] = { "Low Pass", "High Pass", "Band Pass", "Band Stop", "Moving Average" };
+        static const char* current_item = NULL;
+
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(.831f, .882f, .949f, 1.00f));
+        if (ImGui::BeginCombo("##filters", current_item)) // The second parameter is the label previewed before opening the combo.
+        {
+            ImGui::PopStyleColor(1);
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.00f));
+            for (auto & item : items)
+            {
+                bool is_selected = (current_item == item); // You can store your selection however you want, outside or inside your objects
+                if (ImGui::Selectable(item, is_selected))
+                    current_item = item;
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::PopStyleColor(2);
+
+
+        static float centerFreqLow = 4.5;
+        static float centerFreqHigh = 4;
+        static float centerFreqBP = 4.25;
+        static float centerFreqStop = 4.5;
+        static float bandWidthBP = 0.5;
+        static float bandWidthStop = 0.5;
+        static int windowSize = 10;
+
+        ImGui::Indent();
+        if(current_item!=NULL) {
+            ImGui::NewLine();
+            if(std::strcmp(current_item, "Low Pass") == 0) {
+                addText("Low Pass Filter");
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##lowCenter", &centerFreqLow, 0, 7.8);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+                ImGui::Unindent();
+            }
+            else if(std::strcmp(current_item, "High Pass") == 0) {
+                addText("High Pass Filter");
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##highCenter", &centerFreqHigh, 0, 7.8);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+                ImGui::Unindent();
+            }
+            else if(std::strcmp(current_item, "Band Pass") == 0) {
+                addText("Band Pass Filter");
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+
+                addText("Center Frequency: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##bpCenter", &centerFreqBP, 0, 7.8);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+
+                addText("Band Width: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##bpWidth", &bandWidthBP, 0, centerFreqBP);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+
+                ImGui::Unindent();
+            }
+            else if(std::strcmp(current_item, "Band Stop") == 0) {
+                addText("Band Stop Filter");
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+
+                addText("Center Frequency: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##stopCenter", &centerFreqStop, 0, 7.8);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+
+                addText("Band Width: ");
+                ImGui::Indent();
+                ImGui::SliderFloat("##stopWidth", &bandWidthStop, 0, centerFreqStop);
+                ImGui::SameLine(); addText(" MHz", purple);
+                ImGui::Unindent();
+
+                ImGui::Unindent();
+            }
+            else if(std::strcmp(current_item, "Moving Average") == 0) {
+                addText("Moving Average Filter");
+                ImGui::Indent();
+
+                addText("Window Size: ");
+                ImGui::Indent();
+                ImGui::SliderInt("##window", &windowSize, 2, 100);
+                ImGui::SameLine(); addText(" Cells", purple);
+                ImGui::Unindent();
+
+                ImGui::Unindent();
+            }
+        }
+
+        bool addFilter = false;
+        yellowButton("Add Filter", addFilter);
+
+        ImGui::Unindent();
+
+        ImGui::NewLine();
+
+        if(current_item!=nullptr && addFilter) {
+            if(std::strcmp(current_item, "Low Pass") == 0){
+                filterList.push_back(1);
+                filterList.push_back(centerFreqLow);
+                filterList.push_back(-1);
+            }
+            else if(std::strcmp(current_item, "High Pass") == 0){
+                filterList.push_back(2);
+                filterList.push_back(centerFreqHigh);
+                filterList.push_back(-1);
+            }
+            else if(std::strcmp(current_item, "Band Pass") == 0){
+                filterList.push_back(3);
+                filterList.push_back(centerFreqBP);
+                filterList.push_back(bandWidthBP);
+            }
+            else if(std::strcmp(current_item, "Band Stop") == 0){
+                filterList.push_back(4);
+                filterList.push_back(centerFreqStop);
+                filterList.push_back(bandWidthStop);
+            }
+            else if(std::strcmp(current_item, "Moving Average") == 0){
+                filterList.push_back(5);
+                filterList.push_back(windowSize);
+                filterList.push_back(-1);
+            }
+
+            //reset to defaults
+            centerFreqLow = 4.5;
+            centerFreqHigh = 4;
+            centerFreqBP = 4.25;
+            centerFreqStop = 4.5;
+            bandWidthBP = 0.5;
+            bandWidthStop = 0.5;
+            windowSize = 10;
+            
+            current_item = nullptr;
+        }
+
+        for (int x = 0; x < filterList.size(); x+=3) {
+            int filterNumber = int(filterList.at(x));
+            if(filterNumber == 1) {
+                addText("Low Pass Filter", blue);
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+1)) + " MHz").c_str(), purple);
+                ImGui::Unindent();
+            }
+            else if(filterNumber == 2) {
+                addText("High Pass Filter", blue);
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+1)) + " MHz").c_str(), purple);
+                ImGui::Unindent();
+            }
+            else if(filterNumber == 3) {
+                addText("Band Pass Filter", blue);
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+1)) + " MHz").c_str(), purple);
+                addText("Band Width: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+2)) + " MHz").c_str(), purple);
+                ImGui::Unindent();
+            }
+            else if(filterNumber == 4) {
+                addText("Band Stop Filter", blue);
+                ImGui::Indent();
+                addText("Butterworth filter");
+                addText("Order: "); ImGui::SameLine(); addText("4", purple);
+                addText("Center Frequency: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+1)) + " MHz").c_str(), purple);
+                addText("Band Width: ");
+                ImGui::SameLine();
+                addText((std::to_string(filterList.at(x+2)) + " MHz").c_str(), purple);
+                ImGui::Unindent();
+            }
+            else if(filterNumber == 5) {
+                addText("Moving Average Filter", blue);
+                ImGui::Indent();
+                addText("Window Size: ");
+                ImGui::SameLine();
+                addText((std::to_string(int(filterList.at(x+1))) + " Cells").c_str(), purple);
+                ImGui::Unindent();
+            }
+        }
+
+        ImGui::NewLine();
+
+        bool applied = false;
+        bool clear = false;
+
+        if(currState == 0) {
+            yellowButton("Clear Filters", clear);
+            if(clear) {
+                filterList.clear();
+            }
+            purpleButton("Apply Filters", applied);
+        } else if(currState == 1) {
+            yellowButtonClicked("Clear Filters", clear);
+            if(clear) {
+                filterList.clear();
+            }
+            purpleButtonDisabled("Apply Filters", applied);
+            addText("Applying Filters ... ", purple);
+        } else if(currState == 2) {
+            yellowButton("Clear Filters", clear);
+            if(clear) {
+                filterList.clear();
+                currState = 0;
+            }
+            purpleButtonDisabled("Apply Filters", applied);
+            addText("Successfully applied filters. Clear list to apply different filters.", purple);
+        } else if(currState == 3) {
+            yellowButton("Clear Filters", clear);
+            if(clear) {
+                filterList.clear();
+                currState = 0;
+            }
+            purpleButton("Apply Filters", applied);
+            addText("Error Applying Filters", orange);
+        }
+
+        if((currState == 0 || currState == 3) && applied && filterList.size() > 0) {
+            //apply the filters
+            applyFilter = true;
+        }
+
+        ImGui::Unindent();
     }
 
     static int id = 0;
@@ -1591,7 +1889,9 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
                 isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
-                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, scale, markers, myTexts, snap, snapThreshold, myObj,
+                scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, scale, markers, myTexts,
+                filterList, applyFilters, applyFilterState,
+                snap, snapThreshold, myObj,
                 width, height
         );
     }
@@ -1729,6 +2029,30 @@ void GUI::interactionHandler() {
             //call save file in data...
             saveFileMain(screen2IsSub, screen2ErrorSaveFile, screen2ErrorMessage, false);
         }
+    }
+
+    if(applyFilters) {
+        applyFilters = false;
+        std::cout<<"APPLYING FILTERS"<<std::endl;
+
+//        applyFiltersMain(gridPointer, )
+
+        //reload file
+        gridPointer->clear();
+        applyFiltersUpdated = false;
+
+        applyFilterState = 1; //loading
+
+        std::string fileName = (filePath / boost::filesystem::path("data/" + screen1File)).string();
+        std::cout<<"HERE!"<<std::endl;
+        //loadFile pointer function from main --> will only have 1 load file now with new data type
+        bool noError = applyFiltersMain(*gridPointer, fileName,
+                                    dispGain, dispDepth, applyFiltersUpdated, filterList);
+        gridPointer->setUpdateCoefficient(dispWeight);
+
+    } else if(applyFiltersUpdated) {
+        applyFilterState = 2;
+        applyFiltersUpdated = false;
     }
 
     if (isDataLoaded) {

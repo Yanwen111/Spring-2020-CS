@@ -42,7 +42,7 @@ private:
 
     std::vector<float> linesPlacement;
 
-    float gridShown = true;
+    float gridShown = false;
 
     void drawNumberShader(glm::mat4 projection, glm::mat4 view, glm::mat4 model_scale, glm::vec3 objColor, int number);
 

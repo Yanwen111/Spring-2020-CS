@@ -51,7 +51,9 @@ int * DEPTH_PTR = &DEPTH;
 float* ROTATION_PTR = &ROTATION;
 glm::vec4* ROTATION_QUA_PTR = &ROTATION_QUA;
 int samples = -1; /* -1 stands for no data */
-int MAvg_size = 10; /* the size of the moving average window */
+
+bool isFilter = false;
+std::vector<double> filter_list;
 
 int V06_TOTAL_LENGTH = 4+1+2+16+2*2500;
 int V07_TOTAL_LENGTH = 4+1+2+2+0+2*2500;
@@ -642,22 +644,17 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         float angle_16 = scan_data.at(i).lx16 * 360.0 / 4096.0;
 
         /* filter */
-        double test_arg[6] = {1, 3, 2, 15600000, 4000000, 4500000};
-        bool error = false;
-        bool addfilter = true;
-        bool addmovavg = false;
-        std::string errorMessage = "no prob";
-        if (addfilter)
-            Any_Filter(scan_data.at(i).buffer, test_arg, error, errorMessage);
-        if (addmovavg)
-            moving_average(scan_data.at(i).buffer, MAvg_size);
+        if (!isFilter)
+            filter_list.clear();
+        else
+            some_Filters(scan_data.at(i).buffer);
 
         /* find min and max */
         for (int j = 0; j < 2500; ++j)
         {
-//            if (j < 2000)
+//            if (j < 500)
 //               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
-            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] - 0);
+            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]);
         }
 
         adc_max = 0; adc_min = 1000;
@@ -1791,6 +1788,73 @@ void Bandpass_Filter(short* origin_buffer, int length)
 //    f.setup(sampleRate, 4200000);
     for (int i = 0; i < length; ++i)
         origin_buffer[i] = (short)f.filter(origin_buffer[i]);
+}
+void some_Filters(short* origin_buffer)
+{
+    int length = 2500;
+    const int order = 4;
+    double sampling_rate = 15600000;
+
+    int count = filter_list.size() / 3;
+    if (count*3 != filter_list.size() or count <= 0)
+    {
+        printf("Wrong length of input filter list! \n");
+        return;
+    }
+    /* filter list: {filter type, cutoff frequency, frequency width} */
+
+    /* filter type 2: 1-lowpass 2-highpass 3-bandpass 4-bandstop 5-moving average */
+    for (int i = 0; i < count; ++i)
+    {
+        int filter_type = static_cast<int>(filter_list[i*3]);
+
+        if (filter_type == 5) /* moving average */
+        {
+            moving_average(origin_buffer, static_cast<int>(filter_list[i*3 + 1]));
+            continue;
+        }
+
+        if (filter_type == 1) /* lowpass */
+        {
+            Iir::Butterworth::LowPass<order> f;
+            f.setup(sampling_rate, filter_list[i*3 + 1]);
+            for (int j = 0; j < length; ++j)
+                origin_buffer[j] = (short)f.filter(origin_buffer[j]);
+        }
+        else if (filter_type == 2) /* highpass */
+        {
+            Iir::Butterworth::HighPass<order> f;
+            f.setup(sampling_rate, filter_list[i*3 + 1]);
+            for (int j = 0; j < length; ++j)
+                origin_buffer[j] = (short)f.filter(origin_buffer[j]);
+        }
+        else if (filter_type == 3) /* bandpass */
+        {
+            Iir::Butterworth::BandPass<order/2> f;
+            f.setup(sampling_rate, filter_list[i*3 + 1], filter_list[i*3 + 2]);
+            for (int j = 0; j < length; ++j)
+                origin_buffer[j] = (short)f.filter(origin_buffer[j]);
+        }
+        else if (filter_type == 4) /* bandstop */
+        {
+            Iir::Butterworth::BandStop<order/2> f;
+            f.setup(sampling_rate, filter_list[i*3 + 1], filter_list[i*3 + 2]);
+            for (int j = 0; j < length; ++j)
+                origin_buffer[j] = (short)f.filter(origin_buffer[j]);
+        } else{
+            printf("NO such filter type! \n");
+            return;
+        }
+    }
+
+}
+
+void Apply_filters(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate, std::vector<double> filter_list_in)
+{
+    isFilter = true;
+    filter_list = filter_list_in;
+    readDataTest(grid, fileName, Gain, len, dataUpdate);
+    isFilter = false;
 }
 
 void Any_Filter(short* origin_buffer, double* argv, bool& error, std::string& errorMessage)

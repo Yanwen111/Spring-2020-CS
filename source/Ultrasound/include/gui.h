@@ -29,7 +29,8 @@ public:
             void (*setDepth)(int),
             void (*setGain)(float),
             bool (*saveFile)(bool, bool&, std::string&, bool),
-            glm::mat4 cameraToWorld_in
+            glm::mat4 cameraToWorld_in,
+            bool (*applyFilters)(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::vector<double> filterList)
             );
 
     void drawGUI(glm::mat4 projection, glm::mat4 view, float rotationX, float rotationY);
@@ -61,6 +62,7 @@ private:
     void (*setGainMain)(float);
     void (*setDepthMain)(int);
     bool (*saveFileMain)(bool, bool&, std::string&, bool);
+    bool (*applyFiltersMain)(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::vector<double> filterList);
 
     //screen width and height
     int width;
@@ -166,6 +168,12 @@ private:
     void drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
 
     MeasureObject myObj;
+
+    std::vector<double> filterList;
+    bool applyFilters = false;
+    //0 = nothing, 1 = loading, 2 = successfully applied filters, 3 = error
+    int applyFilterState = 0;
+    bool applyFiltersUpdated = false;
 
     //marker pair that mouse is on
     int intersectedMarkerIndex = -1;

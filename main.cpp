@@ -66,6 +66,19 @@ glm::mat4 cameraToWorld;
 const bool ROTATE_GRID = true;
 
 std::thread dataThread;
+//DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
+//Load File function pointer
+bool applyFilters(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::vector<double> filterList){
+//    dataUpdate = true;
+    char* c = new char[file.size() + 1];
+    strcpy(c, file.c_str());
+
+//    dataThread = std::thread(readDataTest, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
+    dataThread = std::thread(Apply_filters, std::ref(grid), c, gain, depth, std::ref(dataUpdate), filterList);
+    dataThread.detach();
+//    probeType = 1; // 1 for white fin, 0 for submarine
+    return true;
+}
 
 //Load File function pointer
 bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& errorMessage, int& probeType, bool& error){
@@ -258,7 +271,7 @@ int main() {
     cameraToWorld[3] = glm::vec4(cam.position, 1);
 
     //Create the GUI
-    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile, cameraToWorld);
+    GUI myGUI(window, glsl_version, &grid, &setZoom, &readData, &connectToProbeMain, &setDepth, &setGain, &saveFile, cameraToWorld, &applyFilters);
     myGUIpointer = &myGUI;
 
     // Add all non-empty cells to the map
