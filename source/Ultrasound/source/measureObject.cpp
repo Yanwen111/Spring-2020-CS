@@ -285,19 +285,12 @@ void MeasureObject::calculateSphere() {
     glm::vec3 center;
     float radius;
 
-    for(int x = 0; x < 50; x++) {
-        findThreshold();
-        for(int c = 0; c < 10; c++) {
-            center = getCenter();
-            pos = center;
-        }
-        radius = getRadius(center);
-        if(radius <= 0) {
-            mySize = mySize / 1.15;
-            break;
-        }
-        mySize = radius * 1.15;
+    findThreshold();
+    for(int c = 0; c < 10; c++) {
+        center = getCenter();
+        pos = center;
     }
+    radius = getRadius(center);
 
     pos = center;
     if(radius > 0)
@@ -310,11 +303,8 @@ void MeasureObject::calculateSphere() {
 void MeasureObject::calculateCylinder() {
 
     displayObject = 1;
-//
     glm::vec3 center;
     float radius;
-//
-//    for(int x = 0; x < 50; x++) {
         findThreshold();
         for(int c = 0; c < 10; c++) {
             center = getCenter();
@@ -322,34 +312,19 @@ void MeasureObject::calculateCylinder() {
         }
 
         upVector = getDirection(center);
-//        std::cout<<"x: "<<upVector.x<<" Y: "<<upVector.y<<" Z: "<<upVector.z<<std::endl;
         pos = center;
 
         radius = getRadiusCylinder(center, upVector);
 
         myCylinderRadius = radius;
 
-//        radius = getRadius(center);
-//        if(radius <= 0) {
-//            mySize = mySize / 1.15;
-//            break;
-//        }
-//        mySize = radius * 1.15;
-//    }
-//
-//    pos = center;
-//    if(radius > 0)
-//        mySize = radius;
-
     showCube = false;
 }
 
-//calculates threshold using the average value...
+//calculates threshold using the median value
 void MeasureObject::findThreshold() {
     int cubeDim = (int)(mySize / 5.0 * myGrid->getDim());
 
-//    float valSum = 0;
-//    int numPoints = 0;
     std::vector<float> points;
 
     for(int x = 0; x < cubeDim; x++) {
@@ -414,7 +389,6 @@ float MeasureObject::getRadius(glm::vec3 center) {
             }
         }
     }
-//    std::cout<<"RADIUS: "<<sqrt(sum / valSum)<<std::endl;
     if(valSum > 0) sum = sum / valSum;
     return sqrt(sum);
 }

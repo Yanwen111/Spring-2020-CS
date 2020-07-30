@@ -53,10 +53,7 @@ double xposMarker, yposMarker;
 
 // Creating a Camera object
 Camera cam;
-//Probe probe;
 GUI* myGUIpointer;
-
-//int depth = 2500;
 
 glm::mat4 projection;
 glm::mat4 view;
@@ -66,23 +63,40 @@ glm::mat4 cameraToWorld;
 const bool ROTATE_GRID = true;
 
 std::thread dataThread;
-//DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)
-//Load File function pointer
+
+/**
+ * calls the apply filters method in another thread
+ * @param grid pointer to the DensityMap
+ * @param file filename
+ * @param gain gain for time gain control
+ * @param depth depth to load
+ * @param dataUpdate set to true when separate thread is finished loading data
+ * @param filterList list of filters to apply
+ * @return true
+ */
 bool applyFilters(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::vector<double> filterList){
-//    dataUpdate = true;
     char* c = new char[file.size() + 1];
     strcpy(c, file.c_str());
 
 //    dataThread = std::thread(readDataTest, std::ref(grid), c, gain, depth, std::ref(dataUpdate), std::ref(error), std::ref(errorMessage));
     dataThread = std::thread(Apply_filters, std::ref(grid), c, gain, depth, std::ref(dataUpdate), filterList);
     dataThread.detach();
-//    probeType = 1; // 1 for white fin, 0 for submarine
     return true;
 }
 
-//Load File function pointer
+/**
+ * calls load file for the white fin probe in another thread
+ * @param grid pointer to the DensityMap
+ * @param file filename
+ * @param gain gain for time gain control
+ * @param depth depth to load
+ * @param dataUpdate set to true when separate thread is finished loading data
+ * @param errorMessage error message received from data.cpp
+ * @param probeType 1 for White Fin, 0 for Submarine
+ * @param error Set to true if error occurred
+ * @return true
+ */
 bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& dataUpdate, std::string& errorMessage, int& probeType, bool& error){
-//    dataUpdate = true;
     char* c = new char[file.size() + 1];
     strcpy(c, file.c_str());
     std::cout<<"READDATA: "<<c<<std::endl;
@@ -95,6 +109,28 @@ bool readData(DensityMap& grid, std::string file, float gain, int depth, bool& d
     return true;
 }
 
+/**
+ * calls connect to probe method in another thread
+ * @param grid pointer to Density Map
+ * @param probeIP probe IP Address
+ * @param username Probe username
+ * @param password probe password
+ * @param compIP computer IP Address
+ * @param isSubmarine
+ * @param lxRangeMin
+ * @param lxRangeMax
+ * @param lxRes
+ * @param servoRangeMin
+ * @param servoRangeMax
+ * @param servoRes
+ * @param customCommand
+ * @param connectionType
+ * @param output
+ * @param connected
+ * @param error
+ * @param errorMessage
+ * @return true
+ */
 bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
         bool isSubmarine,
         int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
@@ -102,61 +138,6 @@ bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string usern
         int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
         ) {
     //connect in another thread, same thing as readData
-
-    if(connectionType == 0){
-        std::cout<<"======== Sending Live Scan =========="<<std::endl;
-        if(isSubmarine)
-            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
-        else
-            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
-
-        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
-        std::cout<<"Comp IP: "<<compIP<<std::endl;
-
-        if(!isSubmarine){
-            std::cout<<"Lx-16: "<<std::endl;
-            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
-            std::cout<<"     Res: "<<lxRes<<std::endl;
-
-
-            std::cout<<"Servo: "<<std::endl;
-            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
-            std::cout<<"     Res: "<<servoRes<<std::endl;
-        }
-    }
-    if(connectionType == 1){
-        std::cout<<"======== Scan to File =========="<<std::endl;
-        if(isSubmarine)
-            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
-        else
-            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
-
-        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
-        std::cout<<"Comp IP: "<<compIP<<std::endl;
-
-        if(!isSubmarine){
-            std::cout<<"Lx-16: "<<std::endl;
-            std::cout<<"     Range: "<<lxRangeMin<<" " <<lxRangeMax<<std::endl;
-            std::cout<<"     Res: "<<lxRes<<std::endl;
-
-
-            std::cout<<"Servo: "<<std::endl;
-            std::cout<<"     Range: "<<servoRangeMin<<" " <<servoRangeMax<<std::endl;
-            std::cout<<"     Res: "<<servoRes<<std::endl;
-        }
-    }
-    if(connectionType == 2) {
-        std::cout << "======== Sending Custom Command ==========" << std::endl;
-        if(isSubmarine)
-            std::cout<<"Sending connection to SUBMARINE probe: "<<std::endl;
-        else
-            std::cout<<"Sending connection to WHITE FIN probe: "<<std::endl;
-
-        std::cout<<"Probe IP: "<<probeIP<<" username: "<<username<<" password: "<<password<<std::endl;
-        std::cout<<"Comp IP: "<<compIP<<std::endl;
-        std::cout<<"COMMAND: "<<customCommand<<std::endl;
-    }
-
     try{
         dataThread = std::thread(connectToProbe, std::ref(grid), probeIP, username, password, compIP, isSubmarine,
                                  lxRangeMin, lxRangeMax, lxRes, servoRangeMin, servoRangeMax, servoRes, customCommand, connectionType,
@@ -166,8 +147,6 @@ bool connectToProbeMain(DensityMap& grid, std::string probeIP, std::string usern
         std::cout<<"EXCEPTION: "<<std::endl;
     }
 
-//    output = "Successfully Sent Command!";
-//    connected = true;
     return true; //success!
 }
 
@@ -442,7 +421,6 @@ void cursorPosRotationCallback(GLFWwindow* window, double xpos, double ypos) {
     rayDirection = glm::normalize(rayDirection);
 
     if(guiObjectPressed){
-//        fprintf(stdout, "GUI OBJ PREINTED");
         myGUIpointer->moveObject(rayOriginWorld, rayDirection, xpos, SCR_HEIGHT - ypos);
     }
     else {
@@ -472,5 +450,4 @@ void windowSizeCallback(GLFWwindow* window, int width, int height){
 
     myGUIpointer->setHeight(height);
     myGUIpointer->setWidth(width);
-//    std::cout<<"SCREEN SIZE CHANGED!!!"<<std::endl;
 }

@@ -4,11 +4,6 @@
 #include "text.h"
 
 const int FONT_SIZE = 18;
-//glm::vec3 color = glm::vec3(0.5,0.5,0.5);
-
-//Text::Text(){
-//
-//}
 
 Text::Text(const std::string inText, int scr_width_in, int scr_height_in, bool is3DText){
     is3D = is3DText;
@@ -29,16 +24,11 @@ Text::Text(const std::string inText, int scr_width_in, int scr_height_in, bool i
     width = 0;
     height = FONT_SIZE * numLines;
 
-//    cameraToWorld = camToWorld;
     scr_width = scr_width_in;
     scr_height = scr_height_in;
 
     setUpFont();
 
-//    pos = glm::vec3(
-//            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
-//            static_cast <float> (rand()) / static_cast <float> (RAND_MAX),
-//            static_cast <float> (rand()) / static_cast <float> (RAND_MAX));
     pos = glm::vec3(0,0,0);
     pRaster = glm::vec2(scr_width_in / 2, scr_height_in / 2);
 
@@ -169,19 +159,6 @@ void Text::drawMarker(glm::mat4 projection, glm::mat4 view, glm::mat4 model_mark
     glDrawArrays(GL_TRIANGLES, 0, markerIndex/3);
 }
 
-
-/**
- * Applies matrix transformations and calls the drawMarker method to render
- * the two markers on the screen on the location specified by marker1 and marker2.
- * @param projection the projection matrix
- * @param view the view matrix
- * @param model the model matrix of the grid's orientation. The Marker class will
- * apply transformations to get the actual model matrix of the individual markers.
- */
-//void Text::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model){
-//
-//}
-
 bool computePixelCoordinates2(
         const glm::vec3 &pWorld,
         glm::mat4 projection,
@@ -220,7 +197,6 @@ float Text::getRasterY() {
 }
 
 void Text::setPos(glm::vec3 inPos) {
-//    std::cout<<"POS: "<<inPos.x<<" "<<inPos.y<<" "<<inPos.z<<std::endl;
     if(is3D) {
         if (inPos.x > 5) inPos.x = 5;
         if (inPos.x < -5) inPos.x = -5;
@@ -236,8 +212,6 @@ void Text::setPos(glm::vec3 inPos) {
 //        std::cout<<"CHANGE: "<<pRaster.x<<" "<<pRaster.y<<std::endl;
     }
 }
-
-
 
 void Text::draw(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
     glEnable(GL_DEPTH_TEST);
@@ -385,7 +359,6 @@ float Text::RenderText(std::string text, float x, float y, float scaleIn, glm::v
     textShader.use();
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(scr_width), 0.0f, static_cast<float>(scr_height));
     textShader.setMat4("projection", projection);
-//    glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
     textShader.setVec3("textColor", color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
@@ -456,8 +429,9 @@ int Text::checkMouseOnText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float& t
                                      t))
                 intersected = 1;
 
-            if (intersected != -1)
+            if (intersected != -1){
                 break;
+            }
         }
     }
     else {

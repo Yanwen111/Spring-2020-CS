@@ -652,9 +652,9 @@ std::vector<line_data_struct> file_to_pixel_V08(std::vector<unsigned char> _file
         /* find min and max */
         for (int j = 0; j < 2500; ++j)
         {
-//            if (j < 500)
-//               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[2000];
-            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j]);
+            scan_data.at(i).buffer[j] = abs(scan_data.at(i).buffer[j] + 170);
+            if (j < 250)
+               scan_data.at(i).buffer[j] = scan_data.at(i).buffer[j] / 30;
         }
 
         adc_max = 0; adc_min = 1000;
@@ -1177,6 +1177,8 @@ bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username,
         std::thread live_thread;
         live_thread = std::thread(live_rendering, std::ref(grid), isSubmarine, probeIP, compIP, std::ref(transmit_end));
         live_thread.detach();
+
+        connected = true;
 
         /* pass some parameters */
 //        soc.customCommand("sh ./whitefin/tx.sh", 1000, output);
@@ -1817,28 +1819,28 @@ void some_Filters(short* origin_buffer)
         if (filter_type == 1) /* lowpass */
         {
             Iir::Butterworth::LowPass<order> f;
-            f.setup(sampling_rate, filter_list[i*3 + 1]);
+            f.setup(sampling_rate, filter_list[i*3 + 1] * 1e6);
             for (int j = 0; j < length; ++j)
                 origin_buffer[j] = (short)f.filter(origin_buffer[j]);
         }
         else if (filter_type == 2) /* highpass */
         {
             Iir::Butterworth::HighPass<order> f;
-            f.setup(sampling_rate, filter_list[i*3 + 1]);
+            f.setup(sampling_rate, filter_list[i*3 + 1] * 1e6);
             for (int j = 0; j < length; ++j)
                 origin_buffer[j] = (short)f.filter(origin_buffer[j]);
         }
         else if (filter_type == 3) /* bandpass */
         {
             Iir::Butterworth::BandPass<order/2> f;
-            f.setup(sampling_rate, filter_list[i*3 + 1], filter_list[i*3 + 2]);
+            f.setup(sampling_rate, filter_list[i*3 + 1] * 1e6, filter_list[i*3 + 2]);
             for (int j = 0; j < length; ++j)
                 origin_buffer[j] = (short)f.filter(origin_buffer[j]);
         }
         else if (filter_type == 4) /* bandstop */
         {
             Iir::Butterworth::BandStop<order/2> f;
-            f.setup(sampling_rate, filter_list[i*3 + 1], filter_list[i*3 + 2]);
+            f.setup(sampling_rate, filter_list[i*3 + 1] * 1e6, filter_list[i*3 + 2]);
             for (int j = 0; j < length; ++j)
                 origin_buffer[j] = (short)f.filter(origin_buffer[j]);
         } else{

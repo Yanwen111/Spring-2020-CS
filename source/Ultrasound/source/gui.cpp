@@ -335,11 +335,6 @@ void GUI::cleanUp() {
 
 // Resets parameters to original default values
 void GUI::reset() {
-//    if (!isLoadFile) {
-//        dispDepth = 1500;
-//        dispGain = 1.0;
-//    }
-
     dispWeight = 1;
     dispBrightness = 0.0f;
     dispContrast = 1.0f;
@@ -383,12 +378,24 @@ void GUI::drawTexts(glm::mat4 projection, glm::mat4 view, glm::mat4 model) {
 
 }
 
+//############################## IMGUI Helper Functions ########################################################################
+
+/**
+ * Adds the specified text into the ImGUI Panel
+ * @param text text to add on the panel
+ * @param color color of the text. Default is black.
+ * @param size Font size of the text of 18 scaled by this input. Default is 1.0 which is 18 font.
+ */
 void addText(const char *text, ImVec4 color = ImVec4(0, 0, 0, 1.0f), float size = 1.0f) {
     ImGui::SetWindowFontScale(size);
     ImGui::TextColored(color, text);
     ImGui::SetWindowFontScale(1.0f);
 }
 
+/**
+ * Creates the hover tool tip with the following text.
+ * @param text Text to display in the tool tip.
+ */
 void createToolTip(const char *text) {
     ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(.937f, 0.902f, 0.961f, 1.00f));
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -402,6 +409,13 @@ void createToolTip(const char *text) {
     ImGui::PopStyleColor(2);
 }
 
+/**
+ * Purple button component.
+ * @param text Text to display in the button
+ * @param pressed set to true if the button is pressed. False otherwise.
+ * @param width default is 100px.
+ * @param height default is 50 px.
+ */
 void purpleButton(const char *text, bool &pressed, float width = 100, float height = 50) {
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.486f, .184f, .678f, 1.00f));
@@ -413,6 +427,13 @@ void purpleButton(const char *text, bool &pressed, float width = 100, float heig
     ImGui::PopID();
 }
 
+/**
+ * Purple button component that is disabled.
+ * @param text Text to display in the button
+ * @param pressed set to true if the button is pressed. False otherwise.
+ * @param width default is 100px.
+ * @param height default is 50 px.
+ */
 void purpleButtonDisabled(const char *text, bool &pressed, float width = 100, float height = 50) {
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.243f, 0.02f, 0.388f, 1.00f));
@@ -424,6 +445,11 @@ void purpleButtonDisabled(const char *text, bool &pressed, float width = 100, fl
     ImGui::PopID();
 }
 
+/**
+ * Yellow Button component. Width is variable to input text length.
+ * @param text text to display.
+ * @param pressed set to true is button is pressed. False otherwise.
+ */
 void yellowButton(const char *text, bool &pressed) {
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, .988f, .231f, 1.00f));
@@ -435,6 +461,11 @@ void yellowButton(const char *text, bool &pressed) {
     ImGui::PopID();
 }
 
+/**
+ * Pressed Yellow Button component. Width is variable to input text length.
+ * @param text text to display.
+ * @param pressed set to true is button is pressed. False otherwise.
+ */
 void yellowButtonClicked(const char *text, bool &pressed) {
     ImGui::PushID(1);
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.804f, .796f, 0.0f, 1.00f));
@@ -446,6 +477,13 @@ void yellowButtonClicked(const char *text, bool &pressed) {
     ImGui::PopID();
 }
 
+/**
+ * Draws the opening GUI panel screen of the software.
+ * @param pressedLoad Set to true if the user clicks on load file button.
+ * @param pressedScan Set to true if user clicks on scan button.
+ * @param width Width of the GUI panel
+ * @param height Height of the GUI panel
+ */
 void drawOpenFrame(bool &pressedLoad, bool &pressedScan, int width, int height) {
     ImGui::SetNextWindowSize(ImVec2(500,350));
     ImGui::SetNextWindowPos(ImVec2(width/2 - 250, height/2 - 175));
@@ -475,66 +513,72 @@ void drawOpenFrame(bool &pressedLoad, bool &pressedScan, int width, int height) 
 }
 
 char currVelocity[10] = {0};
-
-void displaySettings(bool isLoadData,
-        //display
+/**
+ * Method that displays the display settings panel after an image is loaded.
+ *
+ * Params used for display settings
+ * @param depth pointer for the depth
+ * @param gain pointer for the gain
+ * @param weight pointer for the update weight value
+ * @param brightness pointer for the brightness
+ * @param contrast pointer for the contrast
+ * @param cutoff pointer for the threshold cutoff
+ * @param zoom pointer for the zoom field of view
+ * @param resetParametersPressed set to true if user clicks on reset parameters
+ *
+ * Params used for select speed of sound
+ * @param mediumActive int for the medium active selected by the user. 0 = silicone gel, 1 = soft tissue, 2 = custom input
+ * @param velocity velocity for the medium selected
+ * @param freq frequency for the medium selected
+ * @param inputVel pointer for the custom velocity input
+ *
+ * Params used for the scale options
+ * @param scaleXY Y coordinate of horizontal scale
+ * @param scaleXZ Z coordinate of horizontal scale
+ * @param scaleYX X coordinate of vertical scale
+ * @param scaleYZ Z coordinate of vertical scale
+ * @param scaleZX X coordinate of Z-axis scale
+ * @param scaleZY Y coordinate of Z-axis scale
+ * @param scale pointer to the scale object
+ *
+ * Params used for the marker options
+ * @param markerList list containing the marker pairs
+ *
+ * Params used for the text options
+ * @param textList list containing the text pairs
+ *
+ * Params used for the filter options
+ * @param filterList list of the filters
+ * @param applyFilter set to true if user clicks apply filters
+ * @param currState int to indicate the state of applying filters. 0 = nothing, 1 = loading, 2 = successfully applied filters, 3 = error
+ *
+ * Params for snapping markers
+ * @param enableSnap Set to true if snap is enabled.
+ * @param snapThresholdIn Threshold value for snap
+ *
+ * Param for fit to object
+ * @param myObj MeasureObject pointer to fit objects
+ *
+ * @param scr_width Screen Width
+ * @param scr_height Screen Height
+ */
+void displaySettings(
                      int &depth, float &gain, float &weight,
                      float &brightness, float &contrast, int &cutoff, int &zoom,
                      bool &resetParametersPressed,
-        //speed of sound
                      int &mediumActive,
                      float velocity, float freq, std::string &inputVel,
-
-        //scale
                      float &scaleXY, float &scaleXZ, float &scaleYX, float &scaleYZ, float &scaleZX, float &scaleZY,
                      Scale& scale,
-
-        //marker
                      std::vector<Marker> &markerList,
-
-        //text
                     std::vector<Text> &textList,
-        //Filters
                     std::vector<double> &filterList,
                      bool &applyFilter,
                      int &currState,
-
-        //snap
                      bool &enableSnap, int &snapThresholdIn,
-
-        //obj
                     MeasureObject &myObj,
-
-        //scr width and height
                     int scr_width, int scr_height
 ) {
-//
-//    if (currState == 0) {
-//        purpleButton("Load", load);
-//    } else if (currState == 1) {
-//        //loading
-//        purpleButtonDisabled("Load", load);
-//        ImGui::SameLine();
-//        addText("Loading...", purple);
-//        //disable loadButton...
-//    } else if (currState == 2) {
-//        //success!
-//        purpleButton("Load", load);
-//        ImGui::SameLine();
-//        addText((file + " sucessfully loaded").c_str(), blue);
-//    } else if (currState == 3) {
-//        purpleButton("Load", load);
-//        ImGui::SameLine();
-////        addText("ERROR", orange);
-////        addText("=======================", orange);
-//        addText(errorMessage.c_str(), orange);
-//    } else if (currState == 4) {
-//        purpleButton("Load", load);
-//        ImGui::SameLine();
-//        addText("Select a file to load", orange);
-//    }
-
-//    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Display Settings");
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0, 0, 1.00f));
     if (ImGui::CollapsingHeader("Display Parameters")) {
@@ -774,7 +818,7 @@ void displaySettings(bool isLoadData,
             bandWidthBP = 0.5;
             bandWidthStop = 0.5;
             windowSize = 10;
-            
+
             current_item = nullptr;
         }
 
@@ -1127,14 +1171,9 @@ void displaySettings(bool isLoadData,
     }
     if (ImGui::CollapsingHeader("Annotate Screen")) {
         bool isAnnotating = false;
-        if (true) {
-            yellowButton("  Enter Annotate Mode  ", isAnnotating);
-            if (isAnnotating)
-                fprintf(stdout, "HI");
-        } else {
-            yellowButton("  Leave Annotate Mode  ", isAnnotating);
-            if (isAnnotating)
-                fprintf(stdout, "HI");
+        yellowButton("  Clear All Text  ", isAnnotating);
+        if (isAnnotating) {
+            textList.clear();
         }
 
         {
@@ -1171,7 +1210,12 @@ void displaySettings(bool isLoadData,
 
             if(isAddText) {
                 textList.emplace_back(textInput.c_str(), scr_width, scr_height, is3D);
-                std::cout<<"=======ADDED TEXT!"<<textInput<<std::endl;
+            }
+
+            bool isRemoveText = false;
+            yellowButton("Remove Last Added Text", isRemoveText);
+            if(isRemoveText) {
+                textList.pop_back();
             }
 
             int id = 0;
@@ -1187,11 +1231,9 @@ void displaySettings(bool isLoadData,
                     y = txt.getRasterY();
                 }
 
-                addText("Current Text", purple);
-                ImGui::Indent();
                 addText(txt.getText().c_str());
                 ImGui::Indent();
-                addText("Text Position");
+                addText("Text Position", purple);
 
                 ImGui::Indent();
 
@@ -1214,7 +1256,6 @@ void displaySettings(bool isLoadData,
                 }
                 ImGui::Unindent();
                 ImGui::Unindent();
-                ImGui::Unindent();
 
                 //update marker positions
                 if(txt.getIs3D())
@@ -1223,7 +1264,7 @@ void displaySettings(bool isLoadData,
             }
         }
     }
-    if (ImGui::CollapsingHeader("Measure Sphere")) {
+    if (ImGui::CollapsingHeader("Fit Object")) {
         drawObjectMode = true;
 
         bool selectingSphere = false;
@@ -1312,7 +1353,12 @@ void displaySettings(bool isLoadData,
 }
 
 
-//filterState = 0: no filter, 1 = submarine files, 2 = whitefin files
+/**
+ * Returns a list of all the files located in the path.
+ * @param pathIn folder to check for files
+ * @param filterState filterState = 0: no filter, 1 = submarine files, 2 = whitefin files
+ * @return List of all files located in the path
+ */
 std::vector<std::string> getFileDirectories(boost::filesystem::path pathIn, int filterState = 0) {
     using namespace boost::filesystem;
 
@@ -1320,15 +1366,20 @@ std::vector<std::string> getFileDirectories(boost::filesystem::path pathIn, int 
     for (directory_iterator itr(pathIn); itr != directory_iterator(); ++itr) {
         items.push_back((itr->path().filename()).string());
     }
-
-//    for (const auto & entry : std::filesystem::directory_iterator(path)){
-//        std::string tmp = entry.path();
-//        items.push_back(tmp.substr(tmp.find_last_of("/")+1, tmp.size()));
-//    }
     return items;
 }
 
-//currState: 0 = no message, 1 = loading, 2 = success, 3 = error
+/**
+ * ImGUI panel to load a data file.
+ * @param filePath folder to load data file from
+ * @param file pointer for the file to load
+ * @param depth depth of data to load
+ * @param gain gain for time gain control
+ * @param weight weight for update weight in DensityMap
+ * @param load Set to true if user clicks load. False otherwise.
+ * @param currState int to describe what state the load file is in. 0 = no message, 1 = loading, 2 = success, 3 = error
+ * @param errorMessage Error Message to display if currState = 3.
+ */
 void loadDataFromFile(
         boost::filesystem::path filePath,
         std::string &file,
@@ -1472,6 +1523,38 @@ void loadDataFromFile(
     ImGui::End();
 }
 
+/**
+ * ImGUI panel to scan from a probe.
+ * @param probeIP IP address of the probe
+ * @param probeUsername username of the probe
+ * @param probePassword password of the probe
+ * @param compIP IP address of the computer
+ * @param depth depth parameter
+ * @param gain gain parameter
+ * @param weight weight parameter
+ * @param isSubmarine Set to true if connecting to Submarine probe. Set to false if connecting to White Fin.
+ * @param isDefault Set to true if in default connection. False for advanced connection.
+ * @param lxRangeMin Lx-16 minimum range value input
+ * @param lxRangeMax Lx-16 maximum range value input
+ * @param lxRes Lx-16 resolution input
+ * @param servoRangeMin Servo minimum range input
+ * @param servoRangeMax Servo maximum range input
+ * @param servoRes Servo resolution input
+ * @param customCommand Custom command to send to Red Pitaya if in advanced connection mode.
+ * @param liveScan Set to true if user clicks the Live Scan button.
+ * @param scanToFile Set to true if user clicks save to file button.
+ * @param sendCustom Set to true if user clicks the Send Custom button.
+ * @param currState int to determine the current state (nothing, loading, error, success)
+ *  0 = first, 1 = loading, 2 = success,
+    3 = error connection,
+    4 = probeIP error, 5 = probeUsername error, 6 = probePassword error
+    7 = compIP error
+    8 = lxMin error, 9 = lxMax error, 10 = lxMin > lxMax, 11 = lxRes error
+    12 = servoMin error, 13 = servoMax error, 14 = servoMin > servoMax, 15 = servoRes error
+ * @param output The output received from the probe to display.
+ * @param errorMessage error message to display if error occurred.
+ * @param errorSaveFile 0 = user didn't click save file, 1 = success! -1 = failed to save file
+ */
 void scanFromProbe(
         std::string *probeIP, std::string *probeUsername, std::string *probePassword, std::string *compIP,
         int& depth, float& gain, float& weight,
@@ -1483,7 +1566,6 @@ void scanFromProbe(
         int &currState,
         std::string &output, std::string &errorMessage, int errorSaveFile
 ) {
-//    ImGui::SetNextWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT));
     ImGui::Begin("Scan From Probe");
 
     static std::string lxRangeMinInput = std::to_string(lxRangeMin);
@@ -1886,7 +1968,7 @@ void GUI::drawWidgets(glm::mat4 projection, glm::mat4 view) {
         );
     if (isDataLoaded) {
         displaySettings(
-                isLoadFile, dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
+                dispDepth, dispGain, dispWeight, dispBrightness, dispContrast, dispCutoff, dispZoom,
                 dispReset,
                 mediumActive, dispVel, dispFreq, inputVel,
                 scaleXY, scaleXZ, scaleYX, scaleYZ, scaleZX, scaleZY, scale, markers, myTexts,
@@ -2033,10 +2115,6 @@ void GUI::interactionHandler() {
 
     if(applyFilters) {
         applyFilters = false;
-        std::cout<<"APPLYING FILTERS"<<std::endl;
-
-//        applyFiltersMain(gridPointer, )
-
         //reload file
         gridPointer->clear();
         applyFiltersUpdated = false;
@@ -2044,7 +2122,7 @@ void GUI::interactionHandler() {
         applyFilterState = 1; //loading
 
         std::string fileName = (filePath / boost::filesystem::path("data/" + screen1File)).string();
-        std::cout<<"HERE!"<<std::endl;
+
         //loadFile pointer function from main --> will only have 1 load file now with new data type
         bool noError = applyFiltersMain(*gridPointer, fileName,
                                     dispGain, dispDepth, applyFiltersUpdated, filterList);
@@ -2061,11 +2139,6 @@ void GUI::interactionHandler() {
             reset();
             dispReset = false;
         }
-
-//        if (!isLoadFile) {
-//            setGainMain(dispGain);
-//            setDepthMain(dispDepth);
-//        }
 
         gridPointer->setBrightness(dispBrightness);
         gridPointer->setThreshold(dispCutoff);
@@ -2176,7 +2249,7 @@ bool GUI::mouseOnObjects(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPos
 
     float tmpT = -1;
     myObj.setIntersected(false);
-    if(myObj.checkMouseOnCube(rayOrigin, rayDirection, tmpT) != -1) {
+    if(drawObjectMode && myObj.checkMouseOnCube(rayOrigin, rayDirection, tmpT) != -1) {
         if(minT == -1 || (tmpT < minT && tmpT != -1)) {
             intersectedText = nullptr;
             intersectedMarker = nullptr;
@@ -2360,7 +2433,7 @@ void GUI::moveText(glm::vec3 rayOrigin, glm::vec3 rayDirection, float xPosScreen
         //Transform back to marker coordinates
         glm::mat4 rotation = glm::mat4(modelWorld[0], modelWorld[1], modelWorld[2], glm::vec4(0, 0, 0, 1));
         P = glm::transpose(rotation) * glm::vec4(P.x, P.y, P.z, 1);
-
+        std::cout<<P.x<<" " <<P.y<<" "<<P.z<<std::endl;
         intersectedText->setPos(P);
     } else {
         intersectedText->setPos(glm::vec3(xPosScreen, yPosScreen, 1));
