@@ -1,0 +1,3 @@
+IP address: 71.127.254.212
+User name: root
+Password: root

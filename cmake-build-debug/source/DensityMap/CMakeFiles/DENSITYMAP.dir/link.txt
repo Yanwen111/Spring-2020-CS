@@ -1,0 +1,2 @@
+/usr/bin/ar qc libDENSITYMAP.a  CMakeFiles/DENSITYMAP.dir/camera.cpp.o CMakeFiles/DENSITYMAP.dir/densityMap.cpp.o CMakeFiles/DENSITYMAP.dir/shader.cpp.o
+/usr/bin/ranlib libDENSITYMAP.a

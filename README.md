@@ -1,40 +1,41 @@
-# Columbia Open Source Ultrasound Spring 2020
-To run the program, pull from the master branch and run the main. 
+# Columbia Open Source Ultrasound Summer 2020
+To run the program, pull from the master branch and run the main. <b>NOTE:</b> the program may not be able to run on Windows due to the limits of some necessary libraris.
 
 <b> Live Rendering</b>
-To test the live rendering code, switch to the Yanwen2 branch and pull the code there.
+To test the live rendering code, you may need a Red Pitaya (or other device) as the client to send out the data
 
-## Ultrasound Folder
-This folder contains the majority of the CS code worked on this Spring 2020 semester. The folder is divded into 2 sections, the data processing and the GUI
+## config_file Folder
+This folder contains some necessary files for the project, including
+* The SSH config file (IP address, username, password);
+* STL files for the probes and the 3D texts in GUI;
+* Other fonts for GUI.
 
-### Data processing
-All the data processing methods can be found in the data class, with methods to load and read data files based on the probe used to collect the data.
+## data Folder
+This folder contains the bytes files for rendering results. These files can be loaded by the program and directly render to some 2D or 3D images for viewing. If you want to see the rendering result of a bytes file, please move the file under this folder where GUI will automatically read the existed file here.
 
-### GUI
-The GUI is made up of the following classes: GUI, Probe, Scale, Marker.
+## extern Folder
+This is the folder contains all the external libraries used for our project, including
+* glad: an OpenGL loading library
+* glfw: a library providing a simple API for creating windows, contexts and surfaces, receiving input and events
+* glm: a header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specification
+* [iir1](https://github.com/berndporr/iir1): a library for generating filters based on the input parameters
+* imgui: a library for creating the user interface
+* Not in the folder, but please make sure your computer has installed [libssh](https://www.libssh.org/) before running our program!
 
-#### GUI Class
-This class creates the two panels to the left and right of the screen. It contains widgets such as sliders and input buttons to load new file and change different parameter values. This class creates the scale and marker classes as features that the user can interact with through the GUI.
+## images Folder
+This is the folder to save the screenshots or other pictures you may want to save during the experiment
 
-#### Scale Class
-The scale class consists of drawing the scale and rendering the three axes on the screen. The class contains methods to set the positions of the scales and change the distance calculation.
+## source Folder
+This folder contains the majority of the CS code worked on this Summer 2020 semester. The folder is divided into 2 sections, DensityMap and Ultrasound
 
-#### Marker Class
-The marker class creates two markers on the screen and returns the distance between the markers. The class consists of methods to draw the markers, change their positions, and check for intersections.
 
-#### Probe Class
-The probe class loads an STL file and renders it on the screen. It can also take in a file of rotation values for the probe and apply each rotation when drawing the object. 
-
-### Helper classes
-The helper class and the rotation class contain methods needed throughout the program. They contain methods to read an STL file to display on the screen and methods to convert between euler angles and quaternions.
-
-## DensityMap Folder
+### DensityMap
 The DensityMap folder contains the code for the image rendering process (the basic grid structure and the camera and shader classes)
 
-### DensityMap Class
+#### DensityMap Class
 DensityMap is a class that stores a 3D array of unsigned bytes between 0 and 255 (inclusive) and allows them to be displayed using OpenGL.
 
-#### Methods
+##### Methods
 
 <b>DensityMap(int dim)</b>  
 Initializes the DensityMap with a cubic array of side length dim.
@@ -94,7 +95,7 @@ x, y, and z must all be on the half-open range [0, 1)
 Gets the interpolated values along the line between two points and writes them to a given array.  
 Make sure at least `numVals` bytes of memory are allocated for `vals`.
 
-#### Movement
+##### Movement
 
 There are two movement options, controlled by setting ROTATE_GRID at the top of main.cpp to either true or false.  
 
@@ -103,4 +104,59 @@ If ROTATE_GRID is false, then the camera can be moved around using WASD plus Q a
 If ROTATE_GRID is true, then the camera is stationary, and the grid can be rotated by clicking the left mouse button and dragging. Press R to reset the orientation.  
 
 ![The image is in the images folder](https://github.com/ColumbiaOpenSourceUltrasound/Spring-2020-CS/blob/master/images/Density%20Map%20(24%20FPS).png "Code demo")
+
+
+### Ultrasound Folder
+This folder contains the work of the CS team. The folder is divided into 2 sections, the include folder and the source folder. The include folder contains the header files of each code in source folder, so we will only go through the source folder.
+
+#### Data processing
+All the data processing methods can be found in the data class, with methods to load and read data files based on the probe used to collect the data. Functions in data.cpp includes:
+* Read bytes file to a vector
+* Decode the data of format v0.6, v0.7 and v0.8 from the Red Pitaya
+* Transfer raw parameters into a format can be drawn by the OpenGL in the 3D space
+* Adding filters to the adc samples
+* Live rendering server code based on UDP protocol
+* Connect to the Red Pitaya through SSH and send any command
+* Other helper functions needed in the functions above
+
+##### Methods
+<b>void readDataSubmarine(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)</b>  
+Read a data file whose format is v0.6 (the probe type should be the submarine) and render the result  
+<b>void readDataWhitefin(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate, bool& error, std::string& errorMessage)</b>  
+Read a data file whose format is v0.7. This is for the probe Whitefin used in spring 2020.
+<b>void readDataTest(DensityMap& grid, const char* fileName, float Gain, int len, bool& dataUpdate)</b>  
+Read a data file whose format is v0.8. This is the newest format and is used in this semester (Summer 2020)  
+<b>bool connectToProbe(DensityMap& grid, std::string probeIP, std::string username, std::string password, std::string compIP,
+                    bool isSubmarine,
+                    int lxRangeMin, int lxRangeMax, int lxRes, int servoRangeMin, int servoRangeMax, int servoRes,
+                    std::string customCommand,
+                    int connectionType, std::string& output, bool& connected, bool& error, std::string& errorMessage
+)</b>  
+Connect to the Red Pitaya through SSH, with parameters that wanted to send to the probe like the servo angle.  
+
+#### Remote control
+The class, socket, in remote.cpp is for the remote control of the Red Pitaya based on SSH. Functions in this class includes:
+* Connect and disconnect with a device
+* Save and load the configuration information in the config file
+* Create an interactive shell with the device
+* Send any command or a series of commands to the device
+
+#### GUI
+The GUI is made up of the following classes: GUI, Probe, Scale, Marker.
+
+##### GUI Class
+This class creates the two panels to the left and right of the screen. It contains widgets such as sliders and input buttons to load new file and change different parameter values. This class creates the scale and marker classes as features that the user can interact with through the GUI.
+
+##### Scale Class
+The scale class consists of drawing the scale and rendering the three axes on the screen. The class contains methods to set the positions of the scales and change the distance calculation.
+
+##### Marker Class
+The marker class creates two markers on the screen and returns the distance between the markers. The class consists of methods to draw the markers, change their positions, and check for intersections.
+
+##### Probe Class
+The probe class loads an STL file and renders it on the screen. It can also take in a file of rotation values for the probe and apply each rotation when drawing the object. 
+
+#### Helper classes
+The helper class and the rotation class contain methods needed throughout the program. They contain methods to read an STL file to display on the screen and methods to convert between euler angles and quaternions.
+
 

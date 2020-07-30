@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Ultrasound_AIO"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\DensityMap\;CMake Files\source\Ultrasound\;CMake Files\extern\;CMake Files\extern\glfw\;CMake Files\extern\glfw\src\;CMake Files\extern\imgui\;CMake Files\extern\iir1\;CMake Files\extern\iir1\test\;CMake Files\extern\iir1\demo\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.73.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.73.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\;CMake Files\..\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultrasound_AIO">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/Ultrasound_AIO" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound_AIO"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultrasound_AIO/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/Ultrasound_AIO" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultrasound_AIO/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ULTRASOUND">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_ALL_NO_LIB"/>
+					<Add option="-DBOOST_DATE_TIME_DYN_LINK"/>
+					<Add option="-DBOOST_FILESYSTEM_DYN_LINK"/>
+					<Add option="-DBOOST_IOSTREAMS_DYN_LINK"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ULTRASOUND/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/libULTRASOUND.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_ALL_NO_LIB"/>
+					<Add option="-DBOOST_DATE_TIME_DYN_LINK"/>
+					<Add option="-DBOOST_FILESYSTEM_DYN_LINK"/>
+					<Add option="-DBOOST_IOSTREAMS_DYN_LINK"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/imgui"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/../../source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 ULTRASOUND/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/Ultrasound/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DENSITYMAP">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/libDENSITYMAP.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 DENSITYMAP"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DENSITYMAP/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/libDENSITYMAP.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/../../extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 DENSITYMAP/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/source/DensityMap/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="IMGUI">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/libIMGUI.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 IMGUI"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="IMGUI/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/libIMGUI.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/../../extern/glad"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/../../extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 IMGUI/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir_static">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir_static.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir_static"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iir_static/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/libiir_static.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 iir_static/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_butterworth">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_butterworth" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_butterworth"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_butterworth/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_butterworth" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_butterworth/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev2">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev2"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev2/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev2" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev2/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev1">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev1"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_chebyshev1/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_chebyshev1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_chebyshev1/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_rbj">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_rbj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_rbj"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_rbj/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/test_rbj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/.."/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/../iir"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 test_rbj/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iirdemo">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/iirdemo" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 iirdemo"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="iirdemo/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/iirdemo" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 iirdemo/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecg50hzfilt">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/ecg50hzfilt" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 ecg50hzfilt"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecg50hzfilt/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/ecg50hzfilt" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/.."/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 ecg50hzfilt/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/iir1/demo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="uninstall">
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/Makefile&quot;  VERBOSE=1 uninstall"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GLFW_USE_CONFIG_H"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw/fast">
+				<Option output="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GLFW_USE_CONFIG_H"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glm"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src"/>
+					<Add directory="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/yanwen/CML_CS/Summer\ 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug/extern/glfw/src/glfw_config.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glad/src/glad.c">
+			<Option target="Ultrasound_AIO"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include/GLFW/glfw3.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/include/GLFW/glfw3native.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/egl_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/egl_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/glx_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/glx_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/input.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/internal.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/linux_joystick.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/linux_joystick.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/mappings.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/osmesa_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/osmesa_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/posix_thread.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/posix_thread.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/posix_time.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/posix_time.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/vulkan.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/x11_init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/x11_monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/x11_platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/x11_window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/xkb_unicode.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/xkb_unicode.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/ecg50hzfilt.cpp">
+			<Option target="ecg50hzfilt"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/iirdemo.cpp">
+			<Option target="iirdemo"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Biquad.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Biquad.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Butterworth.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Butterworth.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Cascade.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Cascade.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/ChebyshevI.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/ChebyshevI.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/ChebyshevII.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/ChebyshevII.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Custom.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/Custom.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/PoleFilter.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/PoleFilter.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/RBJ.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/RBJ.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/State.cpp">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir/State.h">
+			<Option target="iir"/>
+			<Option target="iir_static"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/butterworth.cpp">
+			<Option target="test_butterworth"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/chebyshev1.cpp">
+			<Option target="test_chebyshev1"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/chebyshev2.cpp">
+			<Option target="test_chebyshev2"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/rbj.cpp">
+			<Option target="test_rbj"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_demo.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_draw.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_impl_glfw.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_impl_glfw.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_impl_opengl3.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_impl_opengl3.h">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/imgui_widgets.cpp">
+			<Option target="IMGUI"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/main.cpp">
+			<Option target="Ultrasound_AIO"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/camera.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/camera.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/densityMap.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/densityMap.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/shader.cpp">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/shader.h">
+			<Option target="DENSITYMAP"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/data.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/gui.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/helper.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/marker.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/measureObject.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/probe.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/remote.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/rotation.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/scale.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/source/text.cpp">
+			<Option target="ULTRASOUND"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/DensityMap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\DensityMap\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/source/Ultrasound/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\Ultrasound\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/glfw/src/glfw_config.h.in">
+			<Option virtualFolder="CMake Files\extern\glfw\src\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/imgui/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/iir.pc.in">
+			<Option virtualFolder="CMake Files\extern\iir1\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\test\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/extern/iir1/demo/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\extern\iir1\demo\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/BoostDetectToolset-1.73.0.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/Boost-1.73.0/BoostConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/Boost-1.73.0/BoostConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_headers-1.73.0/boost_headers-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_headers-1.73.0/boost_headers-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_date_time-1.73.0/boost_date_time-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_date_time-1.73.0/boost_date_time-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_date_time-1.73.0/libboost_date_time-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_date_time-1.73.0/libboost_date_time-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_date_time-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_filesystem-1.73.0/boost_filesystem-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_filesystem-1.73.0/boost_filesystem-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_filesystem-1.73.0/libboost_filesystem-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_filesystem-1.73.0/libboost_filesystem-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_filesystem-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_iostreams-1.73.0/boost_iostreams-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_iostreams-1.73.0/boost_iostreams-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_iostreams-1.73.0/libboost_iostreams-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/local/lib/cmake/boost_iostreams-1.73.0/libboost_iostreams-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_iostreams-1.73.0\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config-debug.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
+		</Unit>
+		<Unit filename="/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/../../../../../../usr/lib/x86_64-linux-gnu/cmake/libssh/libssh-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\libssh\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

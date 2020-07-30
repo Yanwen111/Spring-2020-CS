@@ -1,5 +1,5 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS
--- Using Cocoa for window creation
+/snap/clion/121/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS"
+-- Using X11 for window creation
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/hayunchong/Documents/School/College/ultraProject/Spring-2020-CS/cmake-build-debug
+-- Build files have been written to: /home/yanwen/CML_CS/Summer 2020/MASTER/Spring-2020-CS/cmake-build-debug

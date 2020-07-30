@@ -1,0 +1,2 @@
+/usr/bin/ar qc libULTRASOUND.a  CMakeFiles/ULTRASOUND.dir/source/data.cpp.o CMakeFiles/ULTRASOUND.dir/source/gui.cpp.o CMakeFiles/ULTRASOUND.dir/source/helper.cpp.o CMakeFiles/ULTRASOUND.dir/source/marker.cpp.o CMakeFiles/ULTRASOUND.dir/source/measureObject.cpp.o CMakeFiles/ULTRASOUND.dir/source/probe.cpp.o CMakeFiles/ULTRASOUND.dir/source/remote.cpp.o CMakeFiles/ULTRASOUND.dir/source/rotation.cpp.o CMakeFiles/ULTRASOUND.dir/source/scale.cpp.o CMakeFiles/ULTRASOUND.dir/source/text.cpp.o
+/usr/bin/ranlib libULTRASOUND.a
